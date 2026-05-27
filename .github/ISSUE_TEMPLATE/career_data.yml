@@ -1,0 +1,43 @@
+name: Career data contribution
+description: Suggest or improve a tech career path, roadmap, salary range, or entrepreneurship path
+title: "career-data: "
+labels: ["career-data"]
+body:
+  - type: input
+    id: career
+    attributes:
+      label: Career role
+      placeholder: "e.g. Cybersecurity Analyst, Cloud Engineer, Product Manager"
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: What should be added or improved?
+      description: Describe the career data update.
+      placeholder: "Add roadmap steps, improve description, add salary source, etc."
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: Add links or references if this relates to salary, job market, or learning resources.
+
+  - type: dropdown
+    id: data_type
+    attributes:
+      label: Data type
+      options:
+        - Career overview
+        - Skills
+        - Tools
+        - Roadmap
+        - Resources
+        - Salary data
+        - Entrepreneurship path
+        - Starter projects
+    validations:
+      required: true
