@@ -1,13 +1,13 @@
 name: Resource suggestion
 description: Suggest a free or paid learning resource for a career path
-title: "resource: "
-labels: ["resources"]
+title: 'resource: '
+labels: ['resources']
 body:
   - type: input
     id: title
     attributes:
       label: Resource title
-      placeholder: "e.g. freeCodeCamp Responsive Web Design"
+      placeholder: 'e.g. freeCodeCamp Responsive Web Design'
     validations:
       required: true
 
@@ -15,7 +15,7 @@ body:
     id: url
     attributes:
       label: Resource URL
-      placeholder: "https://..."
+      placeholder: 'https://...'
     validations:
       required: true
 
@@ -35,7 +35,7 @@ body:
     id: career
     attributes:
       label: Relevant career path
-      placeholder: "e.g. Frontend Developer, Data Analyst"
+      placeholder: 'e.g. Frontend Developer, Data Analyst'
     validations:
       required: true
 
