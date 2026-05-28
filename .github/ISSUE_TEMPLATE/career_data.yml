@@ -1,13 +1,13 @@
 name: Career data contribution
 description: Suggest or improve a tech career path, roadmap, salary range, or entrepreneurship path
-title: "career-data: "
-labels: ["career-data"]
+title: 'career-data: '
+labels: ['career-data']
 body:
   - type: input
     id: career
     attributes:
       label: Career role
-      placeholder: "e.g. Cybersecurity Analyst, Cloud Engineer, Product Manager"
+      placeholder: 'e.g. Cybersecurity Analyst, Cloud Engineer, Product Manager'
     validations:
       required: true
 
@@ -16,7 +16,7 @@ body:
     attributes:
       label: What should be added or improved?
       description: Describe the career data update.
-      placeholder: "Add roadmap steps, improve description, add salary source, etc."
+      placeholder: 'Add roadmap steps, improve description, add salary source, etc.'
     validations:
       required: true
 
