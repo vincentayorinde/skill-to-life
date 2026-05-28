@@ -1,12 +1,12 @@
 name: Bug report
-description: Report a reproducible problem in TechType
+description: Report a reproducible problem in NextSkill
 title: "bug: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve TechType. Please provide enough detail so we can reproduce the issue.
+        Thanks for helping improve NextSkill. Please provide enough detail so we can reproduce the issue.
 
   - type: textarea
     id: summary
