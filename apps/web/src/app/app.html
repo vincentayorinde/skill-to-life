@@ -1,23 +1,430 @@
-<main class="page-shell">
-  <section class="hero">
-    <p class="eyebrow">NextSkill</p>
-    <h1>Discover your next tech career skill.</h1>
-    <p class="lede">
-      Open-source career assessment platform built with Angular, NestJS,
-      PostgreSQL, Prisma, and Tailwind CSS.
-    </p>
-    <div class="actions" aria-label="Primary actions">
-      <a class="button primary" href="#assessment">Start assessment</a>
-      <a
-        class="button secondary"
-        href="https://github.com/vincentayorinde/nextskill"
-        target="_blank"
-        rel="noreferrer"
+<ns-app-shell [brand]="title" [links]="shellLinks">
+  <section
+    id="assessment"
+    class="relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
+    style="background: var(--ns-hero-gradient)"
+  >
+    <div
+      class="pointer-events-none absolute left-1/2 top-20 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-ns-purple opacity-20 blur-3xl"
+      aria-hidden="true"
+    ></div>
+
+    <div class="mx-auto max-w-7xl">
+      <div class="mx-auto max-w-4xl text-center">
+        <div class="mb-6 flex flex-wrap justify-center gap-2">
+          <ns-badge variant="primary">Open source</ns-badge>
+          <ns-badge variant="success">Built with Angular + NestJS</ns-badge>
+          <ns-badge variant="warning">Beginner friendly</ns-badge>
+        </div>
+
+        <p
+          class="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-ns-primary"
+        >
+          What's your NextSkill?
+        </p>
+        <h1
+          class="m-0 text-5xl font-bold leading-[1.02] tracking-normal text-ns-text sm:text-7xl lg:text-8xl"
+        >
+          Find the tech skill that fits your future.
+        </h1>
+        <p
+          class="mx-auto mt-6 max-w-3xl text-lg leading-8 text-ns-muted sm:text-xl"
+        >
+          NextSkill is an open-source career assessment platform that helps you
+          discover your best-fit tech paths, learning resources, salary
+          insights, and entrepreneurship options.
+        </p>
+
+        <div class="mx-auto mt-8 max-w-xl">
+          <label
+            class="flex items-center gap-3 rounded-lg border border-ns-border bg-ns-card px-4 py-3 text-left text-sm text-ns-muted shadow-glow transition duration-base ease-ns focus-within:border-ns-primary"
+          >
+            <span class="font-semibold text-ns-text">NextSkill</span>
+            <input
+              class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-ns-text outline-none placeholder:text-ns-muted"
+              type="search"
+              placeholder="Search or jump to..."
+              autocomplete="off"
+            />
+            <kbd
+              class="rounded border border-ns-border px-2 py-1 text-xs font-semibold text-ns-muted"
+              aria-hidden="true"
+              >/</kbd
+            >
+          </label>
+        </div>
+
+        <div
+          class="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap"
+          aria-label="Primary actions"
+        >
+          <ns-button href="#assessment-preview" size="lg">
+            Start assessment
+          </ns-button>
+          <ns-button variant="google" size="lg" href="#google-placeholder">
+            Continue with Google
+          </ns-button>
+          <ns-button variant="secondary" size="lg" href="#anonymous">
+            Continue anonymously
+          </ns-button>
+        </div>
+
+        <div class="mt-5">
+          <ns-button
+            variant="ghost"
+            href="https://github.com/vincentayorinde/nextskill"
+            target="_blank"
+          >
+            View on GitHub
+          </ns-button>
+        </div>
+      </div>
+
+      <ns-card
+        id="assessment-preview"
+        class="mx-auto mt-14 max-w-5xl"
+        [padded]="false"
+        [elevated]="true"
       >
-        View on GitHub
-      </a>
+        <div class="grid gap-0 lg:grid-cols-[1fr_0.8fr]">
+          <div
+            class="border-b border-ns-border p-5 sm:p-6 lg:border-b-0 lg:border-r"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p class="m-0 text-sm font-semibold text-ns-primary">
+                  Assessment Preview
+                </p>
+                <h2 class="m-0 mt-1 text-2xl font-bold text-ns-text">
+                  Career signal
+                </h2>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <ns-badge variant="success">Warm start</ns-badge>
+                <ns-badge variant="warning">Roadmap ready</ns-badge>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <div class="mb-3 flex items-center justify-between text-sm">
+                <span class="font-semibold text-ns-text">Skill fit</span>
+                <span class="text-ns-muted">78%</span>
+              </div>
+              <ns-progress [value]="78" label="Assessment preview progress" />
+            </div>
+
+            <div class="mt-8 grid gap-4 sm:grid-cols-2">
+              <div
+                class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-4"
+              >
+                <p
+                  class="m-0 text-xs font-semibold uppercase tracking-[0.16em] text-ns-muted"
+                >
+                  Top match
+                </p>
+                <p class="m-0 mt-2 text-lg font-bold text-ns-text">
+                  Frontend Engineer
+                </p>
+                <p class="m-0 mt-2 text-sm leading-6 text-ns-muted">
+                  Strong signal for visual systems, product thinking, and
+                  structured learning.
+                </p>
+              </div>
+              <div
+                class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-4"
+              >
+                <p
+                  class="m-0 text-xs font-semibold uppercase tracking-[0.16em] text-ns-muted"
+                >
+                  Alternate path
+                </p>
+                <p class="m-0 mt-2 text-lg font-bold text-ns-text">
+                  Cybersecurity Analyst
+                </p>
+                <p class="m-0 mt-2 text-sm leading-6 text-ns-muted">
+                  A practical route for pattern spotting, trust, and defensive
+                  problem solving.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-6">
+            <div
+              class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-4"
+            >
+              <div class="mb-4 flex items-center justify-between">
+                <span class="text-sm font-semibold text-ns-text">Signals</span>
+                <ns-badge variant="purple">Live preview</ns-badge>
+              </div>
+              <div class="space-y-3">
+                <div
+                  class="flex items-center justify-between rounded-md bg-ns-card px-3 py-2"
+                >
+                  <span class="text-sm text-ns-muted">Curiosity</span>
+                  <span class="text-sm font-semibold text-ns-text">High</span>
+                </div>
+                <div
+                  class="flex items-center justify-between rounded-md bg-ns-card px-3 py-2"
+                >
+                  <span class="text-sm text-ns-muted">Builder energy</span>
+                  <span class="text-sm font-semibold text-ns-text">Strong</span>
+                </div>
+                <div
+                  class="flex items-center justify-between rounded-md bg-ns-card px-3 py-2"
+                >
+                  <span class="text-sm text-ns-muted">Starter path</span>
+                  <span class="text-sm font-semibold text-ns-text"
+                    >8 weeks</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ns-card>
     </div>
   </section>
-</main>
+
+  <section id="platform" class="bg-ns-bg px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="max-w-3xl">
+        <p
+          class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-ns-primary"
+        >
+          Platform
+        </p>
+        <h2 class="m-0 text-3xl font-bold text-ns-text sm:text-5xl">
+          Career discovery with a developer-platform spine.
+        </h2>
+        <p class="mt-4 text-lg leading-8 text-ns-muted">
+          Structured enough for repeatable assessments, warm enough for people
+          choosing a path for the first time.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        <ns-card [interactive]="true">
+          <ns-badge variant="primary">Assessment</ns-badge>
+          <h3 class="mb-3 mt-5 text-xl font-bold text-ns-text">
+            Discover your fit
+          </h3>
+          <p class="m-0 text-sm leading-6 text-ns-muted">
+            Answer focused prompts and see which tech paths fit how you think,
+            learn, and build.
+          </p>
+          <div
+            class="mt-6 rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
+          >
+            <div class="h-2 w-3/4 rounded-full bg-ns-primary"></div>
+            <div class="mt-3 h-2 w-1/2 rounded-full bg-ns-border"></div>
+          </div>
+        </ns-card>
+
+        <ns-card [interactive]="true">
+          <ns-badge variant="success">Roadmap</ns-badge>
+          <h3 class="mb-3 mt-5 text-xl font-bold text-ns-text">
+            Follow a roadmap
+          </h3>
+          <p class="m-0 text-sm leading-6 text-ns-muted">
+            Move from a result to beginner-friendly resources, milestones, and
+            next projects.
+          </p>
+          <div class="mt-6 grid gap-2" id="roadmaps">
+            <div
+              class="rounded-md border border-ns-border bg-ns-canvasSubtle px-3 py-2 text-sm text-ns-muted"
+            >
+              Week 1: Core concepts
+            </div>
+            <div
+              class="rounded-md border border-ns-border bg-ns-canvasSubtle px-3 py-2 text-sm text-ns-muted"
+            >
+              Week 2: First project
+            </div>
+          </div>
+        </ns-card>
+
+        <ns-card [interactive]="true">
+          <ns-badge variant="purple">Social</ns-badge>
+          <h3 class="mb-3 mt-5 text-xl font-bold text-ns-text">
+            Share your result
+          </h3>
+          <p class="m-0 text-sm leading-6 text-ns-muted">
+            Future share cards can turn career identity into a polished,
+            memorable result moment.
+          </p>
+          <div
+            class="mt-6 rounded-ns border border-ns-border bg-gradient-to-br from-ns-primarySoft to-ns-purpleSoft p-4"
+          >
+            <p class="m-0 text-sm font-bold text-ns-text">
+              What's your NextSkill?
+            </p>
+            <p class="m-0 mt-2 text-xs text-ns-muted">Result card preview</p>
+          </div>
+        </ns-card>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="open-source"
+    class="border-y border-ns-border bg-ns-canvasSubtle px-4 py-16 sm:px-6 lg:px-8"
+  >
+    <div
+      class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_24rem] lg:items-center"
+    >
+      <div>
+        <p
+          class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-ns-success"
+        >
+          Open source
+        </p>
+        <h2 class="m-0 text-3xl font-bold text-ns-text sm:text-5xl">
+          Built in public. Open by design.
+        </h2>
+        <p class="mt-4 max-w-3xl text-lg leading-8 text-ns-muted">
+          NextSkill is shaped around GitHub releases, a public roadmap, and
+          contribution-friendly issues so learners and builders can improve the
+          platform together.
+        </p>
+        <div class="mt-7">
+          <ns-button
+            variant="secondary"
+            href="https://github.com/vincentayorinde/nextskill"
+            target="_blank"
+          >
+            View repository
+          </ns-button>
+        </div>
+      </div>
+
+      <ns-card [elevated]="true">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="m-0 text-sm font-semibold text-ns-muted">Release</p>
+            <h3 class="m-0 mt-1 text-xl font-bold text-ns-text" id="releases">
+              v0.3.0 - Design System
+            </h3>
+          </div>
+          <ns-badge variant="primary">Active</ns-badge>
+        </div>
+        <ul class="mt-5 space-y-3 pl-5 text-sm leading-6 text-ns-muted">
+          <li>Tailwind tokens and theme foundations</li>
+          <li>Reusable Angular UI components</li>
+          <li>Polished public landing direction</li>
+        </ul>
+      </ns-card>
+    </div>
+  </section>
+
+  <footer class="bg-ns-bg px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-10 md:grid-cols-[1.4fr_2fr]">
+        <div>
+          <div class="flex items-center gap-3">
+            <span
+              class="grid h-9 w-9 place-items-center rounded-md border border-ns-border bg-ns-cardElevated text-sm font-bold text-ns-text"
+              aria-hidden="true"
+            >
+              NS
+            </span>
+            <span class="font-bold text-ns-text">NextSkill</span>
+          </div>
+          <p class="mt-4 max-w-sm text-sm leading-6 text-ns-muted">
+            Open-source career assessment for people choosing their next tech
+            skill, roadmap, or builder path.
+          </p>
+        </div>
+
+        <nav class="grid gap-8 sm:grid-cols-3" aria-label="Footer navigation">
+          <div>
+            <h3 class="m-0 text-sm font-semibold text-ns-text">Product</h3>
+            <ul class="mt-4 space-y-3 p-0 text-sm text-ns-muted">
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#assessment"
+                  >Assessment</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#roadmaps"
+                  >Roadmaps</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#platform"
+                  >Results</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="m-0 text-sm font-semibold text-ns-text">Open Source</h3>
+            <ul class="mt-4 space-y-3 p-0 text-sm text-ns-muted">
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="https://github.com/vincentayorinde/nextskill"
+                  target="_blank"
+                  rel="noreferrer"
+                  >GitHub</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#releases"
+                  >Releases</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#open-source"
+                  >Contributing</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="m-0 text-sm font-semibold text-ns-text">Community</h3>
+            <ul class="mt-4 space-y-3 p-0 text-sm text-ns-muted">
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#open-source"
+                  >Discussions</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#open-source"
+                  >Issues</a
+                >
+              </li>
+              <li>
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  href="#platform"
+                  >Roadmap</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <p class="mt-10 border-t border-ns-border pt-6 text-xs text-ns-muted">
+        Copyright 2026 NextSkill. Built in public for learners and contributors.
+      </p>
+    </div>
+  </footer>
+</ns-app-shell>
 
 <router-outlet></router-outlet>

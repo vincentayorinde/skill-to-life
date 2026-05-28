@@ -13,7 +13,7 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Discover your next tech career skill.',
+      'Find the tech skill that fits your future.',
     );
   });
 });
