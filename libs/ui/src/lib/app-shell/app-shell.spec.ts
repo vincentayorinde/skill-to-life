@@ -20,9 +20,9 @@ describe('NsAppShellComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('NextSkill');
-    expect(fixture.nativeElement.textContent).toContain('Platform');
-    expect(fixture.nativeElement.textContent).toContain('Sign in');
-    expect(fixture.nativeElement.textContent).toContain('Start free');
+    expect(fixture.nativeElement.textContent).toContain('How it works');
+    expect(fixture.nativeElement.textContent).toContain('Career paths');
+    expect(fixture.nativeElement.textContent).toContain('Start assessment');
   });
 
   it('toggles and persists theme', () => {
