@@ -46,28 +46,10 @@ export interface NsAppShellLink {
             }
           </nav>
 
-          <label
-            class="hidden min-w-64 flex-1 items-center gap-2 rounded-md border border-ns-border bg-ns-card px-3 py-2 text-sm text-ns-muted shadow-ns transition duration-base ease-ns focus-within:border-ns-primary focus-within:shadow-glow xl:flex"
-          >
-            <span class="sr-only">Search</span>
-            <span aria-hidden="true">Search</span>
-            <input
-              class="w-full border-0 bg-transparent p-0 text-sm text-ns-text outline-none placeholder:text-ns-muted"
-              type="search"
-              placeholder="Search or jump to..."
-              autocomplete="off"
-            />
-            <kbd
-              class="rounded border border-ns-border px-1.5 py-0.5 text-xs font-semibold text-ns-muted"
-              aria-hidden="true"
-              >/</kbd
-            >
-          </label>
-
           <div class="hidden shrink-0 items-center gap-2 md:flex">
             <button
               type="button"
-              class="grid h-10 w-10 place-items-center rounded-md border border-ns-border bg-ns-card text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+              class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
               [attr.aria-label]="
                 theme === 'dark'
                   ? 'Switch to light theme'
@@ -75,7 +57,9 @@ export interface NsAppShellLink {
               "
               (click)="toggleTheme()"
             >
-              <span aria-hidden="true">{{ theme === 'dark' ? 'L' : 'D' }}</span>
+              <span aria-hidden="true">{{
+                theme === 'dark' ? 'Light' : 'Dark'
+              }}</span>
             </button>
             <a
               class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
@@ -87,7 +71,7 @@ export interface NsAppShellLink {
               class="rounded-md border border-ns-border bg-ns-card px-3 py-2 text-sm font-semibold text-ns-text no-underline shadow-ns transition duration-base ease-ns hover:border-ns-primary hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
               href="#assessment"
             >
-              Start free
+              Start assessment
             </a>
           </div>
 
@@ -108,24 +92,6 @@ export interface NsAppShellLink {
             id="mobile-nav"
             class="border-t border-ns-border bg-ns-nav px-4 py-4 backdrop-blur-xl md:hidden"
           >
-            <label
-              class="mb-3 flex items-center gap-2 rounded-md border border-ns-border bg-ns-card px-3 py-2 text-sm text-ns-muted"
-            >
-              <span class="sr-only">Search</span>
-              <span aria-hidden="true">Search</span>
-              <input
-                class="w-full border-0 bg-transparent p-0 text-sm text-ns-text outline-none placeholder:text-ns-muted"
-                type="search"
-                placeholder="Search or jump to..."
-                autocomplete="off"
-              />
-              <kbd
-                class="rounded border border-ns-border px-1.5 py-0.5 text-xs font-semibold text-ns-muted"
-                aria-hidden="true"
-                >/</kbd
-              >
-            </label>
-
             <nav class="grid gap-1" aria-label="Mobile navigation">
               @for (link of links; track link.href) {
                 <a
@@ -162,7 +128,7 @@ export interface NsAppShellLink {
                 class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-primary bg-ns-primary px-3 text-sm font-semibold text-white no-underline"
                 href="#assessment"
               >
-                Start free
+                Start assessment
               </a>
             </div>
           </div>
@@ -178,11 +144,9 @@ export interface NsAppShellLink {
 export class NsAppShellComponent implements OnInit {
   @Input() brand = 'NextSkill';
   @Input() links: NsAppShellLink[] = [
-    { label: 'Platform', href: '#platform' },
-    { label: 'Assessment', href: '#assessment' },
-    { label: 'Roadmaps', href: '#roadmaps' },
-    { label: 'Open Source', href: '#open-source' },
-    { label: 'Releases', href: '#releases' },
+    { label: 'How it works', href: '#how-it-works' },
+    { label: 'Career paths', href: '#career-paths' },
+    { label: 'Open source', href: '#open-source' },
   ];
 
   theme: 'dark' | 'light' = 'dark';

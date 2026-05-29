@@ -11,11 +11,16 @@ NextSkill's design system starts with a practical, open-source product feel: imm
 
 ## Visual Direction
 
-Public pages and future dashboards are GitHub-inspired without copying GitHub branding: dark platform surfaces, sticky structured navigation, command/search affordances, blue accents, subtle borders, and contributor-friendly release/roadmap language.
+Public pages and future dashboards are GitHub-inspired without copying GitHub branding: dark platform surfaces, sticky structured navigation, blue accents, subtle borders, and contributor-friendly release/roadmap language.
 
 Onboarding foundations are Duolingo-inspired: option cards, progress bars, helper/empty states, and touch-friendly spacing. This warmth should appear around assessment moments rather than overtaking the public landing page.
 
 Future result share cards can move toward a Spotify Wrapped-inspired style: bold color, confident composition, and highly shareable career identity moments.
+
+The public website pattern combines a dark-first hero, dashboard preview,
+relatable problem framing, career path previews, friendly assessment mockups,
+open-source trust, education/resource value, privacy reassurance, and a
+structured footer. Reuse existing UI components before adding new ones.
 
 ## Theme Strategy
 
