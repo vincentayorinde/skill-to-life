@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { NsAppShellComponent } from './app-shell';
 
 describe('NsAppShellComponent', () => {
@@ -9,7 +10,7 @@ describe('NsAppShellComponent', () => {
     localStorage.clear();
 
     await TestBed.configureTestingModule({
-      imports: [NsAppShellComponent],
+      imports: [NsAppShellComponent, RouterModule.forRoot([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NsAppShellComponent);
