@@ -1,0 +1,153 @@
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import {
+  NsAppShellComponent,
+  NsAppShellLink,
+  NsBadgeComponent,
+  NsButtonComponent,
+  NsCardComponent,
+  NsOptionCardComponent,
+  NsProgressComponent,
+} from 'ui';
+import { CAREER_PATHS } from 'types';
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [
+    RouterLink,
+    NsAppShellComponent,
+    NsBadgeComponent,
+    NsButtonComponent,
+    NsCardComponent,
+    NsOptionCardComponent,
+    NsProgressComponent,
+  ],
+  templateUrl: './home.html',
+})
+export class HomeComponent {
+  protected readonly shellLinks: NsAppShellLink[] = [
+    { label: 'How it works', href: '#how-it-works' },
+    { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Open source', href: '#open-source' },
+  ];
+
+  protected readonly trustBadges = [
+    { label: 'Open source', variant: 'success' as const },
+    { label: 'Beginner friendly', variant: 'warning' as const },
+    { label: 'Anonymous mode', variant: 'neutral' as const },
+    { label: 'Shareable results', variant: 'purple' as const },
+  ];
+
+  protected readonly problemCards = [
+    {
+      icon: '01',
+      title: 'Too many options',
+      copy: 'Coding, cyber, data, cloud, AI, design — where do you even start?',
+    },
+    {
+      icon: '02',
+      title: 'Too much noise',
+      copy: "Every week there's a new skill everyone says you must learn.",
+    },
+    {
+      icon: '03',
+      title: 'Wrong fit',
+      copy: "The best path isn't always the trendiest one. It's the one that fits how you think.",
+    },
+  ];
+
+  protected readonly howItWorks = [
+    {
+      step: '01',
+      title: 'Answer a few quick questions',
+      copy: 'Tell us how you think, what you enjoy, and what you want from a tech career.',
+    },
+    {
+      step: '02',
+      title: 'See your top matches',
+      copy: 'Get your best-fit tech paths with a clear reason why each one fits you.',
+    },
+    {
+      step: '03',
+      title: 'Start with a roadmap',
+      copy: 'Get beginner resources, starter projects, and the first thing to learn.',
+    },
+  ];
+
+  protected readonly careerPreviews = CAREER_PATHS.slice(0, 12).map((c) => ({
+    emoji: c.emoji,
+    title: c.title,
+    slug: c.slug,
+    copy: c.summary,
+    tags: c.tags.slice(0, 3),
+  }));
+
+  protected readonly assessmentOptions = [
+    {
+      title: 'Building apps',
+      description: 'Create tools and interfaces people use.',
+      icon: '🛠️',
+    },
+    {
+      title: 'Protecting systems',
+      description: 'Spot risks and help keep systems safe.',
+      icon: '🛡️',
+    },
+    {
+      title: 'Analysing data',
+      description: 'Turn information into clearer decisions.',
+      icon: '📊',
+    },
+    {
+      title: 'Designing experiences',
+      description: 'Shape how products look and feel.',
+      icon: '🎨',
+    },
+  ];
+
+  protected readonly openSourcePillars = [
+    'Public roadmap',
+    'GitHub releases',
+    'Good first issues',
+    'Transparent scoring model',
+  ];
+
+  protected readonly footerLinks = [
+    {
+      title: 'Product',
+      links: [
+        { label: 'Assessment', href: '#assessment' },
+        { label: 'Career paths', href: '/careers' },
+        { label: 'Roadmaps', href: '#how-it-works' },
+        { label: 'Share cards', href: '#result-card' },
+      ],
+    },
+    {
+      title: 'Open source',
+      links: [
+        {
+          label: 'GitHub',
+          href: 'https://github.com/vincentayorinde/nextskill',
+          external: true,
+        },
+        { label: 'Releases', href: '#open-source' },
+        { label: 'Contributing', href: '#open-source' },
+        { label: 'Security', href: '#open-source' },
+      ],
+    },
+    {
+      title: 'Community',
+      links: [
+        {
+          label: 'Issues',
+          href: 'https://github.com/vincentayorinde/nextskill/issues',
+          external: true,
+        },
+        { label: 'Discussions', href: '#open-source' },
+        { label: 'Roadmap', href: '#open-source' },
+        { label: 'Good first issues', href: '#open-source' },
+      ],
+    },
+  ];
+}

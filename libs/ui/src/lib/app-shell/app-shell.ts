@@ -1,14 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 export interface NsAppShellLink {
   label: string;
-  href: string;
+  href?: string;
+  routerLink?: string;
   external?: boolean;
 }
 
 @Component({
   selector: 'ns-app-shell',
   standalone: true,
+  imports: [RouterLink],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
       <header
@@ -34,15 +37,24 @@ export interface NsAppShellLink {
             class="hidden items-center gap-1 lg:flex"
             aria-label="Primary navigation"
           >
-            @for (link of links; track link.href) {
-              <a
-                class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
-                [href]="link.href"
-                [attr.target]="link.external ? '_blank' : null"
-                [attr.rel]="link.external ? 'noreferrer' : null"
-              >
-                {{ link.label }}
-              </a>
+            @for (link of links; track link.label) {
+              @if (link.routerLink) {
+                <a
+                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                  [routerLink]="link.routerLink"
+                >
+                  {{ link.label }}
+                </a>
+              } @else {
+                <a
+                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                  [href]="link.href"
+                  [attr.target]="link.external ? '_blank' : null"
+                  [attr.rel]="link.external ? 'noreferrer' : null"
+                >
+                  {{ link.label }}
+                </a>
+              }
             }
           </nav>
 
@@ -87,15 +99,24 @@ export interface NsAppShellLink {
             class="border-t border-ns-border bg-ns-nav px-4 py-4 backdrop-blur-xl md:hidden"
           >
             <nav class="grid gap-1" aria-label="Mobile navigation">
-              @for (link of links; track link.href) {
-                <a
-                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
-                  [href]="link.href"
-                  [attr.target]="link.external ? '_blank' : null"
-                  [attr.rel]="link.external ? 'noreferrer' : null"
-                >
-                  {{ link.label }}
-                </a>
+              @for (link of links; track link.label) {
+                @if (link.routerLink) {
+                  <a
+                    class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                    [routerLink]="link.routerLink"
+                  >
+                    {{ link.label }}
+                  </a>
+                } @else {
+                  <a
+                    class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                    [href]="link.href"
+                    [attr.target]="link.external ? '_blank' : null"
+                    [attr.rel]="link.external ? 'noreferrer' : null"
+                  >
+                    {{ link.label }}
+                  </a>
+                }
               }
             </nav>
 
@@ -133,7 +154,7 @@ export class NsAppShellComponent implements OnInit {
   @Input() brand = 'NextSkill';
   @Input() links: NsAppShellLink[] = [
     { label: 'How it works', href: '#how-it-works' },
-    { label: 'Career paths', href: '#career-paths' },
+    { label: 'Career paths', routerLink: '/careers' },
     { label: 'Open source', href: '#open-source' },
   ];
 
