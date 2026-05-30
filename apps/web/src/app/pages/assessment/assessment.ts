@@ -12,6 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { NsOptionCardComponent, NsProgressComponent } from 'ui';
 import { ASSESSMENT_QUESTIONS, MICROCOPY } from './questions.data';
+import { AssessmentStateService } from '../../services/assessment-state.service';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -143,6 +144,7 @@ function delay(ms: number): Promise<void> {
 })
 export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
+  private readonly stateService = inject(AssessmentStateService);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
   private savedTheme: string | null = null;
 
@@ -190,6 +192,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     if (this.isLast()) {
       this.isComplete = true;
+      this.stateService.save(this.answers());
       this.router.navigate(['/assessment/results']);
       return;
     }

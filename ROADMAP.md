@@ -57,7 +57,9 @@ Static career data layer with full listing and detail pages.
 
 ---
 
-## 🔄 v0.6.0 — Duolingo-Style Onboarding (in progress)
+## ✅ v0.6.0 — Duolingo-Style Onboarding + Result Card
+
+Includes result screen, Spotify Wrapped-style career card, share functionality, and rule-based career matcher (share card added ahead of v0.9.0 schedule).
 
 Friendly, step-by-step assessment flow.
 

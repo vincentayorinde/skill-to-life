@@ -7,6 +7,28 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.6.1] — Result Screen and Shareable Career Card
+
+### Added
+
+- `AssessmentStateService` — root-scoped singleton that persists assessment answers across the `/assessment` → `/assessment/results` route boundary
+- `matchCareer()` in `libs/shared/scoring` — rule-based career matcher using Q1 (work preference), Q3 (coding comfort), and Q7 (maths comfort) as signals; maps to one of the 14 career library entries
+- Spotify Wrapped-style result card at `/assessment/results` — dark gradient, ambient glow blobs, career emoji, title, match percentage badge, one-line insight, and `nextskill.dev` watermark
+- Share modal with four options: X/Twitter (pre-filled tweet), LinkedIn, copy link (clipboard), and native Web Share API (mobile)
+- "Copied!" confirmation state after copy link
+- Open Graph and Twitter Card meta tags set via Angular's `Meta` and `Title` services
+- No-results fallback state when user navigates directly to `/assessment/results`
+- 1.8-second CSS spinner loading reveal before card animates in (fade-up keyframe)
+- Matcher unit tests: all Q1 options, coding/maths signal combinations, fallback for unknown inputs
+- Result screen tests: loading state, match computation, share modal open/close, copy link
+
+### Changed
+
+- `AssessmentComponent` now saves answers to `AssessmentStateService` before navigating to results
+- `/assessment/results` "See my matches" link replaced with personalised result card and four CTAs
+
+---
+
 ## [0.6.0] — Duolingo-Style Onboarding
 
 ### Added
