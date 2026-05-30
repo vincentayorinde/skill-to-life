@@ -1,5 +1,6 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 export type NsButtonVariant =
   | 'primary'
@@ -13,7 +14,7 @@ export type NsButtonSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'ns-button',
   standalone: true,
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgClass, NgTemplateOutlet, RouterLink],
   template: `
     @if (href) {
       <a
@@ -21,6 +22,14 @@ export type NsButtonSize = 'sm' | 'md' | 'lg';
         [attr.target]="target"
         [attr.rel]="target === '_blank' ? 'noreferrer' : null"
         [attr.aria-disabled]="disabled || loading"
+        [ngClass]="classes"
+      >
+        <ng-container *ngTemplateOutlet="content" />
+      </a>
+    } @else if (routerLink) {
+      <a
+        [routerLink]="disabled ? null : routerLink"
+        [attr.aria-disabled]="disabled"
         [ngClass]="classes"
       >
         <ng-container *ngTemplateOutlet="content" />
@@ -56,6 +65,7 @@ export class NsButtonComponent {
   @Input() disabled = false;
   @Input() loading = false;
   @Input() href?: string;
+  @Input() routerLink?: string | string[];
   @Input() target?: '_blank' | '_self' | '_parent' | '_top';
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
 

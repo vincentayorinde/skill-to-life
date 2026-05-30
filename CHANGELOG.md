@@ -7,6 +7,29 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.6.0] — Duolingo-Style Onboarding
+
+### Added
+
+- Assessment flow at `/assessment` — 10 questions, one per screen, no distractions
+- Question data module with all 10 questions, options (emoji + label + description), and rotating microcopy
+- Smooth 150ms CSS fade-and-slide transition between questions
+- Progress header with step counter ("Step 3 of 10") and `NsProgressComponent` bar
+- Back navigation with answer pre-population when returning to a previous question
+- Arrow key cycling between option cards; Next/Back buttons fully keyboard accessible
+- `canDeactivate` guard that prompts "Your progress will be lost" when navigating away mid-assessment
+- Assessment results placeholder at `/assessment/results` — 2-second CSS spinner loading state, then CTAs (See my matches → `/careers`, Continue with Google, Try anonymously)
+- `routerLink` input added to `NsButtonComponent` — renders an `<a [routerLink]>` element for SPA navigation
+- "Start assessment" and "Start anonymously" CTAs on the landing page now route to `/assessment`
+- Dark theme forced during assessment (`data-theme="dark"` on document root), restored on exit
+- 8 unit tests covering: first question render, Next disabled before selection, question advance, back navigation, answer restore, progress percentage, `hasAnswers()` state, last question label
+
+### Changed
+
+- `NsButtonComponent` now supports `routerLink` input alongside existing `href`
+
+---
+
 ## [0.5.0] — Career Library
 
 ### Added

@@ -57,7 +57,7 @@ Static career data layer with full listing and detail pages.
 
 ---
 
-## 🔜 v0.6.0 — Duolingo-Style Onboarding
+## 🔄 v0.6.0 — Duolingo-Style Onboarding (in progress)
 
 Friendly, step-by-step assessment flow.
 
