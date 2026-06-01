@@ -7,6 +7,27 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.7.0] — Assessment Engine
+
+### Added
+
+- `CareerSignal`, `AssessmentOption`, `AssessmentQuestion`, `CareerMatch`, and `MatchTier` types in `libs/shared/types` — formal schema for the assessment and scoring layer
+- `assessment-data.ts` in `libs/shared/scoring` — complete signal map for all 10 questions across all 14 careers, with per-option weights (1–5) derived from strength of fit
+- `scoreAssessment(answers)` in `libs/shared/scoring` — weighted scoring engine that maps every answer to career signals, normalises each career's raw score against its maximum possible score, and returns all 14 careers sorted by percentage match
+- `matchTier` classification: `strong` (75%+), `good` (50–74%), `possible` (below 50%)
+- "Other paths that could suit you" section on `/assessment/results` showing the 2nd and 3rd career matches with emoji, title, percentage, and colour-coded tier badge; each card links to `/careers/[slug]`
+- Error state on `/assessment/results` for the edge case where scoring returns no results — shows "Something went wrong" copy and "Retake assessment" CTA
+- `docs/scoring.md` — contributor guide explaining the scoring algorithm and how to tune weights
+- Comprehensive Vitest test suite in `libs/shared/scoring`: empty answers, all 14 careers present, correct top result for known answer combinations, percentage validity (0–100), tier assignment, partial answers, and tie-breaking behaviour
+
+### Changed
+
+- `/assessment/results` hero card now uses real percentage from `scoreAssessment` instead of the fixed rule-based value from v0.6.1
+- Share tweet copy updated to use live percentage: `[emoji] [title] — [real percentage]% match`
+- `assessment-results.spec.ts` updated to reflect the new `matches: CareerMatch[]` component API
+
+---
+
 ## [0.6.1] — Result Screen and Shareable Career Card
 
 ### Added

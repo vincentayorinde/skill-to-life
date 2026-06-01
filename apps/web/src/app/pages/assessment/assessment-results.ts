@@ -2,7 +2,9 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { NsButtonComponent } from 'ui';
-import { matchCareer, MatchResult } from 'scoring';
+import { scoreAssessment } from 'scoring';
+import type { CareerMatch, MatchTier } from 'types';
+import { getCareerBySlug } from 'types';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 
 @Component({
@@ -85,8 +87,24 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
         </div>
       }
 
+      <!-- Error state — answers present but scoring returned nothing -->
+      @if (!loading() && hasResults && matches.length === 0) {
+        <div
+          class="flex min-h-screen flex-col items-center justify-center px-4 text-center"
+        >
+          <p class="text-4xl" aria-hidden="true">😬</p>
+          <h1 class="m-0 mt-4 text-2xl font-bold text-ns-text">
+            Something went wrong with your results.
+          </h1>
+          <p class="mt-3 text-ns-muted">Try retaking the assessment.</p>
+          <ns-button class="mt-6 inline-block" routerLink="/assessment">
+            Retake assessment
+          </ns-button>
+        </div>
+      }
+
       <!-- Results screen -->
-      @if (!loading() && hasResults && match) {
+      @if (!loading() && hasResults && matches.length > 0) {
         <div class="mx-auto max-w-xl px-4 py-12 sm:py-16">
           <!-- Eyebrow -->
           <p
@@ -121,26 +139,26 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
 
               <!-- Career emoji -->
               <p class="m-0 mt-5 text-6xl leading-none" aria-hidden="true">
-                {{ match.career.emoji }}
+                {{ matches[0].emoji }}
               </p>
 
               <!-- Career title -->
               <h1
                 class="m-0 mt-4 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl"
               >
-                {{ match.career.title }}
+                {{ matches[0].title }}
               </h1>
 
               <!-- Match badge -->
               <div
                 class="mt-5 inline-flex rounded-full bg-white px-4 py-1.5 text-sm font-black text-slate-950"
               >
-                {{ match.matchPercent }}% match
+                {{ matches[0].percentage }}% match
               </div>
 
               <!-- Insight -->
               <p class="m-0 mt-5 text-sm leading-6 text-blue-100/80">
-                {{ match.insight }}
+                {{ topInsight }}
               </p>
 
               <!-- Watermark -->
@@ -166,7 +184,7 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             <ns-button
               class="block"
               variant="secondary"
-              [routerLink]="['/careers', match.career.slug]"
+              [routerLink]="['/careers', matches[0].careerId]"
             >
               Explore this path
             </ns-button>
@@ -176,7 +194,43 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             </ns-button>
           </div>
 
-          <div class="mt-5 text-center">
+          <!-- Secondary matches -->
+          @if (matches.length > 1) {
+            <div class="mt-10">
+              <p
+                class="text-center text-xs font-bold uppercase tracking-[0.2em] text-ns-muted"
+              >
+                Other paths that could suit you
+              </p>
+              <div class="mt-4 flex flex-col gap-3">
+                @for (alt of matches.slice(1, 3); track alt.careerId) {
+                  <a
+                    [routerLink]="['/careers', alt.careerId]"
+                    class="flex items-center gap-4 rounded-ns border border-ns-border bg-ns-card p-4 no-underline transition hover:border-ns-primary hover:bg-ns-cardElevated"
+                  >
+                    <span class="text-2xl" aria-hidden="true">{{
+                      alt.emoji
+                    }}</span>
+                    <div class="flex-1">
+                      <p class="m-0 text-sm font-semibold text-ns-text">
+                        {{ alt.title }}
+                      </p>
+                      <p class="m-0 text-xs text-ns-muted">
+                        {{ alt.percentage }}% match
+                      </p>
+                    </div>
+                    <span
+                      class="rounded-full px-2 py-0.5 text-xs font-semibold"
+                      [class]="tierClass(alt.matchTier)"
+                      >{{ alt.matchTier }}</span
+                    >
+                  </a>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="mt-8 text-center">
             <a
               class="text-sm text-ns-muted no-underline hover:text-ns-text"
               routerLink="/careers"
@@ -276,14 +330,25 @@ export class AssessmentResultsComponent implements OnInit {
   readonly copied = signal(false);
 
   hasResults = false;
-  match: MatchResult | null = null;
+  matches: CareerMatch[] = [];
   canNativeShare = false;
+
+  get topInsight(): string {
+    if (!this.matches.length) return '';
+    return getCareerBySlug(this.matches[0].careerId)?.whoItFits ?? '';
+  }
+
+  tierClass(tier: MatchTier): string {
+    if (tier === 'strong') return 'bg-green-400/10 text-green-400';
+    if (tier === 'good') return 'bg-blue-400/10 text-blue-400';
+    return 'bg-white/5 text-ns-muted';
+  }
 
   ngOnInit(): void {
     this.hasResults = this.stateService.hasResults();
 
     if (this.hasResults) {
-      this.match = matchCareer(this.stateService.answers());
+      this.matches = scoreAssessment(this.stateService.answers());
       this.setMetaTags();
     }
 
@@ -306,10 +371,10 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   shareToX(): void {
-    if (!this.match) return;
-    const { career, matchPercent, insight } = this.match;
+    if (!this.matches.length) return;
+    const top = this.matches[0];
     const text = encodeURIComponent(
-      `I just found my NextSkill 🎯\n${career.emoji} ${career.title} — ${matchPercent}% match\n"${insight}"\n\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
+      `I just found my NextSkill 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n${this.topInsight}\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
     );
     window.open(
       `https://twitter.com/intent/tweet?text=${text}`,
@@ -320,7 +385,6 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   shareToLinkedIn(): void {
-    if (!this.match) return;
     const url = encodeURIComponent('https://nextskill.dev');
     window.open(
       `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
@@ -341,12 +405,12 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   async nativeShare(): Promise<void> {
-    if (!this.match || !this.canNativeShare) return;
-    const { career, matchPercent } = this.match;
+    if (!this.matches.length || !this.canNativeShare) return;
+    const top = this.matches[0];
     try {
       await navigator.share({
-        title: `My NextSkill — ${career.title}`,
-        text: `${career.emoji} ${career.title} — ${matchPercent}% match. What's yours?`,
+        title: `My NextSkill — ${top.title}`,
+        text: `${top.emoji} ${top.title} — ${top.percentage}% match. What's yours?`,
         url: 'https://nextskill.dev/assessment',
       });
       this.closeShare();
@@ -356,22 +420,20 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   private setMetaTags(): void {
-    if (!this.match) return;
-    const { career, insight } = this.match;
+    if (!this.matches.length) return;
+    const top = this.matches[0];
+    const insight = this.topInsight;
 
-    this.title.setTitle(`I found my NextSkill — ${career.title} | NextSkill`);
+    this.title.setTitle(`I found my NextSkill — ${top.title} | NextSkill`);
 
-    const ogTitle = `I found my NextSkill — ${career.title}`;
+    const ogTitle = `I found my NextSkill — ${top.title}`;
     const ogDesc = `${insight} — What's yours?`;
     const ogUrl = 'https://nextskill.dev/assessment/results';
 
     this.meta.updateTag({ property: 'og:title', content: ogTitle });
     this.meta.updateTag({ property: 'og:description', content: ogDesc });
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
-    this.meta.updateTag({
-      property: 'og:site_name',
-      content: 'NextSkill',
-    });
+    this.meta.updateTag({ property: 'og:site_name', content: 'NextSkill' });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary' });
     this.meta.updateTag({ name: 'twitter:title', content: ogTitle });
     this.meta.updateTag({ name: 'twitter:description', content: ogDesc });

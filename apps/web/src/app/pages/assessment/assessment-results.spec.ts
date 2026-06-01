@@ -57,19 +57,20 @@ describe('AssessmentResultsComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.loading()).toBe(false);
-    expect(fixture.componentInstance.match).not.toBeNull();
+    expect(fixture.componentInstance.matches.length).toBeGreaterThan(0);
 
     vi.useRealTimers();
   });
 
-  it('should compute a career match from state answers', () => {
+  it('should compute career matches from state answers', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
 
-    const match = fixture.componentInstance.match;
-    expect(match?.career.slug).toBeTruthy();
-    expect(match?.matchPercent).toBeGreaterThan(0);
+    const matches = fixture.componentInstance.matches;
+    expect(matches.length).toBeGreaterThan(0);
+    expect(matches[0].careerId).toBeTruthy();
+    expect(matches[0].percentage).toBeGreaterThan(0);
   });
 
   it('should show no-results prompt when state has no answers', async () => {
@@ -132,5 +133,13 @@ describe('AssessmentResultsComponent', () => {
 
     expect(writeMock).toHaveBeenCalledWith('https://nextskill.dev/assessment');
     expect(fixture.componentInstance.copied()).toBe(true);
+  });
+
+  it('should expose a non-empty topInsight when answers are present', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.topInsight.length).toBeGreaterThan(0);
   });
 });
