@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { AssessmentResultsComponent } from './assessment-results';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 
@@ -33,7 +34,9 @@ describe('AssessmentResultsComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show loading state on init', async () => {
+  // ─── Loading state ──────────────────────────────────────────────
+
+  it('should show loading state on init before 800ms', async () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
@@ -41,73 +44,175 @@ describe('AssessmentResultsComponent', () => {
 
     expect(fixture.componentInstance.loading()).toBe(true);
     expect(fixture.nativeElement.textContent).toContain(
-      'Finding your best matches',
+      'Calculating your matches',
     );
   });
 
-  it('should show result after loading completes', async () => {
+  it('should transition out of loading state after 800ms', async () => {
     vi.useFakeTimers();
     withAnswers(FULL_ANSWERS);
 
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
 
-    vi.advanceTimersByTime(2000);
+    vi.advanceTimersByTime(1000);
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(fixture.componentInstance.loading()).toBe(false);
-    expect(fixture.componentInstance.matches.length).toBeGreaterThan(0);
 
     vi.useRealTimers();
   });
 
-  it('should compute career matches from state answers', () => {
+  // ─── Hero result ────────────────────────────────────────────────
+
+  it('should compute matches from state answers after init', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
 
-    const matches = fixture.componentInstance.matches;
-    expect(matches.length).toBeGreaterThan(0);
-    expect(matches[0].careerId).toBeTruthy();
-    expect(matches[0].percentage).toBeGreaterThan(0);
+    expect(fixture.componentInstance.matches.length).toBeGreaterThan(0);
   });
 
-  it('should show no-results prompt when state has no answers', async () => {
+  it('should display the top match title and percentage in the hero', async () => {
     vi.useFakeTimers();
-    // Do not call withAnswers — state is empty
+    withAnswers(FULL_ANSWERS);
+
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const text = fixture.nativeElement.textContent as string;
+    const top = fixture.componentInstance.matches[0];
+    expect(text).toContain(top.title);
+    expect(text).toContain(`${top.percentage}%`);
+
+    vi.useRealTimers();
+  });
+
+  it('should have a non-empty topInsight when answers are present', () => {
+    withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
 
-    vi.advanceTimersByTime(2000);
+    expect(fixture.componentInstance.topInsight.length).toBeGreaterThan(0);
+  });
+
+  it('should populate topCareer from the top match career ID', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+
+    const { topCareer, matches } = fixture.componentInstance;
+    expect(topCareer).not.toBeNull();
+    expect(topCareer?.id).toBe(matches[0].careerId);
+  });
+
+  // ─── Match cards (Section 3) ─────────────────────────────────
+
+  it('should render exactly 5 match cards in section 3', async () => {
+    vi.useFakeTimers();
+    withAnswers(FULL_ANSWERS);
+
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const cards = fixture.nativeElement.querySelectorAll(
+      '[data-testid="match-card"]',
+    );
+    expect(cards.length).toBe(5);
+
+    vi.useRealTimers();
+  });
+
+  it('should mark the first match card as the top match', async () => {
+    vi.useFakeTimers();
+    withAnswers(FULL_ANSWERS);
+
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const firstCard = fixture.nativeElement.querySelector(
+      '[data-testid="match-card"]',
+    );
+    expect(firstCard.textContent).toContain('#1 Best match');
+
+    vi.useRealTimers();
+  });
+
+  // ─── Empty state ─────────────────────────────────────────────
+
+  it('should show no-results state when no answers are present', async () => {
+    vi.useFakeTimers();
+    // Do not call withAnswers — state stays empty.
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(fixture.componentInstance.hasResults).toBe(false);
-    expect(fixture.nativeElement.textContent).toContain('No results yet');
+    expect(fixture.nativeElement.textContent).toContain(
+      'We could not find your results',
+    );
 
     vi.useRealTimers();
   });
 
-  it('should open share modal when share button is clicked', async () => {
+  // ─── Error state ─────────────────────────────────────────────
+
+  it('should show error state when scoring returns an empty array', async () => {
     vi.useFakeTimers();
     withAnswers(FULL_ANSWERS);
 
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
-    vi.advanceTimersByTime(2000);
+
+    // Override matches to simulate a scoring failure.
+    fixture.componentInstance.matches = [];
+
+    vi.advanceTimersByTime(1000);
     fixture.detectChanges();
     await fixture.whenStable();
+
+    expect(fixture.nativeElement.textContent).toContain('Something went wrong');
+
+    vi.useRealTimers();
+  });
+
+  // ─── Meta tags ───────────────────────────────────────────────
+
+  it('should set the page title to include the top match career name', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+
+    const titleService = TestBed.inject(Title);
+    const top = fixture.componentInstance.matches[0];
+    expect(titleService.getTitle()).toContain(top.title);
+  });
+
+  // ─── Share modal ─────────────────────────────────────────────
+
+  it('should open the share modal when openShare() is called', () => {
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
 
     expect(fixture.componentInstance.shareOpen()).toBe(false);
     fixture.componentInstance.openShare();
     fixture.detectChanges();
     expect(fixture.componentInstance.shareOpen()).toBe(true);
-
-    vi.useRealTimers();
   });
 
-  it('should close share modal on closeShare()', () => {
+  it('should close the share modal when closeShare() is called', () => {
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.componentInstance.openShare();
     fixture.detectChanges();
@@ -118,7 +223,7 @@ describe('AssessmentResultsComponent', () => {
     expect(fixture.componentInstance.shareOpen()).toBe(false);
   });
 
-  it('should copy link and show copied state', async () => {
+  it('should copy the assessment URL and show copied state', async () => {
     const writeMock = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', {
       value: { writeText: writeMock },
@@ -127,7 +232,6 @@ describe('AssessmentResultsComponent', () => {
 
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
-
     await fixture.componentInstance.copyLink();
     fixture.detectChanges();
 
@@ -135,11 +239,56 @@ describe('AssessmentResultsComponent', () => {
     expect(fixture.componentInstance.copied()).toBe(true);
   });
 
-  it('should expose a non-empty topInsight when answers are present', () => {
+  // ─── Tier helpers ─────────────────────────────────────────────
+
+  it('tierLabel returns correct labels for each tier', () => {
+    const c = TestBed.createComponent(
+      AssessmentResultsComponent,
+    ).componentInstance;
+    expect(c.tierLabel('strong')).toBe('Strong match');
+    expect(c.tierLabel('good')).toBe('Good match');
+    expect(c.tierLabel('possible')).toBe('Possible match');
+  });
+
+  it('altCardLabel returns "Worth exploring" only for possible tier', () => {
+    const c = TestBed.createComponent(
+      AssessmentResultsComponent,
+    ).componentInstance;
+    expect(c.altCardLabel('possible')).toBe('Worth exploring');
+    expect(c.altCardLabel('strong')).toBe('Also a strong fit');
+    expect(c.altCardLabel('good')).toBe('Also a strong fit');
+  });
+
+  it('tierStroke returns distinct colours for each tier', () => {
+    const c = TestBed.createComponent(
+      AssessmentResultsComponent,
+    ).componentInstance;
+    const strokes = new Set([
+      c.tierStroke('strong'),
+      c.tierStroke('good'),
+      c.tierStroke('possible'),
+    ]);
+    expect(strokes.size).toBe(3);
+  });
+
+  // ─── Ring offset ─────────────────────────────────────────────
+
+  it('ringOffset equals CIRCUMFERENCE before animation triggers', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.topInsight.length).toBeGreaterThan(0);
+    const c = fixture.componentInstance;
+    expect(c.ringOffset).toBeCloseTo(c.CIRCUMFERENCE, 1);
+  });
+
+  it('ringOffset is less than CIRCUMFERENCE after animation triggers', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+
+    const c = fixture.componentInstance;
+    c.animated.set(true);
+    expect(c.ringOffset).toBeLessThan(c.CIRCUMFERENCE);
   });
 });
