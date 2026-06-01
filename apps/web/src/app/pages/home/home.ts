@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
   NsAppShellComponent,
@@ -10,11 +11,13 @@ import {
   NsProgressComponent,
 } from 'ui';
 import { CAREER_PATHS } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
+    AsyncPipe,
     RouterLink,
     NsAppShellComponent,
     NsBadgeComponent,
@@ -26,6 +29,7 @@ import { CAREER_PATHS } from 'types';
   templateUrl: './home.html',
 })
 export class HomeComponent {
+  protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },

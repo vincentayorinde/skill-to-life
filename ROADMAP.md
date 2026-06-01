@@ -106,13 +106,17 @@ Downloadable PNG result card and share modal improvements.
 
 ---
 
-## 🔜 v0.10.0 — Auth & Saved Results
+## ✅ v0.10.0 — Auth & Saved Results
 
 Google sign-in and result persistence.
 
-- Google OAuth via NestJS Passport
-- Anonymous mode with upgrade flow
-- Result saving to PostgreSQL via Prisma
+- Google OAuth via NestJS Passport + JWT session management
+- PostgreSQL database with Prisma 5 (`User` and `Result` models)
+- Anonymous mode with anonymous-to-signed-in result claiming flow
+- `POST /api/results` saves after every assessment (anon or authenticated)
+- `/my-results` page showing past saved results, protected by `authGuard`
+- Nav auth state: avatar + name + sign out for authenticated; sign in button for anonymous
+- `APP_INITIALIZER` validates JWT on startup
 
 ---
 

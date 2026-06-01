@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { Meta, Title } from '@angular/platform-browser';
 import { AssessmentResultsComponent } from './assessment-results';
 import { AssessmentStateService } from '../../services/assessment-state.service';
@@ -72,13 +77,24 @@ const FULL_ANSWERS: Record<number, string> = {
 };
 
 describe('AssessmentResultsComponent', () => {
+  let httpMock: HttpTestingController;
+
   beforeEach(async () => {
     vi.clearAllMocks();
     // Restore any spies (e.g. document.createElement) so they don't bleed between tests.
     vi.restoreAllMocks();
     await TestBed.configureTestingModule({
       imports: [AssessmentResultsComponent, RouterModule.forRoot([])],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
+
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    // Flush the POST /api/results fired by saveResult() so tests don't hang.
+    httpMock.match(() => true).forEach((r) => r.flush({ id: 'r1' }));
+    httpMock.verify();
   });
 
   it('should create', () => {

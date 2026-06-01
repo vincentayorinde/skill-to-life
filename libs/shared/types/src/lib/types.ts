@@ -1,3 +1,10 @@
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+  avatar?: string;
+}
+
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 
 export interface CareerSignal {
@@ -41,6 +48,16 @@ export type CareerCategory =
 export interface ResourceLink {
   title: string;
   url?: string;
+}
+
+export interface SavedResult {
+  id: string;
+  topCareer: string;
+  topPercentage: number;
+  allMatches: CareerMatch[];
+  answers: Record<number, string>;
+  anonymous: boolean;
+  createdAt: string;
 }
 
 export interface CareerPath {

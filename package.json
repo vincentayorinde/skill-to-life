@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "nx": "nx",
+    "postinstall": "cd apps/api && npx prisma generate",
     "dev": "nx run-many -t serve --projects=web,api",
     "dev:web": "nx serve web",
     "dev:api": "nx serve api",
@@ -11,7 +12,10 @@
     "test": "nx run-many -t test --all",
     "lint": "nx run-many -t lint --all",
     "format": "nx format:write",
-    "format:check": "nx format:check"
+    "format:check": "nx format:check",
+    "db:setup": "cd apps/api && npx prisma migrate dev --name init",
+    "db:studio": "cd apps/api && npx prisma studio",
+    "db:reset": "cd apps/api && npx prisma migrate reset"
   },
   "engines": {
     "node": ">=22 <23",
@@ -48,8 +52,11 @@
     "@swc-node/register": "~1.11.1",
     "@swc/core": "~1.15.5",
     "@swc/helpers": "~0.5.18",
+    "@types/express": "^5.0.6",
     "@types/jest": "~30.0.0",
     "@types/node": "20.19.9",
+    "@types/passport-google-oauth20": "^2.0.17",
+    "@types/passport-jwt": "^4.0.1",
     "@typescript-eslint/utils": "^8.40.0",
     "@vitest/coverage-v8": "~4.1.0",
     "@vitest/ui": "~4.1.0",
@@ -83,10 +90,19 @@
     "@angular/forms": "~21.2.0",
     "@angular/platform-browser": "~21.2.0",
     "@angular/router": "~21.2.0",
+    "@auth0/angular-jwt": "^5.2.0",
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.0",
+    "@prisma/client": "^5.22.0",
     "axios": "^1.6.0",
+    "express": "^5.2.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
+    "prisma": "^5.22.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0"
   }

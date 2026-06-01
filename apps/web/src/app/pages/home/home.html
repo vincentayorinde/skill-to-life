@@ -1,4 +1,10 @@
-<ns-app-shell brand="NextSkill" [links]="shellLinks">
+<ns-app-shell
+  brand="NextSkill"
+  [links]="shellLinks"
+  [authUser]="(auth.currentUser$ | async)"
+  (signIn)="auth.loginWithGoogle()"
+  (signOut)="auth.logout()"
+>
   <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
   <section
     id="assessment"
