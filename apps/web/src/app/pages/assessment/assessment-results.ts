@@ -112,14 +112,17 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
           [style.height]="cardFormat() === 'story' ? '1920px' : '1080px'"
           style="
             position: fixed;
-            left: -9999px;
             top: 0;
+            left: 0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #070d1f 0%, #150826 50%, #0c1f3d 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             overflow: hidden;
             padding: 0 80px;
           "
@@ -974,9 +977,27 @@ export class AssessmentResultsComponent implements OnInit {
     const el = this.shareCardEl()?.nativeElement as HTMLElement | undefined;
     if (!el || !this.matches.length) return;
 
+    const isStory = this.cardFormat() === 'story';
+    const width = 1080;
+    const height = isStory ? 1920 : 1080;
+
     this.downloading.set(true);
     try {
-      const dataUrl = await toPng(el, { pixelRatio: 1 });
+      // Allow the browser to finish painting before capture.
+      // The 300ms window also covers any pending font loading.
+      await new Promise<void>((resolve) => setTimeout(resolve, 300));
+
+      const dataUrl = await toPng(el, {
+        cacheBust: true,
+        pixelRatio: 2,
+        width,
+        height,
+        style: {
+          // Override the hidden styles so html-to-image captures at full opacity.
+          opacity: '1',
+          transform: 'none',
+        },
+      });
       const link = document.createElement('a');
       link.href = dataUrl;
       link.download = `my-nextskill-${this.matches[0].careerId}.png`;

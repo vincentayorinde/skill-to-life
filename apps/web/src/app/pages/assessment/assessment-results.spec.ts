@@ -30,6 +30,8 @@ const FULL_ANSWERS: Record<number, string> = {
 describe('AssessmentResultsComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
+    // Restore any spies (e.g. document.createElement) so they don't bleed between tests.
+    vi.restoreAllMocks();
     await TestBed.configureTestingModule({
       imports: [AssessmentResultsComponent, RouterModule.forRoot([])],
     }).compileComponents();
@@ -179,20 +181,24 @@ describe('AssessmentResultsComponent', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
-    vi.advanceTimersByTime(1000);
+    // Advance past the 800ms loading delay.
+    await vi.runAllTimersAsync();
     fixture.detectChanges();
     await fixture.whenStable();
-    vi.useRealTimers();
 
-    // Provide a minimal anchor stub so the click doesn't throw.
     const linkStub = { href: '', download: '', click: vi.fn() };
-    vi.spyOn(document, 'createElement').mockReturnValueOnce(
-      linkStub as unknown as HTMLElement,
-    );
+    const spy = vi
+      .spyOn(document, 'createElement')
+      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
 
-    await fixture.componentInstance.downloadCard();
+    // Advance exactly 400ms past the 300ms render delay, without triggering longer timers.
+    const downloadPromise = fixture.componentInstance.downloadCard();
+    await vi.advanceTimersByTimeAsync(400);
+    await downloadPromise;
 
     expect(toPng).toHaveBeenCalled();
+    spy.mockRestore();
+    vi.useRealTimers();
   });
 
   it('should use the correct filename format for the downloaded card', async () => {
@@ -200,20 +206,23 @@ describe('AssessmentResultsComponent', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
-    vi.advanceTimersByTime(1000);
+    await vi.runAllTimersAsync();
     fixture.detectChanges();
     await fixture.whenStable();
-    vi.useRealTimers();
 
     const linkStub = { href: '', download: '', click: vi.fn() };
-    vi.spyOn(document, 'createElement').mockReturnValueOnce(
-      linkStub as unknown as HTMLElement,
-    );
+    const spy = vi
+      .spyOn(document, 'createElement')
+      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
 
-    await fixture.componentInstance.downloadCard();
+    const downloadPromise = fixture.componentInstance.downloadCard();
+    await vi.runAllTimersAsync();
+    await downloadPromise;
 
     const careerId = fixture.componentInstance.matches[0].careerId;
     expect(linkStub.download).toBe(`my-nextskill-${careerId}.png`);
+    spy.mockRestore();
+    vi.useRealTimers();
   });
 
   it('should show success toast after download completes', async () => {
@@ -221,21 +230,25 @@ describe('AssessmentResultsComponent', () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
-    vi.advanceTimersByTime(1000);
+    await vi.runAllTimersAsync(); // loading delay
     fixture.detectChanges();
     await fixture.whenStable();
-    vi.useRealTimers();
 
     const linkStub = { href: '', download: '', click: vi.fn() };
-    vi.spyOn(document, 'createElement').mockReturnValueOnce(
-      linkStub as unknown as HTMLElement,
-    );
+    const spy = vi
+      .spyOn(document, 'createElement')
+      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
 
-    await fixture.componentInstance.downloadCard();
+    const downloadPromise = fixture.componentInstance.downloadCard();
+    // Advance exactly 400ms — fires the 300ms render delay without touching the 3s toast timer.
+    await vi.advanceTimersByTimeAsync(400);
+    await downloadPromise;
     fixture.detectChanges();
 
     expect(fixture.componentInstance.toastVisible()).toBe(true);
     expect(fixture.componentInstance.toastMessage()).toContain('downloaded');
+    spy.mockRestore();
+    vi.useRealTimers();
   });
 
   // ─── Format toggle ──────────────────────────────────────────────
