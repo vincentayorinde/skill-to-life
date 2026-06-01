@@ -1,5 +1,36 @@
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 
+export interface CareerSignal {
+  careerId: string;
+  weight: number;
+}
+
+export interface AssessmentOption {
+  id: string;
+  label: string;
+  emoji: string;
+  description?: string;
+  signals: CareerSignal[];
+}
+
+export interface AssessmentQuestion {
+  id: number;
+  text: string;
+  subtitle?: string;
+  options: AssessmentOption[];
+}
+
+export type MatchTier = 'strong' | 'good' | 'possible';
+
+export interface CareerMatch {
+  careerId: string;
+  title: string;
+  emoji: string;
+  score: number;
+  percentage: number;
+  matchTier: MatchTier;
+}
+
 export type CareerCategory =
   | 'development'
   | 'security'

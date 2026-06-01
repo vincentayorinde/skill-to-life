@@ -70,13 +70,15 @@ Friendly, step-by-step assessment flow.
 
 ---
 
-## 🔜 v0.7.0 — Assessment Engine
+## ✅ v0.7.0 — Assessment Engine
 
-Core assessment logic and question bank.
+Weighted scoring engine replacing the v0.6.x rule-based matcher.
 
-- Question bank (personality, interests, work style, goals)
-- Answer collection and session state
-- Assessment routing
+- Formal question/answer schema with career signals and weights in `libs/shared/types`
+- Signal map: all 10 questions × all 14 careers, weights 1–5
+- `scoreAssessment()` — normalised percentage scoring, stable sort, matchTier classification
+- `/assessment/results` updated: real percentage, secondary match cards, error state
+- Comprehensive Vitest unit tests for the scoring lib
 
 ---
 

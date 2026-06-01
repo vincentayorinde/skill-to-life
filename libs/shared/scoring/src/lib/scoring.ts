@@ -1,3 +1,1 @@
-export function scoring(): string {
-  return 'scoring';
-}
+export { scoreAssessment } from './score-assessment';
