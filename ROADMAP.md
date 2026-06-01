@@ -94,13 +94,15 @@ Full results page redesign powered by the v0.7.0 scoring engine.
 
 ---
 
-## 🔜 v0.9.0 — Shareable Results
+## ✅ v0.9.0 — Shareable Results
 
-Spotify Wrapped-style shareable result cards.
+Downloadable PNG result card and share modal improvements.
 
-- Result card component
-- Share link generation
-- Social card preview (Open Graph)
+- `html-to-image` generates PNG from the hidden card element
+- Square (1080×1080) and Story (1080×1920) formats with toggle
+- `NsToastComponent` added to `libs/ui` — success/error bottom-centre notification
+- Static OG image + `og:image` / `twitter:image` meta tags on results page
+- Updated share modal: download first, "or share directly" divider, updated X/Twitter copy
 
 ---
 
