@@ -7,6 +7,30 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.9.0] — Shareable Results
+
+### Added
+
+- `html-to-image` package — generates PNG result cards from DOM elements
+- Downloadable PNG result card: deep navy/purple gradient, large career emoji, title, match percentage badge, tier label, italic insight, "What's your NextSkill?" CTA, and `nextskill.dev` watermark; subtle grain texture overlay via CSS
+- Square (1080×1080) and Story (1080×1920) format support with a "Square | Story" toggle — story layout uses a larger emoji and extra tagline
+- "Download card" button in share modal with `Generating your card...` loading state and filename `my-nextskill-[career-slug].png`
+- `NsToastComponent` in `libs/ui` — fixed bottom-centre notification with fade-in/out, `success` and `error` variants, `role="status"` and `aria-live="polite"` accessibility attributes
+- Success toast after download: "Card downloaded — ready to share!"
+- Success toast after copy link: "Link copied — share it anywhere!"
+- Static OG image placeholder at `apps/web/public/og-default.svg` — branded dark gradient with NextSkill wordmark, tagline, and domain
+- `og:image`, `og:image:width`, `og:image:height`, `twitter:image` meta tags on `/assessment/results`
+- Updated `twitter:card` to `summary_large_image`
+- Redesigned share modal: download section at top with format toggle, "or share directly" divider, then existing share buttons
+- Updated X/Twitter pre-fill copy: `Just found my NextSkill 🎯 [emoji] [title] — [percentage]% match "[insight]" What's yours? 👇 nextskill.dev #NextSkill #TechCareers`
+
+### Changed
+
+- `copyLink()` now also triggers the "Link copied" toast in addition to the button state change
+- Share modal layout reorganised — download is the primary action
+
+---
+
 ## [0.8.0] — Scoring & Results
 
 ### Added

@@ -1,7 +1,15 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
-import { NsButtonComponent, NsBadgeComponent } from 'ui';
+import { NsButtonComponent, NsBadgeComponent, NsToastComponent } from 'ui';
+import { toPng } from 'html-to-image';
 import { scoreAssessment } from 'scoring';
 import type { CareerMatch, MatchTier, CareerPath } from 'types';
 import { getCareerBySlug } from 'types';
@@ -10,7 +18,7 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
 @Component({
   selector: 'app-assessment-results',
   standalone: true,
-  imports: [RouterLink, NsButtonComponent, NsBadgeComponent],
+  imports: [RouterLink, NsButtonComponent, NsBadgeComponent, NsToastComponent],
   styles: [
     `
       .result-card {
@@ -45,14 +53,11 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
           <p class="text-center text-sm text-ns-muted">
             Calculating your matches...
           </p>
-          <!-- Hero skeleton -->
           <div class="h-72 rounded-2xl bg-white/10"></div>
-          <!-- Section label skeleton -->
           <div class="space-y-2 pt-4">
             <div class="h-5 w-48 rounded bg-white/10"></div>
             <div class="h-28 rounded-ns bg-white/10"></div>
           </div>
-          <!-- Card skeletons -->
           <div class="space-y-3">
             <div class="h-5 w-40 rounded bg-white/10"></div>
             <div class="h-20 rounded-ns bg-white/10"></div>
@@ -99,6 +104,180 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
 
       <!-- ─── RESULTS ───────────────────────────────────────────────── -->
       @if (!loading() && matches.length > 0) {
+        <!-- ─── Hidden share card for PNG download ───────────────────
+             Uses only inline styles — no Tailwind class dependencies. -->
+        <div
+          #shareCard
+          [style.width]="cardFormat() === 'story' ? '1080px' : '1080px'"
+          [style.height]="cardFormat() === 'story' ? '1920px' : '1080px'"
+          style="
+            position: fixed;
+            left: -9999px;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #070d1f 0%, #150826 50%, #0c1f3d 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            padding: 0 80px;
+          "
+          aria-hidden="true"
+        >
+          <!-- Grain overlay -->
+          <div
+            style="
+              position: absolute;
+              inset: 0;
+              pointer-events: none;
+              opacity: 0.04;
+              background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 3px,
+                rgba(255,255,255,0.15) 3px,
+                rgba(255,255,255,0.15) 4px
+              );
+            "
+          ></div>
+
+          <!-- "My NextSkill" label -->
+          <p
+            style="
+              font-size: 20px;
+              color: rgba(255,255,255,0.35);
+              letter-spacing: 0.3em;
+              text-transform: uppercase;
+              margin: 0 0 40px 0;
+              font-weight: 600;
+            "
+          >
+            My NextSkill
+          </p>
+
+          <!-- Career emoji -->
+          <div
+            [style.font-size]="cardFormat() === 'story' ? '160px' : '120px'"
+            style="line-height: 1; margin-bottom: 40px;"
+          >
+            {{ matches[0].emoji }}
+          </div>
+
+          <!-- Career title -->
+          <h2
+            style="
+              font-size: 68px;
+              font-weight: 900;
+              color: white;
+              margin: 0 0 32px 0;
+              text-align: center;
+              line-height: 1.1;
+              letter-spacing: -1px;
+            "
+          >
+            {{ matches[0].title }}
+          </h2>
+
+          <!-- Match percentage badge -->
+          <div
+            style="
+              background: rgba(255,255,255,0.12);
+              border-radius: 100px;
+              padding: 14px 44px;
+              margin-bottom: 20px;
+              border: 1px solid rgba(255,255,255,0.18);
+            "
+          >
+            <span style="font-size: 36px; font-weight: 900; color: white;"
+              >{{ matches[0].percentage }}% match</span
+            >
+          </div>
+
+          <!-- Tier label -->
+          <p
+            style="
+              font-size: 22px;
+              color: rgba(255,255,255,0.5);
+              margin: 0 0 56px 0;
+              letter-spacing: 0.06em;
+              font-weight: 500;
+            "
+          >
+            {{ tierLabel(matches[0].matchTier) }}
+          </p>
+
+          <!-- Divider -->
+          <div
+            style="
+              width: 64px;
+              height: 1px;
+              background: rgba(255,255,255,0.2);
+              margin: 0 0 56px 0;
+            "
+          ></div>
+
+          <!-- Insight in italics -->
+          <p
+            style="
+              font-size: 26px;
+              color: rgba(255,255,255,0.65);
+              text-align: center;
+              font-style: italic;
+              margin: 0 0 72px 0;
+              line-height: 1.55;
+              max-width: 860px;
+            "
+          >
+            &ldquo;{{ topInsight }}&rdquo;
+          </p>
+
+          <!-- Story extra line -->
+          @if (cardFormat() === 'story') {
+            <p
+              style="
+                font-size: 26px;
+                color: rgba(255,255,255,0.45);
+                margin: 0 0 72px 0;
+                text-align: center;
+                font-weight: 500;
+              "
+            >
+              Discover your path at nextskill.dev
+            </p>
+          }
+
+          <!-- CTA -->
+          <p
+            style="
+              font-size: 32px;
+              font-weight: 700;
+              color: rgba(255,255,255,0.88);
+              margin: 0;
+              letter-spacing: 0.02em;
+            "
+          >
+            What's your NextSkill?
+          </p>
+
+          <!-- Watermark -->
+          <p
+            style="
+              position: absolute;
+              bottom: 56px;
+              right: 72px;
+              font-size: 20px;
+              color: rgba(255,255,255,0.18);
+              margin: 0;
+              letter-spacing: 0.14em;
+              font-weight: 400;
+            "
+          >
+            nextskill.dev
+          </p>
+        </div>
+        <!-- end hidden share card -->
+
         <!-- Mobile sticky share button -->
         <div
           class="fixed bottom-0 left-0 right-0 z-20 border-t border-ns-border bg-ns-bg/95 px-4 pb-4 pt-3 backdrop-blur-sm sm:hidden"
@@ -112,11 +291,10 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
           </button>
         </div>
 
-        <div class="mx-auto max-w-2xl px-4 py-10 pb-28 sm:py-16 sm:pb-16">
+        <div class="mx-auto max-w-2xl px-4 pb-28 pt-10 sm:py-16 sm:pb-16">
           <!-- Summary header -->
           <p class="text-center text-xs text-ns-muted">
-            You answered
-            {{ answerCount }}
+            You answered {{ answerCount }}
             {{ answerCount === 1 ? 'question' : 'questions' }} &nbsp;·&nbsp;
             {{ resultDate }} &nbsp;·&nbsp;
             <strong class="font-semibold text-ns-text">{{
@@ -132,7 +310,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               style="background: linear-gradient(135deg, #070d1f 0%, #150826 45%, #0c1f3d 100%)"
               aria-label="Your top career match"
             >
-              <!-- Ambient glow blobs -->
               <div
                 class="card-glow absolute -left-10 -top-10 h-48 w-48 bg-purple-600/25"
                 aria-hidden="true"
@@ -159,7 +336,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                       class="-rotate-90 h-36 w-36"
                       aria-hidden="true"
                     >
-                      <!-- Track -->
                       <circle
                         cx="60"
                         cy="60"
@@ -168,7 +344,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                         stroke="rgba(255,255,255,0.12)"
                         stroke-width="8"
                       />
-                      <!-- Progress arc -->
                       <circle
                         cx="60"
                         cy="60"
@@ -184,7 +359,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                         style="transition: stroke-dashoffset 1.2s ease-out"
                       />
                     </svg>
-                    <!-- Overlay: emoji + percentage -->
                     <div
                       class="absolute inset-0 flex flex-col items-center justify-center text-center"
                     >
@@ -202,7 +376,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                     </div>
                   </div>
 
-                  <!-- Title, badge, insight, CTAs -->
                   <div class="flex-1 text-center sm:text-left">
                     <h1
                       id="hero-heading"
@@ -211,7 +384,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                       {{ matches[0].title }}
                     </h1>
 
-                    <!-- Tier badge -->
                     <div class="mt-3">
                       <span
                         class="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold ring-1"
@@ -221,12 +393,10 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                       </span>
                     </div>
 
-                    <!-- Insight -->
                     <p class="m-0 mt-4 text-sm leading-6 text-blue-100/80">
                       {{ topInsight }}
                     </p>
 
-                    <!-- CTAs -->
                     <div class="mt-6 flex flex-col gap-3 sm:flex-row">
                       <ns-button
                         [routerLink]="['/careers', matches[0].careerId]"
@@ -235,7 +405,7 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                       </ns-button>
                       <button
                         type="button"
-                        class="hidden items-center justify-center gap-2 rounded-ns border border-white/20 bg-white/5 px-5 text-sm font-semibold text-white transition hover:bg-white/10 sm:inline-flex min-h-11"
+                        class="hidden min-h-11 items-center justify-center gap-2 rounded-ns border border-white/20 bg-white/5 px-5 text-sm font-semibold text-white transition hover:bg-white/10 sm:inline-flex"
                         (click)="openShare()"
                       >
                         ↗ Share my result
@@ -267,15 +437,12 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               <p class="mt-1 text-sm text-ns-muted">
                 Based on how you answered, here is why this path suits you.
               </p>
-
               <div
                 class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-6"
               >
                 <p class="m-0 text-sm leading-7 text-ns-text">
                   {{ topCareer.description }}
                 </p>
-
-                <!-- Top 3 skills as tags -->
                 <div
                   class="mt-5 flex flex-wrap gap-2"
                   aria-label="Key skills for this path"
@@ -304,7 +471,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             <p class="mt-1 text-sm text-ns-muted">
               Ranked by how well they fit your answers.
             </p>
-
             <div class="mt-5 flex flex-col gap-4">
               @for (
                 match of matches.slice(0, 5);
@@ -333,7 +499,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                       {{ altCardLabel(match.matchTier) }}
                     </p>
                   }
-
                   <div class="flex items-start gap-4">
                     <span
                       class="mt-0.5 text-3xl leading-none"
@@ -349,14 +514,11 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                           {{ tierLabel(match.matchTier) }}
                         </ns-badge>
                       </div>
-
                       <p
                         class="m-0 mt-1.5 line-clamp-2 text-xs leading-5 text-ns-muted"
                       >
                         {{ careerInsight(match.careerId) }}
                       </p>
-
-                      <!-- Percentage bar -->
                       <div class="mt-3 flex items-center gap-3">
                         <div
                           class="relative h-2 flex-1 overflow-hidden rounded-full bg-white/10"
@@ -372,7 +534,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                           >{{ match.percentage }}%</span
                         >
                       </div>
-
                       <a
                         [routerLink]="['/careers', match.careerId]"
                         class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-ns-primary no-underline hover:underline"
@@ -399,7 +560,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               >
                 Where to start with {{ matches[0].title }}
               </h2>
-
               <ol class="mt-5 flex flex-col gap-3" role="list">
                 @for (
                   step of topCareer.roadmapPreview.slice(0, 3);
@@ -420,7 +580,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                   </li>
                 }
               </ol>
-
               <div class="mt-5 text-center">
                 <a
                   [routerLink]="['/careers', matches[0].careerId]"
@@ -443,7 +602,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               >
                 Free ways to get started
               </h2>
-
               @if (topCareer.freeResources.length === 0) {
                 <p class="mt-4 text-sm text-ns-muted">
                   Resources coming soon — check back after launch.
@@ -497,7 +655,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               >
                 Earning potential
               </h2>
-
               <div
                 class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-6"
               >
@@ -527,7 +684,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                 Many {{ matches[0].title }}s freelance or build their own
                 products. Here are some directions people take.
               </p>
-
               <div class="mt-5 flex flex-col gap-3">
                 @for (
                   idea of topCareer.entrepreneurshipIdeas.slice(0, 2);
@@ -569,7 +725,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             </div>
           </section>
         </div>
-        <!-- end max-w-2xl -->
 
         <!-- ─── Share Modal ─────────────────────────────────────── -->
         @if (shareOpen()) {
@@ -596,7 +751,64 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
                 Tell others what's your NextSkill.
               </p>
 
-              <div class="mt-5 flex flex-col gap-2">
+              <!-- Download card section -->
+              <div class="mt-5">
+                <button
+                  type="button"
+                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-[#07111f] shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
+                  [disabled]="downloading()"
+                  (click)="downloadCard()"
+                  data-testid="download-card-btn"
+                >
+                  @if (downloading()) {
+                    <span>Generating your card...</span>
+                  } @else {
+                    <span>⬇ Download card</span>
+                  }
+                </button>
+
+                <!-- Format toggle -->
+                <div class="mt-3 flex items-center justify-center gap-1">
+                  <span class="text-xs text-ns-muted">Format:</span>
+                  <div
+                    class="ml-2 flex overflow-hidden rounded-ns border border-ns-border"
+                  >
+                    <button
+                      type="button"
+                      class="px-3 py-1 text-xs font-semibold transition"
+                      [class]="
+                        cardFormat() === 'square'
+                          ? 'bg-ns-primary text-[#07111f]'
+                          : 'bg-ns-card text-ns-muted hover:text-ns-text'
+                      "
+                      (click)="cardFormat.set('square')"
+                    >
+                      Square
+                    </button>
+                    <button
+                      type="button"
+                      class="px-3 py-1 text-xs font-semibold transition"
+                      [class]="
+                        cardFormat() === 'story'
+                          ? 'bg-ns-primary text-[#07111f]'
+                          : 'bg-ns-card text-ns-muted hover:text-ns-text'
+                      "
+                      (click)="cardFormat.set('story')"
+                    >
+                      Story
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div class="mt-5 flex items-center gap-3">
+                <div class="h-px flex-1 bg-ns-border"></div>
+                <span class="text-xs text-ns-muted">or share directly</span>
+                <div class="h-px flex-1 bg-ns-border"></div>
+              </div>
+
+              <div class="mt-4 flex flex-col gap-2">
                 <button
                   type="button"
                   class="flex min-h-11 w-full items-center gap-3 rounded-ns border border-ns-border bg-ns-card px-4 text-sm font-semibold text-ns-text transition hover:border-ns-primary hover:bg-ns-cardElevated"
@@ -649,6 +861,9 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
         }
       }
       <!-- end results -->
+
+      <!-- ─── Toast notification ────────────────────────────────── -->
+      <ns-toast [message]="toastMessage()" [visible]="toastVisible()" />
     </div>
   `,
 })
@@ -657,10 +872,16 @@ export class AssessmentResultsComponent implements OnInit {
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
 
+  readonly shareCardEl = viewChild<ElementRef>('shareCard');
+
   readonly loading = signal(true);
   readonly animated = signal(false);
   readonly shareOpen = signal(false);
   readonly copied = signal(false);
+  readonly downloading = signal(false);
+  readonly cardFormat = signal<'square' | 'story'>('square');
+  readonly toastMessage = signal('');
+  readonly toastVisible = signal(false);
 
   hasResults = false;
   matches: CareerMatch[] = [];
@@ -749,6 +970,25 @@ export class AssessmentResultsComponent implements OnInit {
     }, 800);
   }
 
+  async downloadCard(): Promise<void> {
+    const el = this.shareCardEl()?.nativeElement as HTMLElement | undefined;
+    if (!el || !this.matches.length) return;
+
+    this.downloading.set(true);
+    try {
+      const dataUrl = await toPng(el, { pixelRatio: 1 });
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `my-nextskill-${this.matches[0].careerId}.png`;
+      link.click();
+      this.showToast('Card downloaded — ready to share!');
+    } catch {
+      // html-to-image unavailable in this environment — silently fail.
+    } finally {
+      this.downloading.set(false);
+    }
+  }
+
   openShare(): void {
     this.shareOpen.set(true);
   }
@@ -761,7 +1001,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const text = encodeURIComponent(
-      `I just found my NextSkill 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n${this.topInsight}\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
+      `Just found my NextSkill 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
     );
     window.open(
       `https://twitter.com/intent/tweet?text=${text}`,
@@ -786,6 +1026,7 @@ export class AssessmentResultsComponent implements OnInit {
       await navigator.clipboard.writeText('https://nextskill.dev/assessment');
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2500);
+      this.showToast('Link copied — share it anywhere!');
     } catch {
       // Clipboard API unavailable — silently fail.
     }
@@ -806,10 +1047,17 @@ export class AssessmentResultsComponent implements OnInit {
     }
   }
 
+  private showToast(message: string): void {
+    this.toastMessage.set(message);
+    this.toastVisible.set(true);
+    setTimeout(() => this.toastVisible.set(false), 3000);
+  }
+
   private setMetaTags(): void {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const insight = this.topInsight;
+    const ogImage = '/og-default.svg';
 
     this.title.setTitle(`Your NextSkill — ${top.title} | NextSkill`);
 
@@ -821,8 +1069,15 @@ export class AssessmentResultsComponent implements OnInit {
     this.meta.updateTag({ property: 'og:description', content: ogDesc });
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
     this.meta.updateTag({ property: 'og:site_name', content: 'NextSkill' });
-    this.meta.updateTag({ name: 'twitter:card', content: 'summary' });
+    this.meta.updateTag({ property: 'og:image', content: ogImage });
+    this.meta.updateTag({ property: 'og:image:width', content: '1200' });
+    this.meta.updateTag({ property: 'og:image:height', content: '630' });
+    this.meta.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
     this.meta.updateTag({ name: 'twitter:title', content: ogTitle });
     this.meta.updateTag({ name: 'twitter:description', content: ogDesc });
+    this.meta.updateTag({ name: 'twitter:image', content: ogImage });
   }
 }
