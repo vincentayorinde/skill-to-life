@@ -3,15 +3,59 @@ import { RouterModule } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { AssessmentResultsComponent } from './assessment-results';
 import { AssessmentStateService } from '../../services/assessment-state.service';
-import { toPng } from 'html-to-image';
-
-vi.mock('html-to-image', () => ({
-  toPng: vi.fn().mockResolvedValue('data:image/png;base64,ZmFrZXBuZw=='),
-}));
+import { generateResultCard } from '../../assessment/results/card-generator';
 
 function withAnswers(answers: Record<number, string>) {
   const svc = TestBed.inject(AssessmentStateService);
   svc.save(answers);
+}
+
+function createCanvasDownloadMock() {
+  const fillText = vi.fn();
+  const context = {
+    addColorStop: vi.fn(),
+    arcTo: vi.fn(),
+    beginPath: vi.fn(),
+    closePath: vi.fn(),
+    createLinearGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+    createRadialGradient: vi.fn(() => ({ addColorStop: vi.fn() })),
+    fill: vi.fn(),
+    fillRect: vi.fn(),
+    fillText,
+    lineTo: vi.fn(),
+    measureText: vi.fn((text: string) => ({ width: text.length * 10 })),
+    moveTo: vi.fn(),
+    roundRect: vi.fn(),
+    stroke: vi.fn(),
+  } as unknown as CanvasRenderingContext2D;
+  const canvas = {
+    width: 0,
+    height: 0,
+    getContext: vi.fn(() => context),
+    toBlob: vi.fn((callback: BlobCallback) => {
+      callback(new Blob(['fake'], { type: 'image/png' }));
+    }),
+  } as unknown as HTMLCanvasElement;
+  const link = { href: '', download: '', click: vi.fn() };
+  const originalCreateElement = document.createElement.bind(document);
+  const createElementSpy = vi
+    .spyOn(document, 'createElement')
+    .mockImplementation((tagName: string) => {
+      if (tagName === 'canvas') return canvas;
+      if (tagName === 'a') return link as unknown as HTMLElement;
+      return originalCreateElement(tagName);
+    });
+
+  Object.defineProperty(URL, 'createObjectURL', {
+    value: vi.fn(() => 'blob:nextskill-card'),
+    configurable: true,
+  });
+  Object.defineProperty(URL, 'revokeObjectURL', {
+    value: vi.fn(),
+    configurable: true,
+  });
+
+  return { canvas, createElementSpy, fillText, link };
 }
 
 const FULL_ANSWERS: Record<number, string> = {
@@ -176,7 +220,7 @@ describe('AssessmentResultsComponent', () => {
 
   // ─── Download card ──────────────────────────────────────────────
 
-  it('should call toPng when downloadCard() is invoked', async () => {
+  it('should generate a square canvas card when downloadCard() is invoked', async () => {
     vi.useFakeTimers();
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
@@ -186,18 +230,20 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const linkStub = { href: '', download: '', click: vi.fn() };
-    const spy = vi
-      .spyOn(document, 'createElement')
-      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
+    const { canvas, fillText } = createCanvasDownloadMock();
 
     // Advance exactly 400ms past the 300ms render delay, without triggering longer timers.
     const downloadPromise = fixture.componentInstance.downloadCard();
     await vi.advanceTimersByTimeAsync(400);
     await downloadPromise;
 
-    expect(toPng).toHaveBeenCalled();
-    spy.mockRestore();
+    expect(canvas.width).toBe(1080);
+    expect(canvas.height).toBe(1080);
+    expect(fillText).toHaveBeenCalledWith(
+      `${fixture.componentInstance.matches[0].percentage}% match`,
+      540,
+      expect.any(Number),
+    );
     vi.useRealTimers();
   });
 
@@ -210,18 +256,14 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const linkStub = { href: '', download: '', click: vi.fn() };
-    const spy = vi
-      .spyOn(document, 'createElement')
-      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
+    const { link } = createCanvasDownloadMock();
 
     const downloadPromise = fixture.componentInstance.downloadCard();
     await vi.runAllTimersAsync();
     await downloadPromise;
 
     const careerId = fixture.componentInstance.matches[0].careerId;
-    expect(linkStub.download).toBe(`my-nextskill-${careerId}.png`);
-    spy.mockRestore();
+    expect(link.download).toBe(`my-nextskill-${careerId}.png`);
     vi.useRealTimers();
   });
 
@@ -234,10 +276,7 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const linkStub = { href: '', download: '', click: vi.fn() };
-    const spy = vi
-      .spyOn(document, 'createElement')
-      .mockReturnValueOnce(linkStub as unknown as HTMLElement);
+    createCanvasDownloadMock();
 
     const downloadPromise = fixture.componentInstance.downloadCard();
     // Advance exactly 400ms — fires the 300ms render delay without touching the 3s toast timer.
@@ -247,8 +286,25 @@ describe('AssessmentResultsComponent', () => {
 
     expect(fixture.componentInstance.toastVisible()).toBe(true);
     expect(fixture.componentInstance.toastMessage()).toContain('downloaded');
-    spy.mockRestore();
     vi.useRealTimers();
+  });
+
+  it('should generate a story canvas when story format is selected', async () => {
+    const { canvas } = createCanvasDownloadMock();
+
+    await generateResultCard(
+      {
+        title: 'Security Engineer',
+        emoji: '🔒',
+        percentage: 67,
+        matchTier: 'Good match',
+        insight: 'Experienced developers who want to specialise in security.',
+      },
+      'story',
+    );
+
+    expect(canvas.width).toBe(1080);
+    expect(canvas.height).toBe(1920);
   });
 
   // ─── Format toggle ──────────────────────────────────────────────

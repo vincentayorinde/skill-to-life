@@ -1,15 +1,8 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { NsButtonComponent, NsBadgeComponent, NsToastComponent } from 'ui';
-import { toPng } from 'html-to-image';
+import { generateResultCard } from '../../assessment/results/card-generator';
 import { scoreAssessment } from 'scoring';
 import type { CareerMatch, MatchTier, CareerPath } from 'types';
 import { getCareerBySlug } from 'types';
@@ -104,217 +97,6 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
 
       <!-- ─── RESULTS ───────────────────────────────────────────────── -->
       @if (!loading() && matches.length > 0) {
-        <!-- ─── Hidden share card for PNG download ───────────────────
-             Uses only inline styles — no Tailwind class dependencies.
-             Base letter-spacing and word-spacing are normal throughout;
-             individual elements override only where necessary. -->
-        <div
-          #shareCard
-          [style.width]="cardFormat() === 'story' ? '1080px' : '1080px'"
-          [style.height]="cardFormat() === 'story' ? '1920px' : '1080px'"
-          style="
-            position: fixed;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            pointer-events: none;
-            z-index: -1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #070d1f 0%, #150826 50%, #0c1f3d 100%);
-            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            overflow: hidden;
-            padding: 0 80px;
-            letter-spacing: normal;
-            word-spacing: normal;
-          "
-          aria-hidden="true"
-        >
-          <!-- Grain overlay -->
-          <div
-            style="
-              position: absolute;
-              inset: 0;
-              pointer-events: none;
-              opacity: 0.04;
-              background-image: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 3px,
-                rgba(255,255,255,0.15) 3px,
-                rgba(255,255,255,0.15) 4px
-              );
-            "
-          ></div>
-
-          <!-- MY NEXTSKILL label -->
-          <p
-            style="
-              font-size: 14px;
-              color: rgba(255,255,255,0.35);
-              letter-spacing: 0.05em;
-              word-spacing: normal;
-              text-transform: uppercase;
-              margin: 0 0 24px 0;
-              font-weight: 600;
-              text-align: center;
-            "
-          >
-            MY NEXTSKILL
-          </p>
-
-          <!-- Career emoji -->
-          <div
-            [style.font-size]="cardFormat() === 'story' ? '160px' : '120px'"
-            style="
-              line-height: 1;
-              margin-bottom: 24px;
-              letter-spacing: normal;
-              word-spacing: normal;
-              text-align: center;
-            "
-          >
-            {{ matches[0].emoji }}
-          </div>
-
-          <!-- Career title — font-size 60px fits all 14 career names on one line -->
-          <h2
-            style="
-              font-size: 60px;
-              font-weight: 900;
-              color: white;
-              margin: 0 0 20px 0;
-              text-align: center;
-              line-height: 1.1;
-              letter-spacing: normal;
-              word-spacing: normal;
-              white-space: nowrap;
-            "
-          >
-            {{ matches[0].title }}
-          </h2>
-
-          <!-- Match percentage badge — single pill, one line -->
-          <div
-            style="
-              background: rgba(255,255,255,0.12);
-              border-radius: 999px;
-              padding: 8px 24px;
-              margin-bottom: 16px;
-              border: 1px solid rgba(255,255,255,0.18);
-            "
-          >
-            <span
-              style="
-                font-size: 24px;
-                font-weight: 900;
-                color: white;
-                display: inline-block;
-                letter-spacing: -1px;
-                word-spacing: normal;
-                white-space: nowrap;
-                font-variant-numeric: tabular-nums;
-              "
-              >{{ matches[0].percentage }}% match</span
-            >
-          </div>
-
-          <!-- Tier label — always one line -->
-          <p
-            style="
-              font-size: 18px;
-              color: rgba(255,255,255,0.5);
-              margin: 0 0 40px 0;
-              letter-spacing: normal;
-              word-spacing: normal;
-              font-weight: 500;
-              white-space: nowrap;
-              display: inline-block;
-            "
-          >
-            {{ tierLabel(matches[0].matchTier) }}
-          </p>
-
-          <!-- Divider -->
-          <div
-            style="
-              width: 64px;
-              height: 1px;
-              background: rgba(255,255,255,0.2);
-              margin: 0 0 32px 0;
-            "
-          ></div>
-
-          <!-- Insight — centered, max-width 600px, not full-bleed -->
-          <p
-            style="
-              font-size: 22px;
-              color: rgba(255,255,255,0.65);
-              text-align: center;
-              font-style: italic;
-              margin: 0 auto 48px auto;
-              line-height: 1.5;
-              max-width: 600px;
-              letter-spacing: normal;
-              word-spacing: normal;
-            "
-          >
-            &ldquo;{{ topInsight }}&rdquo;
-          </p>
-
-          <!-- Story extra line -->
-          @if (cardFormat() === 'story') {
-            <p
-              style="
-                font-size: 22px;
-                color: rgba(255,255,255,0.45);
-                margin: 0 0 48px 0;
-                text-align: center;
-                font-weight: 500;
-                letter-spacing: normal;
-                word-spacing: normal;
-              "
-            >
-              Discover your path at nextskill.dev
-            </p>
-          }
-
-          <!-- CTA — punchy social copy -->
-          <p
-            style="
-              font-size: 20px;
-              font-weight: 700;
-              color: rgba(160,210,255,0.95);
-              margin: 0;
-              letter-spacing: normal;
-              word-spacing: normal;
-              text-align: center;
-            "
-          >
-            What's your NextSkill? 👇
-          </p>
-
-          <!-- Watermark -->
-          <p
-            style="
-              position: absolute;
-              bottom: 56px;
-              right: 72px;
-              font-size: 16px;
-              color: rgba(255,255,255,0.18);
-              margin: 0;
-              letter-spacing: normal;
-              word-spacing: normal;
-              font-weight: 400;
-            "
-          >
-            nextskill.dev
-          </p>
-        </div>
-        <!-- end hidden share card -->
-
         <!-- Mobile sticky share button -->
         <div
           class="fixed bottom-0 left-0 right-0 z-20 border-t border-ns-border bg-ns-bg/95 px-4 pb-4 pt-3 backdrop-blur-sm sm:hidden"
@@ -909,8 +691,6 @@ export class AssessmentResultsComponent implements OnInit {
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
 
-  readonly shareCardEl = viewChild<ElementRef>('shareCard');
-
   readonly loading = signal(true);
   readonly animated = signal(false);
   readonly shareOpen = signal(false);
@@ -1008,37 +788,29 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   async downloadCard(): Promise<void> {
-    const el = this.shareCardEl()?.nativeElement as HTMLElement | undefined;
-    if (!el || !this.matches.length) return;
-
-    const isStory = this.cardFormat() === 'story';
-    const width = 1080;
-    const height = isStory ? 1920 : 1080;
+    if (!this.matches.length) return;
 
     this.downloading.set(true);
     try {
-      // Allow the browser to finish painting before capture.
-      // The 300ms window also covers any pending font loading.
-      await new Promise<void>((resolve) => setTimeout(resolve, 300));
-
-      const dataUrl = await toPng(el, {
-        cacheBust: true,
-        pixelRatio: 2,
-        width,
-        height,
-        style: {
-          // Override the hidden styles so html-to-image captures at full opacity.
-          opacity: '1',
-          transform: 'none',
+      const blob = await generateResultCard(
+        {
+          title: this.matches[0].title,
+          emoji: this.matches[0].emoji,
+          percentage: this.matches[0].percentage,
+          matchTier: this.tierLabel(this.matches[0].matchTier),
+          insight: this.topInsight,
         },
-      });
+        this.cardFormat(),
+      );
+      const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = dataUrl;
+      link.href = url;
       link.download = `my-nextskill-${this.matches[0].careerId}.png`;
       link.click();
+      URL.revokeObjectURL(url);
       this.showToast('Card downloaded — ready to share!');
     } catch {
-      // html-to-image unavailable in this environment — silently fail.
+      // Canvas unavailable in this environment — silently fail.
     } finally {
       this.downloading.set(false);
     }
