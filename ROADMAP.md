@@ -82,13 +82,15 @@ Weighted scoring engine replacing the v0.6.x rule-based matcher.
 
 ---
 
-## 🔜 v0.8.0 — Scoring & Results
+## ✅ v0.8.0 — Scoring & Results
 
-Weighted career matching and result page.
+Full results page redesign powered by the v0.7.0 scoring engine.
 
-- Scoring model in `libs/shared/scoring`
-- Match percentage calculation
-- Result page with top 3 matches and reasoning
+- 8-section results layout: hero, why it fits, top 5 matches, roadmap preview, free resources, salary snapshot, entrepreneurship angle, retake CTA
+- SVG circular progress ring (CSS-animated, tier-coloured) for the hero match
+- Animated horizontal progress bars in match cards
+- 800ms skeleton loading state; mobile sticky share button
+- 18 component tests
 
 ---
 

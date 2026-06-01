@@ -7,6 +7,33 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.8.0] — Scoring & Results
+
+### Added
+
+- Full results page redesign at `/assessment/results` — 8 distinct sections replacing the single-card layout
+- **Section 1 — Hero Result:** SVG circular progress ring (CSS-animated, colour-coded by matchTier: green/blue/amber), career emoji overlay, match percentage, tier badge, one-line insight, and "Explore this path" / "Share my result" CTAs
+- **Section 2 — Why This Fits You:** pulls `description` and top 3 `skills` as tags from the matched career data
+- **Section 3 — Your Top 5 Matches:** ranked cards with animated horizontal progress bars, tier badges, one-line insights, and "View path" links; first card highlighted as #1
+- **Section 4 — Roadmap Preview:** first 3 steps from the career's `roadmapPreview` as numbered cards, with "See the full roadmap" link
+- **Section 5 — Free Resources Preview:** up to 3 `freeResources` from career data; graceful "coming soon" fallback if empty
+- **Section 6 — Salary Snapshot:** `salaryInsight` with contextual copy about location variance
+- **Section 7 — Entrepreneurship Angle:** first 2 `entrepreneurshipIdeas` from career data
+- **Section 8 — Retake or Explore:** "Not quite right?" CTA section with "Retake assessment" and "Browse all careers" buttons
+- Results summary header: "You answered X questions · [date] · [career] was your best fit"
+- 800ms skeleton loading state with pulse animation before results appear
+- Mobile sticky "Share my result" button fixed to the bottom of the viewport
+- `NsBadgeComponent` integrated into match cards for tier display
+- 18 component tests covering loading state, hero display, 5 match cards, empty state, error state, meta tags, share modal, tier helpers, and ring offset animation
+
+### Changed
+
+- "We could not find your results" replaces "No results yet" as the no-answers copy
+- Page title format updated to `Your NextSkill — [Career title] | NextSkill`
+- Share tweet uses live `percentage` from `scoreAssessment`
+
+---
+
 ## [0.7.0] — Assessment Engine
 
 ### Added
