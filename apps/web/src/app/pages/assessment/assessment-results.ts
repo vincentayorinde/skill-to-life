@@ -105,7 +105,9 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
       <!-- ─── RESULTS ───────────────────────────────────────────────── -->
       @if (!loading() && matches.length > 0) {
         <!-- ─── Hidden share card for PNG download ───────────────────
-             Uses only inline styles — no Tailwind class dependencies. -->
+             Uses only inline styles — no Tailwind class dependencies.
+             Base letter-spacing and word-spacing are normal throughout;
+             individual elements override only where necessary. -->
         <div
           #shareCard
           [style.width]="cardFormat() === 'story' ? '1080px' : '1080px'"
@@ -125,6 +127,8 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             overflow: hidden;
             padding: 0 80px;
+            letter-spacing: normal;
+            word-spacing: normal;
           "
           aria-hidden="true"
         >
@@ -145,66 +149,89 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
             "
           ></div>
 
-          <!-- "My NextSkill" label -->
+          <!-- MY NEXTSKILL label -->
           <p
             style="
-              font-size: 20px;
+              font-size: 14px;
               color: rgba(255,255,255,0.35);
-              letter-spacing: 0.3em;
+              letter-spacing: 0.05em;
+              word-spacing: normal;
               text-transform: uppercase;
-              margin: 0 0 40px 0;
+              margin: 0 0 24px 0;
               font-weight: 600;
+              text-align: center;
             "
           >
-            My NextSkill
+            MY NEXTSKILL
           </p>
 
           <!-- Career emoji -->
           <div
             [style.font-size]="cardFormat() === 'story' ? '160px' : '120px'"
-            style="line-height: 1; margin-bottom: 40px;"
+            style="
+              line-height: 1;
+              margin-bottom: 24px;
+              letter-spacing: normal;
+              word-spacing: normal;
+              text-align: center;
+            "
           >
             {{ matches[0].emoji }}
           </div>
 
-          <!-- Career title -->
+          <!-- Career title — font-size 60px fits all 14 career names on one line -->
           <h2
             style="
-              font-size: 68px;
+              font-size: 60px;
               font-weight: 900;
               color: white;
-              margin: 0 0 32px 0;
+              margin: 0 0 20px 0;
               text-align: center;
               line-height: 1.1;
-              letter-spacing: -1px;
+              letter-spacing: normal;
+              word-spacing: normal;
+              white-space: nowrap;
             "
           >
             {{ matches[0].title }}
           </h2>
 
-          <!-- Match percentage badge -->
+          <!-- Match percentage badge — single pill, one line -->
           <div
             style="
               background: rgba(255,255,255,0.12);
-              border-radius: 100px;
-              padding: 14px 44px;
-              margin-bottom: 20px;
+              border-radius: 999px;
+              padding: 8px 24px;
+              margin-bottom: 16px;
               border: 1px solid rgba(255,255,255,0.18);
             "
           >
-            <span style="font-size: 36px; font-weight: 900; color: white;"
+            <span
+              style="
+                font-size: 24px;
+                font-weight: 900;
+                color: white;
+                display: inline-block;
+                letter-spacing: -1px;
+                word-spacing: normal;
+                white-space: nowrap;
+                font-variant-numeric: tabular-nums;
+              "
               >{{ matches[0].percentage }}% match</span
             >
           </div>
 
-          <!-- Tier label -->
+          <!-- Tier label — always one line -->
           <p
             style="
-              font-size: 22px;
+              font-size: 18px;
               color: rgba(255,255,255,0.5);
-              margin: 0 0 56px 0;
-              letter-spacing: 0.06em;
+              margin: 0 0 40px 0;
+              letter-spacing: normal;
+              word-spacing: normal;
               font-weight: 500;
+              white-space: nowrap;
+              display: inline-block;
             "
           >
             {{ tierLabel(matches[0].matchTier) }}
@@ -216,20 +243,22 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               width: 64px;
               height: 1px;
               background: rgba(255,255,255,0.2);
-              margin: 0 0 56px 0;
+              margin: 0 0 32px 0;
             "
           ></div>
 
-          <!-- Insight in italics -->
+          <!-- Insight — centered, max-width 600px, not full-bleed -->
           <p
             style="
-              font-size: 26px;
+              font-size: 22px;
               color: rgba(255,255,255,0.65);
               text-align: center;
               font-style: italic;
-              margin: 0 0 72px 0;
-              line-height: 1.55;
-              max-width: 860px;
+              margin: 0 auto 48px auto;
+              line-height: 1.5;
+              max-width: 600px;
+              letter-spacing: normal;
+              word-spacing: normal;
             "
           >
             &ldquo;{{ topInsight }}&rdquo;
@@ -239,28 +268,32 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
           @if (cardFormat() === 'story') {
             <p
               style="
-                font-size: 26px;
+                font-size: 22px;
                 color: rgba(255,255,255,0.45);
-                margin: 0 0 72px 0;
+                margin: 0 0 48px 0;
                 text-align: center;
                 font-weight: 500;
+                letter-spacing: normal;
+                word-spacing: normal;
               "
             >
               Discover your path at nextskill.dev
             </p>
           }
 
-          <!-- CTA -->
+          <!-- CTA — punchy social copy -->
           <p
             style="
-              font-size: 32px;
+              font-size: 20px;
               font-weight: 700;
-              color: rgba(255,255,255,0.88);
+              color: rgba(160,210,255,0.95);
               margin: 0;
-              letter-spacing: 0.02em;
+              letter-spacing: normal;
+              word-spacing: normal;
+              text-align: center;
             "
           >
-            What's your NextSkill?
+            What's your NextSkill? 👇
           </p>
 
           <!-- Watermark -->
@@ -269,10 +302,11 @@ import { AssessmentStateService } from '../../services/assessment-state.service'
               position: absolute;
               bottom: 56px;
               right: 72px;
-              font-size: 20px;
+              font-size: 16px;
               color: rgba(255,255,255,0.18);
               margin: 0;
-              letter-spacing: 0.14em;
+              letter-spacing: normal;
+              word-spacing: normal;
               font-weight: 400;
             "
           >
