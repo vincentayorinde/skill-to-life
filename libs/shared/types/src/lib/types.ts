@@ -43,7 +43,8 @@ export type CareerCategory =
   | 'security'
   | 'data-ai'
   | 'design-product'
-  | 'writing-qa';
+  | 'writing-qa'
+  | 'specialist-advanced';
 
 export interface ResourceLink {
   title: string;

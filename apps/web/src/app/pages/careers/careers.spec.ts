@@ -14,11 +14,11 @@ describe('CareersComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show all 14 careers by default', async () => {
+  it('should show all 26 careers by default', async () => {
     const fixture = TestBed.createComponent(CareersComponent);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(fixture.componentInstance.filtered().length).toBe(14);
+    expect(fixture.componentInstance.filtered().length).toBe(26);
   });
 
   it('should filter careers when a tab is selected', () => {
@@ -28,6 +28,17 @@ describe('CareersComponent', () => {
     const results = fixture.componentInstance.filtered();
     expect(results.length).toBeGreaterThan(0);
     expect(results.every((c) => c.category === 'security')).toBe(true);
+  });
+
+  it('should filter to 12 specialist-advanced careers', () => {
+    const fixture = TestBed.createComponent(CareersComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.activeTab.set('specialist-advanced');
+    const results = fixture.componentInstance.filtered();
+    expect(results).toHaveLength(12);
+    expect(results.every((c) => c.category === 'specialist-advanced')).toBe(
+      true,
+    );
   });
 
   it('should render page heading', async () => {

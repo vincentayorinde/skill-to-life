@@ -30,6 +30,11 @@ const TABS: TabFilter[] = [
     category: 'design-product',
   },
   { id: 'writing-qa', label: 'Writing & QA', category: 'writing-qa' },
+  {
+    id: 'specialist-advanced',
+    label: 'Specialist & Advanced',
+    category: 'specialist-advanced',
+  },
 ];
 
 @Component({
