@@ -1032,6 +1032,974 @@ export const CAREER_PATHS: CareerPath[] = [
       'Apply for QA or SDET roles',
     ],
   },
+  // ── Specialist & Advanced ──────────────────────────────────────────────────
+
+  {
+    id: 'ethical-hacker',
+    title: 'Ethical Hacker / Penetration Tester',
+    slug: 'ethical-hacker',
+    emoji: '🕵️',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Get paid to break into systems — legally.',
+    description:
+      'Ethical hackers are hired to attack systems before the bad guys can — finding vulnerabilities in networks, apps, and infrastructure, then writing up exactly how they did it. You work with a mix of scripting, deep technical knowledge, and creative thinking to find weaknesses others miss. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy puzzles, think like attackers, and get a kick out of finding the flaw nobody else noticed.',
+    skills: [
+      'Network security',
+      'Vulnerability assessment',
+      'Social engineering',
+      'Scripting',
+      'Report writing',
+    ],
+    tools: ['Kali Linux', 'Metasploit', 'Burp Suite', 'Nmap', 'Wireshark'],
+    tags: ['Security', 'Hacking', 'Advanced'],
+    learningStyleFit:
+      'Suits hands-on learners who thrive on puzzles and are comfortable with trial and error.',
+    starterProjects: [
+      'Complete a beginner room on TryHackMe',
+      'Set up a home lab with a vulnerable VM and attack it',
+      'Write a Python port scanner from scratch',
+      'Capture the Flag (CTF) writeup on a public challenge',
+    ],
+    freeResources: [
+      {
+        title: 'TryHackMe — free learning paths',
+        url: 'https://tryhackme.com',
+      },
+      {
+        title: 'Hack The Box — challenges and labs',
+        url: 'https://hackthebox.com',
+      },
+      {
+        title: 'OverTheWire — wargames for beginners',
+        url: 'https://overthewire.org',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'TCM Security — Practical Ethical Hacking course',
+        url: 'https://tcm-sec.com',
+      },
+      {
+        title: 'Offensive Security — OSCP certification',
+        url: 'https://offensive-security.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £30k–£45k · Mid: £50k–£75k · Senior: £80k–£120k+ (UK — bug bounty income can supplement significantly)',
+    entrepreneurshipIdeas: [
+      'Freelance penetration testing for SMBs',
+      'Bug bounty hunting on HackerOne or Bugcrowd',
+      'Security consultancy and assessments',
+      'Running CTF events and security training',
+    ],
+    roadmapPreview: [
+      'Learn networking fundamentals — TCP/IP, DNS, HTTP',
+      'Get comfortable with the Linux command line',
+      'Study ethical hacking with TryHackMe or Hack The Box',
+      'Learn scripting in Python or Bash',
+      'Pursue CEH or OSCP certification',
+      'Practice on legal CTF challenges',
+      'Build a portfolio of writeups',
+    ],
+  },
+
+  {
+    id: 'cloud-architect',
+    title: 'Cloud Architect',
+    slug: 'cloud-architect',
+    emoji: '☁️',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Design the infrastructure that powers modern software.',
+    description:
+      'Cloud architects design the systems that modern companies run on — choosing the right services, designing for scale and resilience, and keeping costs under control. You work across networking, security, databases, and compute to make sure everything holds together under real-world load. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy systems thinking, like understanding how the pieces fit together, and want to work at the architectural level rather than feature level.',
+    skills: [
+      'Cloud platforms',
+      'Networking',
+      'Security',
+      'Cost optimisation',
+      'Infrastructure as code',
+      'System design',
+    ],
+    tools: [
+      'AWS / Azure / GCP',
+      'Terraform',
+      'Kubernetes',
+      'Docker',
+      'Ansible',
+    ],
+    tags: ['Cloud', 'Infrastructure', 'Advanced'],
+    learningStyleFit:
+      'Suits structured learners who enjoy reading documentation and working through certifications.',
+    starterProjects: [
+      'Deploy a static website to S3 with a CloudFront CDN',
+      'Build a serverless API with Lambda and API Gateway',
+      'Provision infrastructure with Terraform on a free tier',
+      'Set up a basic Kubernetes cluster with a sample app',
+    ],
+    freeResources: [
+      {
+        title: 'AWS Skill Builder — free tier',
+        url: 'https://skillbuilder.aws',
+      },
+      {
+        title: 'Google Cloud Skills Boost',
+        url: 'https://cloudskillsboost.google',
+      },
+      {
+        title: 'KodeKloud — free Kubernetes labs',
+        url: 'https://kodekloud.com',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'AWS Solutions Architect Associate (A Cloud Guru)',
+        url: 'https://acloudguru.com',
+      },
+      {
+        title: 'HashiCorp Terraform Associate certification',
+        url: 'https://developer.hashicorp.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £40k–£55k · Mid: £65k–£90k · Senior: £100k–£150k+ (UK — senior cloud architects are among the highest-paid engineers)',
+    entrepreneurshipIdeas: [
+      'Cloud consultancy for startups and SMBs',
+      'Architecture reviews and well-architected assessments',
+      'Freelance infrastructure work',
+      'Cloud training and certification coaching',
+    ],
+    roadmapPreview: [
+      'Learn one cloud platform deeply — start with AWS',
+      'Get AWS Solutions Architect Associate certified',
+      'Learn networking fundamentals',
+      'Study infrastructure as code with Terraform',
+      'Learn Kubernetes and container orchestration',
+      'Study system design and scalability patterns',
+      'Get professional-level certification',
+    ],
+  },
+
+  {
+    id: 'ml-engineer',
+    title: 'Machine Learning Engineer',
+    slug: 'ml-engineer',
+    emoji: '🤖',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Build the systems that learn from data and make predictions.',
+    description:
+      'Machine learning engineers build, train, and deploy models that improve with data — from recommendation engines to fraud detection to language models. You sit at the intersection of software engineering and data science, making sure models actually work in production. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy mathematics, like building things that improve over time, and want to work on some of the most impactful technology being built today.',
+    skills: [
+      'Python',
+      'Mathematics',
+      'Statistics',
+      'Model training',
+      'Data pipelines',
+      'MLOps',
+      'Deep learning',
+    ],
+    tools: [
+      'Python',
+      'TensorFlow',
+      'PyTorch',
+      'scikit-learn',
+      'Jupyter',
+      'MLflow',
+      'Hugging Face',
+    ],
+    tags: ['AI / ML', 'Data', 'Advanced'],
+    learningStyleFit:
+      'Suits structured learners who enjoy mathematics and working through courses with strong theoretical foundations.',
+    starterProjects: [
+      'Train a classifier on the Iris or MNIST dataset',
+      'Build a sentiment analyser with scikit-learn',
+      'Fine-tune a pre-trained model with Hugging Face',
+      'Deploy an ML model as a REST API with FastAPI',
+    ],
+    freeResources: [
+      {
+        title: "Andrew Ng's ML Specialisation (Coursera audit)",
+        url: 'https://coursera.org',
+      },
+      {
+        title: 'fast.ai — practical deep learning for coders',
+        url: 'https://fast.ai',
+      },
+      {
+        title: 'Kaggle — datasets and competitions',
+        url: 'https://kaggle.com',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'Deep Learning Specialisation (Coursera)',
+        url: 'https://coursera.org',
+      },
+      {
+        title: 'Zero to Mastery — PyTorch for Deep Learning',
+        url: 'https://zerotomastery.io',
+      },
+    ],
+    salaryInsight:
+      'Junior: £40k–£55k · Mid: £65k–£90k · Senior: £100k–£140k+ (UK — one of the fastest-growing specialisms in tech)',
+    entrepreneurshipIdeas: [
+      'AI consulting for non-tech businesses',
+      'Building AI-powered SaaS products',
+      'Selling fine-tuned models or datasets',
+      'ML research and publications',
+    ],
+    roadmapPreview: [
+      'Get strong in Python and mathematics',
+      'Learn statistics and linear algebra basics',
+      'Study machine learning fundamentals',
+      'Work through the Andrew Ng ML course',
+      'Learn deep learning with PyTorch or TensorFlow',
+      'Build end-to-end ML projects',
+      'Learn MLOps and model deployment',
+    ],
+  },
+
+  {
+    id: 'blockchain-developer',
+    title: 'Blockchain Developer',
+    slug: 'blockchain-developer',
+    emoji: '⛓️',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Build decentralised applications and smart contracts.',
+    description:
+      'Blockchain developers build applications that run on distributed networks — writing smart contracts that execute automatically, building DeFi protocols, and creating applications that operate without a central authority. The space moves fast and the technical bar is high. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People with strong programming fundamentals who are genuinely curious about decentralised systems and want to work in a fast-moving, high-stakes domain.',
+    skills: [
+      'Solidity',
+      'Cryptography',
+      'Distributed systems',
+      'JavaScript',
+      'Security',
+      'Web3',
+    ],
+    tools: [
+      'Ethereum',
+      'Solidity',
+      'Hardhat',
+      'Web3.js',
+      'ethers.js',
+      'MetaMask',
+      'IPFS',
+    ],
+    tags: ['Blockchain', 'Web3', 'Advanced'],
+    learningStyleFit:
+      'Suits self-directed learners who are comfortable building in an evolving ecosystem with sparse documentation.',
+    starterProjects: [
+      'Deploy a Hello World smart contract on a testnet',
+      'Build a simple token (ERC-20) in Solidity',
+      'Create a basic NFT minting page',
+      'Connect a React frontend to a smart contract with ethers.js',
+    ],
+    freeResources: [
+      {
+        title: 'CryptoZombies — learn Solidity interactively',
+        url: 'https://cryptozombies.io',
+      },
+      {
+        title: 'Ethereum official docs',
+        url: 'https://ethereum.org/developers',
+      },
+      {
+        title: 'Patrick Collins — Solidity courses (YouTube)',
+        url: 'https://youtube.com',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'Alchemy University — web3 developer bootcamp',
+        url: 'https://university.alchemy.com',
+      },
+      {
+        title: 'Cyfrin Updraft — Solidity security',
+        url: 'https://updraft.cyfrin.io',
+      },
+    ],
+    salaryInsight:
+      'Junior: £35k–£50k · Mid: £60k–£90k · Senior: £100k–£160k+ (UK — highly variable; token compensation common)',
+    entrepreneurshipIdeas: [
+      'DeFi protocol development',
+      'NFT platforms and tooling',
+      'Web3 consultancy for traditional businesses',
+      'Token launch and DAO tooling',
+    ],
+    roadmapPreview: [
+      'Learn JavaScript and programming fundamentals',
+      'Understand how blockchain and Bitcoin work',
+      'Learn Ethereum and smart contracts',
+      'Study Solidity programming language',
+      'Build simple smart contracts and deploy to testnet',
+      'Learn DeFi protocols and security patterns',
+      'Build a full Web3 application',
+    ],
+  },
+
+  {
+    id: 'sre-engineer',
+    title: 'Site Reliability Engineer',
+    slug: 'sre-engineer',
+    emoji: '⚙️',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Keep large-scale systems running fast and reliably.',
+    description:
+      'Site reliability engineers are the people who keep production systems alive — building the automation, monitoring, and runbooks that mean things stay up even when they want to fall over. You write code, respond to incidents, and constantly improve how reliable a system is. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy systems thinking, stay calm under pressure, and get satisfaction from preventing problems before they happen.',
+    skills: [
+      'Linux',
+      'Automation',
+      'Monitoring',
+      'Incident response',
+      'Distributed systems',
+      'Programming',
+    ],
+    tools: [
+      'Kubernetes',
+      'Prometheus',
+      'Grafana',
+      'Terraform',
+      'PagerDuty',
+      'Ansible',
+      'Python / Go',
+    ],
+    tags: ['SRE', 'Infrastructure', 'Advanced'],
+    learningStyleFit:
+      'Suits hands-on learners who enjoy reading engineering postmortems and learning from real-world system failures.',
+    starterProjects: [
+      'Set up Prometheus and Grafana to monitor a local service',
+      'Write an Ansible playbook to configure a server',
+      'Simulate an incident and write a postmortem',
+      'Build a basic health-check and alerting system',
+    ],
+    freeResources: [
+      {
+        title: 'Google SRE Book (free online)',
+        url: 'https://sre.google/sre-book/table-of-contents',
+      },
+      {
+        title: 'Linux Foundation training — free intro courses',
+        url: 'https://training.linuxfoundation.org',
+      },
+      {
+        title: 'Play with Kubernetes (free browser labs)',
+        url: 'https://labs.play-with-k8s.com',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'Linux Foundation — SRE and DevOps certifications',
+        url: 'https://training.linuxfoundation.org',
+      },
+      {
+        title: 'KodeKloud — Kubernetes and DevOps courses',
+        url: 'https://kodekloud.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £40k–£55k · Mid: £65k–£85k · Senior: £90k–£130k+ (UK — on-call responsibilities often come with additional pay)',
+    entrepreneurshipIdeas: [
+      'SRE and reliability consultancy',
+      'DevOps tooling products',
+      'Reliability coaching for engineering teams',
+      'Platform-as-a-service products',
+    ],
+    roadmapPreview: [
+      'Get solid with Linux systems administration',
+      'Learn programming in Python or Go',
+      'Study networking and distributed systems',
+      'Learn Kubernetes and container orchestration',
+      'Study observability — metrics, logs, traces',
+      'Learn incident management and on-call practices',
+      'Read the Google SRE book (free online)',
+    ],
+  },
+
+  {
+    id: 'platform-engineer',
+    title: 'Platform Engineer',
+    slug: 'platform-engineer',
+    emoji: '🏗️',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary:
+      'Build the internal platforms that other engineers build on top of.',
+    description:
+      'Platform engineers build and maintain the developer experience inside a company — the pipelines, tooling, and abstractions that let product teams ship faster and more safely. Think of it as building the roads other engineers drive on. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy making other developers more productive and care about developer experience as much as end-user experience.',
+    skills: [
+      'Kubernetes',
+      'CI/CD',
+      'Developer tooling',
+      'Infrastructure',
+      'APIs',
+      'Automation',
+    ],
+    tools: [
+      'Kubernetes',
+      'Helm',
+      'ArgoCD',
+      'GitHub Actions',
+      'Backstage',
+      'Terraform',
+      'Docker',
+    ],
+    tags: ['Platform', 'DevOps', 'Advanced'],
+    learningStyleFit:
+      'Suits systematic learners who enjoy building things that improve other engineers lives.',
+    starterProjects: [
+      'Build a CI/CD pipeline with GitHub Actions from scratch',
+      'Set up a local Kubernetes cluster with Minikube',
+      'Create a Helm chart for a sample application',
+      'Build a simple internal developer portal with Backstage',
+    ],
+    freeResources: [
+      {
+        title: 'GitHub Actions official docs and tutorials',
+        url: 'https://docs.github.com/en/actions',
+      },
+      {
+        title: 'CNCF landscape guide — platform engineering',
+        url: 'https://landscape.cncf.io',
+      },
+      { title: 'Backstage official docs', url: 'https://backstage.io/docs' },
+    ],
+    paidResources: [
+      {
+        title: 'KodeKloud — Kubernetes and Helm',
+        url: 'https://kodekloud.com',
+      },
+      {
+        title: 'A Cloud Guru — DevOps and platform engineering',
+        url: 'https://acloudguru.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £40k–£55k · Mid: £65k–£85k · Senior: £90k–£120k+ (UK — growing fast as companies invest in developer productivity)',
+    entrepreneurshipIdeas: [
+      'Developer tooling products and SaaS',
+      'Platform engineering consultancy',
+      'Open source tools and monetisation',
+      'Developer experience audits',
+    ],
+    roadmapPreview: [
+      'Learn software engineering fundamentals',
+      'Get strong with Linux and containers',
+      'Learn Kubernetes deeply',
+      'Study CI/CD pipeline design',
+      'Learn infrastructure as code',
+      'Study internal developer platform patterns',
+      'Contribute to open source platform tooling',
+    ],
+  },
+
+  {
+    id: 'ai-safety-researcher',
+    title: 'AI Safety Researcher',
+    slug: 'ai-safety-researcher',
+    emoji: '🔬',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary: 'Make sure powerful AI systems behave safely and as intended.',
+    description:
+      'AI safety researchers study how to make powerful AI systems reliable, interpretable, and aligned with human intentions. The work is a mix of theoretical research, empirical experiments, and writing — and the stakes are considered very high by those in the field. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People with strong maths and research ability who want to work on one of the most consequential open problems in technology.',
+    skills: [
+      'Machine learning',
+      'Mathematics',
+      'Research',
+      'Alignment theory',
+      'Interpretability',
+      'Writing',
+    ],
+    tools: [
+      'Python',
+      'PyTorch',
+      'Research papers',
+      'Jupyter',
+      'Statistical analysis tools',
+    ],
+    tags: ['AI Safety', 'Research', 'Advanced'],
+    learningStyleFit:
+      'Suits deep, independent learners who enjoy reading academic literature and working on open-ended problems.',
+    starterProjects: [
+      'Replicate a key result from an AI safety paper',
+      'Write a summary of a core alignment research agenda',
+      'Run interpretability experiments on a small transformer',
+      'Complete the ARENA curriculum exercises',
+    ],
+    freeResources: [
+      {
+        title: 'ARENA curriculum — alignment and interpretability',
+        url: 'https://arena.education',
+      },
+      {
+        title: 'AI Safety Fundamentals — BlueDot Impact',
+        url: 'https://aisafetyfundamentals.com',
+      },
+      {
+        title: 'Alignment Forum — research discussion',
+        url: 'https://alignmentforum.org',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'MATS — research programme for aspiring safety researchers',
+        url: 'https://matsprogram.org',
+      },
+      {
+        title: 'Deep Learning Specialisation (Coursera)',
+        url: 'https://coursera.org',
+      },
+    ],
+    salaryInsight:
+      'Junior: £45k–£60k · Mid: £70k–£100k · Senior: £110k–£160k+ (UK — research roles at top labs pay significantly above market)',
+    entrepreneurshipIdeas: [
+      'AI safety consultancy for developers',
+      'Research lab founding',
+      'Policy advising and writing',
+      'AI safety education and curriculum development',
+    ],
+    roadmapPreview: [
+      'Get strong in mathematics and statistics',
+      'Learn machine learning deeply',
+      'Study AI alignment and safety literature',
+      'Read key papers from Anthropic, DeepMind, and OpenAI safety teams',
+      'Work through the ARENA or MATS curriculum',
+      'Publish research writeups or summaries',
+      'Apply to safety research fellowships or programmes',
+    ],
+  },
+
+  {
+    id: 'embedded-systems-engineer',
+    title: 'Embedded Systems Engineer',
+    slug: 'embedded-systems-engineer',
+    emoji: '🔌',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: false,
+    beginnerFriendly: false,
+    summary:
+      'Write software that runs directly on hardware — from chips to cars.',
+    description:
+      'Embedded systems engineers write the software that lives inside hardware — microcontrollers, medical devices, vehicles, and industrial equipment. The code is low-level, performance is critical, and debugging requires different tools from web development. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who like understanding how things work at the hardware level and enjoy the discipline of writing tight, correct code with no room for error.',
+    skills: [
+      'C',
+      'C++',
+      'Real-time systems',
+      'Hardware interfaces',
+      'Debugging',
+      'Electronics basics',
+      'RTOS',
+    ],
+    tools: [
+      'C / C++',
+      'GDB',
+      'Oscilloscope',
+      'STM32',
+      'Raspberry Pi',
+      'FreeRTOS',
+      'JTAG',
+    ],
+    tags: ['Embedded', 'Hardware', 'Advanced'],
+    learningStyleFit:
+      'Suits methodical learners who enjoy working close to the metal and reading datasheets and technical specs.',
+    starterProjects: [
+      'Blink an LED on an Arduino or STM32 board',
+      'Build a temperature logger with a sensor and serial output',
+      'Implement a basic UART communication protocol',
+      'Write a simple task scheduler using FreeRTOS',
+    ],
+    freeResources: [
+      {
+        title: 'Embedded.fm — podcast and learning resources',
+        url: 'https://embedded.fm',
+      },
+      {
+        title: 'SparkFun tutorials — hardware and microcontrollers',
+        url: 'https://learn.sparkfun.com',
+      },
+      {
+        title: 'FreeRTOS official docs and tutorials',
+        url: 'https://freertos.org',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'Fastbit EBA — embedded C masterclass',
+        url: 'https://fastbitlab.com',
+      },
+      {
+        title: 'Modern Embedded Systems Programming (Udemy)',
+        url: 'https://udemy.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £30k–£45k · Mid: £50k–£70k · Senior: £75k–£110k+ (UK — aerospace and automotive commands significant premiums)',
+    entrepreneurshipIdeas: [
+      'Hardware product development and consulting',
+      'IoT device development',
+      'Firmware contracting for manufacturers',
+      'Electronics project tutorials and courses',
+    ],
+    roadmapPreview: [
+      'Learn C programming deeply',
+      'Understand basic electronics and circuits',
+      'Get a microcontroller dev kit and start experimenting',
+      'Learn real-time operating systems',
+      'Study hardware communication protocols (I2C, SPI, UART)',
+      'Build embedded projects from scratch',
+      'Learn debugging with hardware tools',
+    ],
+  },
+
+  {
+    id: 'robotics-engineer',
+    title: 'Robotics Engineer',
+    slug: 'robotics-engineer',
+    emoji: '🦾',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: false,
+    beginnerFriendly: false,
+    summary: 'Build machines that sense, think, and move in the real world.',
+    description:
+      'Robotics engineers design and program systems that interact with the physical world — from factory automation to surgical robots to autonomous vehicles. The work combines software, mathematics, and an understanding of how mechanical systems behave. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who want their software to have a physical presence in the world and enjoy the challenge of bridging the gap between code and hardware.',
+    skills: [
+      'Python',
+      'C++',
+      'ROS',
+      'Kinematics',
+      'Computer vision',
+      'Control systems',
+      'Mechanical understanding',
+    ],
+    tools: [
+      'ROS / ROS2',
+      'Python',
+      'C++',
+      'Gazebo simulator',
+      'OpenCV',
+      'MATLAB',
+      'Arduino',
+    ],
+    tags: ['Robotics', 'Hardware', 'Advanced'],
+    learningStyleFit:
+      'Suits learners who enjoy combining theory and practical building, and are comfortable working across disciplines.',
+    starterProjects: [
+      'Build a line-following robot with Arduino',
+      'Program a robot arm simulation in Gazebo',
+      'Implement object detection with OpenCV',
+      'Write a basic PID controller from scratch',
+    ],
+    freeResources: [
+      {
+        title: 'ROS official tutorials',
+        url: 'https://docs.ros.org/en/rolling/Tutorials.html',
+      },
+      {
+        title: 'The Construct — free ROS learning',
+        url: 'https://theconstructsim.com',
+      },
+      { title: 'MIT OpenCourseWare — Robotics', url: 'https://ocw.mit.edu' },
+    ],
+    paidResources: [
+      { title: 'Udemy — ROS2 for Beginners', url: 'https://udemy.com' },
+      {
+        title: 'Coursera — Robotics Specialisation (Penn)',
+        url: 'https://coursera.org',
+      },
+    ],
+    salaryInsight:
+      'Junior: £30k–£45k · Mid: £50k–£75k · Senior: £80k–£120k+ (UK — defence and automotive sectors pay at the top end)',
+    entrepreneurshipIdeas: [
+      'Robotics consulting and automation projects',
+      'Drone startups and services',
+      'Automation products for SMBs',
+      'Research spin-out companies',
+    ],
+    roadmapPreview: [
+      'Learn Python and C++ programming',
+      'Study mathematics — linear algebra and calculus',
+      'Learn ROS (Robot Operating System)',
+      'Study kinematics and control theory basics',
+      'Build simple robot projects',
+      'Learn computer vision with OpenCV',
+      'Work in simulation before real hardware',
+    ],
+  },
+
+  {
+    id: 'cryptography-engineer',
+    title: 'Cryptography Engineer',
+    slug: 'cryptography-engineer',
+    emoji: '🔐',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary:
+      'Design and implement the mathematical systems that keep data secure.',
+    description:
+      'Cryptography engineers design and implement the protocols that protect digital communication, from TLS to end-to-end encryption. The work is deeply mathematical and requires an ability to reason carefully about security properties and attack models. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy rigorous mathematical thinking and want to work in a specialism where precision is everything and mistakes have real consequences.',
+    skills: [
+      'Mathematics',
+      'Cryptographic protocols',
+      'C / C++ / Rust',
+      'Security analysis',
+      'Research',
+      'Implementation',
+    ],
+    tools: ['OpenSSL', 'Rust', 'C', 'Python', 'Academic papers', 'SageMath'],
+    tags: ['Cryptography', 'Security', 'Advanced'],
+    learningStyleFit:
+      'Suits deep learners who enjoy mathematics, reading papers, and working through the theory before touching implementation.',
+    starterProjects: [
+      'Implement AES encryption from scratch in Python',
+      'Build a simple RSA key pair generator',
+      'Work through the Cryptopals challenges',
+      'Audit an open source cryptography library for misuse',
+    ],
+    freeResources: [
+      {
+        title: 'Cryptopals challenges — hands-on cryptography',
+        url: 'https://cryptopals.com',
+      },
+      {
+        title: "Dan Boneh's Cryptography course (Coursera audit)",
+        url: 'https://coursera.org',
+      },
+      {
+        title: 'Crypto 101 — free introductory book',
+        url: 'https://crypto101.io',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'Applied Cryptography (Coursera specialisation)',
+        url: 'https://coursera.org',
+      },
+      {
+        title: 'Real World Cryptography (book by David Wong)',
+        url: 'https://realworldcryptography.com',
+      },
+    ],
+    salaryInsight:
+      'Junior: £40k–£55k · Mid: £65k–£90k · Senior: £95k–£140k+ (UK — specialist roles at banks and security firms pay at the top end)',
+    entrepreneurshipIdeas: [
+      'Security consultancy and cryptographic auditing',
+      'Privacy-preserving technology products',
+      'Protocol design consulting',
+      'Security training and education',
+    ],
+    roadmapPreview: [
+      'Get strong in mathematics — number theory and algebra',
+      'Learn a systems language like C or Rust',
+      'Study cryptography fundamentals',
+      'Work through a cryptography course or textbook',
+      'Study real-world protocol implementations',
+      'Learn to audit and find vulnerabilities',
+      'Contribute to open source cryptography projects',
+    ],
+  },
+
+  {
+    id: 'reverse-engineer',
+    title: 'Reverse Engineer / Malware Analyst',
+    slug: 'reverse-engineer',
+    emoji: '🧬',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary:
+      'Take apart software to understand how it works — especially when it is malicious.',
+    description:
+      'Reverse engineers analyse compiled software without access to the source code — used to understand malware, find vulnerabilities, and validate security claims. The work requires patience, strong fundamentals in how computers actually work, and a knack for pattern recognition. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who love understanding how things work under the hood and enjoy detective-style investigation more than building new features.',
+    skills: [
+      'Assembly language',
+      'C',
+      'Debugging',
+      'Malware analysis',
+      'Binary analysis',
+      'Patience',
+    ],
+    tools: [
+      'Ghidra',
+      'IDA Pro',
+      'x64dbg',
+      'Wireshark',
+      'Python',
+      'Cuckoo sandbox',
+      'YARA',
+    ],
+    tags: ['Reverse Engineering', 'Security', 'Advanced'],
+    learningStyleFit:
+      'Suits independent, detail-oriented learners who enjoy puzzle-solving and are not put off by spending hours on a single problem.',
+    starterProjects: [
+      'Reverse a simple crackme binary using Ghidra',
+      'Write a basic YARA rule to detect a malware pattern',
+      'Analyse a malware sample in a sandboxed VM',
+      'Solve a binary exploitation challenge on pwn.college',
+    ],
+    freeResources: [
+      {
+        title: 'Malware Unicorn — free malware analysis workshops',
+        url: 'https://malwareunicorn.org',
+      },
+      {
+        title: 'pwn.college — binary exploitation learning platform',
+        url: 'https://pwn.college',
+      },
+      {
+        title: 'ANY.RUN — interactive malware sandbox',
+        url: 'https://any.run',
+      },
+    ],
+    paidResources: [
+      {
+        title: 'TCM Security — Practical Malware Analysis',
+        url: 'https://tcm-sec.com',
+      },
+      {
+        title: 'OpenSecurityTraining2 — architecture courses',
+        url: 'https://ost2.fyi',
+      },
+    ],
+    salaryInsight:
+      'Junior: £35k–£50k · Mid: £55k–£80k · Senior: £85k–£130k+ (UK — government and defence pay top rates for cleared analysts)',
+    entrepreneurshipIdeas: [
+      'Malware analysis consulting',
+      'Threat intelligence research and reporting',
+      'Security tooling development',
+      'Incident response consulting',
+    ],
+    roadmapPreview: [
+      'Learn C programming and how memory works',
+      'Study x86/x64 assembly language basics',
+      'Learn how operating systems work internally',
+      'Start with static analysis using Ghidra',
+      'Learn dynamic analysis and debugging',
+      'Analyse real malware samples in safe environments',
+      'Study obfuscation and anti-analysis techniques',
+    ],
+  },
+
+  {
+    id: 'distributed-systems-engineer',
+    title: 'Distributed Systems Engineer',
+    slug: 'distributed-systems-engineer',
+    emoji: '🌐',
+    category: 'specialist-advanced',
+    difficultyLevel: 'advanced',
+    remoteFriendly: true,
+    beginnerFriendly: false,
+    summary:
+      'Build software systems that work reliably across many machines at once.',
+    description:
+      'Distributed systems engineers tackle some of the hardest problems in computer science — making software that is consistent, available, and fault-tolerant when spread across many machines. You work on databases, message queues, consensus algorithms, and the infrastructure that large-scale systems depend on. This path takes time to get into but pays off significantly. Good fit if you enjoy deep technical problems and want to specialise in something most people never attempt.',
+    whoItFits:
+      'People who enjoy deep computer science, like thinking about edge cases and failure modes, and want to work on the foundations that the rest of the industry builds on.',
+    skills: [
+      'Distributed computing',
+      'Consensus algorithms',
+      'Go / Java / Rust',
+      'Database internals',
+      'Networking',
+    ],
+    tools: ['Go', 'Java', 'Apache Kafka', 'etcd', 'Cassandra', 'Redis', 'gRPC'],
+    tags: ['Distributed Systems', 'Backend', 'Advanced'],
+    learningStyleFit:
+      'Suits learners who enjoy reading textbooks and papers, and who want a deep theoretical foundation before building.',
+    starterProjects: [
+      'Implement a key-value store with basic replication',
+      'Build a simple message queue from scratch',
+      'Work through the MIT 6.824 Distributed Systems labs',
+      'Implement the Raft consensus algorithm',
+    ],
+    freeResources: [
+      {
+        title: 'MIT 6.824 — Distributed Systems (free lectures)',
+        url: 'https://pdos.csail.mit.edu/6.824',
+      },
+      {
+        title:
+          'Martin Kleppmann — Designing Data-Intensive Applications (companion site)',
+        url: 'https://dataintensive.net',
+      },
+      {
+        title: 'The Paper Trail — distributed systems papers blog',
+        url: 'https://the-paper-trail.org',
+      },
+    ],
+    paidResources: [
+      {
+        title:
+          'Designing Data-Intensive Applications (book by Martin Kleppmann)',
+        url: 'https://dataintensive.net',
+      },
+      {
+        title: 'Grokking System Design (Educative)',
+        url: 'https://educative.io',
+      },
+    ],
+    salaryInsight:
+      'Junior: £45k–£60k · Mid: £70k–£95k · Senior: £100k–£150k+ (UK — large tech companies pay at the top end for this specialism)',
+    entrepreneurshipIdeas: [
+      'Distributed systems consultancy',
+      'Infrastructure tooling and open source',
+      'Database products and platforms',
+      'Technical writing and education on distributed systems',
+    ],
+    roadmapPreview: [
+      'Get strong in at least one backend language',
+      'Study networking and how the internet works',
+      'Learn about consistency, availability, and partition tolerance',
+      'Study Designing Data-Intensive Applications',
+      'Learn message queues and event streaming',
+      'Build a distributed system from scratch',
+      'Study consensus algorithms like Raft and Paxos',
+    ],
+  },
 ];
 
 export function getCareerBySlug(slug: string): CareerPath | undefined {

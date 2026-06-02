@@ -55,6 +55,17 @@ Static career data layer with full listing and detail pages.
 - Angular lazy-loaded routes and scroll restoration
 - RouterLink support in app shell navigation
 
+## 🚧 v0.5.1 — Career Library Expansion
+
+12 specialist and advanced career paths added to the library.
+
+- Ethical Hacker / Penetration Tester, Cloud Architect, Machine Learning Engineer, Blockchain Developer
+- Site Reliability Engineer, Platform Engineer, AI Safety Researcher, Embedded Systems Engineer
+- Robotics Engineer, Cryptography Engineer, Reverse Engineer / Malware Analyst, Distributed Systems Engineer
+- New "Specialist & Advanced" tab on the `/careers` listing page
+- All 12 new careers included in the assessment scoring engine
+- Career library grows from 14 to 26 paths
+
 ---
 
 ## ✅ v0.6.0 — Duolingo-Style Onboarding + Result Card

@@ -96,8 +96,8 @@ Junior: $50k–$70k · Mid: $80k–$110k · Senior: $120k–$160k+ (USD — vari
 ## Files involved
 
 ```
-libs/shared/types/src/lib/types.ts            # CareerPath interface
-libs/shared/types/src/lib/careers.data.ts     # All 14 career objects + helpers
+libs/shared/types/src/lib/types.ts            # CareerPath interface + CareerCategory type
+libs/shared/types/src/lib/careers.data.ts     # All 26 career objects + helpers
 libs/shared/types/src/index.ts                # Re-exports everything
 
 apps/web/src/app/pages/careers/careers.ts     # Listing page
@@ -105,3 +105,61 @@ apps/web/src/app/pages/career-detail/career-detail.ts  # Detail page
 apps/web/src/app/pages/home/home.ts           # Landing page (uses career preview)
 apps/web/src/app/app.routes.ts                # Route definitions
 ```
+
+## Career library (26 paths)
+
+### Development (4)
+
+| Slug                  | Title                |
+| --------------------- | -------------------- |
+| `frontend-developer`  | Frontend Developer   |
+| `backend-developer`   | Backend Developer    |
+| `fullstack-developer` | Full-Stack Developer |
+| `cloud-engineer`      | Cloud Engineer       |
+
+### Security (3)
+
+| Slug                    | Title                 |
+| ----------------------- | --------------------- |
+| `cybersecurity-analyst` | Cybersecurity Analyst |
+| `security-engineer`     | Security Engineer     |
+| `devops-engineer`       | DevOps Engineer       |
+
+### Data & AI (3)
+
+| Slug             | Title          |
+| ---------------- | -------------- |
+| `data-analyst`   | Data Analyst   |
+| `data-scientist` | Data Scientist |
+| `ai-engineer`    | AI Engineer    |
+
+### Design & Product (2)
+
+| Slug               | Title            |
+| ------------------ | ---------------- |
+| `product-designer` | Product Designer |
+| `product-manager`  | Product Manager  |
+
+### Writing & QA (2)
+
+| Slug               | Title            |
+| ------------------ | ---------------- |
+| `technical-writer` | Technical Writer |
+| `qa-engineer`      | QA Engineer      |
+
+### Specialist & Advanced (12)
+
+| Slug                           | Title                               |
+| ------------------------------ | ----------------------------------- |
+| `ethical-hacker`               | Ethical Hacker / Penetration Tester |
+| `cloud-architect`              | Cloud Architect                     |
+| `ml-engineer`                  | Machine Learning Engineer           |
+| `blockchain-developer`         | Blockchain Developer                |
+| `sre-engineer`                 | Site Reliability Engineer           |
+| `platform-engineer`            | Platform Engineer                   |
+| `ai-safety-researcher`         | AI Safety Researcher                |
+| `embedded-systems-engineer`    | Embedded Systems Engineer           |
+| `robotics-engineer`            | Robotics Engineer                   |
+| `cryptography-engineer`        | Cryptography Engineer               |
+| `reverse-engineer`             | Reverse Engineer / Malware Analyst  |
+| `distributed-systems-engineer` | Distributed Systems Engineer        |

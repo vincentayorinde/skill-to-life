@@ -7,6 +7,24 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased] — Career Library Expansion
+
+### Added
+
+- 12 specialist and advanced career paths: Ethical Hacker / Penetration Tester, Cloud Architect, Machine Learning Engineer, Blockchain Developer, Site Reliability Engineer, Platform Engineer, AI Safety Researcher, Embedded Systems Engineer, Robotics Engineer, Cryptography Engineer, Reverse Engineer / Malware Analyst, Distributed Systems Engineer
+- New `'specialist-advanced'` value added to the `CareerCategory` union type in `libs/shared/types`
+- "Specialist & Advanced" tab on the `/careers` listing page
+- All 12 new careers included in the assessment scoring engine with signals across all 10 questions
+- Tests for new career data, category filter, scoring engine coverage for specialist paths
+- `docs/career-library.md` updated with new career listings
+
+### Changed
+
+- `CAREER_PATHS` grows from 14 to 26 entries
+- `ALL_CAREER_IDS` in the scoring engine grows from 14 to 26 entries
+
+---
+
 ## [0.10.0] — Auth & Saved Results
 
 ### Added

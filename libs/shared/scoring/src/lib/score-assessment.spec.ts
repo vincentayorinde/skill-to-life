@@ -57,23 +57,51 @@ const SECURITY_ANSWERS: Record<number, string> = {
   9: 'Get a job in tech',
 };
 
+// Answer set strongly biased toward ethical-hacker.
+const ETHICAL_HACKER_ANSWERS: Record<number, string> = {
+  0: 'Protecting systems',
+  1: 'Jumping in and trying it',
+  2: 'I enjoy it or want to learn',
+  3: 'Remote and flexible work',
+  4: 'I try things fast and adjust',
+  5: 'Fully remote',
+  6: 'Fairly comfortable',
+  7: 'A system that is secure and stable',
+  8: 'Experienced — looking to specialise',
+  9: 'Get a job in tech',
+};
+
+// Answer set strongly biased toward ml-engineer.
+const ML_ENGINEER_ANSWERS: Record<number, string> = {
+  0: 'Analysing data',
+  1: 'Reading and taking notes',
+  2: 'I enjoy it or want to learn',
+  3: 'Good earning potential',
+  4: 'I look for creative solutions',
+  5: 'A mix of both',
+  6: 'Very comfortable — I enjoy it',
+  7: 'A report or data insight',
+  8: 'Experienced — looking to specialise',
+  9: 'Get a job in tech',
+};
+
 describe('scoreAssessment', () => {
   describe('empty and edge cases', () => {
     it('returns empty array for empty answers', () => {
       expect(scoreAssessment({})).toEqual([]);
     });
 
-    it('returns all 14 career matches for a full valid input', () => {
+    it('returns all 26 career matches for a full valid input', () => {
       const results = scoreAssessment(FRONTEND_ANSWERS);
-      expect(results).toHaveLength(14);
+      expect(results).toHaveLength(26);
     });
 
-    it('returns all 14 careers even for partial answers (one question)', () => {
+    it('returns all 26 careers even for partial answers (one question)', () => {
       const results = scoreAssessment({ 0: 'Building apps' });
-      expect(results).toHaveLength(14);
+      expect(results).toHaveLength(26);
     });
 
-    it('all 14 career IDs appear in results', () => {
+    it('all 26 career IDs appear in results', () => {
       const results = scoreAssessment(FRONTEND_ANSWERS);
       const ids = results.map((r) => r.careerId);
       for (const id of ALL_CAREER_IDS) {
@@ -87,7 +115,7 @@ describe('scoreAssessment', () => {
         // questions 1–9 intentionally skipped
       };
       const results = scoreAssessment(partialAnswers);
-      expect(results).toHaveLength(14);
+      expect(results).toHaveLength(26);
       expect(results[0].percentage).toBeGreaterThan(0);
     });
 
@@ -97,7 +125,7 @@ describe('scoreAssessment', () => {
         1: 'Also invalid',
       };
       const results = scoreAssessment(badAnswers);
-      expect(results).toHaveLength(14);
+      expect(results).toHaveLength(26);
       results.forEach((r) => expect(r.score).toBe(0));
     });
   });
@@ -204,6 +232,18 @@ describe('scoreAssessment', () => {
     it('top result is cybersecurity-analyst for security-biased answers', () => {
       const results = scoreAssessment(SECURITY_ANSWERS);
       expect(results[0].careerId).toBe('cybersecurity-analyst');
+    });
+
+    it('ethical-hacker scores in the top 3 for ethical-hacker-biased answers', () => {
+      const results = scoreAssessment(ETHICAL_HACKER_ANSWERS);
+      const top3 = results.slice(0, 3).map((r) => r.careerId);
+      expect(top3).toContain('ethical-hacker');
+    });
+
+    it('ml-engineer scores in the top 3 for ml-engineer-biased answers', () => {
+      const results = scoreAssessment(ML_ENGINEER_ANSWERS);
+      const top3 = results.slice(0, 3).map((r) => r.careerId);
+      expect(top3).toContain('ml-engineer');
     });
   });
 
