@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { assessmentActiveGuard } from './guards/assessment-active.guard';
+import { authGuard } from './core/auth/auth.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -33,5 +34,18 @@ export const appRoutes: Route[] = [
       import('./pages/assessment/assessment-results').then(
         (m) => m.AssessmentResultsComponent,
       ),
+  },
+  {
+    path: 'auth/callback',
+    loadComponent: () =>
+      import('./pages/auth-callback/auth-callback').then(
+        (m) => m.AuthCallbackComponent,
+      ),
+  },
+  {
+    path: 'my-results',
+    loadComponent: () =>
+      import('./pages/my-results/my-results').then((m) => m.MyResultsComponent),
+    canActivate: [authGuard],
   },
 ];

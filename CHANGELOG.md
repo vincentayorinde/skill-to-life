@@ -7,6 +7,46 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.10.0] — Auth & Saved Results
+
+### Added
+
+- Google OAuth sign-in via `@nestjs/passport` + `passport-google-oauth20`
+- JWT session management (`@nestjs/jwt`, `passport-jwt`) — stored as `ns_token` in localStorage
+- PostgreSQL database integration with Prisma 5 (`User` and `Result` models)
+- `PrismaModule` (global) — `PrismaService` with `OnModuleInit`/`OnModuleDestroy` lifecycle hooks
+- `AuthModule` — `GET /api/auth/google` → Google redirect, `GET /api/auth/google/callback` → JWT issue + frontend redirect, `GET /api/auth/me`, `POST /api/auth/logout`
+- `UsersModule` — `findById`, `findByEmail`, `findByGoogleId`, `updateUser`
+- `ResultsModule` — `POST /api/results` (anon or authenticated), `GET /api/results` (auth required), `GET /api/results/:id`, `POST /api/results/:id/claim`
+- `JwtAuthGuard` and `OptionalJwtGuard` for route protection
+- `CurrentUser` param decorator
+- CORS configuration in `main.ts` — allows `FRONTEND_URL` with credentials and `Authorization` header
+- `apps/api/.env.example` with all required environment variables
+- `db:setup`, `db:studio`, `db:reset` scripts in root `package.json`
+- `AuthService` (Angular) — `currentUser$`, `isAuthenticated$`, `loginWithGoogle`, `handleCallback`, `logout`, `initFromStorage`
+- `tokenInterceptor` — attaches `Authorization: Bearer` header to all `/api` requests
+- `authGuard` — redirects unauthenticated users to `/`
+- `/auth/callback` page — reads JWT from URL, stores it, claims any pending anonymous result, then redirects
+- `/my-results` page (auth-protected) — lists past saved results newest-first with career emoji, match %, and date
+- Result saving after assessment — calls `POST /api/results`; anonymous results store `ns_pending_claim` in sessionStorage for later claiming on sign-in
+- Sign-in prompt on results page for anonymous users; "Result saved to your account" indicator for signed-in users
+- Nav auth state in `NsAppShellComponent` — avatar + name + "My results" link + "Sign out" for authenticated users; "Sign in" button for anonymous users
+- `APP_INITIALIZER` in `app.config.ts` — validates stored JWT on startup via `GET /api/auth/me`
+- `environment.ts` and `environment.prod.ts` for Angular app
+- `User` and `SavedResult` interfaces in `libs/shared/types`
+- `NsAuthUser` interface and `signIn`/`signOut` outputs on `NsAppShellComponent`
+- Backend tests: `AuthService.findOrCreateUser` (existing + new user), `AuthService.generateToken`, `ResultsService.create` (authenticated + anonymous), `ResultsService.claim` (success + not found + wrong token)
+- Frontend tests: `AuthService.handleCallback`, `AuthService.logout`, `AuthService.getToken`, `tokenInterceptor` (adds/skips header), `AuthCallbackComponent` (calls callback + redirects)
+
+### Changed
+
+- `assessment-results` page now calls `POST /api/results` on load and shows contextual auth UI
+- `NsAppShellComponent` accepts `[authUser]`, `(signIn)`, `(signOut)` bindings
+- `home.html` passes auth state from `AuthService` to the app shell
+- Existing `assessment-results.spec.ts` updated to provide `HttpClient` and flush the save request in `afterEach`
+
+---
+
 ## [0.9.0] — Shareable Results
 
 ### Added
