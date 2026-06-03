@@ -8,8 +8,8 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
 } from 'ui';
-import type { CareerPath } from 'types';
-import { getCareerBySlug } from 'types';
+import type { CareerPath, CareerRoadmap } from 'types';
+import { getCareerBySlug, getRoadmapByCareerId } from 'types';
 
 @Component({
   selector: 'app-career-detail',
@@ -141,29 +141,113 @@ import { getCareerBySlug } from 'types';
                   </ul>
                 </ns-card>
 
-                <!-- Roadmap preview -->
-                <ns-card>
-                  <h2 class="m-0 text-xl font-bold text-ns-text">
-                    Roadmap preview
-                  </h2>
-                  <p class="mb-5 mt-2 text-sm text-ns-muted">
-                    A simple step-by-step path to getting started.
-                  </p>
-                  <ol class="space-y-3 pl-5 text-sm leading-6 text-ns-muted">
-                    @for (
-                      step of career.roadmapPreview;
-                      track step;
-                      let i = $index
-                    ) {
-                      <li>
-                        <span class="font-semibold text-ns-text"
-                          >Step {{ i + 1 }}.</span
+                <!-- Full Roadmap -->
+                @if (roadmap) {
+                  <ns-card>
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <h2 class="m-0 text-xl font-bold text-ns-text">
+                          Your learning roadmap
+                        </h2>
+                        <p class="mt-1 text-sm text-ns-muted">
+                          Estimated time:
+                          <span class="font-semibold text-ns-text">{{
+                            roadmap.totalEstimatedTime
+                          }}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                      @for (step of roadmap.steps; track step.step) {
+                        <div
+                          class="rounded-ns border border-ns-border p-4 transition hover:border-ns-primary/40"
                         >
-                        {{ step }}
-                      </li>
-                    }
-                  </ol>
-                </ns-card>
+                          <!-- Step header -->
+                          <div class="flex items-start gap-3">
+                            <span
+                              class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-black text-[#07111f]"
+                              [class]="stepBadgeClass(step.type)"
+                            >
+                              {{ step.step }}
+                            </span>
+                            <div class="min-w-0 flex-1">
+                              <div class="flex flex-wrap items-center gap-2">
+                                <h3 class="m-0 text-sm font-bold text-ns-text">
+                                  {{ step.title }}
+                                </h3>
+                                <span
+                                  class="rounded-full border px-2 py-0.5 text-xs font-semibold"
+                                  [class]="stepPillClass(step.type)"
+                                >
+                                  {{ step.estimatedTime }}
+                                </span>
+                              </div>
+                              <p class="mt-2 text-sm leading-6 text-ns-muted">
+                                {{ step.description }}
+                              </p>
+
+                              <!-- Step resources -->
+                              @if (step.resources.length > 0) {
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                  @for (
+                                    res of step.resources;
+                                    track res.title
+                                  ) {
+                                    <a
+                                      [href]="res.url"
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      class="inline-flex items-center gap-1.5 rounded-full border border-ns-border bg-ns-canvasSubtle px-3 py-1 text-xs font-semibold text-ns-primary no-underline transition hover:bg-ns-primarySoft"
+                                    >
+                                      {{ res.title }}
+                                      <span
+                                        class="rounded-full px-1.5 py-0.5 text-[10px]"
+                                        [class]="
+                                          res.type === 'paid'
+                                            ? 'bg-amber-500/20 text-amber-400'
+                                            : 'bg-emerald-500/20 text-emerald-400'
+                                        "
+                                      >
+                                        {{
+                                          res.type === 'paid' ? 'Paid' : 'Free'
+                                        }}
+                                      </span>
+                                    </a>
+                                  }
+                                </div>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </ns-card>
+                } @else {
+                  <!-- Fallback roadmap preview -->
+                  <ns-card>
+                    <h2 class="m-0 text-xl font-bold text-ns-text">
+                      Roadmap preview
+                    </h2>
+                    <p class="mb-5 mt-2 text-sm text-ns-muted">
+                      A simple step-by-step path to getting started.
+                    </p>
+                    <ol class="space-y-3 pl-5 text-sm leading-6 text-ns-muted">
+                      @for (
+                        step of career.roadmapPreview;
+                        track step;
+                        let i = $index
+                      ) {
+                        <li>
+                          <span class="font-semibold text-ns-text"
+                            >Step {{ i + 1 }}.</span
+                          >
+                          {{ step }}
+                        </li>
+                      }
+                    </ol>
+                  </ns-card>
+                }
 
                 <!-- Entrepreneurship ideas -->
                 <ns-card>
@@ -201,7 +285,7 @@ import { getCareerBySlug } from 'types';
                 <!-- Free resources -->
                 <ns-card>
                   <h2 class="m-0 text-xl font-bold text-ns-text">
-                    Free resources
+                    Free resources to get started
                   </h2>
                   <p class="mb-4 mt-2 text-sm text-ns-muted">
                     Recommended starting points — no payment required.
@@ -223,7 +307,7 @@ import { getCareerBySlug } from 'types';
                             [href]="resource.url"
                             target="_blank"
                             rel="noreferrer"
-                            >{{ resource.title }}</a
+                            >{{ resource.title }} →</a
                           >
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
@@ -238,10 +322,11 @@ import { getCareerBySlug } from 'types';
                 <!-- Paid resources -->
                 <ns-card>
                   <h2 class="m-0 text-xl font-bold text-ns-text">
-                    Paid resources
+                    Paid courses worth considering
                   </h2>
                   <p class="mb-4 mt-2 text-sm text-ns-muted">
-                    Structured courses worth considering when you are ready.
+                    These are not required — free resources above can get you
+                    far.
                   </p>
                   @if (career.paidResources.length === 0) {
                     <p class="text-sm text-ns-muted">Coming soon.</p>
@@ -260,7 +345,7 @@ import { getCareerBySlug } from 'types';
                             [href]="resource.url"
                             target="_blank"
                             rel="noreferrer"
-                            >{{ resource.title }}</a
+                            >{{ resource.title }} →</a
                           >
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
@@ -270,6 +355,23 @@ import { getCareerBySlug } from 'types';
                       </li>
                     }
                   </ul>
+                </ns-card>
+
+                <!-- All resources link -->
+                <ns-card>
+                  <p class="m-0 text-sm font-semibold text-ns-primary">
+                    Browse all resources
+                  </p>
+                  <h3 class="m-0 mt-2 text-lg font-bold text-ns-text">
+                    Resource directory.
+                  </h3>
+                  <p class="mt-2 text-sm leading-6 text-ns-muted">
+                    Free and paid resources across every tech career path —
+                    searchable and filterable.
+                  </p>
+                  <ns-button class="mt-4 block" routerLink="/resources">
+                    Browse resources →
+                  </ns-button>
                 </ns-card>
 
                 <!-- Assessment CTA -->
@@ -310,10 +412,12 @@ import { getCareerBySlug } from 'types';
 })
 export class CareerDetailComponent implements OnInit {
   career: CareerPath | undefined;
+  roadmap: CareerRoadmap | undefined;
 
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Resources', routerLink: '/resources' },
     {
       label: 'Open source',
       href: 'https://github.com/vincentayorinde/nextskill',
@@ -326,11 +430,36 @@ export class CareerDetailComponent implements OnInit {
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     this.career = getCareerBySlug(slug);
+    if (this.career) {
+      this.roadmap = getRoadmapByCareerId(this.career.id);
+    }
   }
 
   difficultyVariant(level: string): 'success' | 'warning' | 'accent' {
     if (level === 'beginner') return 'success';
     if (level === 'intermediate') return 'warning';
     return 'accent';
+  }
+
+  stepBadgeClass(type: string): string {
+    const map: Record<string, string> = {
+      foundation: 'bg-blue-400',
+      core: 'bg-purple-400',
+      practice: 'bg-emerald-400',
+      advanced: 'bg-orange-400',
+      'job-ready': 'bg-teal-400',
+    };
+    return map[type] ?? 'bg-ns-primary';
+  }
+
+  stepPillClass(type: string): string {
+    const map: Record<string, string> = {
+      foundation: 'border-blue-500/40 text-blue-400',
+      core: 'border-purple-500/40 text-purple-400',
+      practice: 'border-emerald-500/40 text-emerald-400',
+      advanced: 'border-orange-500/40 text-orange-400',
+      'job-ready': 'border-teal-500/40 text-teal-400',
+    };
+    return map[type] ?? 'border-ns-border text-ns-muted';
   }
 }

@@ -6,8 +6,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { NsButtonComponent, NsBadgeComponent, NsToastComponent } from 'ui';
 import { generateResultCard } from '../../assessment/results/card-generator';
 import { scoreAssessment } from 'scoring';
-import type { CareerMatch, MatchTier, CareerPath } from 'types';
-import { getCareerBySlug } from 'types';
+import type { CareerMatch, MatchTier, CareerPath, CareerRoadmap } from 'types';
+import { getCareerBySlug, getRoadmapByCareerId } from 'types';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { environment } from '../../../environments/environment';
@@ -389,26 +389,60 @@ import { environment } from '../../../environments/environment';
               >
                 Where to start with {{ matches[0].title }}
               </h2>
-              <ol class="mt-5 flex flex-col gap-3" role="list">
-                @for (
-                  step of topCareer.roadmapPreview.slice(0, 3);
-                  track step;
-                  let i = $index
-                ) {
-                  <li
-                    class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
-                  >
-                    <span
-                      class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+              @if (topRoadmap) {
+                <ol class="mt-5 flex flex-col gap-3" role="list">
+                  @for (step of topRoadmap.steps.slice(0, 3); track step.step) {
+                    <li
+                      class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
-                      {{ i + 1 }}
-                    </span>
-                    <p class="m-0 pt-0.5 text-sm leading-6 text-ns-text">
-                      {{ step }}
-                    </p>
-                  </li>
-                }
-              </ol>
+                      <span
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                      >
+                        {{ step.step }}
+                      </span>
+                      <div class="min-w-0 flex-1 pt-0.5">
+                        <p class="m-0 text-sm font-semibold text-ns-text">
+                          {{ step.title }}
+                        </p>
+                        <p class="m-0 mt-1 text-xs text-ns-muted">
+                          {{ step.estimatedTime }}
+                        </p>
+                        @if (step.resources[0]) {
+                          <a
+                            [href]="step.resources[0].url"
+                            target="_blank"
+                            rel="noreferrer"
+                            class="mt-2 inline-flex text-xs font-semibold text-ns-primary no-underline hover:underline"
+                          >
+                            {{ step.resources[0].title }} →
+                          </a>
+                        }
+                      </div>
+                    </li>
+                  }
+                </ol>
+              } @else {
+                <ol class="mt-5 flex flex-col gap-3" role="list">
+                  @for (
+                    step of topCareer.roadmapPreview.slice(0, 3);
+                    track step;
+                    let i = $index
+                  ) {
+                    <li
+                      class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
+                    >
+                      <span
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                      >
+                        {{ i + 1 }}
+                      </span>
+                      <p class="m-0 pt-0.5 text-sm leading-6 text-ns-text">
+                        {{ step }}
+                      </p>
+                    </li>
+                  }
+                </ol>
+              }
               <div class="mt-5 text-center">
                 <a
                   [routerLink]="['/careers', matches[0].careerId]"
@@ -790,6 +824,7 @@ export class AssessmentResultsComponent implements OnInit {
   hasResults = false;
   matches: CareerMatch[] = [];
   topCareer: CareerPath | null = null;
+  topRoadmap: CareerRoadmap | null = null;
   answerCount = 0;
   canNativeShare = false;
 
@@ -857,6 +892,8 @@ export class AssessmentResultsComponent implements OnInit {
       this.matches = scoreAssessment(this.stateService.answers());
       if (this.matches.length > 0) {
         this.topCareer = getCareerBySlug(this.matches[0].careerId) ?? null;
+        this.topRoadmap =
+          getRoadmapByCareerId(this.matches[0].careerId) ?? null;
         this.setMetaTags();
         this.saveResult();
       }

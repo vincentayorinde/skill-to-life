@@ -3,6 +3,11 @@ import {
   getCareerBySlug,
   getCareersByCategory,
 } from './careers.data';
+import {
+  CAREER_ROADMAPS,
+  getRoadmapByCareerId,
+  FREE_CAREER_RESOURCES,
+} from './roadmaps.data';
 
 const REQUIRED_SLUGS = [
   'frontend-developer',
@@ -62,6 +67,7 @@ describe('CAREER_PATHS', () => {
       expect(career.starterProjects.length).toBeGreaterThan(0);
       expect(career.roadmapPreview.length).toBeGreaterThan(0);
       expect(career.entrepreneurshipIdeas.length).toBeGreaterThan(0);
+      expect(career.freeResources.length).toBeGreaterThanOrEqual(3);
     }
   });
 
@@ -175,6 +181,77 @@ describe('specialist-advanced careers', () => {
       expect(career!.tools.length).toBeGreaterThan(0);
       expect(career!.roadmapPreview.length).toBeGreaterThanOrEqual(5);
       expect(career!.entrepreneurshipIdeas.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('CAREER_ROADMAPS', () => {
+  it('has a roadmap for every career', () => {
+    for (const career of CAREER_PATHS) {
+      const roadmap = getRoadmapByCareerId(career.id);
+      expect(roadmap).toBeDefined();
+    }
+  });
+
+  it('has 26 roadmap entries', () => {
+    expect(CAREER_ROADMAPS).toHaveLength(26);
+  });
+
+  it('every roadmap has required fields', () => {
+    for (const roadmap of CAREER_ROADMAPS) {
+      expect(roadmap.careerId).toBeTruthy();
+      expect(roadmap.totalEstimatedTime).toBeTruthy();
+      expect(roadmap.steps.length).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  it('every roadmap step has required fields', () => {
+    for (const roadmap of CAREER_ROADMAPS) {
+      for (const step of roadmap.steps) {
+        expect(step.step).toBeGreaterThan(0);
+        expect(step.title).toBeTruthy();
+        expect(step.description).toBeTruthy();
+        expect(step.estimatedTime).toBeTruthy();
+        expect([
+          'foundation',
+          'core',
+          'practice',
+          'advanced',
+          'job-ready',
+        ]).toContain(step.type);
+        expect(step.resources.length).toBeGreaterThanOrEqual(1);
+      }
+    }
+  });
+
+  it('every roadmap step resource has a real URL', () => {
+    for (const roadmap of CAREER_ROADMAPS) {
+      for (const step of roadmap.steps) {
+        for (const res of step.resources) {
+          expect(res.url).toMatch(/^https?:\/\//);
+          expect(res.title).toBeTruthy();
+          expect(res.platform).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('getRoadmapByCareerId returns undefined for unknown id', () => {
+    expect(getRoadmapByCareerId('does-not-exist')).toBeUndefined();
+  });
+});
+
+describe('FREE_CAREER_RESOURCES', () => {
+  it('has at least one resource', () => {
+    expect(FREE_CAREER_RESOURCES.length).toBeGreaterThan(0);
+  });
+
+  it('every resource has required fields and a real URL', () => {
+    for (const r of FREE_CAREER_RESOURCES) {
+      expect(r.title).toBeTruthy();
+      expect(r.url).toMatch(/^https?:\/\//);
+      expect(r.platform).toBeTruthy();
+      expect(r.careerId).toBeTruthy();
     }
   });
 });

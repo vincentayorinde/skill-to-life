@@ -43,10 +43,21 @@ export const CAREER_PATHS: CareerPath[] = [
     freeResources: [
       {
         title: 'freeCodeCamp — Responsive Web Design',
-        url: 'https://freecodecamp.org',
+        url: 'https://www.freecodecamp.org/learn/2022/responsive-web-design/',
       },
-      { title: 'The Odin Project', url: 'https://theodinproject.com' },
-      { title: 'MDN Web Docs', url: 'https://developer.mozilla.org' },
+      {
+        title: 'The Odin Project — Foundations',
+        url: 'https://www.theodinproject.com/paths/foundations',
+      },
+      {
+        title: 'MDN — Learn Web Development',
+        url: 'https://developer.mozilla.org/en-US/docs/Learn',
+      },
+      { title: 'javascript.info', url: 'https://javascript.info' },
+      {
+        title: 'Frontend Mentor — practice challenges',
+        url: 'https://www.frontendmentor.io',
+      },
     ],
     paidResources: [
       { title: 'Frontend Masters', url: 'https://frontendmasters.com' },
@@ -115,12 +126,21 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'The Odin Project — Node path',
-        url: 'https://theodinproject.com',
+        title: 'The Odin Project — Node.js path',
+        url: 'https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs',
+      },
+      {
+        title: 'Full Stack Open (University of Helsinki)',
+        url: 'https://fullstackopen.com/en/',
       },
       {
         title: 'freeCodeCamp — Back End Certification',
-        url: 'https://freecodecamp.org',
+        url: 'https://www.freecodecamp.org/learn/back-end-development-and-apis/',
+      },
+      { title: 'SQLZoo — interactive SQL', url: 'https://sqlzoo.net' },
+      {
+        title: 'PostgreSQL Tutorial',
+        url: 'https://www.postgresqltutorial.com',
       },
     ],
     paidResources: [
@@ -188,12 +208,18 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'The Odin Project — Full Stack',
-        url: 'https://theodinproject.com',
+        title: 'The Odin Project — Full Stack JavaScript',
+        url: 'https://www.theodinproject.com/paths/full-stack-javascript',
       },
       {
         title: 'Full Stack Open (University of Helsinki)',
-        url: 'https://fullstackopen.com',
+        url: 'https://fullstackopen.com/en/',
+      },
+      { title: 'javascript.info', url: 'https://javascript.info' },
+      { title: 'SQLZoo — SQL basics', url: 'https://sqlzoo.net' },
+      {
+        title: 'Docker — Get Started',
+        url: 'https://docs.docker.com/get-started/',
       },
     ],
     paidResources: [
@@ -261,14 +287,25 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'TryHackMe — free beginner paths',
-        url: 'https://tryhackme.com',
+        title: 'TryHackMe — beginner paths',
+        url: 'https://tryhackme.com/paths',
       },
       {
-        title: 'Google Cybersecurity Certificate (audit free)',
-        url: 'https://coursera.org',
+        title: 'Professor Messer — Security+ course (free)',
+        url: 'https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/',
       },
-      { title: 'Cybrary — free courses', url: 'https://cybrary.it' },
+      {
+        title: 'Cybrary — free security courses',
+        url: 'https://www.cybrary.it',
+      },
+      {
+        title: 'Linux Journey',
+        url: 'https://linuxjourney.com',
+      },
+      {
+        title: 'OverTheWire — Bandit wargame',
+        url: 'https://overthewire.org/wargames/bandit/',
+      },
     ],
     paidResources: [
       { title: 'CompTIA Security+ prep course', url: 'https://comptia.org' },
@@ -333,8 +370,26 @@ export const CAREER_PATHS: CareerPath[] = [
       'Security CI/CD pipeline',
     ],
     freeResources: [
-      { title: 'OWASP Top 10 resources', url: 'https://owasp.org' },
-      { title: 'Hack The Box — free tier', url: 'https://hackthebox.com' },
+      {
+        title: 'OWASP Top 10',
+        url: 'https://owasp.org/www-project-top-ten/',
+      },
+      {
+        title: 'PortSwigger Web Security Academy (free)',
+        url: 'https://portswigger.net/web-security',
+      },
+      {
+        title: 'Hack The Box — free tier',
+        url: 'https://app.hackthebox.com',
+      },
+      {
+        title: 'TryHackMe — free paths',
+        url: 'https://tryhackme.com/paths',
+      },
+      {
+        title: 'Linux Journey',
+        url: 'https://linuxjourney.com',
+      },
     ],
     paidResources: [
       {
@@ -405,9 +460,20 @@ export const CAREER_PATHS: CareerPath[] = [
       'Set up monitoring and alerting for an app',
     ],
     freeResources: [
-      { title: 'AWS free tier tutorials', url: 'https://aws.amazon.com' },
-      { title: 'Google Cloud free tier', url: 'https://cloud.google.com' },
+      { title: 'AWS Skill Builder', url: 'https://skillbuilder.aws' },
+      {
+        title: 'Google Cloud Skills Boost',
+        url: 'https://cloudskillsboost.google',
+      },
       { title: 'KodeKloud free labs', url: 'https://kodekloud.com' },
+      {
+        title: 'HashiCorp Terraform tutorials',
+        url: 'https://developer.hashicorp.com/terraform/tutorials',
+      },
+      {
+        title: 'Kubernetes interactive basics',
+        url: 'https://kubernetes.io/docs/tutorials/kubernetes-basics/',
+      },
     ],
     paidResources: [
       {
@@ -476,12 +542,26 @@ export const CAREER_PATHS: CareerPath[] = [
       'Build a monitoring dashboard with Grafana',
     ],
     freeResources: [
-      { title: 'roadmap.sh — DevOps roadmap', url: 'https://roadmap.sh' },
+      {
+        title: 'roadmap.sh — DevOps roadmap',
+        url: 'https://roadmap.sh/devops',
+      },
       {
         title: 'Play with Docker (free)',
         url: 'https://labs.play-with-docker.com',
       },
-      { title: 'GitHub Actions docs', url: 'https://docs.github.com' },
+      {
+        title: 'GitHub Actions — official docs',
+        url: 'https://docs.github.com/en/actions',
+      },
+      {
+        title: 'Kubernetes — interactive tutorial',
+        url: 'https://kubernetes.io/docs/tutorials/kubernetes-basics/',
+      },
+      {
+        title: 'Prometheus — getting started',
+        url: 'https://prometheus.io/docs/prometheus/latest/getting_started/',
+      },
     ],
     paidResources: [
       {
@@ -551,10 +631,21 @@ export const CAREER_PATHS: CareerPath[] = [
     freeResources: [
       {
         title: 'Google Data Analytics Certificate (audit free)',
-        url: 'https://coursera.org',
+        url: 'https://www.coursera.org/professional-certificates/google-data-analytics',
       },
-      { title: 'Mode SQL Tutorial', url: 'https://mode.com' },
-      { title: 'Kaggle Learn', url: 'https://kaggle.com' },
+      { title: 'Mode SQL Tutorial', url: 'https://mode.com/sql-tutorial/' },
+      {
+        title: 'Kaggle Learn — SQL',
+        url: 'https://www.kaggle.com/learn/intro-to-sql',
+      },
+      {
+        title: 'SQLZoo — interactive SQL practice',
+        url: 'https://sqlzoo.net',
+      },
+      {
+        title: 'Tableau Public — free training',
+        url: 'https://public.tableau.com/app/learn/how-to-videos',
+      },
     ],
     paidResources: [
       {
@@ -622,11 +713,25 @@ export const CAREER_PATHS: CareerPath[] = [
       'Customer churn prediction',
     ],
     freeResources: [
-      { title: 'fast.ai — Practical Deep Learning', url: 'https://fast.ai' },
-      { title: 'Kaggle Learn — Machine Learning', url: 'https://kaggle.com' },
+      {
+        title: 'fast.ai — Practical Deep Learning',
+        url: 'https://course.fast.ai',
+      },
+      {
+        title: 'Kaggle Learn — Intro to Machine Learning',
+        url: 'https://www.kaggle.com/learn/intro-to-machine-learning',
+      },
       {
         title: 'StatQuest with Josh Starmer (YouTube)',
-        url: 'https://youtube.com',
+        url: 'https://www.youtube.com/@statquest',
+      },
+      {
+        title: 'Deep Learning Book (free)',
+        url: 'https://www.deeplearningbook.org',
+      },
+      {
+        title: '3Blue1Brown — Neural Networks series',
+        url: 'https://www.3blue1brown.com/topics/neural-networks',
       },
     ],
     paidResources: [
@@ -698,9 +803,26 @@ export const CAREER_PATHS: CareerPath[] = [
       'LLM-powered task automation tool',
     ],
     freeResources: [
-      { title: 'fast.ai course', url: 'https://fast.ai' },
-      { title: 'Hugging Face tutorials', url: 'https://huggingface.co' },
-      { title: 'Anthropic and OpenAI API docs', url: 'https://anthropic.com' },
+      {
+        title: 'fast.ai — Practical Deep Learning',
+        url: 'https://course.fast.ai',
+      },
+      {
+        title: 'Hugging Face — NLP Course',
+        url: 'https://huggingface.co/learn/nlp-course/chapter1/1',
+      },
+      {
+        title: 'Anthropic API Documentation',
+        url: 'https://docs.anthropic.com',
+      },
+      {
+        title: 'Andrej Karpathy — Neural Networks: Zero to Hero',
+        url: 'https://www.youtube.com/@AndrejKarpathy',
+      },
+      {
+        title: 'OpenAI API Documentation',
+        url: 'https://platform.openai.com/docs',
+      },
     ],
     paidResources: [
       {
@@ -771,10 +893,21 @@ export const CAREER_PATHS: CareerPath[] = [
     freeResources: [
       {
         title: 'Google UX Design Certificate (audit free)',
-        url: 'https://coursera.org',
+        url: 'https://www.coursera.org/professional-certificates/google-ux-design',
       },
-      { title: 'Figma official tutorials', url: 'https://figma.com' },
+      {
+        title: 'Figma — official tutorials',
+        url: 'https://help.figma.com/hc/en-us/categories/360002051613-Get-started',
+      },
       { title: 'Laws of UX', url: 'https://lawsofux.com' },
+      {
+        title: 'Nielsen Norman Group — free UX articles',
+        url: 'https://www.nngroup.com/articles/',
+      },
+      {
+        title: 'Figma Community — templates',
+        url: 'https://www.figma.com/community',
+      },
     ],
     paidResources: [
       {
@@ -844,15 +977,23 @@ export const CAREER_PATHS: CareerPath[] = [
     freeResources: [
       {
         title: "Lenny's Newsletter (free tier)",
-        url: 'https://lennysnewsletter.com',
+        url: 'https://www.lennysnewsletter.com',
       },
       {
-        title: 'Product School free resources',
-        url: 'https://productschool.com',
-      },
-      {
-        title: 'Shape Up (free book by Basecamp)',
+        title: 'Shape Up — free book by Basecamp',
         url: 'https://basecamp.com/shapeup',
+      },
+      {
+        title: 'Product School — free resources',
+        url: 'https://productschool.com/resources',
+      },
+      {
+        title: 'Nielsen Norman Group — UX research methods',
+        url: 'https://www.nngroup.com/articles/',
+      },
+      {
+        title: 'Mode SQL Tutorial (for data-driven PMs)',
+        url: 'https://mode.com/sql-tutorial/',
       },
     ],
     paidResources: [
@@ -921,13 +1062,24 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'Google Technical Writing courses',
+        title: 'Google Technical Writing courses (free)',
         url: 'https://developers.google.com/tech-writing',
       },
-      { title: 'Write the Docs community', url: 'https://writethedocs.org' },
       {
-        title: 'The Documentation System (Diátaxis)',
+        title: 'Write the Docs — community and guide',
+        url: 'https://www.writethedocs.org/guide/',
+      },
+      {
+        title: 'Diátaxis — documentation framework',
         url: 'https://diataxis.fr',
+      },
+      {
+        title: 'Markdown Guide',
+        url: 'https://www.markdownguide.org',
+      },
+      {
+        title: 'Good Docs Project — templates',
+        url: 'https://www.thegooddocsproject.dev',
       },
     ],
     paidResources: [
@@ -997,13 +1149,24 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'Playwright official docs and tutorials',
-        url: 'https://playwright.dev',
+        title: 'Playwright — official documentation',
+        url: 'https://playwright.dev/docs/intro',
       },
-      { title: 'ISTQB Foundation study materials', url: 'https://istqb.org' },
+      {
+        title: 'ISTQB Foundation study materials',
+        url: 'https://www.istqb.org/certifications/certified-tester-foundation-level',
+      },
       {
         title: 'Ministry of Testing (free resources)',
-        url: 'https://ministryoftesting.com',
+        url: 'https://www.ministryoftesting.com',
+      },
+      {
+        title: 'Postman Learning Centre',
+        url: 'https://learning.postman.com',
+      },
+      {
+        title: 'GitHub Actions — test automation',
+        url: 'https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing',
       },
     ],
     paidResources: [
@@ -1067,17 +1230,22 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'TryHackMe — free learning paths',
-        url: 'https://tryhackme.com',
+        title: 'TryHackMe — Jr Penetration Tester path',
+        url: 'https://tryhackme.com/path/outline/jrpenetrationtester',
       },
       {
-        title: 'Hack The Box — challenges and labs',
-        url: 'https://hackthebox.com',
+        title: 'Hack The Box — Starting Point',
+        url: 'https://app.hackthebox.com/starting-point',
       },
       {
-        title: 'OverTheWire — wargames for beginners',
-        url: 'https://overthewire.org',
+        title: 'OverTheWire — Bandit wargame',
+        url: 'https://overthewire.org/wargames/bandit/',
       },
+      {
+        title: 'PortSwigger Web Security Academy (free)',
+        url: 'https://portswigger.net/web-security',
+      },
+      { title: 'picoCTF — beginner CTF', url: 'https://picoctf.org' },
     ],
     paidResources: [
       {
@@ -1159,6 +1327,14 @@ export const CAREER_PATHS: CareerPath[] = [
         title: 'KodeKloud — free Kubernetes labs',
         url: 'https://kodekloud.com',
       },
+      {
+        title: 'HashiCorp Terraform tutorials (free)',
+        url: 'https://developer.hashicorp.com/terraform/tutorials',
+      },
+      {
+        title: 'System Design Primer (GitHub)',
+        url: 'https://github.com/donnemartin/system-design-primer',
+      },
     ],
     paidResources: [
       {
@@ -1232,22 +1408,30 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: "Andrew Ng's ML Specialisation (Coursera audit)",
-        url: 'https://coursera.org',
+        title: 'Machine Learning Specialisation — Andrew Ng (Coursera)',
+        url: 'https://www.coursera.org/specializations/machine-learning-introduction',
       },
       {
-        title: 'fast.ai — practical deep learning for coders',
-        url: 'https://fast.ai',
+        title: 'fast.ai — Practical Deep Learning for Coders',
+        url: 'https://course.fast.ai',
       },
       {
-        title: 'Kaggle — datasets and competitions',
-        url: 'https://kaggle.com',
+        title: 'Kaggle Learn — Intro to Machine Learning',
+        url: 'https://www.kaggle.com/learn/intro-to-machine-learning',
+      },
+      {
+        title: 'PyTorch — official tutorials',
+        url: 'https://pytorch.org/tutorials/',
+      },
+      {
+        title: '3Blue1Brown — Essence of Linear Algebra',
+        url: 'https://www.3blue1brown.com/topics/linear-algebra',
       },
     ],
     paidResources: [
       {
         title: 'Deep Learning Specialisation (Coursera)',
-        url: 'https://coursera.org',
+        url: 'https://www.coursera.org/specializations/deep-learning',
       },
       {
         title: 'Zero to Mastery — PyTorch for Deep Learning',
@@ -1319,12 +1503,20 @@ export const CAREER_PATHS: CareerPath[] = [
         url: 'https://cryptozombies.io',
       },
       {
-        title: 'Ethereum official docs',
-        url: 'https://ethereum.org/developers',
+        title: 'Ethereum developer documentation',
+        url: 'https://ethereum.org/en/developers/docs/',
       },
       {
-        title: 'Patrick Collins — Solidity courses (YouTube)',
-        url: 'https://youtube.com',
+        title: 'Patrick Collins — Web3 courses (YouTube)',
+        url: 'https://www.youtube.com/@PatrickAlphaC',
+      },
+      {
+        title: 'Solidity — official documentation',
+        url: 'https://docs.soliditylang.org',
+      },
+      {
+        title: 'Hardhat — development environment docs',
+        url: 'https://hardhat.org/docs',
       },
     ],
     paidResources: [
@@ -1399,15 +1591,23 @@ export const CAREER_PATHS: CareerPath[] = [
     freeResources: [
       {
         title: 'Google SRE Book (free online)',
-        url: 'https://sre.google/sre-book/table-of-contents',
+        url: 'https://sre.google/sre-book/table-of-contents/',
       },
       {
-        title: 'Linux Foundation training — free intro courses',
-        url: 'https://training.linuxfoundation.org',
+        title: 'Linux Foundation — Introduction to Linux (free)',
+        url: 'https://training.linuxfoundation.org/training/introduction-to-linux/',
       },
       {
-        title: 'Play with Kubernetes (free browser labs)',
-        url: 'https://labs.play-with-k8s.com',
+        title: 'Kubernetes — interactive basics tutorial',
+        url: 'https://kubernetes.io/docs/tutorials/kubernetes-basics/',
+      },
+      {
+        title: 'A Tour of Go',
+        url: 'https://go.dev/tour/',
+      },
+      {
+        title: 'Prometheus — getting started',
+        url: 'https://prometheus.io/docs/prometheus/latest/getting_started/',
       },
     ],
     paidResources: [
@@ -1482,14 +1682,22 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'GitHub Actions official docs and tutorials',
+        title: 'GitHub Actions — official documentation',
         url: 'https://docs.github.com/en/actions',
       },
       {
         title: 'CNCF landscape guide — platform engineering',
         url: 'https://landscape.cncf.io',
       },
-      { title: 'Backstage official docs', url: 'https://backstage.io/docs' },
+      { title: 'Backstage — official docs', url: 'https://backstage.io/docs' },
+      {
+        title: 'Kubernetes — tutorials',
+        url: 'https://kubernetes.io/docs/tutorials/',
+      },
+      {
+        title: 'Argo CD — getting started',
+        url: 'https://argo-cd.readthedocs.io/en/stable/getting_started/',
+      },
     ],
     paidResources: [
       {
@@ -1568,8 +1776,16 @@ export const CAREER_PATHS: CareerPath[] = [
         url: 'https://aisafetyfundamentals.com',
       },
       {
-        title: 'Alignment Forum — research discussion',
-        url: 'https://alignmentforum.org',
+        title: 'Alignment Forum — research posts',
+        url: 'https://www.alignmentforum.org',
+      },
+      {
+        title: 'fast.ai — Practical Deep Learning',
+        url: 'https://course.fast.ai',
+      },
+      {
+        title: 'Deep Learning Book — Goodfellow et al. (free)',
+        url: 'https://www.deeplearningbook.org',
       },
     ],
     paidResources: [
@@ -1645,16 +1861,24 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'Embedded.fm — podcast and learning resources',
+        title: 'Embedded.fm — podcast and community',
         url: 'https://embedded.fm',
       },
       {
-        title: 'SparkFun tutorials — hardware and microcontrollers',
+        title: 'SparkFun — electronics tutorials',
         url: 'https://learn.sparkfun.com',
       },
       {
-        title: 'FreeRTOS official docs and tutorials',
-        url: 'https://freertos.org',
+        title: 'FreeRTOS — official documentation',
+        url: 'https://www.freertos.org/Documentation/RTOS_book.html',
+      },
+      {
+        title: 'CS50x — C programming (weeks 1–4)',
+        url: 'https://cs50.harvard.edu/x',
+      },
+      {
+        title: 'Arduino official tutorials',
+        url: 'https://docs.arduino.cc/tutorials/',
       },
     ],
     paidResources: [
@@ -1729,14 +1953,25 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'ROS official tutorials',
+        title: 'ROS2 — official tutorials',
         url: 'https://docs.ros.org/en/rolling/Tutorials.html',
       },
       {
         title: 'The Construct — free ROS learning',
         url: 'https://theconstructsim.com',
       },
-      { title: 'MIT OpenCourseWare — Robotics', url: 'https://ocw.mit.edu' },
+      {
+        title: 'MIT OpenCourseWare — Intro to Robotics',
+        url: 'https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/',
+      },
+      {
+        title: 'OpenCV official tutorials',
+        url: 'https://docs.opencv.org/4.x/d9/df8/tutorial_root.html',
+      },
+      {
+        title: '3Blue1Brown — Essence of Linear Algebra',
+        url: 'https://www.3blue1brown.com/topics/linear-algebra',
+      },
     ],
     paidResources: [
       { title: 'Udemy — ROS2 for Beginners', url: 'https://udemy.com' },
@@ -1803,12 +2038,20 @@ export const CAREER_PATHS: CareerPath[] = [
         url: 'https://cryptopals.com',
       },
       {
-        title: "Dan Boneh's Cryptography course (Coursera audit)",
-        url: 'https://coursera.org',
+        title: 'Cryptography I — Dan Boneh (Coursera, free audit)',
+        url: 'https://www.coursera.org/learn/crypto',
       },
       {
         title: 'Crypto 101 — free introductory book',
         url: 'https://crypto101.io',
+      },
+      {
+        title: 'The Rust Programming Language (free book)',
+        url: 'https://doc.rust-lang.org/book/',
+      },
+      {
+        title: 'Khan Academy — cryptography',
+        url: 'https://www.khanacademy.org/computing/computer-science/cryptography',
       },
     ],
     paidResources: [
@@ -1883,16 +2126,24 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'Malware Unicorn — free malware analysis workshops',
+        title: 'Malware Unicorn — free analysis workshops',
         url: 'https://malwareunicorn.org',
       },
       {
-        title: 'pwn.college — binary exploitation learning platform',
+        title: 'pwn.college — binary exploitation platform',
         url: 'https://pwn.college',
       },
       {
         title: 'ANY.RUN — interactive malware sandbox',
         url: 'https://any.run',
+      },
+      {
+        title: 'Ghidra — NSA reverse engineering tool (free)',
+        url: 'https://ghidra-sre.org',
+      },
+      {
+        title: 'picoCTF — beginner CTF challenges',
+        url: 'https://picoctf.org',
       },
     ],
     paidResources: [
@@ -1958,17 +2209,24 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     freeResources: [
       {
-        title: 'MIT 6.824 — Distributed Systems (free lectures)',
-        url: 'https://pdos.csail.mit.edu/6.824',
+        title: 'MIT 6.824 — Distributed Systems (free)',
+        url: 'https://pdos.csail.mit.edu/6.824/',
       },
       {
-        title:
-          'Martin Kleppmann — Designing Data-Intensive Applications (companion site)',
+        title: 'Designing Data-Intensive Applications — companion site',
         url: 'https://dataintensive.net',
       },
       {
-        title: 'The Paper Trail — distributed systems papers blog',
-        url: 'https://the-paper-trail.org',
+        title: 'The Paper Trail — distributed systems blog',
+        url: 'https://www.the-paper-trail.org',
+      },
+      {
+        title: 'A Tour of Go — official Go tutorial',
+        url: 'https://go.dev/tour/',
+      },
+      {
+        title: 'Apache Kafka — official documentation',
+        url: 'https://kafka.apache.org/documentation/',
       },
     ],
     paidResources: [
