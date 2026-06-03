@@ -43,6 +43,11 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'resources',
+    loadComponent: () =>
+      import('./pages/resources/resources').then((m) => m.ResourcesComponent),
+  },
+  {
     path: 'my-results',
     loadComponent: () =>
       import('./pages/my-results/my-results').then((m) => m.MyResultsComponent),

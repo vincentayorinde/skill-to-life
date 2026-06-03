@@ -46,6 +46,48 @@ export type CareerCategory =
   | 'writing-qa'
   | 'specialist-advanced';
 
+export interface RoadmapResource {
+  title: string;
+  url: string;
+  type:
+    | 'free'
+    | 'paid'
+    | 'book'
+    | 'course'
+    | 'video'
+    | 'practice'
+    | 'community';
+  platform: string;
+  beginner: boolean;
+}
+
+export interface RoadmapStep {
+  step: number;
+  title: string;
+  description: string;
+  estimatedTime: string;
+  resources: RoadmapResource[];
+  type: 'foundation' | 'core' | 'practice' | 'advanced' | 'job-ready';
+}
+
+export interface CareerRoadmap {
+  careerId: string;
+  totalEstimatedTime: string;
+  steps: RoadmapStep[];
+}
+
+export interface CareerResource {
+  title: string;
+  url: string;
+  type: 'course' | 'video' | 'book' | 'practice' | 'community' | 'tool';
+  platform: string;
+  cost: 'free' | 'paid' | 'freemium';
+  level: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+  recommended: boolean;
+  careerId: string;
+}
+
 export interface ResourceLink {
   title: string;
   url?: string;

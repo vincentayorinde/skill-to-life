@@ -33,6 +33,7 @@ export class HomeComponent {
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Resources', routerLink: '/resources' },
     { label: 'Open source', href: '#open-source' },
   ];
 

@@ -7,6 +7,29 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased] — Roadmaps & Resources
+
+### Added
+
+- `RoadmapStep`, `RoadmapResource`, `CareerRoadmap`, `CareerResource` interfaces in `libs/shared/types`
+- `roadmaps.data.ts` — full structured learning roadmaps for all 26 careers, each with 5–6 steps, real resource URLs, time estimates, and step-type classification
+- `FREE_CAREER_RESOURCES` — curated flat resource catalogue for the `/resources` page
+- `/resources` page — filterable resource directory across all career paths (filter by cost, type, or career)
+- Rich roadmap UI on `/careers/:slug` — step cards with colour-coded type badges, time estimates, and inline resource links
+- Assessment results roadmap preview now shows structured step title, time, and top resource link
+- "Resources" added to main navigation on all pages
+- 5+ real free resource URLs per career (previously 2–3)
+- Tests for `CAREER_ROADMAPS` structure, step fields, resource URLs, and `FREE_CAREER_RESOURCES`
+- `docs/resources-guide.md` — content guide for roadmap data, step types, and resource guidelines
+
+### Changed
+
+- `career-detail.ts` roadmap section replaces simple string list with rich step cards
+- Assessment results roadmap preview enhanced with step titles and resource links
+- All specialist career freeResources updated to full-length specific URLs
+
+---
+
 ## [Unreleased] — Career Library Expansion
 
 ### Added

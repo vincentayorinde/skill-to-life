@@ -55,6 +55,19 @@ Static career data layer with full listing and detail pages.
 - Angular lazy-loaded routes and scroll restoration
 - RouterLink support in app shell navigation
 
+## 🚧 v0.11.0 — Roadmaps & Resources
+
+Full structured learning roadmaps and a browsable resource directory.
+
+- Structured `CareerRoadmap` data for all 26 careers — 5–6 steps with real URLs, time estimates, and step types
+- Rich roadmap UI on `/careers/:slug` — colour-coded step cards replacing the simple string list
+- New `/resources` page — filterable by cost (free/paid), type (course, book, practice, video), and career
+- Assessment results roadmap preview shows step title, time estimate, and first resource link
+- "Resources" added to main navigation
+- 5+ real free resource URLs per career throughout
+
+---
+
 ## 🚧 v0.5.1 — Career Library Expansion
 
 12 specialist and advanced career paths added to the library.
