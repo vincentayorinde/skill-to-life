@@ -57,7 +57,7 @@ function delay(ms: number): Promise<void> {
           <div class="flex flex-1 flex-col gap-1.5">
             <div class="flex items-center justify-between">
               <span class="text-xs font-semibold text-ns-muted">
-                Step {{ currentIndex() + 1 }} of {{ total }}
+                Step {{ currentStep() }} of {{ total }}
               </span>
               <span class="text-xs font-bold text-ns-primary">
                 {{ progressRounded() }}%
@@ -156,16 +156,22 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   readonly selectedOption = signal<string | null>(null);
   readonly isFading = signal(false);
   isComplete = false;
+  private isTransitioning = false;
 
   readonly currentQuestion = computed(
     () => this.questions[this.currentIndex()],
   );
   readonly isFirst = computed(() => this.currentIndex() === 0);
   readonly isLast = computed(() => this.currentIndex() === this.total - 1);
-  readonly progressPercent = computed(
-    () => ((this.currentIndex() + 1) / this.total) * 100,
+  // currentStep is capped at total to prevent any display overshoot.
+  readonly currentStep = computed(() =>
+    Math.min(this.currentIndex() + 1, this.total),
   );
-  readonly progressRounded = computed(() => Math.round(this.progressPercent()));
+  // progressPercent rounds and caps at 100 — safe against any index edge case.
+  readonly progressPercent = computed(() =>
+    Math.min(Math.round((this.currentStep() / this.total) * 100), 100),
+  );
+  readonly progressRounded = computed(() => this.progressPercent());
   readonly microcopy = computed(() => {
     const i = this.currentIndex();
     if (i < 3) return MICROCOPY['early'];
@@ -183,6 +189,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   async next(): Promise<void> {
+    // Prevent double-tap on mobile from firing twice during the 150ms transition.
+    if (this.isTransitioning) return;
     if (!this.selectedOption()) return;
 
     const chosen = this.selectedOption();
@@ -193,10 +201,11 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     if (this.isLast()) {
       this.isComplete = true;
       this.stateService.save(this.answers());
-      this.router.navigate(['/assessment/results']);
+      await this.router.navigate(['/assessment/results']);
       return;
     }
 
+    this.isTransitioning = true;
     this.isFading.set(true);
     await delay(150);
 
@@ -205,12 +214,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     this.isFading.set(false);
     await delay(0);
+    this.isTransitioning = false;
     this.focusFirstOption();
   }
 
   async back(): Promise<void> {
-    if (this.isFirst()) return;
+    if (this.isFirst() || this.isTransitioning) return;
 
+    this.isTransitioning = true;
     this.isFading.set(true);
     await delay(150);
 
@@ -219,6 +230,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     this.isFading.set(false);
     await delay(0);
+    this.isTransitioning = false;
     this.focusFirstOption();
   }
 

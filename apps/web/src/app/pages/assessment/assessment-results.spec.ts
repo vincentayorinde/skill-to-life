@@ -422,7 +422,7 @@ describe('AssessmentResultsComponent', () => {
     expect(fixture.componentInstance.shareOpen()).toBe(false);
   });
 
-  it('should show all share options in share modal', async () => {
+  it('should show all share platform options in share modal', async () => {
     vi.useFakeTimers();
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
@@ -436,10 +436,82 @@ describe('AssessmentResultsComponent', () => {
 
     const text = fixture.nativeElement.textContent as string;
     expect(text).toContain('Download card');
+    expect(text).toContain('WhatsApp');
     expect(text).toContain('X / Twitter');
     expect(text).toContain('LinkedIn');
+    expect(text).toContain('Messages');
     expect(text).toContain('Copy link');
     vi.useRealTimers();
+  });
+
+  it('shareToWhatsApp opens whatsapp URL with encoded result text', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    fixture.componentInstance['loading'].set(false);
+    fixture.componentInstance['matches'] = [
+      {
+        careerId: 'frontend-developer',
+        title: 'Frontend Developer',
+        emoji: '🖥️',
+        score: 90,
+        percentage: 90,
+        matchTier: 'strong',
+      },
+    ];
+    fixture.detectChanges();
+
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    fixture.componentInstance.shareToWhatsApp();
+    expect(openSpy).toHaveBeenCalledWith(
+      expect.stringContaining('wa.me'),
+      '_blank',
+      'noreferrer',
+    );
+    expect(openSpy.mock.calls[0][0]).toContain('NextSkill');
+    openSpy.mockRestore();
+  });
+
+  it('shareToX opens twitter intent URL', () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    fixture.componentInstance['loading'].set(false);
+    fixture.componentInstance['matches'] = [
+      {
+        careerId: 'frontend-developer',
+        title: 'Frontend Developer',
+        emoji: '🖥️',
+        score: 90,
+        percentage: 90,
+        matchTier: 'strong',
+      },
+    ];
+    fixture.detectChanges();
+
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    fixture.componentInstance.shareToX();
+    expect(openSpy).toHaveBeenCalledWith(
+      expect.stringContaining('twitter.com/intent/tweet'),
+      '_blank',
+      'noreferrer',
+    );
+    openSpy.mockRestore();
+  });
+
+  it('copyLink copies nextskill.dev URL to clipboard', async () => {
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    fixture.componentInstance['loading'].set(false);
+    fixture.detectChanges();
+
+    const writeSpy = vi
+      .spyOn(navigator.clipboard, 'writeText')
+      .mockResolvedValue(undefined);
+    await fixture.componentInstance.copyLink();
+    expect(writeSpy).toHaveBeenCalledWith('https://nextskill.dev/assessment');
+    writeSpy.mockRestore();
   });
 
   // ─── Tier helpers ────────────────────────────────────────────────

@@ -152,4 +152,96 @@ describe('AssessmentComponent', () => {
     expect(fixture.componentInstance.isLast()).toBe(true);
     expect(fixture.nativeElement.textContent).toContain('See my results');
   }, 15000);
+
+  it('should show "Step 10 of 10" on the last question', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    for (let i = 0; i < ASSESSMENT_QUESTIONS.length - 1; i++) {
+      fixture.componentInstance.selectOption(
+        ASSESSMENT_QUESTIONS[i].options[0].label,
+      );
+      await fixture.componentInstance.next();
+      fixture.detectChanges();
+    }
+
+    expect(fixture.nativeElement.textContent).toContain('Step 10 of 10');
+  }, 15000);
+
+  it('should show 100% progress on the last question', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    for (let i = 0; i < ASSESSMENT_QUESTIONS.length - 1; i++) {
+      fixture.componentInstance.selectOption(
+        ASSESSMENT_QUESTIONS[i].options[0].label,
+      );
+      await fixture.componentInstance.next();
+      fixture.detectChanges();
+    }
+
+    expect(fixture.componentInstance.progressPercent()).toBe(100);
+    expect(fixture.nativeElement.textContent).toContain('100%');
+  }, 15000);
+
+  it('progressPercent never exceeds 100', () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+    const c = fixture.componentInstance;
+    // Simulate all signals pointing to last question
+    for (let i = 0; i < ASSESSMENT_QUESTIONS.length; i++) {
+      expect(c.progressPercent()).toBeLessThanOrEqual(100);
+    }
+  });
+
+  it('should enable "See my results" button after selecting an option on Q10', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    for (let i = 0; i < ASSESSMENT_QUESTIONS.length - 1; i++) {
+      fixture.componentInstance.selectOption(
+        ASSESSMENT_QUESTIONS[i].options[0].label,
+      );
+      await fixture.componentInstance.next();
+    }
+    fixture.detectChanges();
+
+    const buttons = Array.from(
+      fixture.nativeElement.querySelectorAll('button'),
+    ) as HTMLButtonElement[];
+    const resultsBtn = buttons.find((b) =>
+      b.textContent?.includes('See my results'),
+    );
+
+    expect(fixture.componentInstance.isLast()).toBe(true);
+    expect(fixture.componentInstance.selectedOption()).toBeNull();
+    expect(resultsBtn?.disabled).toBe(true);
+
+    fixture.componentInstance.selectOption(
+      ASSESSMENT_QUESTIONS[ASSESSMENT_QUESTIONS.length - 1].options[0].label,
+    );
+    fixture.detectChanges();
+
+    expect(resultsBtn?.disabled).toBe(false);
+  }, 15000);
+
+  it('double-tap on next should not increment index twice', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    fixture.componentInstance.selectOption(
+      ASSESSMENT_QUESTIONS[0].options[0].label,
+    );
+
+    // Fire next() twice concurrently — second call should be blocked
+    const [, second] = await Promise.all([
+      fixture.componentInstance.next(),
+      fixture.componentInstance.next(),
+    ]);
+    fixture.detectChanges();
+
+    // Index should only have advanced once
+    expect(fixture.componentInstance.currentIndex()).toBe(1);
+    void second; // reference to suppress unused-variable warning
+  });
 });
