@@ -20,14 +20,33 @@ export interface AssessmentOption {
   signals: CareerSignal[];
 }
 
+export interface AssessmentCategory {
+  id: number;
+  slug: string;
+  label: string;
+  emoji: string;
+  totalQuestions: number;
+}
+
 export interface AssessmentQuestion {
   id: number;
+  category: AssessmentCategory;
+  categoryLabel: string;
   text: string;
   subtitle?: string;
   options: AssessmentOption[];
 }
 
 export type MatchTier = 'strong' | 'good' | 'possible';
+
+export interface CategoryBreakdown {
+  workStyle: number;
+  dayToDay: number;
+  problemSolving: number;
+  temperament: number;
+  softSkills: number;
+  careerGoals: number;
+}
 
 export interface CareerMatch {
   careerId: string;
@@ -36,6 +55,7 @@ export interface CareerMatch {
   score: number;
   percentage: number;
   matchTier: MatchTier;
+  categoryBreakdown: CategoryBreakdown;
 }
 
 export type CareerCategory =

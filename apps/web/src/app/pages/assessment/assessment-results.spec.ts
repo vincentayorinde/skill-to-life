@@ -64,16 +64,45 @@ function createCanvasDownloadMock() {
 }
 
 const FULL_ANSWERS: Record<number, string> = {
-  0: 'Building apps',
-  1: 'Jumping in and trying it',
-  2: 'I enjoy it or want to learn',
-  3: 'Fast career growth',
-  4: 'I break them down step by step',
-  5: 'A mix of both',
-  6: 'Fairly comfortable',
-  7: 'A working app or feature',
-  8: 'Some professional experience',
-  9: 'Get a job in tech',
+  0: 'Jump straight in and learn by doing',
+  1: 'Something different every single day',
+  2: 'I enjoy it or actively want to learn',
+  3: 'Something visual I can see and use',
+  4: 'Fine for a few hours then I need people',
+  5: 'Will do it but it is not my favourite',
+  6: 'The bug — it feels more immediately satisfying',
+  7: 'Getting started on something straight away',
+  8: 'Looking at how it looks and feels to use',
+  9: 'Fine — it is just part of the job',
+  10: 'Reproduce the issue locally before touching anything',
+  11: 'Break it into smaller pieces and start there',
+  12: 'Fix it yourself first then tell someone',
+  13: 'Draw a diagram or visual to illustrate it',
+  14: 'Find the bottleneck and fix that first',
+  15: 'I genuinely appreciate it — it helps me improve',
+  16: 'Feel frustrated but handle it',
+  17: 'I can do them but I immediately look to automate',
+  18: 'Make a call and own it',
+  19: 'I ship something people actually use',
+  20: 'Fix it for them and explain what you did',
+  21: 'Raise it once clearly then commit to the decision',
+  22: 'Share prototypes early and get feedback often',
+  23: 'Make something easier or better for everyday people',
+  24: 'The one who bridges tech and non-technical people',
+  25: 'Still learning broadly — I want breadth not depth',
+  26: 'I built systems used by millions of people',
+  27: 'Important but not the main driver',
+  28: 'Excites me — that is genuinely the goal',
+  29: 'I genuinely enjoy my work most days',
+};
+
+const CATEGORY_BREAKDOWN = {
+  workStyle: 80,
+  dayToDay: 60,
+  problemSolving: 50,
+  temperament: 40,
+  softSkills: 70,
+  careerGoals: 90,
 };
 
 describe('AssessmentResultsComponent', () => {
@@ -81,6 +110,7 @@ describe('AssessmentResultsComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    sessionStorage.clear();
     // Restore any spies (e.g. document.createElement) so they don't bleed between tests.
     vi.restoreAllMocks();
     await TestBed.configureTestingModule({
@@ -167,6 +197,22 @@ describe('AssessmentResultsComponent', () => {
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
     expect(fixture.componentInstance.topInsight.length).toBeGreaterThan(0);
+  });
+
+  it('should show category breakdown for the top match', async () => {
+    vi.useFakeTimers();
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Signal breakdown');
+    expect(text).toContain('Work Style');
+    expect(text).toContain('Career Goals');
+    vi.useRealTimers();
   });
 
   // ─── Match cards ────────────────────────────────────────────────
@@ -457,6 +503,7 @@ describe('AssessmentResultsComponent', () => {
         score: 90,
         percentage: 90,
         matchTier: 'strong',
+        categoryBreakdown: CATEGORY_BREAKDOWN,
       },
     ];
     fixture.detectChanges();
@@ -485,6 +532,7 @@ describe('AssessmentResultsComponent', () => {
         score: 90,
         percentage: 90,
         matchTier: 'strong',
+        categoryBreakdown: CATEGORY_BREAKDOWN,
       },
     ];
     fixture.detectChanges();

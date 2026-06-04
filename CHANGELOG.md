@@ -7,6 +7,25 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased] — Expanded Conversational Assessment
+
+### Added
+
+- 30-question scenario-based assessment across 6 categories: Work Style, Day to Day, Problem Solving, Temperament, Soft Skills, and Career Goals
+- Category-aware progress display with section labels, overall 30-question progress, section indicators, and transition cards between categories
+- Category microcopy tailored to each section
+- `categoryBreakdown` on `CareerMatch`, showing six category percentages for each scored career
+- Category breakdown bars in the results page "Why this fits you" section
+- Session storage persistence for all assessment answers during the browser session
+
+### Changed
+
+- Assessment scoring now uses 30 question indexes and returns the top 5 ranked matches
+- Shared assessment question types now include category metadata
+- Scoring documentation updated for the 30-question signal map and category breakdown model
+
+---
+
 ## [Unreleased] — Assessment UX Improvements
 
 ### Added
@@ -24,6 +43,8 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Exit button in assessment header is now a `<button>` with `(click)="exitAssessment()"` — retains CanDeactivate guard behaviour while allowing sessionStorage to be managed explicitly
 - Assessment saves to sessionStorage on `selectOption()` so pending selections survive a refresh
 - Assessment clears sessionStorage on completion (before navigating to results)
+
+---
 
 ## [1.0.0] — Stable Public Launch
 
