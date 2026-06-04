@@ -185,3 +185,8 @@ Production-ready public launch.
 - Features: Career path comparison view (side-by-side)
 - Internationalisation: Non-UK salary data for US, EU, and Asia-Pacific
 - Community: Public API for career data
+- Expanded 30-question conversational assessment with category scoring breakdown
+- Performance and accessibility audit
+- SEO and Open Graph
+- Marketing site refinements
+- Community and contribution onboarding

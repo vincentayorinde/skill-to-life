@@ -8,139 +8,140 @@ It is intended for contributors who want to improve or extend the weights.
 ## Overview
 
 The scoring engine lives in `libs/shared/scoring/src/lib/score-assessment.ts`.
-It takes a map of question answers and returns all 14 careers ranked by how
-well they match, expressed as a normalised percentage.
+It scores the 30-question conversational assessment against the 26-career
+library and returns the top 5 matches.
 
-```
+```typescript
 scoreAssessment(answers: Record<number, string>): CareerMatch[]
 ```
 
-- **Input** — `answers` maps question index (0–9) to the selected option label.
-  Missing keys are treated as no signal for that question (same as skipping).
-- **Output** — all 14 careers sorted highest to lowest by `percentage`.
+- **Input** — `answers` maps question index `0`-`29` to the selected option
+  label. Missing keys are treated as no signal for that question.
+- **Output** — top 5 careers sorted highest to lowest by `percentage`.
   Returns `[]` if `answers` is empty.
+
+---
+
+## Categories
+
+The assessment has 6 categories with 5 questions each:
+
+| Question indexes | Category        | Breakdown key    |
+| ---------------- | --------------- | ---------------- |
+| 0-4              | Work Style      | `workStyle`      |
+| 5-9              | Day to Day      | `dayToDay`       |
+| 10-14            | Problem Solving | `problemSolving` |
+| 15-19            | Temperament     | `temperament`    |
+| 20-24            | Soft Skills     | `softSkills`     |
+| 25-29            | Career Goals    | `careerGoals`    |
+
+Each returned `CareerMatch` includes `categoryBreakdown`, a percentage for each
+category showing how much that section supported the match.
 
 ---
 
 ## Signal Map
 
-`assessment-data.ts` defines `QUESTION_SIGNALS`:
+`assessment-data.ts` defines the full 30-question signal table:
 
-```
+```typescript
 QUESTION_SIGNALS[questionIndex][optionLabel] = CareerSignal[]
 ```
 
 Each `CareerSignal` has:
 
-- `careerId` — matches a career slug in `CAREER_PATHS` (e.g. `frontend-developer`)
-- `weight` — how strongly this option points to that career (1–5)
+- `careerId` — a career slug in `CAREER_PATHS`, such as `frontend-developer`
+- `weight` — how strongly this option points to that career, from 1 to 5
 
-**Weight guidelines:**
-| Weight | Meaning |
-|--------|---------|
-| 5 | Definitive signal — the answer strongly points here |
-| 4 | Strong signal |
-| 3 | Moderate signal |
-| 2 | Mild signal |
-| 1 | Weak signal (used for "all careers" options) |
+| Weight | Meaning                |
+| ------ | ---------------------- |
+| 5      | Definitive signal      |
+| 4      | Strong signal          |
+| 3      | Moderate signal        |
+| 2      | Mild signal            |
+| 1      | Weak or neutral signal |
 
-Question 1 (work type preference) uses weights 4–5 because it is the highest
-signal question. Environment (Q6) and experience level (Q9) use weight 1 since
-they are supplementary signals.
+The source-of-truth mappings are in
+`libs/shared/scoring/src/lib/assessment-data.ts`. Keep option labels exactly in
+sync with `apps/web/src/app/pages/assessment/questions.data.ts`.
 
 ---
 
 ## Scoring Steps
 
-### 1. Raw score
+### 1. Raw Score
 
-For each answer the user gave, look up the matching signals and add each
-`weight` to that career's running total:
-
-```
-raw[careerId] += signal.weight
-```
-
-### 2. Maximum possible score
-
-The max score per career is pre-computed once at module load from the static
-signal map. For each question, the career's max contribution is the highest
-weight it appears with in any single option on that question. If the career
-does not appear in any option for a question, its max from that question is 0
-(the question does not inflate its denominator).
-
-```
-maxScore[careerId] = Σ (max weight for career across all options, per question)
-```
-
-### 3. Normalised percentage
-
-```
-percentage = round((raw[careerId] / maxScore[careerId]) × 100)
-```
-
-This means a career that scores perfectly on all questions where it has
-signals will reach 100%, regardless of how many questions it appears in.
-
-### 4. Match tier
-
-| Tier       | Threshold            |
-| ---------- | -------------------- |
-| `strong`   | percentage ≥ 75      |
-| `good`     | 50 ≤ percentage < 75 |
-| `possible` | percentage < 50      |
-
-### 5. Sort
-
-Results are sorted descending by percentage. JavaScript's `Array.sort` is
-stable in all modern environments, so careers with equal percentages keep their
-original `ALL_CAREER_IDS` order.
-
----
-
-## Adding or Adjusting Weights
-
-1. Open `libs/shared/scoring/src/lib/assessment-data.ts`.
-2. Find the question index and option label you want to change.
-3. Add, remove, or change `{ careerId, weight }` entries in the signals array.
-4. Run the test suite to verify no regressions:
-   ```
-   pnpm nx test scoring
-   ```
-5. If you add a new career, also add its ID to `ALL_CAREER_IDS` and add a full
-   `CareerPath` entry to `libs/shared/types/src/lib/careers.data.ts`.
-
----
-
-## "All careers" Options
-
-Some options (e.g. "A mix of both" for work environment, "Learn a valuable
-skill" for main goal) are neutral signals that apply to every career with
-weight 1. These use the `all(weight)` helper in `assessment-data.ts`:
+For each answer, the scorer looks up its signals and adds the weight to the
+career's running score:
 
 ```typescript
-function all(weight: number): CareerSignal[] {
-  return ALL_CAREER_IDS.map((careerId) => ({ careerId, weight }));
-}
+raw[careerId] += signal.weight;
 ```
 
-This ensures that selecting a neutral option slightly boosts all careers
-rather than leaving some careers without any signal from that question.
+Signals for career ids that are not present in the current 26-career library
+are ignored safely.
+
+### 2. Maximum Possible Score
+
+The max score per career is precomputed from the static signal map. For each
+question, a career's max contribution is the highest weight it appears with in
+any single option. If a career does not appear in that question, the question
+does not increase its denominator.
+
+```typescript
+maxScore[careerId] = sum(max career weight per question)
+```
+
+### 3. Normalized Percentage
+
+```typescript
+percentage = round((raw[careerId] / maxScore[careerId]) * 100);
+```
+
+This lets a career reach 100% when the user consistently chooses the strongest
+available signals for that career.
+
+### 4. Match Tier
+
+| Tier       | Threshold |
+| ---------- | --------- |
+| `strong`   | 75%+      |
+| `good`     | 50-74%    |
+| `possible` | below 50% |
+
+### 5. Category Breakdown
+
+The scorer repeats the same normalization inside each five-question category:
+
+```typescript
+categoryBreakdown.workStyle = round(
+  (rawWorkStyle[careerId] / maxWorkStyle[careerId]) * 100,
+);
+```
+
+The results page shows these six percentages as mini bars under "Why this fits
+you."
+
+### 6. Sort And Trim
+
+Results are sorted descending by percentage. Ties preserve `ALL_CAREER_IDS`
+order, then the scorer returns the top 5 matches.
 
 ---
 
-## Running Tests
+## Updating Weights
+
+1. Open `libs/shared/scoring/src/lib/assessment-data.ts`.
+2. Find the question index and option label.
+3. Adjust `{ careerId, weight }` entries.
+4. Keep every question mapped to exactly 4 option labels.
+5. Run:
 
 ```bash
 pnpm nx test scoring
+pnpm nx test web
 ```
 
-The test suite covers:
-
-- Empty input returns `[]`
-- All 14 careers appear in results for any valid input
-- Correct top career for known answer combinations
-- Percentages are integers between 0 and 100
-- Tier assignment matches thresholds
-- Partial answer sets score correctly
-- Tie-breaking preserves `ALL_CAREER_IDS` order
+If you add a new career id, also add a full `CareerPath` entry in
+`libs/shared/types/src/lib/careers.data.ts` and update related roadmap, salary,
+and entrepreneurship datasets as needed.

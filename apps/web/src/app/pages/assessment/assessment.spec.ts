@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { AssessmentComponent } from './assessment';
-import { ASSESSMENT_QUESTIONS } from './questions.data';
+import { ASSESSMENT_CATEGORIES, ASSESSMENT_QUESTIONS } from './questions.data';
+import { AssessmentStateService } from '../../services/assessment-state.service';
 
 describe('AssessmentComponent', () => {
   beforeEach(async () => {
+    sessionStorage.clear();
     await TestBed.configureTestingModule({
       imports: [AssessmentComponent, RouterModule.forRoot([])],
     }).compileComponents();
@@ -24,12 +26,53 @@ describe('AssessmentComponent', () => {
     expect(text).toContain(ASSESSMENT_QUESTIONS[0].text);
   });
 
-  it('should show Step 1 of 10 on load', async () => {
+  it('should include all 30 questions across 6 categories', () => {
+    expect(ASSESSMENT_QUESTIONS).toHaveLength(30);
+    expect(ASSESSMENT_CATEGORIES).toHaveLength(6);
+
+    for (const category of ASSESSMENT_CATEGORIES) {
+      const questions = ASSESSMENT_QUESTIONS.filter(
+        (question) => question.category.slug === category.slug,
+      );
+      expect(questions).toHaveLength(5);
+    }
+  });
+
+  it('should assign the correct category metadata to every question', () => {
+    ASSESSMENT_QUESTIONS.forEach((question, index) => {
+      const category = ASSESSMENT_CATEGORIES[Math.floor(index / 5)];
+
+      expect(question.category).toEqual(category);
+      expect(question.categoryLabel).toBe(category.label);
+    });
+  });
+
+  it('should save and restore all 30 answers from session storage', () => {
+    const answers = Object.fromEntries(
+      ASSESSMENT_QUESTIONS.map((question, index) => [
+        index,
+        question.options[0].label,
+      ]),
+    ) as Record<number, string>;
+
+    const service = new AssessmentStateService();
+    service.save(answers);
+
+    const restored = new AssessmentStateService();
+
+    expect(Object.keys(restored.answers())).toHaveLength(30);
+    expect(restored.answers()).toEqual(answers);
+  });
+
+  it('should show section and question progress on load', async () => {
     const fixture = TestBed.createComponent(AssessmentComponent);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.textContent).toContain('Step 1 of 10');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Section 1 of 6 — 💼 Work Style',
+    );
+    expect(fixture.nativeElement.textContent).toContain('Question 1 of 30');
   });
 
   it('should disable Next button until an option is selected', async () => {
@@ -66,7 +109,7 @@ describe('AssessmentComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.currentIndex()).toBe(1);
-    expect(fixture.nativeElement.textContent).toContain('Step 2 of 10');
+    expect(fixture.nativeElement.textContent).toContain('Question 2 of 30');
   });
 
   it('should go back to question 1 after Back is clicked on question 2', async () => {
@@ -107,7 +150,7 @@ describe('AssessmentComponent', () => {
     const fixture = TestBed.createComponent(AssessmentComponent);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.progressPercent()).toBe(10);
+    expect(fixture.componentInstance.progressPercent()).toBe(3);
 
     fixture.componentInstance.selectOption(
       ASSESSMENT_QUESTIONS[0].options[0].label,
@@ -115,7 +158,50 @@ describe('AssessmentComponent', () => {
     await fixture.componentInstance.next();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.progressPercent()).toBe(20);
+    expect(fixture.componentInstance.progressPercent()).toBe(7);
+  });
+
+  it('shows the correct category label when crossing a section boundary', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    for (let i = 0; i < 5; i++) {
+      fixture.componentInstance.selectOption(
+        ASSESSMENT_QUESTIONS[i].options[0].label,
+      );
+      await fixture.componentInstance.next();
+      fixture.detectChanges();
+    }
+
+    expect(fixture.componentInstance.currentIndex()).toBe(5);
+    expect(fixture.nativeElement.textContent).toContain(
+      'Section 2 of 6 — 📅 Day to Day',
+    );
+  }, 4000);
+
+  it('shows a category transition at question boundaries', async () => {
+    const fixture = TestBed.createComponent(AssessmentComponent);
+    fixture.detectChanges();
+
+    for (let i = 0; i < 4; i++) {
+      fixture.componentInstance.selectOption(
+        ASSESSMENT_QUESTIONS[i].options[0].label,
+      );
+      await fixture.componentInstance.next();
+    }
+
+    fixture.componentInstance.selectOption(
+      ASSESSMENT_QUESTIONS[4].options[0].label,
+    );
+    const transition = fixture.componentInstance.next();
+    await new Promise((resolve) => setTimeout(resolve, 175));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.showCategoryTransition()).toBe(true);
+    expect(fixture.nativeElement.textContent).toContain('Next up');
+
+    fixture.componentInstance.skipCategoryTransition();
+    await transition;
   });
 
   it('should report hasAnswers() as false before any selection', () => {
@@ -153,7 +239,7 @@ describe('AssessmentComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('See my results');
   }, 15000);
 
-  it('should show "Step 10 of 10" on the last question', async () => {
+  it('should show "Question 30 of 30" on the last question', async () => {
     const fixture = TestBed.createComponent(AssessmentComponent);
     fixture.detectChanges();
 
@@ -165,7 +251,7 @@ describe('AssessmentComponent', () => {
       fixture.detectChanges();
     }
 
-    expect(fixture.nativeElement.textContent).toContain('Step 10 of 10');
+    expect(fixture.nativeElement.textContent).toContain('Question 30 of 30');
   }, 15000);
 
   it('should show 100% progress on the last question', async () => {
@@ -181,7 +267,6 @@ describe('AssessmentComponent', () => {
     }
 
     expect(fixture.componentInstance.progressPercent()).toBe(100);
-    expect(fixture.nativeElement.textContent).toContain('100%');
   }, 15000);
 
   it('progressPercent never exceeds 100', () => {
@@ -194,7 +279,7 @@ describe('AssessmentComponent', () => {
     }
   });
 
-  it('should enable "See my results" button after selecting an option on Q10', async () => {
+  it('should enable "See my results" button after selecting an option on Q30', async () => {
     const fixture = TestBed.createComponent(AssessmentComponent);
     fixture.detectChanges();
 

@@ -304,6 +304,38 @@ import { environment } from '../../../environments/environment';
                     </span>
                   }
                 </div>
+                <div
+                  class="mt-6 border-t border-ns-border pt-5"
+                  aria-label="Category match breakdown"
+                >
+                  <p
+                    class="m-0 text-xs font-bold uppercase tracking-[0.14em] text-ns-muted"
+                  >
+                    Signal breakdown
+                  </p>
+                  <div class="mt-4 grid gap-3">
+                    @for (item of topCategoryBreakdown(); track item.key) {
+                      <div class="grid gap-1.5">
+                        <div class="flex items-center justify-between gap-3">
+                          <span class="text-xs font-semibold text-ns-text">
+                            {{ item.label }}
+                          </span>
+                          <span class="text-xs font-bold text-ns-muted">
+                            {{ item.value }}%
+                          </span>
+                        </div>
+                        <div
+                          class="h-2 overflow-hidden rounded-full bg-white/10"
+                        >
+                          <div
+                            class="h-full rounded-full bg-ns-primary transition-all duration-700"
+                            [style.width.%]="animated() ? item.value : 0"
+                          ></div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
               </div>
             </section>
           }
@@ -1145,6 +1177,32 @@ export class AssessmentResultsComponent implements OnInit {
 
   altCardLabel(tier: MatchTier): string {
     return tier === 'possible' ? 'Worth exploring' : 'Also a strong fit';
+  }
+
+  topCategoryBreakdown() {
+    const breakdown = this.matches[0]?.categoryBreakdown;
+    if (!breakdown) return [];
+
+    return [
+      { key: 'workStyle', label: 'Work Style', value: breakdown.workStyle },
+      { key: 'dayToDay', label: 'Day to Day', value: breakdown.dayToDay },
+      {
+        key: 'problemSolving',
+        label: 'Problem Solving',
+        value: breakdown.problemSolving,
+      },
+      {
+        key: 'temperament',
+        label: 'Temperament',
+        value: breakdown.temperament,
+      },
+      { key: 'softSkills', label: 'Soft Skills', value: breakdown.softSkills },
+      {
+        key: 'careerGoals',
+        label: 'Career Goals',
+        value: breakdown.careerGoals,
+      },
+    ];
   }
 
   salaryRangeLabel(min: number, max: number, currency: string): string {
