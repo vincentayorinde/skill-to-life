@@ -135,6 +135,9 @@ export class CareersComponent {
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Go independent', routerLink: '/entrepreneurship' },
+    { label: 'Resources', routerLink: '/resources' },
     {
       label: 'Open source',
       href: 'https://github.com/vincentayorinde/nextskill',

@@ -6,8 +6,22 @@ import { Meta, Title } from '@angular/platform-browser';
 import { NsButtonComponent, NsBadgeComponent, NsToastComponent } from 'ui';
 import { generateResultCard } from '../../assessment/results/card-generator';
 import { scoreAssessment } from 'scoring';
-import type { CareerMatch, MatchTier, CareerPath, CareerRoadmap } from 'types';
-import { getCareerBySlug, getRoadmapByCareerId } from 'types';
+import type {
+  CareerMatch,
+  MatchTier,
+  CareerPath,
+  CareerRoadmap,
+  CareerSalaryData,
+  CareerEntrepreneurshipData,
+} from 'types';
+import {
+  getCareerBySlug,
+  getRoadmapByCareerId,
+  getSalaryDataByCareerId,
+  getEntrepreneurshipDataByCareerId,
+  getEasiestPath,
+  formatSalaryRange,
+} from 'types';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { environment } from '../../../environments/environment';
@@ -518,17 +532,78 @@ import { environment } from '../../../environments/environment';
               >
                 Earning potential
               </h2>
-              <div
-                class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-6"
-              >
-                <p class="m-0 text-sm font-medium leading-6 text-ns-text">
-                  {{ topCareer.salaryInsight }}
-                </p>
-                <p class="m-0 mt-3 text-xs leading-5 text-ns-muted">
-                  Salaries vary by location, experience, and employer. These are
-                  general estimates.
-                </p>
-              </div>
+              @if (topSalaryData) {
+                <div
+                  class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-6"
+                >
+                  <p class="m-0 text-sm leading-6 text-ns-muted">
+                    {{ topSalaryData.summary }}
+                  </p>
+                  <div class="mt-4 space-y-3">
+                    @for (
+                      range of topSalaryData.ranges.slice(0, 2);
+                      track range.level
+                    ) {
+                      <div>
+                        <div class="mb-1 flex items-center justify-between">
+                          <span
+                            class="rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
+                            [class]="levelBadgeClass(range.level)"
+                            >{{ range.level }}</span
+                          >
+                          <span class="text-xs font-semibold text-ns-text">{{
+                            salaryRangeLabel(
+                              range.min,
+                              range.max,
+                              range.currency
+                            )
+                          }}</span>
+                        </div>
+                        <div
+                          class="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
+                        >
+                          <div
+                            class="h-full rounded-full"
+                            [class]="levelBarClass(range.level)"
+                            [style.width.%]="salaryBarWidth(range.max)"
+                          ></div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                  @if (topSalaryData.freelanceRate) {
+                    <p class="mt-3 text-xs text-ns-muted">
+                      Freelance day rate:
+                      <span class="font-semibold text-ns-text"
+                        >{{
+                          salaryRangeLabel(
+                            topSalaryData.freelanceRate.daily.min,
+                            topSalaryData.freelanceRate.daily.max,
+                            topSalaryData.freelanceRate.daily.currency
+                          )
+                        }}/day</span
+                      >
+                    </p>
+                  }
+                  <a
+                    [routerLink]="['/careers', matches[0].careerId]"
+                    class="mt-3 inline-flex text-xs font-semibold text-ns-primary no-underline hover:underline"
+                  >
+                    Full salary breakdown →
+                  </a>
+                </div>
+              } @else {
+                <div
+                  class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-6"
+                >
+                  <p class="m-0 text-sm font-medium leading-6 text-ns-text">
+                    {{ topCareer.salaryInsight }}
+                  </p>
+                  <p class="m-0 mt-3 text-xs leading-5 text-ns-muted">
+                    Salaries vary by location, experience, and employer.
+                  </p>
+                </div>
+              }
             </section>
 
             <!-- ─── Section 7: Entrepreneurship Angle ────────────── -->
@@ -543,23 +618,57 @@ import { environment } from '../../../environments/environment';
               >
                 Going independent
               </h2>
-              <p class="mt-1 text-sm text-ns-muted">
-                Many {{ matches[0].title }}s freelance or build their own
-                products. Here are some directions people take.
-              </p>
-              <div class="mt-5 flex flex-col gap-3">
-                @for (
-                  idea of topCareer.entrepreneurshipIdeas.slice(0, 2);
-                  track idea
-                ) {
-                  <div
-                    class="flex items-center gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
-                  >
-                    <span class="text-xl" aria-hidden="true">💡</span>
-                    <p class="m-0 text-sm text-ns-text">{{ idea }}</p>
+              @if (topEntrepreneurshipData && easiestEntrepreneurshipPath) {
+                <p class="mt-1 text-sm text-ns-muted">
+                  {{ topEntrepreneurshipData.summary }}
+                </p>
+                <div
+                  class="mt-5 rounded-2xl border border-ns-border bg-ns-card p-5"
+                >
+                  <div class="flex flex-wrap items-start gap-2">
+                    <p class="m-0 flex-1 text-sm font-bold text-ns-text">
+                      {{ easiestEntrepreneurshipPath.title }}
+                    </p>
+                    <span
+                      class="rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-semibold text-emerald-400"
+                      >Low barrier</span
+                    >
                   </div>
-                }
-              </div>
+                  <p class="mt-1 text-xs text-ns-muted">
+                    ⏱
+                    {{ easiestEntrepreneurshipPath.timeToFirstIncome }} to first
+                    income ·
+                    {{ easiestEntrepreneurshipPath.potentialIncome }}
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-ns-muted">
+                    {{ easiestEntrepreneurshipPath.description }}
+                  </p>
+                </div>
+                <a
+                  [routerLink]="['/careers', matches[0].careerId]"
+                  class="mt-4 inline-flex text-xs font-semibold text-ns-primary no-underline hover:underline"
+                >
+                  See all independent paths →
+                </a>
+              } @else {
+                <p class="mt-1 text-sm text-ns-muted">
+                  Many {{ matches[0].title }}s freelance or build their own
+                  products.
+                </p>
+                <div class="mt-5 flex flex-col gap-3">
+                  @for (
+                    idea of topCareer.entrepreneurshipIdeas.slice(0, 2);
+                    track idea
+                  ) {
+                    <div
+                      class="flex items-center gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
+                    >
+                      <span class="text-xl" aria-hidden="true">💡</span>
+                      <p class="m-0 text-sm text-ns-text">{{ idea }}</p>
+                    </div>
+                  }
+                </div>
+              }
             </section>
           }
 
@@ -825,6 +934,8 @@ export class AssessmentResultsComponent implements OnInit {
   matches: CareerMatch[] = [];
   topCareer: CareerPath | null = null;
   topRoadmap: CareerRoadmap | null = null;
+  topSalaryData: CareerSalaryData | null = null;
+  topEntrepreneurshipData: CareerEntrepreneurshipData | null = null;
   answerCount = 0;
   canNativeShare = false;
 
@@ -884,6 +995,39 @@ export class AssessmentResultsComponent implements OnInit {
     return tier === 'possible' ? 'Worth exploring' : 'Also a strong fit';
   }
 
+  salaryRangeLabel(min: number, max: number, currency: string): string {
+    return formatSalaryRange(min, max, currency);
+  }
+
+  salaryBarWidth(max: number): number {
+    return Math.min(Math.round((max / 180000) * 100), 100);
+  }
+
+  levelBadgeClass(level: string): string {
+    const map: Record<string, string> = {
+      junior: 'bg-blue-500/20 text-blue-400',
+      mid: 'bg-purple-500/20 text-purple-400',
+      senior: 'bg-emerald-500/20 text-emerald-400',
+      lead: 'bg-amber-500/20 text-amber-400',
+    };
+    return map[level] ?? 'bg-white/10 text-ns-muted';
+  }
+
+  levelBarClass(level: string): string {
+    const map: Record<string, string> = {
+      junior: 'bg-blue-500',
+      mid: 'bg-purple-500',
+      senior: 'bg-emerald-500',
+      lead: 'bg-amber-500',
+    };
+    return map[level] ?? 'bg-ns-primary';
+  }
+
+  get easiestEntrepreneurshipPath() {
+    if (!this.topEntrepreneurshipData) return null;
+    return getEasiestPath(this.topEntrepreneurshipData.careerId) ?? null;
+  }
+
   ngOnInit(): void {
     this.hasResults = this.stateService.hasResults();
     this.answerCount = Object.keys(this.stateService.answers()).length;
@@ -894,6 +1038,10 @@ export class AssessmentResultsComponent implements OnInit {
         this.topCareer = getCareerBySlug(this.matches[0].careerId) ?? null;
         this.topRoadmap =
           getRoadmapByCareerId(this.matches[0].careerId) ?? null;
+        this.topSalaryData =
+          getSalaryDataByCareerId(this.matches[0].careerId) ?? null;
+        this.topEntrepreneurshipData =
+          getEntrepreneurshipDataByCareerId(this.matches[0].careerId) ?? null;
         this.setMetaTags();
         this.saveResult();
       }

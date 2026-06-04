@@ -93,6 +93,51 @@ export interface ResourceLink {
   url?: string;
 }
 
+// ─── Salary types ──────────────────────────────────────────────────────────
+
+export interface SalaryRange {
+  level: 'junior' | 'mid' | 'senior' | 'lead';
+  min: number;
+  max: number;
+  currency: 'GBP' | 'USD' | 'EUR';
+  location: string;
+}
+
+export interface CareerSalaryData {
+  careerId: string;
+  lastUpdated: string;
+  summary: string;
+  ranges: SalaryRange[];
+  freelanceRate?: {
+    daily: { min: number; max: number; currency: string };
+    hourly: { min: number; max: number; currency: string };
+  };
+  factors: string[];
+  regionalNote: string;
+  sources: string[];
+}
+
+// ─── Entrepreneurship types ────────────────────────────────────────────────
+
+export interface EntrepreneurshipPath {
+  title: string;
+  description: string;
+  difficulty: 'low' | 'medium' | 'high';
+  timeToFirstIncome: string;
+  potentialIncome: string;
+  examples: string[];
+  gettingStarted: string[];
+}
+
+export interface CareerEntrepreneurshipData {
+  careerId: string;
+  summary: string;
+  paths: EntrepreneurshipPath[];
+  successStories: string[];
+  tools: string[];
+  communities: string[];
+}
+
 export interface SavedResult {
   id: string;
   topCareer: string;

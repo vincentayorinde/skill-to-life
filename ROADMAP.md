@@ -55,7 +55,7 @@ Static career data layer with full listing and detail pages.
 - Angular lazy-loaded routes and scroll restoration
 - RouterLink support in app shell navigation
 
-## 🚧 v0.11.0 — Roadmaps & Resources
+## ✅ v0.11.0 — Roadmaps & Resources
 
 Full structured learning roadmaps and a browsable resource directory.
 
@@ -68,7 +68,7 @@ Full structured learning roadmaps and a browsable resource directory.
 
 ---
 
-## 🚧 v0.5.1 — Career Library Expansion
+## ✅ v0.5.1 — Career Library Expansion
 
 12 specialist and advanced career paths added to the library.
 
@@ -144,23 +144,17 @@ Google sign-in and result persistence.
 
 ---
 
-## 🔜 v0.11.0 — Roadmaps & Resources
+## ✅ v0.12.0 — Salary & Entrepreneurship Insights
 
-Full beginner roadmaps and curated resource lists per career.
+Real salary data and independent paths for every career.
 
-- Detailed week-by-week roadmaps
-- Verified free and paid resource links
-- Difficulty-gated roadmap sections
-
----
-
-## 🔜 v0.12.0 — Salary & Entrepreneurship Insights
-
-Structured salary data and entrepreneurship paths.
-
-- Salary ranges by role, location, and experience
-- Freelancing and consulting ideas
-- Side project and SaaS ideas per path
+- UK GBP salary ranges for all 26 careers — junior, mid, senior, lead levels with freelance day/hourly rates
+- `/salaries` page — sortable salary overview across all careers with visual range display
+- `/entrepreneurship` page — filterable independent paths: freelance, consulting, passive income, products
+- Rich salary and entrepreneurship sections on every `/careers/:slug` detail page
+- Assessment results upgraded to use real structured salary and easiest-path data
+- "Salaries" and "Go independent" added to main navigation
+- Tests for all 26 salary entries and all 26 entrepreneurship entries
 
 ---
 
