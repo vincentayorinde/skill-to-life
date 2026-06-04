@@ -43,6 +43,18 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'salaries',
+    loadComponent: () =>
+      import('./pages/salaries/salaries').then((m) => m.SalariesComponent),
+  },
+  {
+    path: 'entrepreneurship',
+    loadComponent: () =>
+      import('./pages/entrepreneurship/entrepreneurship').then(
+        (m) => m.EntrepreneurshipComponent,
+      ),
+  },
+  {
     path: 'resources',
     loadComponent: () =>
       import('./pages/resources/resources').then((m) => m.ResourcesComponent),

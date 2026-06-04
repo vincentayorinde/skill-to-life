@@ -7,6 +7,33 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [0.12.0] — Salary & Entrepreneurship Insights
+
+### Added
+
+- `SalaryRange`, `CareerSalaryData`, `EntrepreneurshipPath`, `CareerEntrepreneurshipData` interfaces in `libs/shared/types`
+- `salary.data.ts` — real UK GBP salary data for all 26 careers with junior/mid/senior/lead ranges, freelance day and hourly rates, salary factors, regional notes, and sources
+- `entrepreneurship.data.ts` — detailed independent paths for all 26 careers with difficulty ratings, time-to-first-income estimates, potential income ranges, real examples, getting-started steps, tools, and communities
+- `getSalaryDataByCareerId()`, `getEntrepreneurshipDataByCareerId()`, `getEasiestPath()`, and `formatSalaryRange()` helper functions
+- `/salaries` page — sortable grid of all 26 career salary cards (sort by highest paid, best entry level, A–Z) with junior/senior ranges, freelance badge, and disclaimer
+- `/entrepreneurship` page — filterable grid of all 26 career independent paths (filter by low barrier, passive income, freelance, consulting) with easiest path preview and time-to-income
+- Salary section on `/careers/:slug` — visual progress bars colour-coded by level (junior blue, mid purple, senior green, lead gold), freelance day/hourly rate cards, salary factors list, regional note, and sources
+- Entrepreneurship section on `/careers/:slug` — full paths with difficulty badges, time-to-income pills, income ranges, examples, numbered getting-started steps, and communities/tools tags
+- Assessment results — salary section now shows structured ranges with visual bars and freelance rate; entrepreneurship section now shows the easiest path with title, income, and time-to-income
+- "Salaries" and "Go independent" added to main navigation on all pages
+- `salary.data.spec.ts` — tests for all 26 salary entries, range validity, field completeness, format helper
+- `entrepreneurship.data.spec.ts` — tests for all 26 entrepreneurship entries, path count, field completeness, difficulty values, getEasiestPath helper
+- `docs/salary-data-guide.md` — guide for salary data structure, update process, and sources
+- `docs/entrepreneurship-guide.md` — guide for entrepreneurship path structure and content guidelines
+
+### Changed
+
+- Assessment results salary section upgraded from plain `salaryInsight` string to structured ranges with visual bars
+- Assessment results entrepreneurship section upgraded from `entrepreneurshipIdeas` list to structured easiest-path card with real income and time data
+- All page navigation updated to include Salaries and Go independent links
+
+---
+
 ## [Unreleased] — Roadmaps & Resources
 
 ### Added

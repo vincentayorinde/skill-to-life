@@ -8,8 +8,19 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
 } from 'ui';
-import type { CareerPath, CareerRoadmap } from 'types';
-import { getCareerBySlug, getRoadmapByCareerId } from 'types';
+import type {
+  CareerPath,
+  CareerRoadmap,
+  CareerSalaryData,
+  CareerEntrepreneurshipData,
+} from 'types';
+import {
+  getCareerBySlug,
+  getRoadmapByCareerId,
+  getSalaryDataByCareerId,
+  getEntrepreneurshipDataByCareerId,
+  formatSalaryRange,
+} from 'types';
 
 @Component({
   selector: 'app-career-detail',
@@ -249,38 +260,269 @@ import { getCareerBySlug, getRoadmapByCareerId } from 'types';
                   </ns-card>
                 }
 
-                <!-- Entrepreneurship ideas -->
-                <ns-card>
-                  <h2 class="m-0 text-xl font-bold text-ns-text">
-                    Entrepreneurship ideas
-                  </h2>
-                  <p class="mb-4 mt-2 text-sm text-ns-muted">
-                    Ways to freelance, consult, or build a product with this
-                    skill.
-                  </p>
-                  <ul class="space-y-2 pl-5 text-sm leading-6 text-ns-muted">
-                    @for (idea of career.entrepreneurshipIdeas; track idea) {
-                      <li>{{ idea }}</li>
+                <!-- Entrepreneurship — rich version -->
+                @if (entrepreneurshipData) {
+                  <ns-card>
+                    <h2 class="m-0 text-xl font-bold text-ns-text">
+                      Going independent
+                    </h2>
+                    <p class="mt-2 text-sm leading-6 text-ns-muted">
+                      {{ entrepreneurshipData.summary }}
+                    </p>
+
+                    <div class="mt-5 space-y-4">
+                      @for (
+                        path of entrepreneurshipData.paths;
+                        track path.title
+                      ) {
+                        <div
+                          class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-4"
+                        >
+                          <!-- Path header -->
+                          <div class="flex flex-wrap items-start gap-2">
+                            <h3
+                              class="m-0 flex-1 text-sm font-bold text-ns-text"
+                            >
+                              {{ path.title }}
+                            </h3>
+                            <span
+                              class="rounded-full px-2 py-0.5 text-xs font-semibold"
+                              [class]="difficultyBadgeClass(path.difficulty)"
+                              >{{ difficultyLabel(path.difficulty) }}</span
+                            >
+                          </div>
+                          <div class="mt-1.5 flex flex-wrap gap-2">
+                            <span
+                              class="rounded-full border border-ns-border px-2 py-0.5 text-xs text-ns-muted"
+                              >⏱ {{ path.timeToFirstIncome }} to first
+                              income</span
+                            >
+                            <span
+                              class="rounded-full border border-ns-border px-2 py-0.5 text-xs font-semibold text-ns-text"
+                              >{{ path.potentialIncome }}</span
+                            >
+                          </div>
+                          <p class="mt-2 text-sm leading-6 text-ns-muted">
+                            {{ path.description }}
+                          </p>
+                          @if (path.examples.length > 0) {
+                            <p
+                              class="mb-1 mt-3 text-xs font-semibold text-ns-text"
+                            >
+                              Examples
+                            </p>
+                            <ul
+                              class="space-y-0.5 pl-4 text-xs leading-5 text-ns-muted"
+                            >
+                              @for (ex of path.examples; track ex) {
+                                <li>{{ ex }}</li>
+                              }
+                            </ul>
+                          }
+                          @if (path.gettingStarted.length > 0) {
+                            <p
+                              class="mb-1 mt-3 text-xs font-semibold text-ns-text"
+                            >
+                              Getting started
+                            </p>
+                            <ol
+                              class="space-y-0.5 pl-4 text-xs leading-5 text-ns-muted"
+                            >
+                              @for (
+                                step of path.gettingStarted;
+                                track step;
+                                let i = $index
+                              ) {
+                                <li>{{ i + 1 }}. {{ step }}</li>
+                              }
+                            </ol>
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Communities & tools -->
+                    @if (
+                      entrepreneurshipData.communities.length > 0 ||
+                      entrepreneurshipData.tools.length > 0
+                    ) {
+                      <div class="mt-5">
+                        <p class="text-xs font-semibold text-ns-text">
+                          Communities &amp; tools
+                        </p>
+                        <div class="mt-2 flex flex-wrap gap-1.5">
+                          @for (
+                            c of entrepreneurshipData.communities;
+                            track c
+                          ) {
+                            <span
+                              class="rounded-full border border-ns-border px-2 py-0.5 text-xs text-ns-muted"
+                              >{{ c }}</span
+                            >
+                          }
+                          @for (t of entrepreneurshipData.tools; track t) {
+                            <span
+                              class="rounded-full border border-ns-border bg-ns-primarySoft px-2 py-0.5 text-xs text-ns-primary"
+                              >{{ t }}</span
+                            >
+                          }
+                        </div>
+                      </div>
                     }
-                  </ul>
-                </ns-card>
+                  </ns-card>
+                } @else {
+                  <!-- Fallback -->
+                  <ns-card>
+                    <h2 class="m-0 text-xl font-bold text-ns-text">
+                      Entrepreneurship ideas
+                    </h2>
+                    <p class="mb-4 mt-2 text-sm text-ns-muted">
+                      Ways to freelance, consult, or build a product with this
+                      skill.
+                    </p>
+                    <ul class="space-y-2 pl-5 text-sm leading-6 text-ns-muted">
+                      @for (idea of career.entrepreneurshipIdeas; track idea) {
+                        <li>{{ idea }}</li>
+                      }
+                    </ul>
+                  </ns-card>
+                }
               </div>
 
               <!-- Sidebar -->
               <div class="space-y-6">
-                <!-- Salary insight -->
-                <ns-card>
-                  <h2 class="m-0 text-xl font-bold text-ns-text">
-                    Salary insight
-                  </h2>
-                  <p class="mb-4 mt-2 text-xs text-ns-muted">
-                    Estimated annual ranges. Varies widely by location and
-                    experience.
-                  </p>
-                  <p class="text-sm leading-6 text-ns-muted">
-                    {{ career.salaryInsight }}
-                  </p>
-                </ns-card>
+                <!-- Salary — rich version -->
+                @if (salaryData) {
+                  <ns-card>
+                    <div class="flex items-start justify-between gap-2">
+                      <h2 class="m-0 text-xl font-bold text-ns-text">
+                        Earning potential
+                      </h2>
+                      <span class="text-xs text-ns-muted"
+                        >UK · {{ salaryData.lastUpdated }}</span
+                      >
+                    </div>
+                    <p class="mt-2 text-sm leading-6 text-ns-muted">
+                      {{ salaryData.summary }}
+                    </p>
+
+                    <!-- Salary bands -->
+                    <div class="mt-4 space-y-3">
+                      @for (range of salaryData.ranges; track range.level) {
+                        <div>
+                          <div class="mb-1 flex items-center justify-between">
+                            <span
+                              class="rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
+                              [class]="levelBadgeClass(range.level)"
+                              >{{ range.level }}</span
+                            >
+                            <span class="text-xs font-semibold text-ns-text">{{
+                              salaryRangeLabel(
+                                range.min,
+                                range.max,
+                                range.currency
+                              )
+                            }}</span>
+                          </div>
+                          <div
+                            class="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
+                          >
+                            <div
+                              class="h-full rounded-full transition-all"
+                              [class]="levelBarClass(range.level)"
+                              [style.width.%]="salaryBarWidth(range.max)"
+                            ></div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Freelance rates -->
+                    @if (salaryData.freelanceRate) {
+                      <div class="mt-4">
+                        <p class="mb-2 text-xs font-semibold text-ns-text">
+                          Freelance rates
+                        </p>
+                        <div class="grid grid-cols-2 gap-2">
+                          <div
+                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                          >
+                            <p class="m-0 text-[10px] text-ns-muted">
+                              Day rate
+                            </p>
+                            <p class="m-0 text-xs font-bold text-ns-text">
+                              {{
+                                salaryRangeLabel(
+                                  salaryData.freelanceRate.daily.min,
+                                  salaryData.freelanceRate.daily.max,
+                                  salaryData.freelanceRate.daily.currency
+                                )
+                              }}
+                            </p>
+                          </div>
+                          <div
+                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                          >
+                            <p class="m-0 text-[10px] text-ns-muted">
+                              Hourly rate
+                            </p>
+                            <p class="m-0 text-xs font-bold text-ns-text">
+                              {{
+                                salaryRangeLabel(
+                                  salaryData.freelanceRate.hourly.min,
+                                  salaryData.freelanceRate.hourly.max,
+                                  salaryData.freelanceRate.hourly.currency
+                                )
+                              }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    }
+
+                    <!-- Factors -->
+                    <div class="mt-4">
+                      <p class="mb-2 text-xs font-semibold text-ns-text">
+                        What affects salary
+                      </p>
+                      <ul
+                        class="space-y-1.5 pl-4 text-xs leading-5 text-ns-muted"
+                      >
+                        @for (factor of salaryData.factors; track factor) {
+                          <li>{{ factor }}</li>
+                        }
+                      </ul>
+                    </div>
+
+                    <!-- Regional note -->
+                    <p
+                      class="mt-4 rounded-ns border border-ns-border bg-ns-canvasSubtle p-2.5 text-xs italic leading-5 text-ns-muted"
+                    >
+                      🌍 {{ salaryData.regionalNote }}
+                    </p>
+
+                    <!-- Sources -->
+                    <p class="mt-3 text-[10px] text-ns-muted">
+                      Based on:
+                      {{ salaryData.sources.join(' · ') }}. All figures
+                      approximate.
+                    </p>
+                  </ns-card>
+                } @else {
+                  <!-- Fallback -->
+                  <ns-card>
+                    <h2 class="m-0 text-xl font-bold text-ns-text">
+                      Salary insight
+                    </h2>
+                    <p class="mb-4 mt-2 text-xs text-ns-muted">
+                      Estimated annual ranges. Varies widely by location and
+                      experience.
+                    </p>
+                    <p class="text-sm leading-6 text-ns-muted">
+                      {{ career.salaryInsight }}
+                    </p>
+                  </ns-card>
+                }
 
                 <!-- Free resources -->
                 <ns-card>
@@ -413,10 +655,14 @@ import { getCareerBySlug, getRoadmapByCareerId } from 'types';
 export class CareerDetailComponent implements OnInit {
   career: CareerPath | undefined;
   roadmap: CareerRoadmap | undefined;
+  salaryData: CareerSalaryData | undefined;
+  entrepreneurshipData: CareerEntrepreneurshipData | undefined;
 
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Go independent', routerLink: '/entrepreneurship' },
     { label: 'Resources', routerLink: '/resources' },
     {
       label: 'Open source',
@@ -432,7 +678,58 @@ export class CareerDetailComponent implements OnInit {
     this.career = getCareerBySlug(slug);
     if (this.career) {
       this.roadmap = getRoadmapByCareerId(this.career.id);
+      this.salaryData = getSalaryDataByCareerId(this.career.id);
+      this.entrepreneurshipData = getEntrepreneurshipDataByCareerId(
+        this.career.id,
+      );
     }
+  }
+
+  salaryRangeLabel(min: number, max: number, currency: string): string {
+    return formatSalaryRange(min, max, currency);
+  }
+
+  salaryBarWidth(max: number): number {
+    const SCALE_MAX = 180000;
+    return Math.min(Math.round((max / SCALE_MAX) * 100), 100);
+  }
+
+  levelBadgeClass(level: string): string {
+    const map: Record<string, string> = {
+      junior: 'bg-blue-500/20 text-blue-400',
+      mid: 'bg-purple-500/20 text-purple-400',
+      senior: 'bg-emerald-500/20 text-emerald-400',
+      lead: 'bg-amber-500/20 text-amber-400',
+    };
+    return map[level] ?? 'bg-white/10 text-ns-muted';
+  }
+
+  levelBarClass(level: string): string {
+    const map: Record<string, string> = {
+      junior: 'bg-blue-500',
+      mid: 'bg-purple-500',
+      senior: 'bg-emerald-500',
+      lead: 'bg-amber-500',
+    };
+    return map[level] ?? 'bg-ns-primary';
+  }
+
+  difficultyBadgeClass(difficulty: string): string {
+    const map: Record<string, string> = {
+      low: 'bg-emerald-500/20 text-emerald-400',
+      medium: 'bg-amber-500/20 text-amber-400',
+      high: 'bg-red-500/20 text-red-400',
+    };
+    return map[difficulty] ?? 'bg-white/10 text-ns-muted';
+  }
+
+  difficultyLabel(difficulty: string): string {
+    const map: Record<string, string> = {
+      low: 'Low barrier',
+      medium: 'Medium effort',
+      high: 'High effort',
+    };
+    return map[difficulty] ?? difficulty;
   }
 
   difficultyVariant(level: string): 'success' | 'warning' | 'accent' {
