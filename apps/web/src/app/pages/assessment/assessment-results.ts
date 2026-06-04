@@ -3,7 +3,12 @@ import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
-import { NsButtonComponent, NsBadgeComponent, NsToastComponent } from 'ui';
+import {
+  NsButtonComponent,
+  NsBadgeComponent,
+  NsScrollIndicatorComponent,
+  NsToastComponent,
+} from 'ui';
 import { generateResultCard } from '../../assessment/results/card-generator';
 import { scoreAssessment } from 'scoring';
 import type {
@@ -34,6 +39,7 @@ import { environment } from '../../../environments/environment';
     AsyncPipe,
     NsButtonComponent,
     NsBadgeComponent,
+    NsScrollIndicatorComponent,
     NsToastComponent,
   ],
   styles: [
@@ -1055,6 +1061,7 @@ import { environment } from '../../../environments/environment';
 
       <!-- ─── Toast notification ────────────────────────────────── -->
       <ns-toast [message]="toastMessage()" [visible]="toastVisible()" />
+      <ns-scroll-indicator />
     </div>
   `,
 })

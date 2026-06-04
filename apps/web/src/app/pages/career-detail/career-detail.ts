@@ -7,6 +7,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsScrollIndicatorComponent,
 } from 'ui';
 import type {
   CareerPath,
@@ -32,6 +33,7 @@ import {
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsScrollIndicatorComponent,
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
@@ -650,6 +652,7 @@ import {
         </div>
       </div>
     </ns-app-shell>
+    <ns-scroll-indicator />
   `,
 })
 export class CareerDetailComponent implements OnInit {

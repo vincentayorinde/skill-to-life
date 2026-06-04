@@ -7,6 +7,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsScrollIndicatorComponent,
 } from 'ui';
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
 
@@ -69,6 +70,7 @@ type SortKey = 'senior' | 'junior' | 'name';
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsScrollIndicatorComponent,
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
@@ -190,6 +192,7 @@ type SortKey = 'senior' | 'junior' | 'name';
         </div>
       </div>
     </ns-app-shell>
+    <ns-scroll-indicator />
   `,
 })
 export class SalariesComponent {

@@ -7,6 +7,26 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased] — Assessment UX Improvements
+
+### Added
+
+- `NsScrollIndicatorComponent` in `libs/ui` — fixed, bouncing chevron indicator shown when page content is taller than the viewport; hides after 150px scroll; uses CSS-only animation; shows "Scroll to explore" text on desktop, icon-only on mobile
+- Scroll indicator added to assessment results, career detail, salaries, entrepreneurship, and resources pages
+- Assessment state persistence via `sessionStorage` — answers, current question index, and selected option are saved on every interaction and restored on page refresh
+- Resume banner in the assessment — shown after restoring saved state with "Picking up where you left off" copy and a "Start over" link that clears saved progress
+- Resume banner auto-dismisses after 3 seconds
+- `exitAssessment()` method — replaces the raw `href="/"` exit link so the CanDeactivate guard continues to work correctly
+- `startOver()` method — clears sessionStorage, resets all state to question 1
+
+### Changed
+
+- Exit button in assessment header is now a `<button>` with `(click)="exitAssessment()"` — retains CanDeactivate guard behaviour while allowing sessionStorage to be managed explicitly
+- Assessment saves to sessionStorage on `selectOption()` so pending selections survive a refresh
+- Assessment clears sessionStorage on completion (before navigating to results)
+
+---
+
 ## [0.12.0] — Salary & Entrepreneurship Insights
 
 ### Added

@@ -7,6 +7,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsScrollIndicatorComponent,
   NsTabsComponent,
   NsTabItem,
 } from 'ui';
@@ -127,6 +128,7 @@ const TABS: TabFilter[] = [
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsScrollIndicatorComponent,
     NsTabsComponent,
   ],
   template: `
@@ -226,6 +228,7 @@ const TABS: TabFilter[] = [
         </div>
       </div>
     </ns-app-shell>
+    <ns-scroll-indicator />
   `,
 })
 export class ResourcesComponent {
