@@ -65,4 +65,29 @@ export const appRoutes: Route[] = [
       import('./pages/my-results/my-results').then((m) => m.MyResultsComponent),
     canActivate: [authGuard],
   },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./pages/about/about').then((m) => m.AboutComponent),
+  },
+  {
+    path: 'privacy',
+    loadComponent: () =>
+      import('./pages/privacy/privacy').then((m) => m.PrivacyComponent),
+  },
+  {
+    path: 'terms',
+    loadComponent: () =>
+      import('./pages/terms/terms').then((m) => m.TermsComponent),
+  },
+  {
+    path: 'not-found',
+    loadComponent: () =>
+      import('./pages/not-found/not-found').then((m) => m.NotFoundComponent),
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/not-found/not-found').then((m) => m.NotFoundComponent),
+  },
 ];

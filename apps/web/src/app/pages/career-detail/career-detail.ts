@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -7,6 +8,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsScrollIndicatorComponent,
 } from 'ui';
 import type {
   CareerPath,
@@ -32,6 +34,7 @@ import {
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsScrollIndicatorComponent,
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
@@ -650,6 +653,7 @@ import {
         </div>
       </div>
     </ns-app-shell>
+    <ns-scroll-indicator />
   `,
 })
 export class CareerDetailComponent implements OnInit {
@@ -672,10 +676,19 @@ export class CareerDetailComponent implements OnInit {
   ];
 
   private readonly route = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     this.career = getCareerBySlug(slug);
+    if (this.career) {
+      this.titleService.setTitle(`${this.career.title} — NextSkill`);
+      this.metaService.updateTag({
+        name: 'description',
+        content: this.career.summary,
+      });
+    }
     if (this.career) {
       this.roadmap = getRoadmapByCareerId(this.career.id);
       this.salaryData = getSalaryDataByCareerId(this.career.id);

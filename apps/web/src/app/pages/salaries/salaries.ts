@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -7,6 +8,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsScrollIndicatorComponent,
 } from 'ui';
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
 
@@ -69,6 +71,7 @@ type SortKey = 'senior' | 'junior' | 'name';
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsScrollIndicatorComponent,
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
@@ -190,9 +193,21 @@ type SortKey = 'senior' | 'junior' | 'name';
         </div>
       </div>
     </ns-app-shell>
+    <ns-scroll-indicator />
   `,
 })
-export class SalariesComponent {
+export class SalariesComponent implements OnInit {
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+
+  ngOnInit(): void {
+    this.titleService.setTitle('Tech career salaries — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Honest UK salary ranges for 26 tech career paths — junior, mid, senior, and lead levels. Includes freelance day rates and factors that affect pay.',
+    });
+  }
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },

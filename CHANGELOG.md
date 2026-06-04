@@ -7,6 +7,57 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
+## [Unreleased] — Assessment UX Improvements
+
+### Added
+
+- `NsScrollIndicatorComponent` in `libs/ui` — fixed, bouncing chevron indicator shown when page content is taller than the viewport; hides after 150px scroll; uses CSS-only animation; shows "Scroll to explore" text on desktop, icon-only on mobile
+- Scroll indicator added to assessment results, career detail, salaries, entrepreneurship, and resources pages
+- Assessment state persistence via `sessionStorage` — answers, current question index, and selected option are saved on every interaction and restored on page refresh
+- Resume banner in the assessment — shown after restoring saved state with "Picking up where you left off" copy and a "Start over" link that clears saved progress
+- Resume banner auto-dismisses after 3 seconds
+- `exitAssessment()` method — replaces the raw `href="/"` exit link so the CanDeactivate guard continues to work correctly
+- `startOver()` method — clears sessionStorage, resets all state to question 1
+
+### Changed
+
+- Exit button in assessment header is now a `<button>` with `(click)="exitAssessment()"` — retains CanDeactivate guard behaviour while allowing sessionStorage to be managed explicitly
+- Assessment saves to sessionStorage on `selectOption()` so pending selections survive a refresh
+- Assessment clears sessionStorage on completion (before navigating to results)
+
+## [1.0.0] — Stable Public Launch
+
+### Added
+
+- 404 not-found page at `/not-found` — 🧭 emoji, "Page not found" heading, home and assessment CTAs
+- Wildcard route `**` redirects to the 404 page for all unknown paths
+- `/about` page — NextSkill mission, open-source section, feature list, and built-by attribution
+- `/privacy` page — honest privacy policy covering data collection, storage, and deletion rights
+- `/terms` page — terms of use covering free access, MIT licence, and career outcome disclaimer
+- `NsCookieNoticeComponent` in `libs/ui` — fixed bottom banner with dismiss button; persists preference in `localStorage`; cookie notice added to `NsAppShellComponent` so it appears on every page
+- Skip-to-main-content link in `NsAppShellComponent` — visible on keyboard focus, hidden for mouse users
+- `id="main-content"` on the main element in app shell for skip link target
+- SEO `Title` and `Meta` services on every page: home, assessment, results, careers, career-detail, resources, salaries, entrepreneurship, my-results, about, privacy, terms, not-found
+- `index.html` default title updated from "web" to "NextSkill — Discover your next tech career skill"
+- Footer updated on home page: Product · Company · Legal columns with working routerLinks to Privacy and Terms
+- Footer copyright updated to "© 2025 NextSkill. Open source under MIT licence." with tagline
+- `helmet` security headers middleware — X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy on all API responses
+- `@nestjs/throttler` rate limiting — global 100 req/min; 10 req/min on `POST /api/results`; 5 req/min on Google login; health and auth callback exempt
+- Enhanced `GET /api/health` — now returns `{ status, service, version: "1.0.0", database, timestamp }`
+- `apps/api/src/config/config.validation.ts` — validates required env vars on production startup with clear error messages
+- Root `package.json` version bumped to `1.0.0`
+
+### Changed
+
+- `NsAppShellComponent` imports and renders `NsCookieNoticeComponent`
+- `AppModule` adds `ThrottlerModule` (global guard) and `PrismaService` for health endpoint
+- `AppController.getHealth()` is now async and calls `AppService.getHealth()` which queries the database
+- `AuthController` adds `@Throttle` on Google login endpoint
+- `ResultsController` adds `@Throttle` on `POST /api/results`
+- All existing page shell links updated to include Salaries and Go independent
+
+---
+
 ## [0.12.0] — Salary & Entrepreneurship Insights
 
 ### Added

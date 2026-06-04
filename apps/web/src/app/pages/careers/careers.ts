@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -131,7 +132,18 @@ const TABS: TabFilter[] = [
     </ns-app-shell>
   `,
 })
-export class CareersComponent {
+export class CareersComponent implements OnInit {
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+
+  ngOnInit(): void {
+    this.titleService.setTitle('Tech career paths — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Explore 26 tech career paths — frontend, backend, data, AI, security, design, and more. Find the path that fits how you think and work.',
+    });
+  }
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },

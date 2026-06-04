@@ -1,6 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaService } from '../prisma/prisma.service';
+
+const mockPrisma = {
+  $queryRaw: jest.fn().mockResolvedValue([{ '?column?': 1 }]),
+};
 
 describe('AppController', () => {
   let app: TestingModule;
@@ -8,7 +13,7 @@ describe('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [AppService, { provide: PrismaService, useValue: mockPrisma }],
     }).compile();
   });
 
@@ -20,12 +25,14 @@ describe('AppController', () => {
   });
 
   describe('getHealth', () => {
-    it('should return API health status', () => {
+    it('should return API health status with version and timestamp', async () => {
       const appController = app.get<AppController>(AppController);
-      expect(appController.getHealth()).toEqual({
-        status: 'ok',
-        service: 'nextskill-api',
-      });
+      const result = await appController.getHealth();
+      expect(result.status).toBe('ok');
+      expect(result.service).toBe('nextskill-api');
+      expect(result.version).toBe('1.0.0');
+      expect(result.database).toBe('connected');
+      expect(result.timestamp).toBeTruthy();
     });
   });
 });

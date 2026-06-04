@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { NsCookieNoticeComponent } from '../cookie-notice/cookie-notice';
 
 export interface NsAppShellLink {
   label: string;
@@ -17,9 +18,15 @@ export interface NsAuthUser {
 @Component({
   selector: 'ns-app-shell',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, NsCookieNoticeComponent],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
+      <a
+        href="#main-content"
+        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ns focus:bg-ns-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07111f] focus:shadow-glow"
+      >
+        Skip to main content
+      </a>
       <header
         class="sticky top-0 z-50 border-b border-ns-border bg-ns-nav backdrop-blur-xl transition duration-base ease-ns"
       >
@@ -216,9 +223,10 @@ export interface NsAuthUser {
         }
       </header>
 
-      <main>
+      <main id="main-content" tabindex="-1">
         <ng-content />
       </main>
+      <ns-cookie-notice />
     </div>
   `,
 })

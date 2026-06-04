@@ -10,9 +10,12 @@ import {
   viewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { NsOptionCardComponent, NsProgressComponent } from 'ui';
 import { ASSESSMENT_QUESTIONS, MICROCOPY } from './questions.data';
 import { AssessmentStateService } from '../../services/assessment-state.service';
+
+const STORAGE_KEY = 'ns_assessment_progress';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,6 +36,19 @@ function delay(ms: number): Promise<void> {
         opacity: 0;
         transform: translateX(-10px);
       }
+      .resume-banner {
+        animation: fadeIn 200ms ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     `,
   ],
   template: `
@@ -47,12 +63,14 @@ function delay(ms: number): Promise<void> {
         <div
           class="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3 sm:px-6"
         >
-          <a
-            class="shrink-0 text-sm font-semibold text-ns-muted no-underline hover:text-ns-text"
-            href="/"
+          <button
+            type="button"
+            class="shrink-0 text-sm font-semibold text-ns-muted no-underline hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+            (click)="exitAssessment()"
             aria-label="Exit assessment and go to home"
-            >← Exit</a
           >
+            ← Exit
+          </button>
 
           <div class="flex flex-1 flex-col gap-1.5">
             <div class="flex items-center justify-between">
@@ -71,6 +89,30 @@ function delay(ms: number): Promise<void> {
           </div>
         </div>
       </header>
+
+      <!-- Resume banner -->
+      @if (showResumeBanner()) {
+        <div
+          class="resume-banner border-b border-ns-border bg-ns-canvasSubtle px-4 py-2.5 sm:px-6"
+          role="status"
+          aria-live="polite"
+        >
+          <div
+            class="mx-auto flex max-w-2xl items-center justify-between gap-3"
+          >
+            <span class="text-xs text-ns-muted"
+              >↩ Picking up where you left off</span
+            >
+            <button
+              type="button"
+              class="text-xs font-semibold text-ns-primary hover:underline focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+              (click)="startOver()"
+            >
+              Start over
+            </button>
+          </div>
+        </div>
+      }
 
       <!-- Main -->
       <main
@@ -145,8 +187,12 @@ function delay(ms: number): Promise<void> {
 export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly stateService = inject(AssessmentStateService);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
   private savedTheme: string | null = null;
+  private startedAt = new Date().toISOString();
+  private resumeTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly questions = ASSESSMENT_QUESTIONS;
   readonly total = ASSESSMENT_QUESTIONS.length;
@@ -155,6 +201,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   readonly answers = signal<Record<number, string>>({});
   readonly selectedOption = signal<string | null>(null);
   readonly isFading = signal(false);
+  readonly showResumeBanner = signal(false);
   isComplete = false;
   private isTransitioning = false;
 
@@ -186,6 +233,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
   selectOption(label: string): void {
     this.selectedOption.set(label);
+    this.saveProgress();
   }
 
   async next(): Promise<void> {
@@ -197,9 +245,11 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     if (!chosen) return;
 
     this.answers.update((a) => ({ ...a, [this.currentIndex()]: chosen }));
+    this.saveProgress();
 
     if (this.isLast()) {
       this.isComplete = true;
+      this.clearProgress();
       this.stateService.save(this.answers());
       await this.router.navigate(['/assessment/results']);
       return;
@@ -232,6 +282,25 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     await delay(0);
     this.isTransitioning = false;
     this.focusFirstOption();
+  }
+
+  startOver(): void {
+    this.clearProgress();
+    this.showResumeBanner.set(false);
+    if (this.resumeTimer !== null) {
+      clearTimeout(this.resumeTimer);
+      this.resumeTimer = null;
+    }
+    this.currentIndex.set(0);
+    this.answers.set({});
+    this.selectedOption.set(null);
+    this.startedAt = new Date().toISOString();
+  }
+
+  exitAssessment(): void {
+    // Navigation proceeds through the CanDeactivate guard.
+    // Progress is intentionally preserved so the user can resume later.
+    void this.router.navigate(['/']);
   }
 
   @HostListener('keydown', ['$event'])
@@ -267,16 +336,131 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
+  private saveProgress(): void {
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          currentQuestionIndex: this.currentIndex(),
+          answers: this.answers(),
+          selectedOption: this.selectedOption(),
+          startedAt: this.startedAt,
+        }),
+      );
+    } catch {
+      // sessionStorage unavailable — not critical.
+    }
+  }
+
+  private clearProgress(): void {
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+  }
+
+  private restoreProgress(): void {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+
+      const parsed = JSON.parse(raw) as {
+        currentQuestionIndex?: unknown;
+        answers?: unknown;
+        selectedOption?: unknown;
+        startedAt?: unknown;
+      };
+
+      const qIdx =
+        typeof parsed.currentQuestionIndex === 'number'
+          ? parsed.currentQuestionIndex
+          : -1;
+
+      if (qIdx < 0 || qIdx >= this.total) {
+        this.clearProgress();
+        return;
+      }
+
+      // Validate each committed answer against the actual question options.
+      const rawAnswers =
+        typeof parsed.answers === 'object' && parsed.answers !== null
+          ? (parsed.answers as Record<string, unknown>)
+          : {};
+
+      const validAnswers: Record<number, string> = {};
+      for (const [key, val] of Object.entries(rawAnswers)) {
+        const idx = Number(key);
+        if (Number.isNaN(idx)) continue;
+        const q = this.questions[idx];
+        if (
+          q &&
+          typeof val === 'string' &&
+          q.options.some((o) => o.label === val)
+        ) {
+          validAnswers[idx] = val;
+        }
+      }
+
+      // Nothing meaningful to restore — clear and start fresh.
+      if (Object.keys(validAnswers).length === 0 && qIdx === 0) {
+        this.clearProgress();
+        return;
+      }
+
+      this.currentIndex.set(qIdx);
+      this.answers.set(validAnswers);
+
+      if (typeof parsed.startedAt === 'string') {
+        this.startedAt = parsed.startedAt;
+      }
+
+      // Restore the pending selection if it is still a valid option.
+      const savedSelected =
+        typeof parsed.selectedOption === 'string'
+          ? parsed.selectedOption
+          : null;
+      const currentQ = this.questions[qIdx];
+      if (
+        savedSelected &&
+        currentQ.options.some((o) => o.label === savedSelected)
+      ) {
+        this.selectedOption.set(savedSelected);
+      } else {
+        this.selectedOption.set(validAnswers[qIdx] ?? null);
+      }
+
+      this.showResumeBanner.set(true);
+      this.resumeTimer = setTimeout(
+        () => this.showResumeBanner.set(false),
+        3000,
+      );
+    } catch {
+      // Corrupted data — clear and start fresh.
+      this.clearProgress();
+    }
+  }
+
   ngOnInit(): void {
+    this.titleService.setTitle('Take the assessment — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Answer 10 quick questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
+    });
     try {
       this.savedTheme = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', 'dark');
     } catch {
       // Non-browser environment — ignore.
     }
+    this.restoreProgress();
   }
 
   ngOnDestroy(): void {
+    if (this.resumeTimer !== null) {
+      clearTimeout(this.resumeTimer);
+    }
     try {
       if (this.savedTheme) {
         document.documentElement.setAttribute('data-theme', this.savedTheme);

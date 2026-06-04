@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -28,8 +29,21 @@ import { AuthService } from '../../core/auth/auth.service';
   ],
   templateUrl: './home.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+
+  ngOnInit(): void {
+    this.titleService.setTitle(
+      'NextSkill — Discover your next tech career skill',
+    );
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Find the tech career path that fits how you think and work. Free 10-question assessment across 26 careers. No paywalls, no upsells.',
+    });
+  }
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
@@ -124,36 +138,39 @@ export class HomeComponent {
     {
       title: 'Product',
       links: [
-        { label: 'Assessment', href: '#assessment' },
+        { label: 'Take assessment', href: '/assessment' },
         { label: 'Career paths', href: '/careers' },
-        { label: 'Roadmaps', href: '#how-it-works' },
-        { label: 'Share cards', href: '#result-card' },
+        { label: 'Resources', href: '/resources' },
+        { label: 'Salaries', href: '/salaries' },
+        { label: 'Go independent', href: '/entrepreneurship' },
       ],
     },
     {
-      title: 'Open source',
+      title: 'Company',
       links: [
+        { label: 'About', href: '/about' },
         {
-          label: 'GitHub',
+          label: 'Open source',
           href: 'https://github.com/vincentayorinde/nextskill',
           external: true,
         },
-        { label: 'Releases', href: '#open-source' },
-        { label: 'Contributing', href: '#open-source' },
-        { label: 'Security', href: '#open-source' },
+        {
+          label: 'Changelog',
+          href: 'https://github.com/vincentayorinde/nextskill/blob/main/CHANGELOG.md',
+          external: true,
+        },
+        {
+          label: 'Roadmap',
+          href: 'https://github.com/vincentayorinde/nextskill/blob/main/ROADMAP.md',
+          external: true,
+        },
       ],
     },
     {
-      title: 'Community',
+      title: 'Legal',
       links: [
-        {
-          label: 'Issues',
-          href: 'https://github.com/vincentayorinde/nextskill/issues',
-          external: true,
-        },
-        { label: 'Discussions', href: '#open-source' },
-        { label: 'Roadmap', href: '#open-source' },
-        { label: 'Good first issues', href: '#open-source' },
+        { label: 'Privacy policy', href: '/privacy' },
+        { label: 'Terms of use', href: '/terms' },
       ],
     },
   ];

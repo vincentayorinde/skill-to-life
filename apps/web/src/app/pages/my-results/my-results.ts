@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Title, Meta } from '@angular/platform-browser';
 import { NsButtonComponent } from 'ui';
 import type { SavedResult } from 'types';
 import { environment } from '../../../environments/environment';
@@ -75,11 +76,18 @@ import { environment } from '../../../environments/environment';
 })
 export class MyResultsComponent implements OnInit {
   private readonly http = inject(HttpClient);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
 
   readonly loading = signal(true);
   readonly results = signal<SavedResult[]>([]);
 
   ngOnInit(): void {
+    this.titleService.setTitle('My saved results — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'View your saved NextSkill assessment results.',
+    });
     this.http
       .get<SavedResult[]>(`${environment.apiUrl}/api/results`)
       .subscribe({
