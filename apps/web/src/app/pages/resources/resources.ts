@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -231,7 +232,18 @@ const TABS: TabFilter[] = [
     <ns-scroll-indicator />
   `,
 })
-export class ResourcesComponent {
+export class ResourcesComponent implements OnInit {
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+
+  ngOnInit(): void {
+    this.titleService.setTitle('Learning resources — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Curated free and paid learning resources across 26 tech career paths. Filter by career, type, or cost.',
+    });
+  }
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },

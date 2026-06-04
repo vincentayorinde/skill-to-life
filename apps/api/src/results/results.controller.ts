@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OptionalJwtGuard } from '../auth/guards/optional-jwt.guard';
@@ -19,6 +20,7 @@ import { ClaimResultDto } from './dto/claim-result.dto';
 export class ResultsController {
   constructor(private readonly resultsService: ResultsService) {}
 
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Post()
   @UseGuards(OptionalJwtGuard)
   create(@Body() dto: CreateResultDto, @CurrentUser() user: User | null) {

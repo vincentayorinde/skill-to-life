@@ -527,13 +527,21 @@
             <ul class="mt-4 space-y-3 p-0 text-sm text-ns-muted">
               @for (link of column.links; track link.label) {
               <li>
+                @if (link.external) {
                 <a
                   class="text-inherit no-underline hover:text-ns-text"
                   [href]="link.href"
-                  [attr.target]="link.external ? '_blank' : null"
-                  [attr.rel]="link.external ? 'noreferrer' : null"
+                  target="_blank"
+                  rel="noreferrer"
                   >{{ link.label }}</a
                 >
+                } @else {
+                <a
+                  class="text-inherit no-underline hover:text-ns-text"
+                  [routerLink]="link.href"
+                  >{{ link.label }}</a
+                >
+                }
               </li>
               }
             </ul>
@@ -541,9 +549,16 @@
           }
         </nav>
       </div>
-      <p class="mt-10 border-t border-ns-border pt-6 text-xs text-ns-muted">
-        Copyright 2026 NextSkill. Built in public for learners and contributors.
-      </p>
+      <div
+        class="mt-10 flex flex-col gap-1 border-t border-ns-border pt-6 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p class="m-0 text-xs text-ns-muted">
+          © 2025 NextSkill. Open source under MIT licence.
+        </p>
+        <p class="m-0 text-xs text-ns-muted">
+          Built with ❤️ for anyone figuring out their path in tech.
+        </p>
+      </div>
     </div>
   </footer>
 </ns-app-shell>

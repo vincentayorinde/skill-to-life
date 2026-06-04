@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { NsOptionCardComponent, NsProgressComponent } from 'ui';
 import { ASSESSMENT_QUESTIONS, MICROCOPY } from './questions.data';
 import { AssessmentStateService } from '../../services/assessment-state.service';
@@ -186,6 +187,8 @@ function delay(ms: number): Promise<void> {
 export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly stateService = inject(AssessmentStateService);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
   private savedTheme: string | null = null;
   private startedAt = new Date().toISOString();
@@ -439,6 +442,12 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Take the assessment — NextSkill');
+    this.metaService.updateTag({
+      name: 'description',
+      content:
+        'Answer 10 quick questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
+    });
     try {
       this.savedTheme = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', 'dark');

@@ -158,11 +158,30 @@ Real salary data and independent paths for every career.
 
 ---
 
-## 🔜 v1.0.0 — Stable Public Launch
+## ✅ v1.0.0 — Stable Public Launch
 
-Production-ready launch.
+Production-ready public launch.
 
-- Performance and accessibility audit
-- SEO and Open Graph
-- Marketing site refinements
-- Community and contribution onboarding
+- 404 not-found page + wildcard route for all unknown paths
+- About, Privacy policy, and Terms of use pages
+- Cookie notice on all pages (localStorage-persisted dismiss)
+- Skip-to-main-content link for keyboard accessibility
+- SEO meta titles and descriptions on every page
+- `helmet` security headers on all API responses
+- `@nestjs/throttler` rate limiting — global 100 req/min, tighter on write endpoints
+- Enhanced `/api/health` endpoint — version, database status, timestamp
+- Production config validation — clear startup errors for missing env vars
+- Footer updated with working links to all pages including Privacy and Terms
+- Package version bumped to 1.0.0
+
+---
+
+## 🔜 Future ideas
+
+- Performance: Lighthouse CI integration, bundle size budgets
+- SEO: sitemap.xml and robots.txt generation
+- Content: More career paths (DevRel, Technical PM, Solutions Engineer)
+- Features: Assessment retake history and comparison view
+- Features: Career path comparison view (side-by-side)
+- Internationalisation: Non-UK salary data for US, EU, and Asia-Pacific
+- Community: Public API for career data
