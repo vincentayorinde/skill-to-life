@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
     provideTranslateService({ defaultLanguage: 'en' }),
-    ...provideTranslateHttpLoader({ prefix: '/assets/i18n/', suffix: '.json' }),
+    ...provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
     {
       provide: APP_INITIALIZER,
       useFactory: initAuth,

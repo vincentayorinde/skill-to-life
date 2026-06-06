@@ -5,7 +5,7 @@ import { NsCookieNoticeComponent } from '../cookie-notice/cookie-notice';
 import { NsLanguageSwitcherComponent } from '../language-switcher/language-switcher';
 
 const LANG_KEY = 'ns_language';
-const VALID_LANGS = ['en', 'fr', 'es', 'de', 'pt', 'yo', 'ha', 'ig'];
+const VALID_LANGS = ['en', 'fr', 'es', 'de', 'pt'];
 
 function readSavedLang(): string {
   try {
@@ -37,27 +37,27 @@ export interface NsAuthUser {
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
       <a
         href="#main-content"
-        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ns focus:bg-ns-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ns focus:bg-ns-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07111f] focus:shadow-glow"
       >
         Skip to main content
       </a>
       <header
-        class="sticky top-0 z-50 border-b border-ns-border bg-ns-nav backdrop-blur-md transition duration-base ease-ns"
+        class="sticky top-0 z-50 border-b border-ns-border bg-ns-nav backdrop-blur-xl transition duration-base ease-ns"
       >
         <div
           class="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8"
         >
           <a
-            class="inline-flex shrink-0 items-center gap-2.5 rounded-ns text-ns-text no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+            class="inline-flex shrink-0 items-center gap-3 rounded-md text-ns-text no-underline focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
             href="/"
           >
             <span
-              class="grid h-8 w-8 place-items-center rounded-ns border border-ns-border bg-ns-primary text-xs font-bold text-white"
+              class="grid h-9 w-9 place-items-center rounded-md border border-ns-border bg-ns-cardElevated text-sm font-bold text-ns-text shadow-glow"
               aria-hidden="true"
             >
               NS
             </span>
-            <span class="text-sm font-bold tracking-tight">{{ brand }}</span>
+            <span class="text-base font-bold">{{ brand }}</span>
           </a>
 
           <nav
@@ -67,14 +67,14 @@ export interface NsAuthUser {
             @for (link of links; track link.label) {
               @if (link.routerLink) {
                 <a
-                  class="rounded-ns px-3 py-1.5 text-sm font-medium text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-canvasSubtle hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                   [routerLink]="link.routerLink"
                 >
                   {{ link.label }}
                 </a>
               } @else {
                 <a
-                  class="rounded-ns px-3 py-1.5 text-sm font-medium text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-canvasSubtle hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                   [href]="link.href"
                   [attr.target]="link.external ? '_blank' : null"
                   [attr.rel]="link.external ? 'noreferrer' : null"
@@ -86,7 +86,7 @@ export interface NsAuthUser {
 
             @if (authUser) {
               <a
-                class="rounded-ns px-3 py-1.5 text-sm font-medium text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-canvasSubtle hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 routerLink="/my-results"
               >
                 My results
@@ -101,7 +101,7 @@ export interface NsAuthUser {
             />
             <button
               type="button"
-              class="inline-flex min-h-8 items-center justify-center rounded-ns border border-ns-border bg-transparent px-3 text-xs font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-borderStrong hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+              class="inline-flex min-h-9 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
               [attr.aria-label]="
                 theme === 'dark'
                   ? 'Switch to light theme'
@@ -139,13 +139,13 @@ export interface NsAuthUser {
             } @else {
               <button
                 type="button"
-                class="inline-flex min-h-8 items-center gap-2 justify-center rounded-ns border border-ns-border bg-transparent px-3 text-xs font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-borderStrong hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="inline-flex min-h-9 items-center gap-2 justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 (click)="signIn.emit()"
               >
                 Sign in
               </button>
               <a
-                class="rounded-ns border border-ns-primary bg-ns-primary px-3 py-1.5 text-xs font-semibold text-white no-underline transition duration-base ease-ns hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="rounded-md border border-ns-primary bg-ns-primary px-3 py-2 text-sm font-semibold text-[#07111f] no-underline shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 href="#assessment"
               >
                 Start assessment
@@ -155,7 +155,7 @@ export interface NsAuthUser {
 
           <button
             type="button"
-            class="grid h-8 w-8 place-items-center rounded-ns border border-ns-border bg-transparent text-ns-text transition duration-base ease-ns hover:border-ns-borderStrong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus md:hidden"
+            class="grid h-10 w-10 place-items-center rounded-md border border-ns-border bg-ns-card text-ns-text transition duration-base ease-ns hover:border-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus md:hidden"
             [attr.aria-expanded]="mobileMenuOpen"
             aria-controls="mobile-nav"
             aria-label="Toggle navigation"
@@ -192,7 +192,7 @@ export interface NsAuthUser {
               }
               @if (authUser) {
                 <a
-                  class="rounded-ns px-3 py-1.5 text-sm font-medium text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-canvasSubtle hover:text-ns-text"
+                  class="rounded-md px-3 py-2 text-sm font-semibold text-ns-muted no-underline transition duration-base ease-ns hover:bg-ns-card hover:text-ns-text"
                   routerLink="/my-results"
                 >
                   My results
@@ -201,9 +201,13 @@ export interface NsAuthUser {
             </nav>
 
             <div class="mt-4 grid gap-2">
+              <ns-language-switcher
+                [active]="activeLang"
+                (languageChange)="setLanguage($event)"
+              />
               <button
                 type="button"
-                class="inline-flex min-h-10 items-center justify-center rounded-ns border border-ns-border bg-transparent px-3 text-sm font-semibold text-ns-text transition duration-base ease-ns hover:border-ns-borderStrong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-text transition duration-base ease-ns hover:border-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 [attr.aria-label]="
                   theme === 'dark'
                     ? 'Switch to light theme'
@@ -216,7 +220,7 @@ export interface NsAuthUser {
               @if (authUser) {
                 <button
                   type="button"
-                  class="inline-flex min-h-10 items-center justify-center rounded-ns border border-ns-border bg-transparent px-3 text-sm font-semibold text-ns-text"
+                  class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-text"
                   (click)="signOut.emit()"
                 >
                   Sign out
@@ -224,13 +228,13 @@ export interface NsAuthUser {
               } @else {
                 <button
                   type="button"
-                  class="inline-flex min-h-10 items-center justify-center gap-2 rounded-ns border border-ns-border bg-transparent px-3 text-sm font-semibold text-ns-text"
+                  class="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-text"
                   (click)="signIn.emit()"
                 >
                   Sign in
                 </button>
                 <a
-                  class="inline-flex min-h-10 items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-3 text-sm font-semibold text-white no-underline"
+                  class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-primary bg-ns-primary px-3 text-sm font-semibold text-[#07111f] no-underline"
                   href="#assessment"
                 >
                   Start assessment
@@ -259,7 +263,7 @@ export class NsAppShellComponent implements OnInit {
   @Output() signIn = new EventEmitter<void>();
   @Output() signOut = new EventEmitter<void>();
 
-  theme: 'dark' | 'light' = 'light';
+  theme: 'dark' | 'light' = 'dark';
   mobileMenuOpen = false;
   activeLang = 'en';
 
@@ -267,7 +271,7 @@ export class NsAppShellComponent implements OnInit {
 
   ngOnInit(): void {
     const savedTheme = this.readSavedTheme();
-    this.setTheme(savedTheme ?? 'light');
+    this.setTheme(savedTheme ?? 'dark');
 
     const savedLang = readSavedLang();
     this.activeLang = savedLang;

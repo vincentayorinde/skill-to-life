@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   template: `
     <button
       type="button"
-      class="group flex w-full items-start gap-4 rounded-ns-md border bg-ns-card p-4 text-left transition duration-base ease-ns hover:border-ns-primary hover:shadow-ns-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:cursor-not-allowed disabled:opacity-50"
+      class="group flex w-full items-start gap-4 rounded-ns border bg-ns-card p-4 text-left shadow-ns transition duration-base ease-ns hover:-translate-y-0.5 hover:border-ns-primary hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:cursor-not-allowed disabled:opacity-60"
       [class.border-ns-primary]="selected"
       [class.bg-ns-primarySoft]="selected"
       [class.border-ns-border]="!selected"
@@ -16,7 +16,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     >
       @if (icon) {
         <span
-          class="grid h-10 w-10 shrink-0 place-items-center rounded-ns-md bg-ns-primarySoft text-xl"
+          class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-ns-warningSoft text-xl"
           aria-hidden="true"
         >
           {{ icon }}
@@ -33,7 +33,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         }
       </span>
       <span
-        class="mt-1 h-4 w-4 shrink-0 rounded-ns border-2 border-ns-border bg-ns-canvas transition group-hover:border-ns-primary"
+        class="mt-1 h-5 w-5 rounded-full border border-ns-border bg-ns-canvas transition group-hover:border-ns-primary"
         [class.border-ns-primary]="selected"
         [class.bg-ns-primary]="selected"
         aria-hidden="true"
