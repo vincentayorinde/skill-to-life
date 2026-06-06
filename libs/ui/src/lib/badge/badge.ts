@@ -30,7 +30,7 @@ export class NsBadgeComponent {
     };
 
     return [
-      'inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold leading-none shadow-ns',
+      'inline-flex items-center rounded-ns border px-2.5 py-0.5 text-xs font-semibold leading-none',
       variants[this.variant],
     ].join(' ');
   }

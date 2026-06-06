@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "howItWorks": "Como funciona",
+    "careerPaths": "Trajectórias de carreira",
+    "salaries": "Salários",
+    "goIndependent": "Ser independente",
+    "resources": "Recursos",
+    "openSource": "Código aberto",
+    "myResults": "Os meus resultados",
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "startAssessment": "Começar avaliação",
+    "darkMode": "Modo escuro",
+    "lightMode": "Modo claro"
+  },
+  "hero": {
+    "eyebrow": "Pare de adivinhar o seu caminho na tech.",
+    "heading": "Encontre o caminho tech que é certo para si.",
+    "subheading": "Faça uma breve avaliação e descubra as suas melhores opções de carreira tech, o que aprender e como começar.",
+    "tagline": "Sem pressão. Sem roteiros confusos. Apenas um primeiro passo mais claro.",
+    "cta": {
+      "startAssessment": "Começar avaliação",
+      "continueWithGoogle": "Continuar com o Google",
+      "tryAnonymously": "Experimentar anonimamente",
+      "viewOpenSource": "Ver projeto de código aberto"
+    }
+  },
+  "assessment": {
+    "title": "Avaliação",
+    "question": "Pergunta {{current}} de {{total}}",
+    "progress": "Progresso da avaliação",
+    "next": "Próximo",
+    "back": "Voltar",
+    "submit": "Ver os meus resultados",
+    "skipLabel": "Saltar esta pergunta"
+  },
+  "results": {
+    "title": "Os seus resultados",
+    "topMatch": "Melhor correspondência",
+    "matchScore": "Pontuação de correspondência",
+    "matchPercent": "{{percent}}% de correspondência",
+    "viewRoadmap": "Ver roteiro de aprendizagem",
+    "viewSalary": "Ver guia de salários",
+    "shareResults": "Partilhar os meus resultados",
+    "retake": "Refazer a avaliação"
+  },
+  "careers": {
+    "title": "Trajectórias de carreira",
+    "browseAll": "Ver as {{count}} trajectórias",
+    "viewPath": "Ver trajectória",
+    "difficulty": {
+      "beginner": "Adequado para iniciantes",
+      "intermediate": "Intermédio",
+      "advanced": "Avançado"
+    },
+    "remote": "Trabalho remoto possível",
+    "salary": "Perspectiva salarial"
+  },
+  "salaries": {
+    "title": "Salários em carreiras tech.",
+    "eyebrow": "Guia de salários",
+    "sortBy": "Ordenar por:",
+    "sort": {
+      "highest": "Melhor remunerado",
+      "entryLevel": "Melhor nível de entrada",
+      "az": "A–Z"
+    },
+    "levels": {
+      "junior": "Júnior",
+      "mid": "Intermédio",
+      "senior": "Sénior",
+      "lead": "Líder"
+    },
+    "region": "Região:",
+    "freelance": "Freelance",
+    "viewFullDetails": "Ver detalhes completos",
+    "disclaimer": "Os dados salariais são aproximados e representativos das condições de mercado de 2025."
+  },
+  "footer": {
+    "tagline": "Descoberta de carreira de código aberto para pessoas que escolhem a sua próxima competência tech.",
+    "copyright": "© 2025 NextSkill. Código aberto sob licença MIT.",
+    "madeWith": "Feito com ❤️ para todos que procuram o seu caminho na tech."
+  },
+  "common": {
+    "loading": "A carregar...",
+    "error": "Algo correu mal.",
+    "back": "Voltar",
+    "learnMore": "Saber mais",
+    "included": "Incluído",
+    "preview": "Pré-visualização"
+  }
+}

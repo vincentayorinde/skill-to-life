@@ -119,7 +119,7 @@ export interface SalaryRange {
   level: 'junior' | 'mid' | 'senior' | 'lead';
   min: number;
   max: number;
-  currency: 'GBP' | 'USD' | 'EUR';
+  currency: 'GBP' | 'USD' | 'EUR' | 'NGN';
   location: string;
 }
 
@@ -135,6 +135,21 @@ export interface CareerSalaryData {
   factors: string[];
   regionalNote: string;
   sources: string[];
+  regions?: RegionalSalary[];
+}
+
+export type SalaryRegion = 'uk' | 'us' | 'nigeria' | 'europe' | 'global';
+
+export interface RegionalSalary {
+  region: SalaryRegion;
+  currency: 'GBP' | 'USD' | 'NGN' | 'EUR';
+  currencySymbol: string;
+  ranges: SalaryRange[];
+  freelanceRate?: {
+    daily: { min: number; max: number; currency: string };
+    hourly: { min: number; max: number; currency: string };
+  };
+  regionalNote: string;
 }
 
 // ─── Entrepreneurship types ────────────────────────────────────────────────

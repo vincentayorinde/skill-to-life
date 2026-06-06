@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
@@ -8,6 +8,7 @@ import {
   NsButtonComponent,
   NsCardComponent,
   NsPageHeaderComponent,
+  NsRegionFilterComponent,
   NsScrollIndicatorComponent,
 } from 'ui';
 import type {
@@ -15,6 +16,8 @@ import type {
   CareerRoadmap,
   CareerSalaryData,
   CareerEntrepreneurshipData,
+  RegionalSalary,
+  SalaryRegion,
 } from 'types';
 import {
   getCareerBySlug,
@@ -22,7 +25,20 @@ import {
   getSalaryDataByCareerId,
   getEntrepreneurshipDataByCareerId,
   formatSalaryRange,
+  CAREER_SALARY_REGIONS,
 } from 'types';
+
+const REGION_STORAGE_KEY = 'ns_salary_region';
+const VALID_REGIONS: SalaryRegion[] = ['uk', 'us', 'nigeria', 'europe', 'global'];
+
+function readSavedRegion(): SalaryRegion {
+  try {
+    const v = globalThis.localStorage?.getItem(REGION_STORAGE_KEY);
+    return VALID_REGIONS.includes(v as SalaryRegion) ? (v as SalaryRegion) : 'uk';
+  } catch {
+    return 'uk';
+  }
+}
 
 @Component({
   selector: 'app-career-detail',
@@ -34,6 +50,7 @@ import {
     NsButtonComponent,
     NsCardComponent,
     NsPageHeaderComponent,
+    NsRegionFilterComponent,
     NsScrollIndicatorComponent,
   ],
   template: `
@@ -397,89 +414,121 @@ import {
                 <!-- Salary — rich version -->
                 @if (salaryData) {
                   <ns-card>
-                    <div class="flex items-start justify-between gap-2">
-                      <h2 class="m-0 text-xl font-bold text-ns-text">
-                        Earning potential
-                      </h2>
-                      <span class="text-xs text-ns-muted"
-                        >UK · {{ salaryData.lastUpdated }}</span
-                      >
-                    </div>
-                    <p class="mt-2 text-sm leading-6 text-ns-muted">
-                      {{ salaryData.summary }}
-                    </p>
+                    <h2 class="m-0 text-xl font-bold text-ns-text">
+                      Earning potential
+                    </h2>
 
-                    <!-- Salary bands -->
-                    <div class="mt-4 space-y-3">
-                      @for (range of salaryData.ranges; track range.level) {
-                        <div>
-                          <div class="mb-1 flex items-center justify-between">
-                            <span
-                              class="rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
-                              [class]="levelBadgeClass(range.level)"
-                              >{{ range.level }}</span
-                            >
-                            <span class="text-xs font-semibold text-ns-text">{{
-                              salaryRangeLabel(
-                                range.min,
-                                range.max,
-                                range.currency
-                              )
-                            }}</span>
-                          </div>
-                          <div
-                            class="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
-                          >
+                    <!-- Region filter -->
+                    <div class="mt-3">
+                      <ns-region-filter
+                        [active]="activeRegion()"
+                        (regionChange)="setRegion($event)"
+                      />
+                    </div>
+
+                    @if (regionalSalary) {
+                      <p class="mt-3 text-sm leading-6 text-ns-muted">
+                        {{ regionalSalary.regionalNote }}
+                      </p>
+
+                      <!-- Salary bands from regional data -->
+                      <div class="mt-4 space-y-3">
+                        @for (range of regionalSalary.ranges; track range.level) {
+                          <div>
+                            <div class="mb-1 flex items-center justify-between">
+                              <span
+                                class="rounded-ns px-2 py-0.5 text-xs font-semibold capitalize"
+                                [class]="levelBadgeClass(range.level)"
+                                >{{ range.level }}</span
+                              >
+                              <span class="text-xs font-semibold text-ns-text">{{
+                                salaryRangeLabel(
+                                  range.min,
+                                  range.max,
+                                  regionalSalary.currencySymbol
+                                )
+                              }}</span>
+                            </div>
                             <div
-                              class="h-full rounded-full transition-all"
-                              [class]="levelBarClass(range.level)"
-                              [style.width.%]="salaryBarWidth(range.max)"
-                            ></div>
+                              class="h-1.5 w-full overflow-hidden rounded-ns bg-ns-border"
+                            >
+                              <div
+                                class="h-full rounded-ns transition-all"
+                                [class]="levelBarClass(range.level)"
+                                [style.width.%]="regionalSalaryBarWidth(range.max)"
+                              ></div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+
+                      <!-- Freelance rates -->
+                      @if (regionalSalary.freelanceRate) {
+                        <div class="mt-4">
+                          <p class="mb-2 text-xs font-semibold text-ns-text">
+                            Freelance rates
+                          </p>
+                          <div class="grid grid-cols-2 gap-2">
+                            <div
+                              class="rounded-ns-md border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Day rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    regionalSalary.freelanceRate.daily.min,
+                                    regionalSalary.freelanceRate.daily.max,
+                                    regionalSalary.currencySymbol
+                                  )
+                                }}
+                              </p>
+                            </div>
+                            <div
+                              class="rounded-ns-md border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Hourly rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    regionalSalary.freelanceRate.hourly.min,
+                                    regionalSalary.freelanceRate.hourly.max,
+                                    regionalSalary.currencySymbol
+                                  )
+                                }}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       }
-                    </div>
-
-                    <!-- Freelance rates -->
-                    @if (salaryData.freelanceRate) {
-                      <div class="mt-4">
-                        <p class="mb-2 text-xs font-semibold text-ns-text">
-                          Freelance rates
-                        </p>
-                        <div class="grid grid-cols-2 gap-2">
-                          <div
-                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
-                          >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Day rate
-                            </p>
-                            <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.daily.min,
-                                  salaryData.freelanceRate.daily.max,
-                                  salaryData.freelanceRate.daily.currency
-                                )
-                              }}
-                            </p>
+                    } @else {
+                      <!-- Fallback to UK data -->
+                      <p class="mt-3 text-sm leading-6 text-ns-muted">
+                        {{ salaryData.summary }}
+                      </p>
+                      <div class="mt-4 space-y-3">
+                        @for (range of salaryData.ranges; track range.level) {
+                          <div>
+                            <div class="mb-1 flex items-center justify-between">
+                              <span
+                                class="rounded-ns px-2 py-0.5 text-xs font-semibold capitalize"
+                                [class]="levelBadgeClass(range.level)"
+                                >{{ range.level }}</span
+                              >
+                              <span class="text-xs font-semibold text-ns-text">{{
+                                salaryRangeLabel(range.min, range.max, range.currency)
+                              }}</span>
+                            </div>
+                            <div
+                              class="h-1.5 w-full overflow-hidden rounded-ns bg-ns-border"
+                            >
+                              <div
+                                class="h-full rounded-ns transition-all"
+                                [class]="levelBarClass(range.level)"
+                                [style.width.%]="salaryBarWidth(range.max)"
+                              ></div>
+                            </div>
                           </div>
-                          <div
-                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
-                          >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Hourly rate
-                            </p>
-                            <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.hourly.min,
-                                  salaryData.freelanceRate.hourly.max,
-                                  salaryData.freelanceRate.hourly.currency
-                                )
-                              }}
-                            </p>
-                          </div>
-                        </div>
+                        }
                       </div>
                     }
 
@@ -488,27 +537,16 @@ import {
                       <p class="mb-2 text-xs font-semibold text-ns-text">
                         What affects salary
                       </p>
-                      <ul
-                        class="space-y-1.5 pl-4 text-xs leading-5 text-ns-muted"
-                      >
+                      <ul class="space-y-1.5 pl-4 text-xs leading-5 text-ns-muted">
                         @for (factor of salaryData.factors; track factor) {
                           <li>{{ factor }}</li>
                         }
                       </ul>
                     </div>
 
-                    <!-- Regional note -->
-                    <p
-                      class="mt-4 rounded-ns border border-ns-border bg-ns-canvasSubtle p-2.5 text-xs italic leading-5 text-ns-muted"
-                    >
-                      🌍 {{ salaryData.regionalNote }}
-                    </p>
-
                     <!-- Sources -->
                     <p class="mt-3 text-[10px] text-ns-muted">
-                      Based on:
-                      {{ salaryData.sources.join(' · ') }}. All figures
-                      approximate.
+                      Based on: {{ salaryData.sources.join(' · ') }}. All figures approximate.
                     </p>
                   </ns-card>
                 } @else {
@@ -662,6 +700,35 @@ export class CareerDetailComponent implements OnInit {
   salaryData: CareerSalaryData | undefined;
   entrepreneurshipData: CareerEntrepreneurshipData | undefined;
 
+  readonly activeRegion = signal<SalaryRegion>(readSavedRegion());
+
+  get regionalSalary(): RegionalSalary | undefined {
+    if (!this.career) return undefined;
+    const regions = CAREER_SALARY_REGIONS[this.career.id];
+    return regions?.find((r) => r.region === this.activeRegion());
+  }
+
+  setRegion(region: SalaryRegion): void {
+    this.activeRegion.set(region);
+    try {
+      globalThis.localStorage?.setItem(REGION_STORAGE_KEY, region);
+    } catch {
+      // localStorage unavailable
+    }
+  }
+
+  regionalSalaryBarWidth(max: number): number {
+    const scaledMaxes: Record<SalaryRegion, number> = {
+      uk: 180000,
+      us: 300000,
+      nigeria: 50000000,
+      europe: 220000,
+      global: 280000,
+    };
+    const scale = scaledMaxes[this.activeRegion()] ?? 180000;
+    return Math.min(Math.round((max / scale) * 100), 100);
+  }
+
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },
@@ -698,8 +765,19 @@ export class CareerDetailComponent implements OnInit {
     }
   }
 
-  salaryRangeLabel(min: number, max: number, currency: string): string {
-    return formatSalaryRange(min, max, currency);
+  salaryRangeLabel(min: number, max: number, currencyOrSymbol: string): string {
+    const CODES = ['GBP', 'USD', 'EUR', 'NGN'];
+    if (CODES.includes(currencyOrSymbol)) {
+      return formatSalaryRange(min, max, currencyOrSymbol);
+    }
+    // currencyOrSymbol is already a symbol (£, $, €, ₦)
+    const symbol = currencyOrSymbol;
+    const fmt = (n: number): string => {
+      if (n >= 1_000_000) return `${symbol}${(n / 1_000_000).toFixed(1)}M`;
+      if (n >= 1_000) return `${symbol}${Math.round(n / 1_000)}k`;
+      return `${symbol}${n}`;
+    };
+    return `${fmt(min)}–${fmt(max)}`;
   }
 
   salaryBarWidth(max: number): number {
@@ -709,20 +787,20 @@ export class CareerDetailComponent implements OnInit {
 
   levelBadgeClass(level: string): string {
     const map: Record<string, string> = {
-      junior: 'bg-blue-500/20 text-blue-400',
-      mid: 'bg-purple-500/20 text-purple-400',
-      senior: 'bg-emerald-500/20 text-emerald-400',
-      lead: 'bg-amber-500/20 text-amber-400',
+      junior: 'bg-ns-primarySoft text-ns-primary',
+      mid: 'bg-ns-purpleSoft text-ns-purple',
+      senior: 'bg-ns-successSoft text-ns-success',
+      lead: 'bg-ns-warningSoft text-ns-warning',
     };
-    return map[level] ?? 'bg-white/10 text-ns-muted';
+    return map[level] ?? 'bg-ns-canvasSubtle text-ns-muted';
   }
 
   levelBarClass(level: string): string {
     const map: Record<string, string> = {
-      junior: 'bg-blue-500',
-      mid: 'bg-purple-500',
-      senior: 'bg-emerald-500',
-      lead: 'bg-amber-500',
+      junior: 'bg-ns-primary',
+      mid: 'bg-ns-purple',
+      senior: 'bg-ns-success',
+      lead: 'bg-ns-warning',
     };
     return map[level] ?? 'bg-ns-primary';
   }

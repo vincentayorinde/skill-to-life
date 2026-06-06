@@ -18,6 +18,7 @@ module.exports = {
           muted: 'var(--ns-color-muted)',
           border: 'var(--ns-color-border)',
           borderMuted: 'var(--ns-color-border-muted)',
+          borderStrong: 'var(--ns-color-border-strong)',
           nav: 'var(--ns-color-nav)',
           primary: 'var(--ns-color-primary)',
           primaryHover: 'var(--ns-color-primary-hover)',
@@ -53,11 +54,15 @@ module.exports = {
         22: '5.5rem',
       },
       borderRadius: {
-        ns: '0.5rem',
+        ns: '4px',
+        'ns-md': '6px',
+        'ns-lg': '8px',
       },
       boxShadow: {
         ns: 'var(--ns-shadow-sm)',
+        'ns-md': 'var(--ns-shadow-md)',
         'ns-lg': 'var(--ns-shadow-lg)',
+        'ns-hover': 'var(--ns-shadow-hover)',
         glow: 'var(--ns-shadow-glow)',
       },
       transitionDuration: {

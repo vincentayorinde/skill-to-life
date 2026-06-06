@@ -80,20 +80,18 @@ export class NsButtonComponent {
       'font-semibold',
       'leading-none',
       'no-underline',
-      'shadow-ns',
       'transition',
       'duration-base',
       'ease-ns',
-      'hover:-translate-y-0.5',
-      'active:translate-y-0',
+      'active:scale-[0.98]',
       'focus-visible:outline',
-      'focus-visible:outline-3',
+      'focus-visible:outline-2',
       'focus-visible:outline-offset-2',
       'focus-visible:outline-ns-focus',
       'disabled:pointer-events-none',
-      'disabled:opacity-60',
+      'disabled:opacity-50',
       'aria-disabled:pointer-events-none',
-      'aria-disabled:opacity-60',
+      'aria-disabled:opacity-50',
       this.sizeClasses,
       this.variantClasses,
     ];
@@ -101,8 +99,8 @@ export class NsButtonComponent {
 
   private get sizeClasses(): string {
     const sizes: Record<NsButtonSize, string> = {
-      sm: 'min-h-9 px-3 text-sm',
-      md: 'min-h-11 px-4 text-sm',
+      sm: 'min-h-8 px-3 text-sm',
+      md: 'min-h-10 px-4 text-sm',
       lg: 'min-h-12 px-5 text-base',
     };
 
@@ -112,17 +110,17 @@ export class NsButtonComponent {
   private get variantClasses(): string {
     const variants: Record<NsButtonVariant, string> = {
       primary:
-        'border-ns-primary bg-ns-primary text-[#07111f] hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow',
+        'border-transparent bg-ns-primary text-white hover:bg-ns-primaryHover',
       secondary:
-        'border-ns-border bg-ns-card text-ns-text hover:border-ns-primary hover:bg-ns-cardElevated',
+        'border-ns-border bg-transparent text-ns-text hover:border-ns-borderStrong hover:bg-ns-canvas-subtle',
       ghost:
-        'border-transparent bg-transparent text-ns-muted shadow-none hover:bg-ns-card hover:text-ns-text',
+        'border-transparent bg-transparent text-ns-primary shadow-none hover:bg-ns-primarySoft',
       danger:
-        'border-ns-danger bg-ns-danger text-white hover:border-ns-dangerHover hover:bg-ns-dangerHover',
+        'border-transparent bg-ns-danger text-white hover:bg-ns-dangerHover',
       success:
-        'border-ns-success bg-ns-success text-[#07111f] hover:border-ns-successHover hover:bg-ns-successHover',
+        'border-transparent bg-ns-success text-white hover:bg-ns-successHover',
       google:
-        'border-ns-border bg-ns-cardElevated text-ns-text hover:border-ns-primary hover:bg-ns-card hover:shadow-glow',
+        'border-ns-border bg-ns-card text-ns-text hover:border-ns-borderStrong',
     };
 
     return variants[this.variant];
