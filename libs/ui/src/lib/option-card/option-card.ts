@@ -11,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       [class.border-ns-primary]="selected"
       [class.bg-ns-primarySoft]="selected"
       [class.hover:border-ns-primary]="!selected"
-      [class.hover:bg-ns-primarySoft\/30]="!selected"
+      [class.hover:bg-ns-primarySoft/30]="!selected"
       [class.shadow-ns]="selected"
       [disabled]="disabled"
       [attr.aria-pressed]="selected"
