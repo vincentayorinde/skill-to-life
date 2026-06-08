@@ -56,57 +56,26 @@ function delay(ms: number): Promise<void> {
     `,
   ],
   template: `
-    <div
-      class="flex min-h-screen flex-col bg-ns-bg text-ns-text"
-      data-theme="dark"
-    >
+    <div class="flex min-h-screen flex-col bg-ns-bg text-ns-text">
       <!-- Header -->
-      <header
-        class="sticky top-0 z-10 border-b border-ns-border bg-ns-nav backdrop-blur-xl"
-      >
-        <div
-          class="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3 sm:px-6"
-        >
+      <header class="sticky top-0 z-10 border-b border-ns-border bg-ns-nav shadow-ns">
+        <div class="mx-auto flex max-w-2xl items-center gap-4 px-4 py-3 sm:px-6">
           <button
             type="button"
-            class="shrink-0 text-sm font-semibold text-ns-muted no-underline hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+            class="shrink-0 text-sm font-medium text-ns-muted hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
             (click)="exitAssessment()"
             aria-label="Exit assessment and go to home"
-          >
-            ← Exit
-          </button>
+          >← Exit</button>
 
           <div class="flex flex-1 flex-col gap-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-ns-muted">
-                Section {{ currentCategory().id }} of {{ categories.length }} —
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-ns-primarySoft px-2.5 py-0.5 text-xs font-medium text-ns-primary">
                 {{ currentCategory().emoji }} {{ currentCategory().label }}
+                · Section {{ currentCategory().id }} of {{ categories.length }}
               </span>
-              <span class="text-xs font-semibold text-ns-muted">
-                Question {{ currentStep() }} of {{ total }}
-              </span>
+              <span class="text-xs text-ns-muted">{{ currentStep() }} / {{ total }}</span>
             </div>
-            <ns-progress
-              [value]="progressPercent()"
-              [max]="100"
-              label="Assessment progress"
-            />
-            <div
-              class="flex items-center gap-1.5"
-              aria-label="Assessment section progress"
-            >
-              @for (
-                category of categories;
-                track category.slug;
-                let i = $index
-              ) {
-                <span
-                  class="h-1.5 flex-1 rounded-full transition"
-                  [class]="categorySegmentClass(i)"
-                  [attr.aria-label]="category.label"
-                ></span>
-              }
-            </div>
+            <ns-progress [value]="progressPercent()" [max]="100" label="Assessment progress" />
           </div>
         </div>
       </header>
@@ -114,23 +83,17 @@ function delay(ms: number): Promise<void> {
       <!-- Resume banner -->
       @if (showResumeBanner()) {
         <div
-          class="resume-banner border-b border-ns-border bg-ns-canvasSubtle px-4 py-2.5 sm:px-6"
+          class="resume-banner border-b border-ns-border bg-ns-primarySoft px-4 py-2.5 sm:px-6"
           role="status"
           aria-live="polite"
         >
-          <div
-            class="mx-auto flex max-w-2xl items-center justify-between gap-3"
-          >
-            <span class="text-xs text-ns-muted"
-              >↩ Picking up where you left off</span
-            >
+          <div class="mx-auto flex max-w-2xl items-center justify-between gap-3">
+            <span class="text-xs font-medium text-ns-primary">↩ Picking up where you left off</span>
             <button
               type="button"
-              class="text-xs font-semibold text-ns-primary hover:underline focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+              class="text-xs font-semibold text-ns-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
               (click)="startOver()"
-            >
-              Start over
-            </button>
+            >Start over</button>
           </div>
         </div>
       }
@@ -141,96 +104,71 @@ function delay(ms: number): Promise<void> {
         id="assessment-main"
       >
         @if (showCategoryTransition()) {
+          <!-- Category transition card -->
           <button
             type="button"
-            class="mx-auto flex w-full max-w-md flex-col items-center rounded-2xl border border-ns-border bg-ns-card p-8 text-center shadow-ns transition hover:border-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+            class="mx-auto flex w-full max-w-lg flex-col items-center rounded-ns-lg border border-ns-border bg-ns-card p-10 text-center shadow-ns-md transition-all hover:shadow-ns-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
             (click)="skipCategoryTransition()"
             aria-live="polite"
           >
-            <span class="text-6xl leading-none" aria-hidden="true">
+            <span class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-ns-primarySoft text-5xl" aria-hidden="true">
               {{ currentCategory().emoji }}
             </span>
-            <span
-              class="mt-5 text-sm font-bold uppercase tracking-[0.16em] text-ns-primary"
-            >
-              Next up
-            </span>
-            <span class="mt-2 text-2xl font-black text-ns-text">
-              {{ currentCategory().label }}
-            </span>
-            <span class="mt-3 text-sm leading-6 text-ns-muted">
-              {{ currentCategory().description }}
-            </span>
+            <span class="mb-1 text-xs font-semibold uppercase tracking-widest text-ns-primary">Next section</span>
+            <span class="text-2xl font-bold text-ns-text">{{ currentCategory().label }}</span>
+            <span class="mt-2 text-sm leading-relaxed text-ns-muted">{{ currentCategory().description }}</span>
+            <span class="mt-6 text-xs text-ns-muted">Tap to continue</span>
           </button>
         } @else {
+          <!-- Question card -->
           <div
-            class="question-panel"
+            class="question-panel rounded-ns-lg border border-ns-border bg-ns-card p-6 shadow-ns-md sm:p-8"
             [class.fading]="isFading()"
             #questionPanel
           >
-            <div class="mb-4 flex items-center justify-between gap-4">
-              <span class="text-xs font-semibold text-ns-muted">
-                {{ currentCategory().emoji }} {{ currentCategory().label }}
-              </span>
-              <span class="text-xs font-semibold text-ns-muted">
-                {{ currentStep() }} / {{ total }}
-              </span>
-            </div>
-
             <!-- Question -->
             <h1
-              class="m-0 text-2xl font-bold leading-snug text-ns-text sm:text-3xl"
+              class="m-0 mb-6 text-xl font-semibold leading-snug text-ns-text sm:text-2xl"
               [id]="'q-' + currentIndex()"
-            >
-              {{ currentQuestion().text }}
-            </h1>
+            >{{ currentQuestion().text }}</h1>
 
             <!-- Options -->
             <div
-              class="mt-6 flex flex-col gap-3"
+              class="flex flex-col gap-2.5"
               role="radiogroup"
               [attr.aria-labelledby]="'q-' + currentIndex()"
               #optionContainer
             >
-              @for (
-                option of currentQuestion().options;
-                track option.label;
-                let i = $index
-              ) {
+              @for (option of currentQuestion().options; track option.label) {
                 <ns-option-card
                   [title]="option.label"
                   [description]="option.description"
                   [icon]="option.emoji"
                   [selected]="selectedOption() === option.label"
                   [attr.aria-label]="option.emoji + ' ' + option.label"
-                  class="block min-h-12"
+                  class="block"
                   (optionSelected)="selectOption(option.label)"
                 />
               }
             </div>
 
             <!-- Navigation -->
-            <div class="mt-8 flex items-center justify-between gap-3">
+            <div class="mt-6 flex items-center justify-between gap-3 border-t border-ns-borderMuted pt-6">
               @if (!isFirst()) {
                 <button
                   type="button"
-                  class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-border bg-ns-card px-5 text-sm font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                  class="inline-flex h-10 items-center gap-2 rounded-ns border border-ns-border bg-ns-card px-5 text-sm font-medium text-ns-muted transition-all duration-base hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                   (click)="back()"
-                >
-                  ← Back
-                </button>
+                >← Back</button>
               } @else {
                 <span></span>
               }
-
               <button
                 type="button"
-                class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-6 text-sm font-semibold text-[#07111f] shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
+                class="inline-flex h-10 items-center gap-2 rounded-ns bg-ns-primary px-6 text-sm font-medium text-white shadow-ns transition-all duration-base hover:bg-ns-primaryHover hover:shadow-ns-md hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
                 [disabled]="!selectedOption()"
                 (click)="next()"
-              >
-                {{ isLast() ? 'See my results' : 'Next →' }}
-              </button>
+              >{{ isLast() ? 'See my results' : 'Next →' }}</button>
             </div>
           </div>
         }
@@ -249,7 +187,6 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
-  private savedTheme: string | null = null;
   private startedAt = new Date().toISOString();
   private resumeTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -296,8 +233,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
   categorySegmentClass(index: number): string {
     if (index < this.currentCategoryIndex()) return 'bg-ns-primary';
-    if (index === this.currentCategoryIndex()) return 'bg-ns-primary/80';
-    return 'bg-white/15';
+    if (index === this.currentCategoryIndex()) return 'bg-ns-primary opacity-60';
+    return 'bg-ns-borderMuted';
   }
 
   selectOption(label: string): void {
@@ -532,29 +469,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Answer 10 quick questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
+        'Answer 30 scenario questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
     });
-    try {
-      this.savedTheme = document.documentElement.getAttribute('data-theme');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } catch {
-      // Non-browser environment — ignore.
-    }
     this.restoreProgress();
   }
 
   ngOnDestroy(): void {
     if (this.resumeTimer !== null) {
       clearTimeout(this.resumeTimer);
-    }
-    try {
-      if (this.savedTheme) {
-        document.documentElement.setAttribute('data-theme', this.savedTheme);
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-      }
-    } catch {
-      // Non-browser environment — ignore.
     }
   }
 }

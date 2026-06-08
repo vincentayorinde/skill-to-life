@@ -2,116 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Material Design 3 Inspired Design Tokens ─────────────────────────────── */
+
 :root {
-  color-scheme: dark;
-  --ns-color-bg: #070b14;
-  --ns-color-foreground: #f8fafc;
-  --ns-color-canvas: #0c1220;
-  --ns-color-canvas-subtle: #111827;
-  --ns-color-card: rgb(15 23 42 / 0.78);
-  --ns-color-card-elevated: rgb(17 24 39 / 0.9);
-  --ns-color-text: #f8fafc;
-  --ns-color-muted: #a8b3cf;
-  --ns-color-border: rgb(148 163 184 / 0.24);
-  --ns-color-border-muted: rgb(148 163 184 / 0.14);
-  --ns-color-nav: rgb(7 11 20 / 0.76);
-  --ns-color-primary: #58a6ff;
-  --ns-color-primary-hover: #79c0ff;
-  --ns-color-primary-soft: rgb(56 139 253 / 0.16);
-  --ns-color-success: #3fb950;
-  --ns-color-success-hover: #56d364;
-  --ns-color-success-soft: rgb(63 185 80 / 0.14);
-  --ns-color-danger: #f85149;
-  --ns-color-danger-hover: #ff7b72;
-  --ns-color-danger-soft: rgb(248 81 73 / 0.16);
-  --ns-color-warning: #d29922;
-  --ns-color-warning-soft: rgb(210 153 34 / 0.16);
-  --ns-color-accent: #58a6ff;
-  --ns-color-accent-soft: rgb(88 166 255 / 0.14);
-  --ns-color-purple: #a371f7;
-  --ns-color-purple-soft: rgb(163 113 247 / 0.16);
-  --ns-color-focus: #f2cc60;
-  --ns-hero-gradient:
-    radial-gradient(
-      circle at 50% 0%,
-      rgb(88 166 255 / 0.26),
-      transparent 34rem
-    ),
-    radial-gradient(
-      circle at 80% 18%,
-      rgb(163 113 247 / 0.22),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #090d18 0%, #070b14 60%, #070b14 100%);
-  --ns-radius-sm: 0.375rem;
-  --ns-radius-md: 0.5rem;
-  --ns-radius-lg: 0.75rem;
-  --ns-shadow-sm: 0 16px 48px rgb(0 0 0 / 0.2);
-  --ns-shadow-md:
-    0 18px 50px rgb(0 0 0 / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.04);
-  --ns-shadow-lg: 0 28px 80px rgb(0 0 0 / 0.36);
-  --ns-shadow-glow: 0 0 46px rgb(88 166 255 / 0.22);
-  --ns-focus-ring: 0 0 0 3px rgb(250 204 21 / 0.45);
-  --ns-motion-fast: 120ms;
-  --ns-motion-base: 180ms;
-}
-
-[data-theme='light'] {
   color-scheme: light;
-  --ns-color-bg: #f6f8fa;
-  --ns-color-foreground: #111827;
-  --ns-color-canvas: #ffffff;
-  --ns-color-canvas-subtle: #f8fafc;
-  --ns-color-card: rgb(255 255 255 / 0.92);
-  --ns-color-card-elevated: #ffffff;
-  --ns-color-text: #111827;
-  --ns-color-muted: #64748b;
-  --ns-color-border: #d8dee4;
-  --ns-color-border-muted: #e5e7eb;
-  --ns-color-nav: rgb(255 255 255 / 0.8);
-  --ns-color-primary: #2563eb;
-  --ns-color-primary-hover: #1d4ed8;
-  --ns-color-primary-soft: #dbeafe;
-  --ns-color-success: #16a34a;
-  --ns-color-success-hover: #15803d;
-  --ns-color-success-soft: #dcfce7;
-  --ns-color-danger: #dc2626;
-  --ns-color-danger-hover: #b91c1c;
-  --ns-color-danger-soft: #fee2e2;
-  --ns-color-warning: #d97706;
-  --ns-color-warning-soft: #fef3c7;
-  --ns-color-accent: #2563eb;
-  --ns-color-accent-soft: #dbeafe;
-  --ns-color-purple: #7c3aed;
-  --ns-color-purple-soft: #ede9fe;
-  --ns-color-focus: #ca8a04;
-  --ns-hero-gradient:
-    radial-gradient(circle at 50% 0%, rgb(37 99 235 / 0.18), transparent 34rem),
-    radial-gradient(
-      circle at 80% 18%,
-      rgb(124 58 237 / 0.14),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #ffffff 0%, #f6f8fa 72%, #f6f8fa 100%);
-  --ns-shadow-sm:
-    0 1px 2px rgb(17 24 39 / 0.06), 0 1px 3px rgb(17 24 39 / 0.08);
-  --ns-shadow-md:
-    0 10px 25px -12px rgb(17 24 39 / 0.28),
-    0 4px 12px -8px rgb(37 99 235 / 0.24);
-  --ns-shadow-lg: 0 24px 70px -32px rgb(17 24 39 / 0.42);
-  --ns-shadow-glow: 0 0 40px rgb(37 99 235 / 0.16);
+
+  /* Backgrounds */
+  --ns-color-bg:              #F8F9FA;
+  --ns-color-foreground:      #FFFFFF;
+  --ns-color-canvas:          #FFFFFF;
+  --ns-color-canvas-subtle:   #F1F3F4;
+  --ns-color-card:            #FFFFFF;
+  --ns-color-card-elevated:   #FFFFFF;
+  --ns-color-nav:             #FFFFFF;
+
+  /* Text */
+  --ns-color-text:            #202124;
+  --ns-color-muted:           #5F6368;
+  --ns-color-muted-light:     #9AA0A6;
+
+  /* Accent / Primary */
+  --ns-color-primary:         #006AFF;
+  --ns-color-primary-hover:   #0052CC;
+  --ns-color-primary-soft:    #E8F0FE;
+
+  /* Semantic */
+  --ns-color-success:         #1E8E3E;
+  --ns-color-success-hover:   #166D35;
+  --ns-color-success-soft:    #E6F4EA;
+  --ns-color-warning:         #B06000;
+  --ns-color-warning-raw:     #F9AB00;
+  --ns-color-warning-soft:    #FEF7E0;
+  --ns-color-danger:          #D93025;
+  --ns-color-danger-hover:    #B31412;
+  --ns-color-danger-soft:     #FCE8E6;
+  --ns-color-accent:          #006AFF;
+  --ns-color-accent-soft:     #E8F0FE;
+  --ns-color-purple:          #7627BB;
+  --ns-color-purple-soft:     #F3E8FD;
+
+  /* Borders */
+  --ns-color-border:          #DADCE0;
+  --ns-color-border-muted:    #E8EAED;
+  --ns-color-border-strong:   #BDC1C6;
+
+  /* Illustration palette */
+  --ns-color-illus-blue:      #4285F4;
+  --ns-color-illus-yellow:    #FBBC04;
+  --ns-color-illus-green:     #34A853;
+  --ns-color-illus-red:       #EA4335;
+  --ns-color-illus-purple:    #A142F4;
+  --ns-color-illus-teal:      #24C1E0;
+  --ns-color-illus-orange:    #FF6D00;
+
+  /* Shadows */
+  --ns-shadow-sm:    0 1px 2px rgba(60,64,67,0.10), 0 1px 3px rgba(60,64,67,0.08);
+  --ns-shadow-md:    0 1px 3px rgba(60,64,67,0.12), 0 2px 8px rgba(60,64,67,0.10);
+  --ns-shadow-lg:    0 2px 6px rgba(60,64,67,0.15), 0 4px 16px rgba(60,64,67,0.12);
+  --ns-shadow-hover: 0 4px 12px rgba(60,64,67,0.18), 0 8px 24px rgba(60,64,67,0.12);
+  --ns-shadow-glow:  0 0 0 3px rgba(0,106,255,0.20);
+
+  /* Focus */
+  --ns-focus-ring:   0 0 0 2px rgba(0,106,255,0.50);
+  --ns-color-focus:  #006AFF;
+
+  /* Motion */
+  --ns-motion-fast: 120ms;
+  --ns-motion-base: 200ms;
+
+  /* Hero gradient */
+  --ns-hero-gradient: linear-gradient(160deg, #F8F9FA 0%, #F1F3F4 100%);
 }
 
+/* ── Dark theme override ────────────────────────────────────────────────────── */
 [data-theme='dark'] {
   color-scheme: dark;
+
+  --ns-color-bg:              #1F1F1F;
+  --ns-color-foreground:      #2D2D2D;
+  --ns-color-canvas:          #2D2D2D;
+  --ns-color-canvas-subtle:   #282828;
+  --ns-color-card:            #2D2D2D;
+  --ns-color-card-elevated:   #323232;
+  --ns-color-nav:             #2D2D2D;
+
+  --ns-color-text:            #E8EAED;
+  --ns-color-muted:           #9AA0A6;
+  --ns-color-muted-light:     #5F6368;
+
+  --ns-color-border:          #3C4043;
+  --ns-color-border-muted:    #3C4043;
+
+  --ns-color-primary-soft:    #1A3A6B;
+  --ns-color-success-soft:    #143521;
+  --ns-color-warning-soft:    #2D220A;
+  --ns-color-danger-soft:     #3B1715;
+  --ns-color-accent-soft:     #1A3A6B;
+  --ns-color-purple-soft:     #2D1B45;
+
+  --ns-shadow-sm:    0 1px 2px rgba(0,0,0,0.30), 0 1px 3px rgba(0,0,0,0.25);
+  --ns-shadow-md:    0 1px 3px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.30);
+  --ns-shadow-lg:    0 2px 6px rgba(0,0,0,0.40), 0 4px 16px rgba(0,0,0,0.35);
+  --ns-shadow-hover: 0 4px 12px rgba(0,0,0,0.40), 0 8px 24px rgba(0,0,0,0.35);
+  --ns-shadow-glow:  0 0 0 3px rgba(0,106,255,0.35);
+
+  --ns-hero-gradient: linear-gradient(160deg, #1F1F1F 0%, #282828 100%);
 }
 
+/* ── Base styles ────────────────────────────────────────────────────────────── */
 html {
   min-height: 100%;
   background: var(--ns-color-bg);
   transition:
-    background-color var(--ns-motion-base) cubic-bezier(0.2, 0, 0, 1),
-    color var(--ns-motion-base) cubic-bezier(0.2, 0, 0, 1);
+    background-color var(--ns-motion-base) ease,
+    color var(--ns-motion-base) ease;
 }
 
 body {
@@ -120,13 +124,13 @@ body {
   background: var(--ns-color-bg);
   color: var(--ns-color-text);
   font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
+    'Google Sans',
+    'Inter',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
@@ -135,13 +139,13 @@ body {
 }
 
 ::selection {
-  background: #dbeafe;
-  color: #111827;
+  background: #E8F0FE;
+  color: #202124;
 }
 
 :focus-visible {
-  outline: 3px solid var(--ns-color-focus);
-  outline-offset: 3px;
+  outline: 2px solid var(--ns-color-focus);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

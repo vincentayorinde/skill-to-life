@@ -19,7 +19,7 @@ import {
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
-      <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <div class="bg-ns-bg px-6 py-16 sm:py-20 lg:px-8">
         <div class="mx-auto max-w-3xl">
           <ns-page-header
             eyebrow="Legal"
@@ -64,7 +64,7 @@ import {
                   >
                   We use a session token cookie (
                   <code
-                    class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
+                    class="rounded bg-ns-canvasSubtle px-1 py-0.5 font-mono text-xs text-ns-text"
                     >ns_token</code
                   >) to keep you signed in. We also store your theme preference
                   locally. No advertising or tracking cookies are used.
@@ -86,19 +86,19 @@ import {
                   To identify your account across sessions
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
+                  <span class="text-red-600" aria-hidden="true">✗</span>
                   We do not sell your data to any third party
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
+                  <span class="text-red-600" aria-hidden="true">✗</span>
                   We do not use your data for advertising
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
+                  <span class="text-red-600" aria-hidden="true">✗</span>
                   We do not share your data with any analytics platform
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
+                  <span class="text-red-600" aria-hidden="true">✗</span>
                   We do not send marketing emails
                 </li>
               </ul>

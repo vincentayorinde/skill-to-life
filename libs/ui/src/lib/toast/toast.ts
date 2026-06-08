@@ -12,7 +12,7 @@ export type NsToastVariant = 'success' | 'error';
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 100;
+        z-index: 200;
         pointer-events: none;
       }
     `,
@@ -25,8 +25,13 @@ export type NsToastVariant = 'success' | 'error';
       [class]="innerClasses"
       [style.opacity]="visible ? 1 : 0"
       [style.transform]="visible ? 'translateY(0)' : 'translateY(8px)'"
-      style="transition: opacity 300ms ease, transform 300ms ease; white-space: nowrap;"
+      style="transition: opacity 200ms ease, transform 200ms ease; white-space: nowrap;"
     >
+      @if (variant === 'success') {
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+      }
       {{ message }}
     </div>
   `,
@@ -38,9 +43,9 @@ export class NsToastComponent {
 
   get innerClasses(): string {
     const base =
-      'inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold shadow-xl';
+      'inline-flex items-center gap-2 rounded-ns px-5 py-3 text-sm font-medium text-white shadow-ns-lg';
     return this.variant === 'error'
-      ? `${base} bg-red-600 text-white`
-      : `${base} bg-green-600 text-white`;
+      ? `${base} bg-ns-danger`
+      : `${base} bg-[#202124]`;
   }
 }

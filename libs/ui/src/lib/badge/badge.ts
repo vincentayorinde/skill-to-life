@@ -21,16 +21,16 @@ export class NsBadgeComponent {
 
   get classes(): string {
     const variants: Record<NsBadgeVariant, string> = {
-      neutral: 'border-ns-border bg-ns-card text-ns-muted',
-      primary: 'border-ns-border bg-ns-primarySoft text-ns-primaryHover',
-      success: 'border-ns-border bg-ns-successSoft text-ns-successHover',
-      warning: 'border-ns-border bg-ns-warningSoft text-ns-warning',
-      accent: 'border-ns-border bg-ns-accentSoft text-ns-accent',
-      purple: 'border-ns-border bg-ns-purpleSoft text-ns-purple',
+      neutral: 'bg-ns-canvasSubtle text-ns-muted',
+      primary: 'bg-ns-primarySoft text-ns-primary',
+      success: 'bg-ns-successSoft text-ns-success',
+      warning: 'bg-ns-warningSoft text-ns-warning',
+      accent:  'bg-ns-accentSoft text-ns-accent',
+      purple:  'bg-ns-purpleSoft text-ns-purple',
     };
 
     return [
-      'inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold leading-none shadow-ns',
+      'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium leading-none',
       variants[this.variant],
     ].join(' ');
   }

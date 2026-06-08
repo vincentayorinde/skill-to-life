@@ -75,8 +75,8 @@ type SortKey = 'senior' | 'junior' | 'name';
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
-      <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <div class="mx-auto max-w-7xl">
+      <div class="bg-ns-bg px-6 py-16 sm:py-20 lg:px-8">
+        <div class="mx-auto max-w-container">
           <ns-page-header
             eyebrow="Salary guide"
             title="Tech career salaries."
@@ -97,8 +97,8 @@ type SortKey = 'senior' | 'junior' | 'name';
                   class="rounded-full border px-3 py-1 text-sm font-semibold transition"
                   [class]="
                     activeSort() === s.key
-                      ? 'border-ns-primary bg-ns-primary text-[#07111f]'
-                      : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
+                      ? 'border-ns-primary bg-ns-primary text-white'
+                      : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'
                   "
                   (click)="activeSort.set(s.key)"
                 >
@@ -131,7 +131,7 @@ type SortKey = 'senior' | 'junior' | 'name';
                 <div class="space-y-2">
                   <div class="flex items-center justify-between">
                     <span
-                      class="rounded-full bg-blue-500/20 px-2 py-0.5 text-[10px] font-semibold text-blue-400"
+                      class="rounded-full bg-ns-primarySoft px-2 py-0.5 text-[10px] font-semibold text-ns-primary"
                       >Junior</span
                     >
                     <span class="text-xs font-semibold text-ns-text">{{
@@ -140,7 +140,7 @@ type SortKey = 'senior' | 'junior' | 'name';
                   </div>
                   <div class="flex items-center justify-between">
                     <span
-                      class="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400"
+                      class="rounded-full bg-ns-successSoft px-2 py-0.5 text-[10px] font-semibold text-green-700"
                       >Senior</span
                     >
                     <span class="text-xs font-semibold text-ns-text">{{

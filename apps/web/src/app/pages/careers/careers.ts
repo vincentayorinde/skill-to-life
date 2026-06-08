@@ -52,8 +52,8 @@ const TABS: TabFilter[] = [
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
-      <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <div class="mx-auto max-w-7xl">
+      <div class="bg-ns-bg px-6 py-16 sm:py-20 lg:px-8">
+        <div class="mx-auto max-w-container">
           <ns-page-header
             eyebrow="Career paths"
             title="Find the path that fits you."
@@ -64,7 +64,7 @@ const TABS: TabFilter[] = [
             >
           </ns-page-header>
 
-          <div class="mt-2 overflow-x-auto pb-1">
+          <div class="mt-4 overflow-x-auto pb-1">
             <ns-tabs
               [tabs]="tabItems"
               [activeId]="activeTab()"
@@ -80,7 +80,9 @@ const TABS: TabFilter[] = [
             class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           >
             @for (career of filtered(); track career.slug) {
-              <ns-card [interactive]="true">
+              <div
+                class="rounded-ns-card border border-ns-border bg-ns-card shadow-ns p-5 hover:-translate-y-0.5 hover:shadow-ns-hover transition-all duration-base cursor-pointer flex flex-col"
+              >
                 <div class="flex items-start justify-between gap-3">
                   <span class="text-3xl leading-none" aria-hidden="true">{{
                     career.emoji
@@ -107,7 +109,7 @@ const TABS: TabFilter[] = [
                 <div class="mt-3 flex flex-wrap gap-1.5">
                   @for (tag of career.tags.slice(0, 3); track tag) {
                     <span
-                      class="rounded-full border border-ns-border px-2 py-0.5 text-xs font-semibold text-ns-muted"
+                      class="rounded-full bg-ns-canvasSubtle px-2 py-0.5 text-xs font-medium text-ns-muted"
                       >{{ tag }}</span
                     >
                   }
@@ -118,7 +120,7 @@ const TABS: TabFilter[] = [
                   [routerLink]="['/careers', career.slug]"
                   >View path →</a
                 >
-              </ns-card>
+              </div>
             }
           </div>
 

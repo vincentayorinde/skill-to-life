@@ -19,7 +19,7 @@ import {
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
-      <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <div class="bg-ns-bg px-6 py-16 sm:py-20 lg:px-8">
         <div class="mx-auto max-w-3xl">
           <ns-page-header
             eyebrow="Legal"

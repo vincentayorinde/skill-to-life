@@ -10,3 +10,6 @@ export * from './lib/progress/progress';
 export * from './lib/scroll-indicator/scroll-indicator';
 export * from './lib/tabs/tabs';
 export * from './lib/toast/toast';
+export * from './lib/illustrations/hero-decorative';
+export * from './lib/illustrations/career-illustration';
+export * from './lib/illustrations/assessment-illustration';

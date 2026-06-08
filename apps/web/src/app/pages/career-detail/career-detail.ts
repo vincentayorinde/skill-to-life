@@ -38,7 +38,7 @@ import {
   ],
   template: `
     <ns-app-shell brand="NextSkill" [links]="shellLinks">
-      <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <div class="bg-ns-bg px-6 py-16 sm:py-20 lg:px-8">
         <div class="mx-auto max-w-5xl">
           @if (!career) {
             <div class="py-24 text-center">
@@ -219,8 +219,8 @@ import {
                                         class="rounded-full px-1.5 py-0.5 text-[10px]"
                                         [class]="
                                           res.type === 'paid'
-                                            ? 'bg-amber-500/20 text-amber-400'
-                                            : 'bg-emerald-500/20 text-emerald-400'
+                                            ? 'bg-ns-warningSoft text-amber-700'
+                                            : 'bg-ns-successSoft text-green-700'
                                         "
                                       >
                                         {{
@@ -428,7 +428,7 @@ import {
                             }}</span>
                           </div>
                           <div
-                            class="h-1.5 w-full overflow-hidden rounded-full bg-white/10"
+                            class="h-1.5 w-full overflow-hidden rounded-full bg-ns-canvasSubtle"
                           >
                             <div
                               class="h-full rounded-full transition-all"
@@ -709,19 +709,19 @@ export class CareerDetailComponent implements OnInit {
 
   levelBadgeClass(level: string): string {
     const map: Record<string, string> = {
-      junior: 'bg-blue-500/20 text-blue-400',
-      mid: 'bg-purple-500/20 text-purple-400',
-      senior: 'bg-emerald-500/20 text-emerald-400',
-      lead: 'bg-amber-500/20 text-amber-400',
+      junior: 'bg-ns-primarySoft text-ns-primary',
+      mid: 'bg-ns-purpleSoft text-purple-700',
+      senior: 'bg-ns-successSoft text-green-700',
+      lead: 'bg-ns-warningSoft text-amber-700',
     };
-    return map[level] ?? 'bg-white/10 text-ns-muted';
+    return map[level] ?? 'bg-ns-canvasSubtle text-ns-muted';
   }
 
   levelBarClass(level: string): string {
     const map: Record<string, string> = {
-      junior: 'bg-blue-500',
+      junior: 'bg-ns-primary',
       mid: 'bg-purple-500',
-      senior: 'bg-emerald-500',
+      senior: 'bg-green-600',
       lead: 'bg-amber-500',
     };
     return map[level] ?? 'bg-ns-primary';
@@ -729,11 +729,11 @@ export class CareerDetailComponent implements OnInit {
 
   difficultyBadgeClass(difficulty: string): string {
     const map: Record<string, string> = {
-      low: 'bg-emerald-500/20 text-emerald-400',
-      medium: 'bg-amber-500/20 text-amber-400',
-      high: 'bg-red-500/20 text-red-400',
+      low: 'bg-ns-successSoft text-green-700',
+      medium: 'bg-ns-warningSoft text-amber-700',
+      high: 'bg-ns-dangerSoft text-red-700',
     };
-    return map[difficulty] ?? 'bg-white/10 text-ns-muted';
+    return map[difficulty] ?? 'bg-ns-canvasSubtle text-ns-muted';
   }
 
   difficultyLabel(difficulty: string): string {
@@ -753,22 +753,22 @@ export class CareerDetailComponent implements OnInit {
 
   stepBadgeClass(type: string): string {
     const map: Record<string, string> = {
-      foundation: 'bg-blue-400',
-      core: 'bg-purple-400',
-      practice: 'bg-emerald-400',
-      advanced: 'bg-orange-400',
-      'job-ready': 'bg-teal-400',
+      foundation: 'bg-ns-primary',
+      core: 'bg-purple-500',
+      practice: 'bg-green-600',
+      advanced: 'bg-amber-500',
+      'job-ready': 'bg-teal-500',
     };
     return map[type] ?? 'bg-ns-primary';
   }
 
   stepPillClass(type: string): string {
     const map: Record<string, string> = {
-      foundation: 'border-blue-500/40 text-blue-400',
-      core: 'border-purple-500/40 text-purple-400',
-      practice: 'border-emerald-500/40 text-emerald-400',
-      advanced: 'border-orange-500/40 text-orange-400',
-      'job-ready': 'border-teal-500/40 text-teal-400',
+      foundation: 'border-ns-primary/40 text-ns-primary',
+      core: 'border-purple-400/40 text-purple-700',
+      practice: 'border-green-500/40 text-green-700',
+      advanced: 'border-amber-400/40 text-amber-700',
+      'job-ready': 'border-teal-400/40 text-ns-illusTeal',
     };
     return map[type] ?? 'border-ns-border text-ns-muted';
   }

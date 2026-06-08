@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   template: `
     <div
-      class="h-2.5 w-full overflow-hidden rounded-full border border-ns-borderMuted bg-ns-canvasSubtle"
+      class="h-1.5 w-full overflow-hidden rounded-full bg-ns-borderMuted"
       role="progressbar"
       [attr.aria-valuenow]="normalizedValue"
       [attr.aria-valuemin]="0"
@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
       [attr.aria-label]="label"
     >
       <div
-        class="h-full rounded-full bg-gradient-to-r from-ns-success via-ns-primary to-ns-purple transition-all duration-slow ease-ns"
+        class="h-full rounded-full bg-ns-primary transition-all duration-slow ease-ns"
         [style.width.%]="percentage"
       ></div>
     </div>
@@ -29,10 +29,7 @@ export class NsProgressComponent {
   }
 
   get percentage(): number {
-    if (this.max <= 0) {
-      return 0;
-    }
-
+    if (this.max <= 0) return 0;
     return (this.normalizedValue / this.max) * 100;
   }
 }

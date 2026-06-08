@@ -15,12 +15,14 @@ export class NsCardComponent {
 
   get classes(): string {
     return [
-      'block rounded-ns border border-ns-border bg-ns-card text-ns-text shadow-ns transition duration-base ease-ns',
-      this.elevated ? 'bg-ns-cardElevated shadow-ns-lg' : '',
+      'block rounded-ns-card border border-ns-border bg-ns-card text-ns-text shadow-ns transition-all duration-base',
+      this.elevated ? 'shadow-ns-md' : '',
       this.interactive
-        ? 'hover:-translate-y-1 hover:border-ns-primary hover:shadow-glow'
+        ? 'cursor-pointer hover:-translate-y-0.5 hover:shadow-ns-hover hover:border-ns-borderStrong'
         : '',
-      this.padded ? 'p-5 sm:p-6' : '',
-    ].join(' ');
+      this.padded ? 'p-6' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 }

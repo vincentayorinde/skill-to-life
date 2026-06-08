@@ -69,23 +69,23 @@ import { environment } from '../../../environments/environment';
     `,
   ],
   template: `
-    <div class="min-h-screen bg-ns-bg text-ns-text" data-theme="dark">
+    <div class="min-h-screen bg-ns-bg text-ns-text">
       <!-- ─── LOADING SKELETON ──────────────────────────────────── -->
       @if (loading()) {
         <div class="mx-auto max-w-2xl animate-pulse space-y-6 px-4 py-12">
           <p class="text-center text-sm text-ns-muted">
             Calculating your matches...
           </p>
-          <div class="h-72 rounded-2xl bg-white/10"></div>
+          <div class="h-72 rounded-ns-card border border-ns-border bg-ns-card"></div>
           <div class="space-y-2 pt-4">
-            <div class="h-5 w-48 rounded bg-white/10"></div>
-            <div class="h-28 rounded-ns bg-white/10"></div>
+            <div class="h-5 w-48 rounded-full bg-ns-borderMuted"></div>
+            <div class="h-28 rounded-ns-card bg-ns-borderMuted"></div>
           </div>
           <div class="space-y-3">
-            <div class="h-5 w-40 rounded bg-white/10"></div>
-            <div class="h-20 rounded-ns bg-white/10"></div>
-            <div class="h-20 rounded-ns bg-white/10"></div>
-            <div class="h-20 rounded-ns bg-white/10"></div>
+            <div class="h-5 w-40 rounded-full bg-ns-borderMuted"></div>
+            <div class="h-20 rounded-ns-card bg-ns-borderMuted"></div>
+            <div class="h-20 rounded-ns-card bg-ns-borderMuted"></div>
+            <div class="h-20 rounded-ns-card bg-ns-borderMuted"></div>
           </div>
         </div>
       }
