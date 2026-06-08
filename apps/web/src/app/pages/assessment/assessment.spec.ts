@@ -69,10 +69,9 @@ describe('AssessmentComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(fixture.nativeElement.textContent).toContain(
-      'Section 1 of 6 — 💼 Work Style',
-    );
-    expect(fixture.nativeElement.textContent).toContain('Question 1 of 30');
+    expect(fixture.nativeElement.textContent).toContain('Work Style');
+    expect(fixture.nativeElement.textContent).toContain('Section 1 of 6');
+    expect(fixture.nativeElement.textContent).toContain('1 / 30');
   });
 
   it('should disable Next button until an option is selected', async () => {
@@ -109,7 +108,7 @@ describe('AssessmentComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.currentIndex()).toBe(1);
-    expect(fixture.nativeElement.textContent).toContain('Question 2 of 30');
+    expect(fixture.nativeElement.textContent).toContain('2 / 30');
   });
 
   it('should go back to question 1 after Back is clicked on question 2', async () => {
@@ -174,9 +173,8 @@ describe('AssessmentComponent', () => {
     }
 
     expect(fixture.componentInstance.currentIndex()).toBe(5);
-    expect(fixture.nativeElement.textContent).toContain(
-      'Section 2 of 6 — 📅 Day to Day',
-    );
+    expect(fixture.nativeElement.textContent).toContain('Day to Day');
+    expect(fixture.nativeElement.textContent).toContain('Section 2 of 6');
   }, 4000);
 
   it('shows a category transition at question boundaries', async () => {
@@ -198,7 +196,7 @@ describe('AssessmentComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.showCategoryTransition()).toBe(true);
-    expect(fixture.nativeElement.textContent).toContain('Next up');
+    expect(fixture.nativeElement.textContent).toContain('Next section');
 
     fixture.componentInstance.skipCategoryTransition();
     await transition;
@@ -251,7 +249,7 @@ describe('AssessmentComponent', () => {
       fixture.detectChanges();
     }
 
-    expect(fixture.nativeElement.textContent).toContain('Question 30 of 30');
+    expect(fixture.nativeElement.textContent).toContain('30 / 30');
   }, 15000);
 
   it('should show 100% progress on the last question', async () => {

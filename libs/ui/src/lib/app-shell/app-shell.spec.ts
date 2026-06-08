@@ -29,13 +29,14 @@ describe('NsAppShellComponent', () => {
   it('toggles and persists theme', () => {
     fixture.detectChanges();
 
+    // Default theme is 'light', so the toggle offers to switch to dark
     const toggle = fixture.debugElement.query(
-      By.css('button[aria-label="Switch to light theme"]'),
+      By.css('button[aria-label="Switch to dark theme"]'),
     );
     toggle.triggerEventHandler('click');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.theme).toBe('light');
-    expect(localStorage.getItem('nextskill-theme')).toBe('light');
+    expect(fixture.componentInstance.theme).toBe('dark');
+    expect(localStorage.getItem('nextskill-theme')).toBe('dark');
   });
 });

@@ -21,7 +21,15 @@ describe('NsBadgeComponent', () => {
     expect(el.className).toContain('rounded-full');
   });
 
-  it('default variant uses primary soft colours', () => {
+  it('neutral (default) variant uses canvas-subtle colours', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.className).toContain('bg-ns-canvasSubtle');
+    expect(el.className).toContain('text-ns-muted');
+  });
+
+  it('primary variant uses blue colours', () => {
+    fixture.componentRef.setInput('variant', 'primary');
+    fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
     expect(el.className).toContain('bg-ns-primarySoft');
     expect(el.className).toContain('text-ns-primary');
@@ -43,11 +51,11 @@ describe('NsBadgeComponent', () => {
     expect(el.className).toContain('text-ns-warning');
   });
 
-  it('danger variant uses red colours', () => {
-    fixture.componentRef.setInput('variant', 'danger');
+  it('purple variant uses purple colours', () => {
+    fixture.componentRef.setInput('variant', 'purple');
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.className).toContain('bg-ns-dangerSoft');
-    expect(el.className).toContain('text-ns-danger');
+    expect(el.className).toContain('bg-ns-purpleSoft');
+    expect(el.className).toContain('text-ns-purple');
   });
 });
