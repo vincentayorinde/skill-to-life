@@ -13,8 +13,8 @@ import { Component } from '@angular/core';
         preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
-        <circle cx="480" cy="120" r="180" fill="#E8EAED" opacity="0.5"/>
-        <circle cx="380" cy="280" r="120" fill="#DADCE0" opacity="0.4"/>
+        <circle cx="480" cy="120" r="180" fill="#E8EAED" opacity="0.5" />
+        <circle cx="380" cy="280" r="120" fill="#DADCE0" opacity="0.4" />
 
         <!-- Sweep line 1 — blue -->
         <path
@@ -49,7 +49,11 @@ import { Component } from '@angular/core';
       <div
         class="absolute bottom-8 right-4 w-56 rounded-ns-card border border-ns-border bg-ns-card p-5 shadow-ns-md"
       >
-        <p class="mb-3 text-xs font-medium uppercase tracking-wide text-ns-muted">At a glance</p>
+        <p
+          class="mb-3 text-xs font-medium uppercase tracking-wide text-ns-muted"
+        >
+          At a glance
+        </p>
         <div class="space-y-2.5">
           <div class="flex items-center gap-3">
             <span class="h-2 w-2 rounded-full bg-ns-illusBlue"></span>

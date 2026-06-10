@@ -25,8 +25,8 @@ export class NsBadgeComponent {
       primary: 'bg-ns-primarySoft text-ns-primary',
       success: 'bg-ns-successSoft text-ns-success',
       warning: 'bg-ns-warningSoft text-ns-warning',
-      accent:  'bg-ns-accentSoft text-ns-accent',
-      purple:  'bg-ns-purpleSoft text-ns-purple',
+      accent: 'bg-ns-accentSoft text-ns-accent',
+      purple: 'bg-ns-purpleSoft text-ns-purple',
     };
 
     return [

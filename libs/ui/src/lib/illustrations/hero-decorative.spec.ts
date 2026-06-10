@@ -29,7 +29,9 @@ describe('NsHeroDecorativeComponent', () => {
   });
 
   it('has aria-hidden on decorative SVG', () => {
-    const svgs = fixture.nativeElement.querySelectorAll('svg[aria-hidden="true"]');
+    const svgs = fixture.nativeElement.querySelectorAll(
+      'svg[aria-hidden="true"]',
+    );
     expect(svgs.length).toBeGreaterThan(0);
   });
 });

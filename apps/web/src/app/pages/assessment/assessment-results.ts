@@ -76,7 +76,9 @@ import { environment } from '../../../environments/environment';
           <p class="text-center text-sm text-ns-muted">
             Calculating your matches...
           </p>
-          <div class="h-72 rounded-ns-card border border-ns-border bg-ns-card"></div>
+          <div
+            class="h-72 rounded-ns-card border border-ns-border bg-ns-card"
+          ></div>
           <div class="space-y-2 pt-4">
             <div class="h-5 w-48 rounded-full bg-ns-borderMuted"></div>
             <div class="h-28 rounded-ns-card bg-ns-borderMuted"></div>

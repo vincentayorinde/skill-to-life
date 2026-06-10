@@ -21,7 +21,9 @@ import { environment } from '../../../environments/environment';
         @if (loading()) {
           <div class="mt-8 space-y-4 animate-pulse">
             @for (i of [1, 2, 3]; track i) {
-              <div class="h-24 rounded-ns-card border border-ns-border bg-ns-card shadow-ns"></div>
+              <div
+                class="h-24 rounded-ns-card border border-ns-border bg-ns-card shadow-ns"
+              ></div>
             }
           </div>
         } @else if (results().length === 0) {

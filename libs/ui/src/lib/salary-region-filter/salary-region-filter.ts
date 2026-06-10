@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import type { SalaryRegion } from 'types';
 
 const STORAGE_KEY = 'ns_salary_region';
@@ -51,7 +45,9 @@ export class NsSalaryRegionFilterComponent implements OnInit {
 
   ngOnInit(): void {
     try {
-      const saved = globalThis.localStorage?.getItem(STORAGE_KEY) as SalaryRegion | null;
+      const saved = globalThis.localStorage?.getItem(
+        STORAGE_KEY,
+      ) as SalaryRegion | null;
       if (saved && REGIONS.some((r) => r.value === saved)) {
         this.selectedRegion = saved;
         this.regionChange.emit(saved);

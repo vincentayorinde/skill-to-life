@@ -24,61 +24,61 @@ Design tokens are CSS custom properties in `apps/web/src/styles.scss`. Tailwind 
 
 ### Light theme (`:root`)
 
-| Token | Value | Usage |
-|---|---|---|
-| `--ns-color-bg` | `#F8F9FA` | Page background |
-| `--ns-color-canvas` | `#FFFFFF` | Full-bleed section backgrounds |
-| `--ns-color-canvas-subtle` | `#F1F3F4` | Inset surfaces, tab containers |
-| `--ns-color-card` | `#FFFFFF` | Card backgrounds |
-| `--ns-color-card-elevated` | `#FFFFFF` | Modal / elevated surfaces |
-| `--ns-color-nav` | `#FFFFFF` | Navigation bar |
-| `--ns-color-text` | `#202124` | Body text |
-| `--ns-color-muted` | `#5F6368` | Secondary / helper text |
-| `--ns-color-muted-light` | `#9AA0A6` | Placeholder / disabled text |
-| `--ns-color-primary` | `#006AFF` | Brand accent, CTAs |
-| `--ns-color-primary-hover` | `#0052CC` | CTA hover state |
-| `--ns-color-primary-soft` | `#E8F0FE` | Tinted backgrounds for primary elements |
-| `--ns-color-success` | `#1E8E3E` | Positive states |
-| `--ns-color-success-soft` | `#E6F4EA` | Tinted success backgrounds |
-| `--ns-color-warning` | `#B06000` | Warning text / icons |
-| `--ns-color-warning-raw` | `#F9AB00` | Warning fills (charts, illustrations) |
-| `--ns-color-warning-soft` | `#FEF7E0` | Tinted warning backgrounds |
-| `--ns-color-danger` | `#D93025` | Error states |
-| `--ns-color-danger-soft` | `#FCE8E6` | Tinted error backgrounds |
-| `--ns-color-border` | `#DADCE0` | Default borders |
-| `--ns-color-border-muted` | `#E8EAED` | Subtle dividers, progress track |
+| Token                      | Value     | Usage                                   |
+| -------------------------- | --------- | --------------------------------------- |
+| `--ns-color-bg`            | `#F8F9FA` | Page background                         |
+| `--ns-color-canvas`        | `#FFFFFF` | Full-bleed section backgrounds          |
+| `--ns-color-canvas-subtle` | `#F1F3F4` | Inset surfaces, tab containers          |
+| `--ns-color-card`          | `#FFFFFF` | Card backgrounds                        |
+| `--ns-color-card-elevated` | `#FFFFFF` | Modal / elevated surfaces               |
+| `--ns-color-nav`           | `#FFFFFF` | Navigation bar                          |
+| `--ns-color-text`          | `#202124` | Body text                               |
+| `--ns-color-muted`         | `#5F6368` | Secondary / helper text                 |
+| `--ns-color-muted-light`   | `#9AA0A6` | Placeholder / disabled text             |
+| `--ns-color-primary`       | `#006AFF` | Brand accent, CTAs                      |
+| `--ns-color-primary-hover` | `#0052CC` | CTA hover state                         |
+| `--ns-color-primary-soft`  | `#E8F0FE` | Tinted backgrounds for primary elements |
+| `--ns-color-success`       | `#1E8E3E` | Positive states                         |
+| `--ns-color-success-soft`  | `#E6F4EA` | Tinted success backgrounds              |
+| `--ns-color-warning`       | `#B06000` | Warning text / icons                    |
+| `--ns-color-warning-raw`   | `#F9AB00` | Warning fills (charts, illustrations)   |
+| `--ns-color-warning-soft`  | `#FEF7E0` | Tinted warning backgrounds              |
+| `--ns-color-danger`        | `#D93025` | Error states                            |
+| `--ns-color-danger-soft`   | `#FCE8E6` | Tinted error backgrounds                |
+| `--ns-color-border`        | `#DADCE0` | Default borders                         |
+| `--ns-color-border-muted`  | `#E8EAED` | Subtle dividers, progress track         |
 
 ### Dark theme (`[data-theme="dark"]` override)
 
-| Token | Value |
-|---|---|
-| `--ns-color-bg` | `#1F1F1F` |
-| `--ns-color-canvas` | `#121212` |
-| `--ns-color-canvas-subtle` | `#2D2D2D` |
-| `--ns-color-card` | `#2D2D2D` |
-| `--ns-color-card-elevated` | `#3C3C3C` |
-| `--ns-color-nav` | `#1F1F1F` |
-| `--ns-color-text` | `#E8EAED` |
-| `--ns-color-muted` | `#9AA0A6` |
-| `--ns-color-muted-light` | `#5F6368` |
-| `--ns-color-primary` | `#4DA3FF` |
-| `--ns-color-primary-hover` | `#66B2FF` |
-| `--ns-color-primary-soft` | `rgba(77,163,255,0.15)` |
-| `--ns-color-border` | `#3C3C3C` |
-| `--ns-color-border-muted` | `#2D2D2D` |
+| Token                      | Value                   |
+| -------------------------- | ----------------------- |
+| `--ns-color-bg`            | `#1F1F1F`               |
+| `--ns-color-canvas`        | `#121212`               |
+| `--ns-color-canvas-subtle` | `#2D2D2D`               |
+| `--ns-color-card`          | `#2D2D2D`               |
+| `--ns-color-card-elevated` | `#3C3C3C`               |
+| `--ns-color-nav`           | `#1F1F1F`               |
+| `--ns-color-text`          | `#E8EAED`               |
+| `--ns-color-muted`         | `#9AA0A6`               |
+| `--ns-color-muted-light`   | `#5F6368`               |
+| `--ns-color-primary`       | `#4DA3FF`               |
+| `--ns-color-primary-hover` | `#66B2FF`               |
+| `--ns-color-primary-soft`  | `rgba(77,163,255,0.15)` |
+| `--ns-color-border`        | `#3C3C3C`               |
+| `--ns-color-border-muted`  | `#2D2D2D`               |
 
 ### Illustration palette
 
 These colours are used exclusively inside SVG illustrations and decorative elements.
 
-| Token | Value | Named colour |
-|---|---|---|
-| `--ns-color-illus-blue` | `#4285F4` | Google Blue |
-| `--ns-color-illus-yellow` | `#FBBC04` | Google Yellow |
-| `--ns-color-illus-green` | `#34A853` | Google Green |
-| `--ns-color-illus-red` | `#EA4335` | Google Red |
-| `--ns-color-illus-purple` | `#A142F4` | Material Purple |
-| `--ns-color-illus-teal` | `#24C1E0` | Material Teal |
+| Token                     | Value     | Named colour         |
+| ------------------------- | --------- | -------------------- |
+| `--ns-color-illus-blue`   | `#4285F4` | Google Blue          |
+| `--ns-color-illus-yellow` | `#FBBC04` | Google Yellow        |
+| `--ns-color-illus-green`  | `#34A853` | Google Green         |
+| `--ns-color-illus-red`    | `#EA4335` | Google Red           |
+| `--ns-color-illus-purple` | `#A142F4` | Material Purple      |
+| `--ns-color-illus-teal`   | `#24C1E0` | Material Teal        |
 | `--ns-color-illus-orange` | `#FF6D00` | Material Deep Orange |
 
 Tailwind class names: `text-ns-illusBlue`, `bg-ns-illusYellow`, etc.
@@ -97,15 +97,15 @@ Google Sans is loaded from Google Fonts CDN in `apps/web/src/index.html`. Inter 
 
 ### Type scale
 
-| Role | Class | Size / Weight |
-|---|---|---|
-| Hero heading | `text-5xl font-bold` | 48 px / 700 |
-| Page heading | `text-3xl font-bold` | 30 px / 700 |
-| Section heading | `text-2xl font-semibold` | 24 px / 600 |
-| Card title | `text-lg font-semibold` | 18 px / 600 |
-| Body | `text-base` | 16 px / 400 |
-| Small / helper | `text-sm text-ns-muted` | 14 px / 400 |
-| Badge / label | `text-xs font-medium` | 12 px / 500 |
+| Role            | Class                    | Size / Weight |
+| --------------- | ------------------------ | ------------- |
+| Hero heading    | `text-5xl font-bold`     | 48 px / 700   |
+| Page heading    | `text-3xl font-bold`     | 30 px / 700   |
+| Section heading | `text-2xl font-semibold` | 24 px / 600   |
+| Card title      | `text-lg font-semibold`  | 18 px / 600   |
+| Body            | `text-base`              | 16 px / 400   |
+| Small / helper  | `text-sm text-ns-muted`  | 14 px / 400   |
+| Badge / label   | `text-xs font-medium`    | 12 px / 500   |
 
 ---
 
@@ -113,12 +113,12 @@ Google Sans is loaded from Google Fonts CDN in `apps/web/src/index.html`. Inter 
 
 Shadows use warm-grey RGBA values to stay soft on the light background.
 
-| Token | CSS value | Usage |
-|---|---|---|
-| `--ns-shadow-sm` | `0 1px 2px rgba(60,64,67,.10), 0 1px 3px rgba(60,64,67,.08)` | Subtle hover lift |
-| `--ns-shadow-md` | `0 1px 3px rgba(60,64,67,.12), 0 2px 8px rgba(60,64,67,.10)` | Default card shadow |
-| `--ns-shadow-lg` | `0 2px 6px rgba(60,64,67,.15), 0 4px 16px rgba(60,64,67,.12)` | Elevated modals, toasts |
-| `--ns-shadow-hover` | `0 4px 12px rgba(60,64,67,.18), 0 8px 24px rgba(60,64,67,.12)` | Interactive card hover |
+| Token               | CSS value                                                      | Usage                   |
+| ------------------- | -------------------------------------------------------------- | ----------------------- |
+| `--ns-shadow-sm`    | `0 1px 2px rgba(60,64,67,.10), 0 1px 3px rgba(60,64,67,.08)`   | Subtle hover lift       |
+| `--ns-shadow-md`    | `0 1px 3px rgba(60,64,67,.12), 0 2px 8px rgba(60,64,67,.10)`   | Default card shadow     |
+| `--ns-shadow-lg`    | `0 2px 6px rgba(60,64,67,.15), 0 4px 16px rgba(60,64,67,.12)`  | Elevated modals, toasts |
+| `--ns-shadow-hover` | `0 4px 12px rgba(60,64,67,.18), 0 8px 24px rgba(60,64,67,.12)` | Interactive card hover  |
 
 Tailwind classes: `shadow-ns` (md), `shadow-ns-sm`, `shadow-ns-lg`, `shadow-ns-hover`.
 
@@ -126,12 +126,12 @@ Tailwind classes: `shadow-ns` (md), `shadow-ns-sm`, `shadow-ns-lg`, `shadow-ns-h
 
 ## Border Radius
 
-| Token | Value | Usage |
-|---|---|---|
-| `rounded-ns` | `8px` | Buttons, inputs, badges, small elements |
-| `rounded-ns-card` | `12px` | Cards, section containers |
-| `rounded-ns-lg` | `16px` | Feature sections, larger cards |
-| `rounded-ns-xl` | `24px` | Hero panels, modal overlays |
+| Token             | Value  | Usage                                   |
+| ----------------- | ------ | --------------------------------------- |
+| `rounded-ns`      | `8px`  | Buttons, inputs, badges, small elements |
+| `rounded-ns-card` | `12px` | Cards, section containers               |
+| `rounded-ns-lg`   | `16px` | Feature sections, larger cards          |
+| `rounded-ns-xl`   | `24px` | Hero panels, modal overlays             |
 
 ---
 
@@ -139,11 +139,11 @@ Tailwind classes: `shadow-ns` (md), `shadow-ns-sm`, `shadow-ns-lg`, `shadow-ns-h
 
 Tailwind defaults apply throughout. Additional custom spacing:
 
-| Class | Value | Usage |
-|---|---|---|
-| `max-w-container` | `1200px` | Page content max width |
-| `px-6` | `24px` | Default horizontal page padding |
-| `gap-6` | `24px` | Default grid / flex gap |
+| Class             | Value    | Usage                           |
+| ----------------- | -------- | ------------------------------- |
+| `max-w-container` | `1200px` | Page content max width          |
+| `px-6`            | `24px`   | Default horizontal page padding |
+| `gap-6`           | `24px`   | Default grid / flex gap         |
 
 Section rhythm: `py-16` (64 px) for major page sections, `py-10` (40 px) for tighter sections.
 
@@ -151,12 +151,12 @@ Section rhythm: `py-16` (64 px) for major page sections, `py-10` (40 px) for tig
 
 ## Motion
 
-| Token | Value | Usage |
-|---|---|---|
-| `duration-fast` | `120ms` | Micro-interactions (focus rings) |
-| `duration-base` | `200ms` | Most transitions |
-| `duration-slow` | `300ms` | Progress bars, page reveals |
-| `ease-ns` | `cubic-bezier(0.2,0,0,1)` | Material standard easing |
+| Token           | Value                     | Usage                            |
+| --------------- | ------------------------- | -------------------------------- |
+| `duration-fast` | `120ms`                   | Micro-interactions (focus rings) |
+| `duration-base` | `200ms`                   | Most transitions                 |
+| `duration-slow` | `300ms`                   | Progress bars, page reveals      |
+| `ease-ns`       | `cubic-bezier(0.2,0,0,1)` | Material standard easing         |
 
 All animated elements should respect `prefers-reduced-motion` — use `motion-safe:` Tailwind variants when animating.
 
@@ -204,12 +204,12 @@ Interactive adds: `cursor-pointer hover:-translate-y-0.5 hover:shadow-ns-hover h
 
 Pill shape (`rounded-full`), no border, `px-3 py-1 text-xs font-medium`.
 
-| Variant | Background | Text |
-|---|---|---|
+| Variant   | Background          | Text              |
+| --------- | ------------------- | ----------------- |
 | `default` | `bg-ns-primarySoft` | `text-ns-primary` |
 | `success` | `bg-ns-successSoft` | `text-ns-success` |
 | `warning` | `bg-ns-warningSoft` | `text-ns-warning` |
-| `danger` | `bg-ns-dangerSoft` | `text-ns-danger` |
+| `danger`  | `bg-ns-dangerSoft`  | `text-ns-danger`  |
 
 ### NsProgressComponent
 
@@ -273,14 +273,14 @@ Renders three cubic-bezier sweep paths in `--ns-color-primary`, `--ns-color-illu
 
 **Categories and background colours:**
 
-| Category | Background | Illustration |
-|---|---|---|
-| `development` | `#E8F0FE` (blue soft) | Code brackets |
-| `security` | `#FCE8E6` (red soft) | Shield |
-| `data-ai` | `#FEF7E0` (yellow soft) | Bar chart |
-| `design-product` | `#F3E8FD` (purple soft) | Target/crosshair |
-| `writing-qa` | `#E6F4EA` (green soft) | Document |
-| `specialist-advanced` | `#E4F7FB` (teal soft) | Network nodes |
+| Category              | Background              | Illustration     |
+| --------------------- | ----------------------- | ---------------- |
+| `development`         | `#E8F0FE` (blue soft)   | Code brackets    |
+| `security`            | `#FCE8E6` (red soft)    | Shield           |
+| `data-ai`             | `#FEF7E0` (yellow soft) | Bar chart        |
+| `design-product`      | `#F3E8FD` (purple soft) | Target/crosshair |
+| `writing-qa`          | `#E6F4EA` (green soft)  | Document         |
+| `specialist-advanced` | `#E4F7FB` (teal soft)   | Network nodes    |
 
 The component exposes a `config` property (`{ bg: string; svgContent: string }`) used in the template.
 
@@ -292,11 +292,11 @@ The component exposes a `config` property (`{ bg: string; svgContent: string }`)
 <ns-assessment-illustration [step]="3"></ns-assessment-illustration>
 ```
 
-| Step | Background | Illustration |
-|---|---|---|
-| `1` | `#E8F0FE` (blue soft) | Speech bubble with question mark |
-| `2` | `#E6F4EA` (green soft) | Target rings |
-| `3` | `#FEF7E0` (yellow soft) | Stepping stones |
+| Step | Background              | Illustration                     |
+| ---- | ----------------------- | -------------------------------- |
+| `1`  | `#E8F0FE` (blue soft)   | Speech bubble with question mark |
+| `2`  | `#E6F4EA` (green soft)  | Target rings                     |
+| `3`  | `#FEF7E0` (yellow soft) | Stepping stones                  |
 
 The component exposes a `bg` property used for the container's inline background style.
 

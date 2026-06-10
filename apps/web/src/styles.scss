@@ -8,105 +8,110 @@
   color-scheme: light;
 
   /* Backgrounds */
-  --ns-color-bg:              #F8F9FA;
-  --ns-color-foreground:      #FFFFFF;
-  --ns-color-canvas:          #FFFFFF;
-  --ns-color-canvas-subtle:   #F1F3F4;
-  --ns-color-card:            #FFFFFF;
-  --ns-color-card-elevated:   #FFFFFF;
-  --ns-color-nav:             #FFFFFF;
+  --ns-color-bg: #f8f9fa;
+  --ns-color-foreground: #ffffff;
+  --ns-color-canvas: #ffffff;
+  --ns-color-canvas-subtle: #f1f3f4;
+  --ns-color-card: #ffffff;
+  --ns-color-card-elevated: #ffffff;
+  --ns-color-nav: #ffffff;
 
   /* Text */
-  --ns-color-text:            #202124;
-  --ns-color-muted:           #5F6368;
-  --ns-color-muted-light:     #9AA0A6;
+  --ns-color-text: #202124;
+  --ns-color-muted: #5f6368;
+  --ns-color-muted-light: #9aa0a6;
 
   /* Accent / Primary */
-  --ns-color-primary:         #006AFF;
-  --ns-color-primary-hover:   #0052CC;
-  --ns-color-primary-soft:    #E8F0FE;
+  --ns-color-primary: #006aff;
+  --ns-color-primary-hover: #0052cc;
+  --ns-color-primary-soft: #e8f0fe;
 
   /* Semantic */
-  --ns-color-success:         #1E8E3E;
-  --ns-color-success-hover:   #166D35;
-  --ns-color-success-soft:    #E6F4EA;
-  --ns-color-warning:         #B06000;
-  --ns-color-warning-raw:     #F9AB00;
-  --ns-color-warning-soft:    #FEF7E0;
-  --ns-color-danger:          #D93025;
-  --ns-color-danger-hover:    #B31412;
-  --ns-color-danger-soft:     #FCE8E6;
-  --ns-color-accent:          #006AFF;
-  --ns-color-accent-soft:     #E8F0FE;
-  --ns-color-purple:          #7627BB;
-  --ns-color-purple-soft:     #F3E8FD;
+  --ns-color-success: #1e8e3e;
+  --ns-color-success-hover: #166d35;
+  --ns-color-success-soft: #e6f4ea;
+  --ns-color-warning: #b06000;
+  --ns-color-warning-raw: #f9ab00;
+  --ns-color-warning-soft: #fef7e0;
+  --ns-color-danger: #d93025;
+  --ns-color-danger-hover: #b31412;
+  --ns-color-danger-soft: #fce8e6;
+  --ns-color-accent: #006aff;
+  --ns-color-accent-soft: #e8f0fe;
+  --ns-color-purple: #7627bb;
+  --ns-color-purple-soft: #f3e8fd;
 
   /* Borders */
-  --ns-color-border:          #DADCE0;
-  --ns-color-border-muted:    #E8EAED;
-  --ns-color-border-strong:   #BDC1C6;
+  --ns-color-border: #dadce0;
+  --ns-color-border-muted: #e8eaed;
+  --ns-color-border-strong: #bdc1c6;
 
   /* Illustration palette */
-  --ns-color-illus-blue:      #4285F4;
-  --ns-color-illus-yellow:    #FBBC04;
-  --ns-color-illus-green:     #34A853;
-  --ns-color-illus-red:       #EA4335;
-  --ns-color-illus-purple:    #A142F4;
-  --ns-color-illus-teal:      #24C1E0;
-  --ns-color-illus-orange:    #FF6D00;
+  --ns-color-illus-blue: #4285f4;
+  --ns-color-illus-yellow: #fbbc04;
+  --ns-color-illus-green: #34a853;
+  --ns-color-illus-red: #ea4335;
+  --ns-color-illus-purple: #a142f4;
+  --ns-color-illus-teal: #24c1e0;
+  --ns-color-illus-orange: #ff6d00;
 
   /* Shadows */
-  --ns-shadow-sm:    0 1px 2px rgba(60,64,67,0.10), 0 1px 3px rgba(60,64,67,0.08);
-  --ns-shadow-md:    0 1px 3px rgba(60,64,67,0.12), 0 2px 8px rgba(60,64,67,0.10);
-  --ns-shadow-lg:    0 2px 6px rgba(60,64,67,0.15), 0 4px 16px rgba(60,64,67,0.12);
-  --ns-shadow-hover: 0 4px 12px rgba(60,64,67,0.18), 0 8px 24px rgba(60,64,67,0.12);
-  --ns-shadow-glow:  0 0 0 3px rgba(0,106,255,0.20);
+  --ns-shadow-sm:
+    0 1px 2px rgba(60, 64, 67, 0.1), 0 1px 3px rgba(60, 64, 67, 0.08);
+  --ns-shadow-md:
+    0 1px 3px rgba(60, 64, 67, 0.12), 0 2px 8px rgba(60, 64, 67, 0.1);
+  --ns-shadow-lg:
+    0 2px 6px rgba(60, 64, 67, 0.15), 0 4px 16px rgba(60, 64, 67, 0.12);
+  --ns-shadow-hover:
+    0 4px 12px rgba(60, 64, 67, 0.18), 0 8px 24px rgba(60, 64, 67, 0.12);
+  --ns-shadow-glow: 0 0 0 3px rgba(0, 106, 255, 0.2);
 
   /* Focus */
-  --ns-focus-ring:   0 0 0 2px rgba(0,106,255,0.50);
-  --ns-color-focus:  #006AFF;
+  --ns-focus-ring: 0 0 0 2px rgba(0, 106, 255, 0.5);
+  --ns-color-focus: #006aff;
 
   /* Motion */
   --ns-motion-fast: 120ms;
   --ns-motion-base: 200ms;
 
   /* Hero gradient */
-  --ns-hero-gradient: linear-gradient(160deg, #F8F9FA 0%, #F1F3F4 100%);
+  --ns-hero-gradient: linear-gradient(160deg, #f8f9fa 0%, #f1f3f4 100%);
 }
 
 /* ── Dark theme override ────────────────────────────────────────────────────── */
 [data-theme='dark'] {
   color-scheme: dark;
 
-  --ns-color-bg:              #1F1F1F;
-  --ns-color-foreground:      #2D2D2D;
-  --ns-color-canvas:          #2D2D2D;
-  --ns-color-canvas-subtle:   #282828;
-  --ns-color-card:            #2D2D2D;
-  --ns-color-card-elevated:   #323232;
-  --ns-color-nav:             #2D2D2D;
+  --ns-color-bg: #1f1f1f;
+  --ns-color-foreground: #2d2d2d;
+  --ns-color-canvas: #2d2d2d;
+  --ns-color-canvas-subtle: #282828;
+  --ns-color-card: #2d2d2d;
+  --ns-color-card-elevated: #323232;
+  --ns-color-nav: #2d2d2d;
 
-  --ns-color-text:            #E8EAED;
-  --ns-color-muted:           #9AA0A6;
-  --ns-color-muted-light:     #5F6368;
+  --ns-color-text: #e8eaed;
+  --ns-color-muted: #9aa0a6;
+  --ns-color-muted-light: #5f6368;
 
-  --ns-color-border:          #3C4043;
-  --ns-color-border-muted:    #3C4043;
+  --ns-color-border: #3c4043;
+  --ns-color-border-muted: #3c4043;
 
-  --ns-color-primary-soft:    #1A3A6B;
-  --ns-color-success-soft:    #143521;
-  --ns-color-warning-soft:    #2D220A;
-  --ns-color-danger-soft:     #3B1715;
-  --ns-color-accent-soft:     #1A3A6B;
-  --ns-color-purple-soft:     #2D1B45;
+  --ns-color-primary-soft: #1a3a6b;
+  --ns-color-success-soft: #143521;
+  --ns-color-warning-soft: #2d220a;
+  --ns-color-danger-soft: #3b1715;
+  --ns-color-accent-soft: #1a3a6b;
+  --ns-color-purple-soft: #2d1b45;
 
-  --ns-shadow-sm:    0 1px 2px rgba(0,0,0,0.30), 0 1px 3px rgba(0,0,0,0.25);
-  --ns-shadow-md:    0 1px 3px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.30);
-  --ns-shadow-lg:    0 2px 6px rgba(0,0,0,0.40), 0 4px 16px rgba(0,0,0,0.35);
-  --ns-shadow-hover: 0 4px 12px rgba(0,0,0,0.40), 0 8px 24px rgba(0,0,0,0.35);
-  --ns-shadow-glow:  0 0 0 3px rgba(0,106,255,0.35);
+  --ns-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.25);
+  --ns-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ns-shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.35);
+  --ns-shadow-hover:
+    0 4px 12px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --ns-shadow-glow: 0 0 0 3px rgba(0, 106, 255, 0.35);
 
-  --ns-hero-gradient: linear-gradient(160deg, #1F1F1F 0%, #282828 100%);
+  --ns-hero-gradient: linear-gradient(160deg, #1f1f1f 0%, #282828 100%);
 }
 
 /* ── Base styles ────────────────────────────────────────────────────────────── */
@@ -139,7 +144,7 @@ body {
 }
 
 ::selection {
-  background: #E8F0FE;
+  background: #e8f0fe;
   color: #202124;
 }
 

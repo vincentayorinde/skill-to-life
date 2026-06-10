@@ -42,7 +42,9 @@ export class HomeComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('NextSkill — Discover your next tech career skill');
+    this.titleService.setTitle(
+      'NextSkill — Discover your next tech career skill',
+    );
     this.metaService.updateTag({
       name: 'description',
       content:
@@ -66,7 +68,11 @@ export class HomeComponent implements OnInit {
     { value: 'MIT', label: 'Open source licence' },
   ];
 
-  protected readonly howItWorks: { step: 1 | 2 | 3; title: string; copy: string }[] = [
+  protected readonly howItWorks: {
+    step: 1 | 2 | 3;
+    title: string;
+    copy: string;
+  }[] = [
     {
       step: 1,
       title: 'Answer 30 questions',
@@ -94,10 +100,26 @@ export class HomeComponent implements OnInit {
   }));
 
   protected readonly assessmentOptions = [
-    { title: 'Building apps', description: 'Create tools and interfaces people use.', icon: '🛠️' },
-    { title: 'Protecting systems', description: 'Spot risks and keep systems safe.', icon: '🛡️' },
-    { title: 'Analysing data', description: 'Turn information into clearer decisions.', icon: '📊' },
-    { title: 'Designing experiences', description: 'Shape how products look and feel.', icon: '🎨' },
+    {
+      title: 'Building apps',
+      description: 'Create tools and interfaces people use.',
+      icon: '🛠️',
+    },
+    {
+      title: 'Protecting systems',
+      description: 'Spot risks and keep systems safe.',
+      icon: '🛡️',
+    },
+    {
+      title: 'Analysing data',
+      description: 'Turn information into clearer decisions.',
+      icon: '📊',
+    },
+    {
+      title: 'Designing experiences',
+      description: 'Shape how products look and feel.',
+      icon: '🎨',
+    },
   ];
 
   protected readonly footerLinks = [
@@ -115,8 +137,16 @@ export class HomeComponent implements OnInit {
       title: 'Company',
       links: [
         { label: 'About', href: '/about' },
-        { label: 'Open source', href: 'https://github.com/vincentayorinde/nextskill', external: true },
-        { label: 'Changelog', href: 'https://github.com/vincentayorinde/nextskill/blob/main/CHANGELOG.md', external: true },
+        {
+          label: 'Open source',
+          href: 'https://github.com/vincentayorinde/nextskill',
+          external: true,
+        },
+        {
+          label: 'Changelog',
+          href: 'https://github.com/vincentayorinde/nextskill/blob/main/CHANGELOG.md',
+          external: true,
+        },
       ],
     },
     {
