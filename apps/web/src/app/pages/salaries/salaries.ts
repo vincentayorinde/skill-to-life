@@ -157,12 +157,6 @@ type SortKey = 'senior' | 'junior' | 'name';
             </div>
           </div>
 
-          @if (activeRegionConfig().monthly) {
-            <p class="mt-3 text-xs text-ns-primary">
-              Showing estimated monthly figures for Nigeria (approximate — actual salaries vary widely by employer and role).
-            </p>
-          }
-
           <p class="mt-4 text-sm text-ns-muted">
             {{ sorted().length }} careers
           </p>

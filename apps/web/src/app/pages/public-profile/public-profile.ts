@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserProfile } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 import { ProfileService } from '../../core/profile/profile.service';
-import { NsAppShellComponent } from 'ui';
+import { NsAppShellComponent, NsAppShellLink } from 'ui';
 
 @Component({
   selector: 'app-public-profile',
@@ -12,6 +12,8 @@ import { NsAppShellComponent } from 'ui';
   imports: [AsyncPipe, RouterLink, NsAppShellComponent],
   template: `
     <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
       (signIn)="auth.loginWithGoogle()"
@@ -117,6 +119,13 @@ export class PublicProfileComponent implements OnInit {
   readonly auth = inject(AuthService);
   private readonly profileService = inject(ProfileService);
   private readonly route = inject(ActivatedRoute);
+
+  protected readonly shellLinks: NsAppShellLink[] = [
+    { label: 'How it works', href: '/#how-it-works' },
+    { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Resources', routerLink: '/resources' },
+  ];
 
   readonly loading = signal(true);
   readonly notFound = signal(false);

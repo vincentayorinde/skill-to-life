@@ -463,10 +463,6 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                       }
                     </div>
 
-                    @if (activeRegionConfig().monthly) {
-                      <p class="mt-2 text-[10px] text-ns-primary">Monthly figures (Nigeria)</p>
-                    }
-
                     <p class="mt-3 text-sm leading-6 text-ns-muted">
                       {{ salaryData.summary }}
                     </p>
@@ -508,40 +504,47 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                         <p class="mb-2 text-xs font-semibold text-ns-text">
                           Freelance rates
                         </p>
-                        <div class="grid grid-cols-2 gap-2">
+                        @if (activeRegionConfig().monthly) {
                           <div
                             class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
                           >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Day rate
-                            </p>
+                            <p class="m-0 text-[10px] text-ns-muted">Monthly</p>
                             <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.daily.min,
-                                  salaryData.freelanceRate.daily.max,
-                                  salaryData.freelanceRate.daily.currency
-                                )
-                              }}
+                              {{ freelanceMonthlyLabel(salaryData.freelanceRate.daily.min, salaryData.freelanceRate.daily.max) }}
                             </p>
                           </div>
-                          <div
-                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
-                          >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Hourly rate
-                            </p>
-                            <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.hourly.min,
-                                  salaryData.freelanceRate.hourly.max,
-                                  salaryData.freelanceRate.hourly.currency
-                                )
-                              }}
-                            </p>
+                        } @else {
+                          <div class="grid grid-cols-2 gap-2">
+                            <div
+                              class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Day rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    salaryData.freelanceRate.daily.min,
+                                    salaryData.freelanceRate.daily.max,
+                                    salaryData.freelanceRate.daily.currency
+                                  )
+                                }}
+                              </p>
+                            </div>
+                            <div
+                              class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Hourly rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    salaryData.freelanceRate.hourly.min,
+                                    salaryData.freelanceRate.hourly.max,
+                                    salaryData.freelanceRate.hourly.currency
+                                  )
+                                }}
+                              </p>
+                            </div>
                           </div>
-                        </div>
+                        }
                       </div>
                     }
 
@@ -765,6 +768,15 @@ export class CareerDetailComponent implements OnInit {
 
   salaryRangeLabel(min: number, max: number, _currency: string): string {
     return formatRegionSalary(min, max, this.activeRegionConfig());
+  }
+
+  freelanceMonthlyLabel(dailyMin: number, dailyMax: number): string {
+    const config = this.activeRegionConfig();
+    const cMin = Math.round((dailyMin * 22 * config.multiplier) / 12);
+    const cMax = Math.round((dailyMax * 22 * config.multiplier) / 12);
+    const fmt = (n: number) =>
+      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+    return `${fmt(cMin)}–${fmt(cMax)}`;
   }
 
   setSalaryRegion(label: string): void {
