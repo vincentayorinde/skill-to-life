@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Find the tech career path that fits how you think and work. Free 10-question assessment across 26 careers. No paywalls, no upsells.',
+        'Find the tech career path that fits how you think and work. Free 30-question assessment across 26 careers. No paywalls, no upsells.',
     });
   }
   protected readonly shellLinks: NsAppShellLink[] = [
@@ -55,8 +55,8 @@ export class HomeComponent implements OnInit {
 
   protected readonly stats = [
     { value: '26', label: 'career paths' },
-    { value: '12', label: 'assessment questions' },
-    { value: '100%', label: 'free & open source' },
+    { value: '30', label: 'assessment questions' },
+    { value: 'Free', label: 'free and open source' },
     { value: '6', label: 'salary regions' },
   ];
 

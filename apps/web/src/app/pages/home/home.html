@@ -11,11 +11,6 @@
     class="relative isolate grid-bg overflow-hidden px-4 py-20 sm:px-6 sm:py-28 lg:px-8"
     style="background: var(--ns-hero-gradient)"
   >
-    <div
-      class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-ns-primary to-transparent"
-      aria-hidden="true"
-    ></div>
-
     <div class="mx-auto max-w-7xl">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
 
@@ -27,7 +22,7 @@
           </div>
 
           <h1 class="m-0 text-5xl font-bold leading-[1.04] tracking-tight text-ns-text sm:text-6xl lg:text-7xl">
-            Find the tech path<br class="hidden sm:block" /> that fits <span class="text-ns-primary">you</span>.
+            Find the tech path<br class="hidden sm:block" /> that fits <span class="hero-headline-accent">you</span>.
           </h1>
           <p class="mt-6 max-w-xl text-lg leading-8 text-ns-muted">
             Take a short assessment and discover your top tech career matches, what to learn, and how to start.
@@ -64,11 +59,11 @@
               <span class="ml-2 font-mono text-xs text-ns-muted">// assessment.ts</span>
             </div>
             <div class="p-5">
-              <p class="mb-1 font-mono text-xs text-ns-muted">Q1 of 12 — WORK STYLE</p>
+              <p class="mb-1 font-mono text-xs text-ns-muted">Q1 of 30 — WORK STYLE</p>
               <p class="text-base font-semibold text-ns-text">Which work sounds most exciting?</p>
               <div class="mt-4 grid gap-2">
-                <div class="flex items-center gap-3 rounded-ns-sm border border-ns-primary bg-ns-primarySoft px-3 py-2">
-                  <span class="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-ns-sm border border-ns-primary bg-ns-primary">
+                <div class="flex items-center gap-3 rounded-ns-sm border px-3 py-2" style="border-color: rgba(0,106,255,0.5); background: rgba(0,106,255,0.08);">
+                  <span class="grid h-4 w-4 shrink-0 place-items-center rounded-[3px] bg-ns-primary opacity-90">
                     <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L3.8 6.5L9 1.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </span>
                   <span class="text-sm font-medium text-ns-text">Building apps people use</span>
@@ -122,11 +117,11 @@
       </div>
 
       <!-- Stats bar -->
-      <div class="mt-16 grid grid-cols-2 gap-4 rounded-ns border border-ns-border bg-ns-card p-5 sm:grid-cols-4 sm:p-6">
+      <div class="mt-16 grid grid-cols-2 gap-4 rounded-ns border border-ns-border bg-ns-canvasSubtle p-5 opacity-100 sm:grid-cols-4 sm:p-6">
         @for (stat of stats; track stat.label) {
           <div class="text-center">
-            <p class="font-mono text-2xl font-bold text-ns-primary sm:text-3xl">{{ stat.value }}</p>
-            <p class="mt-1 text-xs text-ns-muted sm:text-sm">{{ stat.label }}</p>
+            <p class="font-mono text-2xl font-extrabold text-ns-accent opacity-100 sm:text-3xl">{{ stat.value }}</p>
+            <p class="mt-1 text-xs text-ns-muted opacity-100 sm:text-sm">{{ stat.label }}</p>
           </div>
         }
       </div>
@@ -227,7 +222,7 @@
       </div>
       <ns-card [elevated]="true">
         <div class="mb-5 flex items-center justify-between gap-4">
-          <span class="font-mono text-xs text-ns-muted">// WORK STYLE — Q 1 OF 12</span>
+          <span class="font-mono text-xs text-ns-muted">// WORK STYLE — Q 1 OF 30</span>
           <span class="font-mono text-sm font-bold text-ns-primary">8%</span>
         </div>
         <ns-progress [value]="8" label="Assessment progress" />
@@ -315,7 +310,7 @@
             <p class="m-0"><span class="text-ns-primary">a3f8c12</span> feat: 26 careers with full salary data</p>
             <p class="m-0"><span class="text-ns-primary">b7e2d09</span> feat: CV upload and AI career analysis</p>
             <p class="m-0"><span class="text-ns-primary">c9a1f44</span> feat: user profiles and saved results</p>
-            <p class="m-0"><span class="text-ns-primary">d4b3e21</span> feat: assessment with 12 questions</p>
+            <p class="m-0"><span class="text-ns-primary">d4b3e21</span> feat: assessment with 30 questions</p>
             <p class="m-0"><span class="text-ns-primary">e6c7f18</span> feat: shareable result cards</p>
           </div>
           <div class="mt-5 flex flex-wrap gap-2">

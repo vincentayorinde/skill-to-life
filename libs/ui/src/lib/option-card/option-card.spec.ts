@@ -33,6 +33,6 @@ describe('NsOptionCardComponent', () => {
 
     const button = fixture.nativeElement.querySelector('button') as HTMLElement;
     expect(button.getAttribute('aria-pressed')).toBe('true');
-    expect(button.className).toContain('border-ns-primary');
+    expect(button.className).toContain('ns-option-selected');
   });
 });

@@ -7,8 +7,8 @@ import { of } from 'rxjs';
 
 const mockAuth = {
   currentUser$: of(null),
-  loginWithGoogle: () => {},
-  logout: () => {},
+  loginWithGoogle: () => undefined,
+  logout: () => undefined,
 };
 
 describe('HomeComponent', () => {
