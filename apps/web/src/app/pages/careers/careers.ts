@@ -15,6 +15,7 @@ import {
 import type { CareerCategory, CareerPath } from 'types';
 import { CAREER_PATHS } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
 
 interface TabFilter {
   id: string;
@@ -125,7 +126,7 @@ const TABS: TabFilter[] = [
                   <span class="text-3xl leading-none" aria-hidden="true">{{
                     career.emoji
                   }}</span>
-                  <div class="flex flex-wrap gap-1.5">
+                  <div class="flex flex-wrap items-center gap-1.5">
                     <ns-badge
                       [variant]="difficultyVariant(career.difficultyLevel)"
                     >
@@ -133,6 +134,21 @@ const TABS: TabFilter[] = [
                     </ns-badge>
                     @if (career.beginnerFriendly) {
                       <ns-badge variant="success">Beginner ok</ns-badge>
+                    }
+                    @if (auth.currentUser$ | async) {
+                      <button
+                        type="button"
+                        class="rounded p-0.5 transition"
+                        [class]="savedIds().has(career.id) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                        [attr.aria-label]="savedIds().has(career.id) ? 'Unsave' : 'Save career'"
+                        (click)="toggleSaveCareer(career, $event)"
+                      >
+                        @if (savedIds().has(career.id)) {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        } @else {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        }
+                      </button>
                     }
                   </div>
                 </div>
@@ -219,8 +235,11 @@ const TABS: TabFilter[] = [
 })
 export class CareersComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
+
+  readonly savedIds = signal<Set<string>>(new Set());
 
   ngOnInit(): void {
     this.titleService.setTitle('Tech career paths — NextSkill');
@@ -229,6 +248,25 @@ export class CareersComponent implements OnInit {
       content:
         'Explore 26 tech career paths — frontend, backend, data, AI, security, design, and more. Find the path that fits how you think and work.',
     });
+    this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
+    this.auth.currentUser$.subscribe((user) => {
+      if (user) this.savedService.getSavedCareers().subscribe();
+    });
+  }
+
+  toggleSaveCareer(career: CareerPath, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.savedIds().has(career.id)) {
+      this.savedService.unsaveCareer(career.id).subscribe();
+    } else {
+      this.savedService.saveCareer({
+        careerId: career.id,
+        careerTitle: career.title,
+        careerEmoji: career.emoji,
+        careerSlug: career.slug,
+      }).subscribe();
+    }
   }
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },

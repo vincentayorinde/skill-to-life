@@ -136,14 +136,18 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
               @if (auth.currentUser$ | async) {
                 <button
                   type="button"
-                  class="mt-1 shrink-0 rounded-ns border px-3 py-2 text-xs font-semibold transition"
+                  class="mt-2 shrink-0 rounded-ns border p-2 transition"
                   [class]="careerSaved()
                     ? 'border-ns-primary bg-ns-primarySoft text-ns-primary'
                     : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'"
                   (click)="toggleSaveCareer()"
                   [attr.aria-label]="careerSaved() ? 'Unsave career' : 'Save career'"
                 >
-                  {{ careerSaved() ? '★ Saved' : '☆ Save' }}
+                  @if (careerSaved()) {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                  } @else {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                  }
                 </button>
               }
             </div>
@@ -646,7 +650,13 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                                 [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
                                 [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
                                 (click)="toggleSaveResource(resource, 'free')"
-                              >{{ savedResourceUrls().has(resource.url) ? '★' : '☆' }}</button>
+                              >
+                                @if (savedResourceUrls().has(resource.url)) {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                } @else {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                }
+                              </button>
                             }
                           </div>
                         } @else {
@@ -695,7 +705,13 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                                 [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
                                 [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
                                 (click)="toggleSaveResource(resource, 'paid')"
-                              >{{ savedResourceUrls().has(resource.url) ? '★' : '☆' }}</button>
+                              >
+                                @if (savedResourceUrls().has(resource.url)) {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                } @else {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                }
+                              </button>
                             }
                           </div>
                         } @else {
