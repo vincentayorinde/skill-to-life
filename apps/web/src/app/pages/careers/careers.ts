@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
@@ -79,18 +79,19 @@ const TABS: TabFilter[] = [
             <ns-tabs
               [tabs]="tabItems"
               [activeId]="activeTab()"
-              (activeIdChange)="activeTab.set($event)"
+              (activeIdChange)="setActiveTab($event)"
             />
           </div>
 
           <p class="mt-5 text-sm text-ns-muted">
+            Showing {{ pageStart() }}-{{ pageEnd() }} of
             {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
           </p>
 
           <div
             class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           >
-            @for (career of filtered(); track career.slug) {
+            @for (career of paginatedCareers(); track career.slug) {
               <ns-card [interactive]="true">
                 <div class="flex items-start justify-between gap-3">
                   <span class="text-3xl leading-none" aria-hidden="true">{{
@@ -133,6 +134,51 @@ const TABS: TabFilter[] = [
             }
           </div>
 
+          @if (totalPages() > 1) {
+            <nav
+              class="mt-8 flex flex-col items-center justify-between gap-3 border-t border-ns-border pt-5 sm:flex-row"
+              aria-label="Career pagination"
+            >
+              <p class="m-0 text-sm text-ns-muted">
+                Page {{ currentPageSafe() }} of {{ totalPages() }}
+              </p>
+              <div class="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  type="button"
+                  class="rounded-ns-sm border border-ns-border bg-ns-card px-3 py-2 text-sm font-semibold text-ns-text transition hover:border-ns-primary hover:text-ns-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-ns-border disabled:hover:text-ns-text"
+                  [disabled]="currentPageSafe() === 1"
+                  (click)="previousPage()"
+                >
+                  Previous
+                </button>
+                @for (page of visiblePages(); track page) {
+                  <button
+                    type="button"
+                    class="min-w-10 rounded-ns-sm border px-3 py-2 text-sm font-semibold transition"
+                    [class.border-ns-primary]="page === currentPageSafe()"
+                    [class.bg-ns-primary]="page === currentPageSafe()"
+                    [class.text-white]="page === currentPageSafe()"
+                    [class.border-ns-border]="page !== currentPageSafe()"
+                    [class.bg-ns-card]="page !== currentPageSafe()"
+                    [class.text-ns-text]="page !== currentPageSafe()"
+                    (click)="goToPage(page)"
+                    [attr.aria-current]="page === currentPageSafe() ? 'page' : null"
+                  >
+                    {{ page }}
+                  </button>
+                }
+                <button
+                  type="button"
+                  class="rounded-ns-sm border border-ns-border bg-ns-card px-3 py-2 text-sm font-semibold text-ns-text transition hover:border-ns-primary hover:text-ns-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-ns-border disabled:hover:text-ns-text"
+                  [disabled]="currentPageSafe() === totalPages()"
+                  (click)="nextPage()"
+                >
+                  Next
+                </button>
+              </div>
+            </nav>
+          }
+
           @if (filtered().length === 0) {
             <div class="py-20 text-center">
               <p class="text-ns-muted">No paths in this category yet.</p>
@@ -166,15 +212,68 @@ export class CareersComponent implements OnInit {
     id: t.id,
     label: t.label,
   }));
+  readonly pageSize = 12;
   readonly activeTab = signal<string>('all');
+  readonly currentPage = signal<number>(1);
 
-  readonly filtered = (): CareerPath[] => {
+  readonly filtered = computed((): CareerPath[] => {
     const id = this.activeTab();
     const tab = TABS.find((t) => t.id === id);
     return tab?.category
       ? CAREER_PATHS.filter((c) => c.category === tab.category)
       : CAREER_PATHS;
-  };
+  });
+
+  readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filtered().length / this.pageSize)),
+  );
+
+  readonly currentPageSafe = computed(() =>
+    Math.min(this.currentPage(), this.totalPages()),
+  );
+
+  readonly paginatedCareers = computed(() => {
+    const start = (this.currentPageSafe() - 1) * this.pageSize;
+    return this.filtered().slice(start, start + this.pageSize);
+  });
+
+  readonly pageStart = computed(() =>
+    this.filtered().length === 0
+      ? 0
+      : (this.currentPageSafe() - 1) * this.pageSize + 1,
+  );
+
+  readonly pageEnd = computed(() =>
+    Math.min(this.currentPageSafe() * this.pageSize, this.filtered().length),
+  );
+
+  readonly visiblePages = computed(() => {
+    const total = this.totalPages();
+    const current = this.currentPageSafe();
+    const maxVisible = 5;
+    const half = Math.floor(maxVisible / 2);
+    const start = Math.max(1, Math.min(current - half, total - maxVisible + 1));
+    const end = Math.min(total, start + maxVisible - 1);
+
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  });
+
+  setActiveTab(tabId: string): void {
+    this.activeTab.set(tabId);
+    this.currentPage.set(1);
+  }
+
+  goToPage(page: number): void {
+    this.currentPage.set(Math.min(Math.max(page, 1), this.totalPages()));
+  }
+
+  previousPage(): void {
+    this.goToPage(this.currentPageSafe() - 1);
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPageSafe() + 1);
+  }
 
   difficultyVariant(level: string): 'success' | 'warning' | 'accent' {
     if (level === 'beginner') return 'success';

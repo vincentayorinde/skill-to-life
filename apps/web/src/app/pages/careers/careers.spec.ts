@@ -21,19 +21,34 @@ describe('CareersComponent', () => {
     expect(fixture.componentInstance.filtered().length).toBe(26);
   });
 
+  it('should paginate careers by default', async () => {
+    const fixture = TestBed.createComponent(CareersComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.totalPages()).toBe(3);
+    expect(fixture.componentInstance.paginatedCareers()).toHaveLength(12);
+
+    fixture.componentInstance.nextPage();
+
+    expect(fixture.componentInstance.currentPageSafe()).toBe(2);
+    expect(fixture.componentInstance.pageStart()).toBe(13);
+  });
+
   it('should filter careers when a tab is selected', () => {
     const fixture = TestBed.createComponent(CareersComponent);
     fixture.detectChanges();
-    fixture.componentInstance.activeTab.set('security');
+    fixture.componentInstance.setActiveTab('security');
     const results = fixture.componentInstance.filtered();
     expect(results.length).toBeGreaterThan(0);
     expect(results.every((c) => c.category === 'security')).toBe(true);
+    expect(fixture.componentInstance.currentPageSafe()).toBe(1);
   });
 
   it('should filter to 12 specialist-advanced careers', () => {
     const fixture = TestBed.createComponent(CareersComponent);
     fixture.detectChanges();
-    fixture.componentInstance.activeTab.set('specialist-advanced');
+    fixture.componentInstance.setActiveTab('specialist-advanced');
     const results = fixture.componentInstance.filtered();
     expect(results).toHaveLength(12);
     expect(results.every((c) => c.category === 'specialist-advanced')).toBe(
