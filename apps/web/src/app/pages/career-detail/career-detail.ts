@@ -678,9 +678,9 @@ export class CareerDetailComponent implements OnInit {
   entrepreneurshipData: CareerEntrepreneurshipData | undefined;
 
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
 
   private readonly route = inject(ActivatedRoute);

@@ -221,9 +221,9 @@ export class SalariesComponent implements OnInit {
     });
   }
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
 
   readonly sortOptions: { key: SortKey; label: string }[] = [

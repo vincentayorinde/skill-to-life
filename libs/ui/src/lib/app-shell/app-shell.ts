@@ -68,7 +68,16 @@ export interface NsAuthUser {
               [attr.aria-label]="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
               (click)="toggleTheme()"
             >
-              {{ theme === 'dark' ? 'Light' : 'Dark' }}
+              @if (theme === 'dark') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z" />
+                </svg>
+              }
             </button>
 
             @if (authUser) {
@@ -119,7 +128,16 @@ export interface NsAuthUser {
               [attr.aria-label]="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
               (click)="toggleTheme()"
             >
-              {{ theme === 'dark' ? 'Light' : 'Dark' }}
+              @if (theme === 'dark') {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z" />
+                </svg>
+              }
             </button>
 
             @if (authUser) {
@@ -394,10 +412,23 @@ export interface NsAuthUser {
       }
 
       .ns-theme-toggle {
+        width: 36px;
+        display: grid;
+        place-items: center;
         border: 1px solid var(--color-border, var(--ns-color-border));
         background: transparent;
         color: var(--color-text-secondary, var(--ns-color-muted));
-        padding: 7px 12px;
+        padding: 0;
+      }
+
+      .ns-theme-toggle svg {
+        width: 17px;
+        height: 17px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       .ns-theme-toggle:hover,
@@ -417,10 +448,10 @@ export interface NsAuthUser {
       }
 
       .ns-dev-login {
-        border: 1px dashed rgba(255, 184, 0, 0.4);
+        border: 1px dashed rgba(163, 230, 53, 0.4);
         border-radius: var(--radius-sm, var(--ns-radius-sm));
         background: transparent;
-        color: rgba(255, 184, 0, 0.7);
+        color: rgba(163, 230, 53, 0.72);
         cursor: pointer;
         font-size: 12px;
         font-weight: 500;
@@ -429,8 +460,8 @@ export interface NsAuthUser {
       }
 
       .ns-dev-login:hover {
-        background: rgba(255, 184, 0, 0.08);
-        color: rgba(255, 184, 0, 0.9);
+        background: rgba(163, 230, 53, 0.08);
+        color: rgba(163, 230, 53, 0.92);
       }
 
       .ns-sign-in:hover {
@@ -563,9 +594,7 @@ export interface NsAuthUser {
       }
 
       .ns-theme-toggle-mobile {
-        padding-left: 10px;
-        padding-right: 10px;
-        font-size: 12px;
+        padding: 0;
       }
 
       .ns-menu-toggle,
@@ -643,9 +672,9 @@ export interface NsAuthUser {
 export class NsAppShellComponent implements OnInit {
   @Input() brand = 'NextSkill';
   @Input() links: NsAppShellLink[] = [
-    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
   @Input() authUser: NsAuthUser | null = null;
   @Input() devMode = false;

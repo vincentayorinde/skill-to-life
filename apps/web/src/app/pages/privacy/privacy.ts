@@ -180,9 +180,9 @@ import { AuthService } from '../../core/auth/auth.service';
 export class PrivacyComponent implements OnInit {
   protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
 
   private readonly titleService = inject(Title);
