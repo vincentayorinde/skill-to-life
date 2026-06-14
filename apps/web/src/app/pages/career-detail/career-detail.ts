@@ -616,7 +616,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                           <button
                             type="button"
                             (click)="openResource(resource, 'free')"
-                            class="text-sm font-semibold text-ns-primary no-underline hover:underline"
+                            class="block w-full text-left text-sm font-semibold text-ns-primary hover:underline"
                           >
                             {{ resource.title }} →
                           </button>
@@ -654,7 +654,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                           <button
                             type="button"
                             (click)="openResource(resource, 'paid')"
-                            class="text-sm font-semibold text-ns-primary no-underline hover:underline"
+                            class="block w-full text-left text-sm font-semibold text-ns-primary hover:underline"
                           >
                             {{ resource.title }} →
                           </button>
