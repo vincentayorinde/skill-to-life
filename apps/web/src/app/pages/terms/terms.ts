@@ -147,14 +147,9 @@ import { AuthService } from '../../core/auth/auth.service';
 export class TermsComponent implements OnInit {
   protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'Home', routerLink: '/' },
+    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'About', routerLink: '/about' },
-    {
-      label: 'Open source',
-      href: 'https://github.com/vincentayorinde/nextskill',
-      external: true,
-    },
+    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
   ];
 
   private readonly titleService = inject(Title);

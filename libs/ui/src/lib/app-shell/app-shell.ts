@@ -643,9 +643,9 @@ export interface NsAuthUser {
 export class NsAppShellComponent implements OnInit {
   @Input() brand = 'NextSkill';
   @Input() links: NsAppShellLink[] = [
-    { label: 'How it works', href: '#how-it-works' },
+    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Open source', href: '#open-source' },
+    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
   ];
   @Input() authUser: NsAuthUser | null = null;
   @Input() devMode = false;

@@ -45,12 +45,9 @@ export class HomeComponent implements OnInit {
     });
   }
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'How it works', href: '#how-it-works' },
+    { label: 'How it works', routerLink: '/', fragment: 'how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'Salaries', routerLink: '/salaries' },
-    { label: 'Go independent', routerLink: '/entrepreneurship' },
-    { label: 'Resources', routerLink: '/resources' },
-    { label: 'Open source', href: '#open-source' },
+    { label: 'Open source', routerLink: '/', fragment: 'open-source' },
   ];
 
   protected readonly stats = [
@@ -58,13 +55,6 @@ export class HomeComponent implements OnInit {
     { value: '30', label: 'assessment questions' },
     { value: 'Free', label: 'free and open source' },
     { value: '6', label: 'salary regions' },
-  ];
-
-  protected readonly trustBadges = [
-    { label: 'Open source', variant: 'success' as const },
-    { label: 'Beginner friendly', variant: 'warning' as const },
-    { label: 'Anonymous mode', variant: 'neutral' as const },
-    { label: 'Shareable results', variant: 'purple' as const },
   ];
 
   protected readonly problemCards = [
