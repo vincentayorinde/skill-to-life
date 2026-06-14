@@ -19,7 +19,7 @@ import { ProfileService } from '../../core/profile/profile.service';
 import { SavedService } from '../../core/saved/saved.service';
 import { NsAppShellComponent, NsExternalLinkService } from 'ui';
 
-type TabId = 'overview' | 'saved' | 'resources' | 'results' | 'cv';
+type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
 @Component({
   selector: 'app-profile',
@@ -84,142 +84,168 @@ type TabId = 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                   <p class="text-sm text-ns-muted">{{ currentUser()?.email }}</p>
                 </div>
 
-                <!-- Editable profile fields -->
-                <div class="space-y-3">
-                  <div>
-                    <label for="profile-username" class="mb-1 block text-xs font-medium text-ns-muted">Username</label>
-                    <input
-                      id="profile-username"
-                      type="text"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="your-username"
-                      [(ngModel)]="editForm.username"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-bio" class="mb-1 block text-xs font-medium text-ns-muted">Bio</label>
-                    <textarea
-                      id="profile-bio"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      rows="3"
-                      placeholder="Tell your story..."
-                      [(ngModel)]="editForm.bio"
-                    ></textarea>
-                  </div>
-                  <div>
-                    <label for="profile-location" class="mb-1 block text-xs font-medium text-ns-muted">Location</label>
-                    <input
-                      id="profile-location"
-                      type="text"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="London, UK"
-                      [(ngModel)]="editForm.location"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-website" class="mb-1 block text-xs font-medium text-ns-muted">Website</label>
-                    <input
-                      id="profile-website"
-                      type="url"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="https://yoursite.com"
-                      [(ngModel)]="editForm.website"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-linkedin" class="mb-1 block text-xs font-medium text-ns-muted">LinkedIn URL</label>
-                    <input
-                      id="profile-linkedin"
-                      type="url"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="https://linkedin.com/in/..."
-                      [(ngModel)]="editForm.linkedinUrl"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-github" class="mb-1 block text-xs font-medium text-ns-muted">GitHub URL</label>
-                    <input
-                      id="profile-github"
-                      type="url"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="https://github.com/..."
-                      [(ngModel)]="editForm.githubUrl"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-current-role" class="mb-1 block text-xs font-medium text-ns-muted">Current role</label>
-                    <input
-                      id="profile-current-role"
-                      type="text"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      placeholder="Junior Developer"
-                      [(ngModel)]="editForm.currentRole"
-                    />
-                  </div>
-                  <div>
-                    <label for="profile-experience-level" class="mb-1 block text-xs font-medium text-ns-muted">Experience level</label>
-                    <select
-                      id="profile-experience-level"
-                      class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-1.5 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                      [(ngModel)]="editForm.experienceLevel"
-                    >
-                      <option value="">Select level</option>
-                      <option value="beginner">Complete beginner</option>
-                      <option value="some-knowledge">Some knowledge</option>
-                      <option value="some-experience">Some professional experience</option>
-                      <option value="experienced">Experienced</option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="button"
-                    class="w-full rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-white hover:bg-ns-primaryHover disabled:opacity-50"
-                    [disabled]="saving()"
-                    (click)="saveProfile()"
-                  >
-                    {{ saving() ? 'Saving...' : 'Save profile' }}
-                  </button>
-                </div>
-
-                <hr class="my-4 border-ns-border" />
-
-                <!-- Visibility toggle -->
-                <div>
-                  <div class="mb-2 flex items-center justify-between">
-                    <span class="text-sm font-medium text-ns-text">Public profile</span>
+                <div class="mt-4 rounded-ns bg-ns-canvasSubtle p-3">
+                  <p class="text-xs font-medium text-ns-muted">Profile status</p>
+                  <div class="mt-2 flex items-center justify-between gap-3">
+                    <span class="text-sm text-ns-text">
+                      {{ profile()!.isPublic ? 'Public' : 'Private' }}
+                    </span>
                     <button
                       type="button"
-                      class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-                      [class.bg-ns-primary]="profile()!.isPublic"
-                      [class.bg-ns-border]="!profile()!.isPublic"
-                      (click)="toggleVisibility()"
+                      class="text-xs font-medium text-ns-primary hover:underline"
+                      (click)="activeTab.set('profile')"
                     >
-                      <span
-                        class="inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform"
-                        [class.translate-x-4]="profile()!.isPublic"
-                        [class.translate-x-1]="!profile()!.isPublic"
-                      ></span>
+                      Edit →
                     </button>
                   </div>
-                  @if (profile()!.isPublic && profile()!.username) {
-                    <div class="rounded-ns bg-ns-canvasSubtle p-2">
-                      <p class="mb-1 text-xs text-ns-muted">Your public URL:</p>
-                      <div class="flex items-center gap-1.5">
-                        <code class="flex-1 truncate text-xs text-ns-primary">nextskill.dev/u/{{ profile()!.username }}</code>
-                        <button
-                          type="button"
-                          class="text-xs text-ns-muted hover:text-ns-text"
-                          (click)="copyPublicUrl()"
-                        >{{ copied() ? '✓' : 'Copy' }}</button>
-                      </div>
-                    </div>
-                  }
                 </div>
               </div>
             </aside>
 
             <!-- Main content -->
-            <div>
+            <div class="min-w-0">
+              <!-- Tab: Profile -->
+              @if (activeTab() === 'profile') {
+                <div class="rounded-ns-lg border border-ns-border bg-ns-card p-4 shadow-ns sm:p-6">
+                  <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <h1 class="m-0 text-xl font-bold text-ns-text">Profile</h1>
+                      <p class="mt-1 text-sm text-ns-muted">Update your public details and sharing settings.</p>
+                    </div>
+                    <button
+                      type="button"
+                      class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-white hover:bg-ns-primaryHover disabled:opacity-50"
+                      [disabled]="saving()"
+                      (click)="saveProfile()"
+                    >
+                      {{ saving() ? 'Saving...' : 'Save profile' }}
+                    </button>
+                  </div>
+
+                  <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <label for="profile-username" class="mb-1 block text-xs font-medium text-ns-muted">Username</label>
+                      <input
+                        id="profile-username"
+                        type="text"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="your-username"
+                        [(ngModel)]="editForm.username"
+                      />
+                    </div>
+                    <div>
+                      <label for="profile-current-role" class="mb-1 block text-xs font-medium text-ns-muted">Current role</label>
+                      <input
+                        id="profile-current-role"
+                        type="text"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="Junior Developer"
+                        [(ngModel)]="editForm.currentRole"
+                      />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label for="profile-bio" class="mb-1 block text-xs font-medium text-ns-muted">Bio</label>
+                      <textarea
+                        id="profile-bio"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        rows="4"
+                        placeholder="Tell your story..."
+                        [(ngModel)]="editForm.bio"
+                      ></textarea>
+                    </div>
+                    <div>
+                      <label for="profile-location" class="mb-1 block text-xs font-medium text-ns-muted">Location</label>
+                      <input
+                        id="profile-location"
+                        type="text"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="London, UK"
+                        [(ngModel)]="editForm.location"
+                      />
+                    </div>
+                    <div>
+                      <label for="profile-experience-level" class="mb-1 block text-xs font-medium text-ns-muted">Experience level</label>
+                      <select
+                        id="profile-experience-level"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        [(ngModel)]="editForm.experienceLevel"
+                      >
+                        <option value="">Select level</option>
+                        <option value="beginner">Complete beginner</option>
+                        <option value="some-knowledge">Some knowledge</option>
+                        <option value="some-experience">Some professional experience</option>
+                        <option value="experienced">Experienced</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="profile-website" class="mb-1 block text-xs font-medium text-ns-muted">Website</label>
+                      <input
+                        id="profile-website"
+                        type="url"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="https://yoursite.com"
+                        [(ngModel)]="editForm.website"
+                      />
+                    </div>
+                    <div>
+                      <label for="profile-linkedin" class="mb-1 block text-xs font-medium text-ns-muted">LinkedIn URL</label>
+                      <input
+                        id="profile-linkedin"
+                        type="url"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="https://linkedin.com/in/..."
+                        [(ngModel)]="editForm.linkedinUrl"
+                      />
+                    </div>
+                    <div>
+                      <label for="profile-github" class="mb-1 block text-xs font-medium text-ns-muted">GitHub URL</label>
+                      <input
+                        id="profile-github"
+                        type="url"
+                        class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
+                        placeholder="https://github.com/..."
+                        [(ngModel)]="editForm.githubUrl"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-6 rounded-ns border border-ns-border bg-ns-canvasSubtle p-4">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p class="m-0 text-sm font-medium text-ns-text">Public profile</p>
+                        <p class="mt-1 text-xs text-ns-muted">Control whether your profile can be shared publicly.</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                        [class.bg-ns-primary]="profile()!.isPublic"
+                        [class.bg-ns-border]="!profile()!.isPublic"
+                        (click)="toggleVisibility()"
+                      >
+                        <span
+                          class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform"
+                          [class.translate-x-6]="profile()!.isPublic"
+                          [class.translate-x-1]="!profile()!.isPublic"
+                        ></span>
+                      </button>
+                    </div>
+                    @if (profile()!.isPublic && profile()!.username) {
+                      <div class="mt-4 rounded-ns bg-ns-card p-3">
+                        <p class="mb-1 text-xs text-ns-muted">Your public URL:</p>
+                        <div class="flex min-w-0 items-center gap-2">
+                          <code class="min-w-0 flex-1 truncate text-xs text-ns-primary">nextskill.dev/u/{{ profile()!.username }}</code>
+                          <button
+                            type="button"
+                            class="shrink-0 text-xs text-ns-muted hover:text-ns-text"
+                            (click)="copyPublicUrl()"
+                          >{{ copied() ? '✓' : 'Copy' }}</button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
               <!-- Tab: Overview -->
               @if (activeTab() === 'overview') {
                 <div class="space-y-6">
@@ -633,6 +659,7 @@ export class ProfilePageComponent implements OnInit {
   };
 
   readonly tabs = [
+    { id: 'profile' as TabId, label: 'Profile' },
     { id: 'overview' as TabId, label: 'Overview' },
     { id: 'saved' as TabId, label: 'Saved careers' },
     { id: 'resources' as TabId, label: 'Saved resources' },
