@@ -34,13 +34,43 @@ describe('ResourcesComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.filtered().length).toBeGreaterThan(12);
-    expect(fixture.componentInstance.paginatedResources()).toHaveLength(12);
+    expect(fixture.componentInstance.pageSize()).toBe(10);
+    expect(fixture.componentInstance.paginatedResources()).toHaveLength(10);
     expect(fixture.componentInstance.currentPageSafe()).toBe(1);
 
     fixture.componentInstance.nextPage();
 
     expect(fixture.componentInstance.currentPageSafe()).toBe(2);
-    expect(fixture.componentInstance.pageStart()).toBe(13);
+    expect(fixture.componentInstance.pageStart()).toBe(11);
+  });
+
+  it('should let users change resources shown per page', () => {
+    const fixture = TestBed.createComponent(ResourcesComponent);
+    fixture.detectChanges();
+
+    fixture.componentInstance.setPageSize('20');
+
+    expect(fixture.componentInstance.pageSize()).toBe(20);
+    expect(fixture.componentInstance.paginatedResources()).toHaveLength(20);
+  });
+
+  it('should search resources', () => {
+    const fixture = TestBed.createComponent(ResourcesComponent);
+    fixture.detectChanges();
+
+    fixture.componentInstance.setSearchQuery('google');
+    const results = fixture.componentInstance.filtered();
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(
+      results.every((resource) =>
+        [resource.title, resource.platform, resource.careerTitle]
+          .join(' ')
+          .toLowerCase()
+          .includes('google'),
+      ),
+    ).toBe(true);
+    expect(fixture.componentInstance.currentPageSafe()).toBe(1);
   });
 
   it('should reset pagination when filters change', () => {

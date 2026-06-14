@@ -27,12 +27,36 @@ describe('CareersComponent', () => {
     await fixture.whenStable();
 
     expect(fixture.componentInstance.totalPages()).toBe(3);
-    expect(fixture.componentInstance.paginatedCareers()).toHaveLength(12);
+    expect(fixture.componentInstance.pageSize()).toBe(10);
+    expect(fixture.componentInstance.paginatedCareers()).toHaveLength(10);
 
     fixture.componentInstance.nextPage();
 
     expect(fixture.componentInstance.currentPageSafe()).toBe(2);
-    expect(fixture.componentInstance.pageStart()).toBe(13);
+    expect(fixture.componentInstance.pageStart()).toBe(11);
+  });
+
+  it('should let users change careers shown per page', () => {
+    const fixture = TestBed.createComponent(CareersComponent);
+    fixture.detectChanges();
+
+    fixture.componentInstance.setPageSize(20);
+
+    expect(fixture.componentInstance.pageSize()).toBe(20);
+    expect(fixture.componentInstance.paginatedCareers()).toHaveLength(20);
+    expect(fixture.componentInstance.totalPages()).toBe(2);
+  });
+
+  it('should search careers', () => {
+    const fixture = TestBed.createComponent(CareersComponent);
+    fixture.detectChanges();
+
+    fixture.componentInstance.setSearchQuery('cloud');
+    const results = fixture.componentInstance.filtered();
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.some((career) => career.title.includes('Cloud'))).toBe(true);
+    expect(fixture.componentInstance.currentPageSafe()).toBe(1);
   });
 
   it('should filter careers when a tab is selected', () => {

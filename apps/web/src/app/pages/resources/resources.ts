@@ -188,7 +188,34 @@ const TABS: TabFilter[] = [
             </select>
           </div>
 
-          <p class="mt-5 text-sm text-ns-muted">
+          <div
+            class="mt-5 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-3 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <label class="flex min-w-0 flex-1 flex-col gap-1 text-sm">
+              <span class="font-semibold text-ns-text">Search resources</span>
+              <input
+                type="search"
+                class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition placeholder:text-ns-muted focus:border-ns-primary"
+                placeholder="Search by title, platform, career, or type"
+                [value]="searchQuery()"
+                (input)="setSearchQuery($any($event.target).value)"
+              />
+            </label>
+            <label class="flex flex-col gap-1 text-sm sm:w-36">
+              <span class="font-semibold text-ns-text">Show</span>
+              <select
+                class="rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition focus:border-ns-primary"
+                [value]="pageSize()"
+                (change)="setPageSize($any($event.target).value)"
+              >
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </label>
+          </div>
+
+          <p class="mt-4 text-sm text-ns-muted">
             Showing {{ pageStart() }}-{{ pageEnd() }} of
             {{ filtered().length }}
             {{ filtered().length === 1 ? 'resource' : 'resources' }}
@@ -313,9 +340,11 @@ export class ResourcesComponent implements OnInit {
     id: t.id,
     label: t.label,
   }));
-  readonly pageSize = 12;
+  readonly pageSizeOptions = [10, 20, 30, 50];
+  readonly pageSize = signal<number>(10);
   readonly activeTab = signal<string>('all');
   readonly activeCareer = signal<string>('all');
+  readonly searchQuery = signal<string>('');
   readonly currentPage = signal<number>(1);
 
   readonly careerOptions = CAREER_PATHS.map((c) => ({
@@ -327,6 +356,7 @@ export class ResourcesComponent implements OnInit {
   readonly filtered = computed(() => {
     const tab = this.activeTab();
     const career = this.activeCareer();
+    const query = this.searchQuery().trim().toLowerCase();
 
     return ALL_RESOURCES.filter((r) => {
       const matchesCareer = career === 'all' || r.careerId === career;
@@ -335,12 +365,27 @@ export class ResourcesComponent implements OnInit {
         (tab === 'free' && (r.cost === 'free' || r.cost === 'freemium')) ||
         (tab === 'paid' && r.cost === 'paid') ||
         r.type === tab;
-      return matchesCareer && matchesTab;
+      const matchesSearch =
+        !query ||
+        [
+          r.title,
+          r.platform,
+          r.careerTitle,
+          r.type,
+          r.cost,
+          this.typeLabel(r.type),
+          this.costLabel(r.cost),
+        ]
+          .join(' ')
+          .toLowerCase()
+          .includes(query);
+
+      return matchesCareer && matchesTab && matchesSearch;
     });
   });
 
   readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.filtered().length / this.pageSize)),
+    Math.max(1, Math.ceil(this.filtered().length / this.pageSize())),
   );
 
   readonly currentPageSafe = computed(() =>
@@ -348,18 +393,18 @@ export class ResourcesComponent implements OnInit {
   );
 
   readonly paginatedResources = computed(() => {
-    const start = (this.currentPageSafe() - 1) * this.pageSize;
-    return this.filtered().slice(start, start + this.pageSize);
+    const start = (this.currentPageSafe() - 1) * this.pageSize();
+    return this.filtered().slice(start, start + this.pageSize());
   });
 
   readonly pageStart = computed(() =>
     this.filtered().length === 0
       ? 0
-      : (this.currentPageSafe() - 1) * this.pageSize + 1,
+      : (this.currentPageSafe() - 1) * this.pageSize() + 1,
   );
 
   readonly pageEnd = computed(() =>
-    Math.min(this.currentPageSafe() * this.pageSize, this.filtered().length),
+    Math.min(this.currentPageSafe() * this.pageSize(), this.filtered().length),
   );
 
   readonly visiblePages = computed(() => {
@@ -380,6 +425,17 @@ export class ResourcesComponent implements OnInit {
 
   setActiveCareer(careerId: string): void {
     this.activeCareer.set(careerId);
+    this.currentPage.set(1);
+  }
+
+  setSearchQuery(query: string): void {
+    this.searchQuery.set(query);
+    this.currentPage.set(1);
+  }
+
+  setPageSize(size: string | number): void {
+    const parsed = Number(size);
+    this.pageSize.set(this.pageSizeOptions.includes(parsed) ? parsed : 10);
     this.currentPage.set(1);
   }
 
