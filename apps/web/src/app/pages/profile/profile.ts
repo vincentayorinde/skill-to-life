@@ -39,10 +39,33 @@ type TabId = 'overview' | 'saved' | 'resources' | 'results' | 'cv';
             <div class="h-8 w-8 animate-spin rounded-full border-2 border-ns-primary border-t-transparent"></div>
           </div>
         } @else if (profile()) {
-          <div class="grid gap-8 lg:grid-cols-[280px_1fr]">
+          <div class="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8">
 
             <!-- Sidebar -->
-            <aside class="space-y-6">
+            <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
+              <!-- Section menu -->
+              <nav
+                class="overflow-x-auto rounded-ns-lg border border-ns-border bg-ns-card p-2 shadow-ns lg:overflow-visible"
+                aria-label="Profile sections"
+              >
+                <div class="flex min-w-max gap-1 lg:min-w-0 lg:flex-col">
+                  @for (tab of tabs; track tab.id) {
+                    <button
+                      type="button"
+                      class="whitespace-nowrap rounded-ns px-3 py-2 text-left text-sm font-medium transition-colors lg:w-full"
+                      [class.bg-ns-canvasSubtle]="activeTab() === tab.id"
+                      [class.text-ns-text]="activeTab() === tab.id"
+                      [class.text-ns-muted]="activeTab() !== tab.id"
+                      [class.hover:bg-ns-canvasSubtle]="activeTab() !== tab.id"
+                      [class.hover:text-ns-text]="activeTab() !== tab.id"
+                      (click)="activeTab.set(tab.id)"
+                    >
+                      {{ tab.label }}
+                    </button>
+                  }
+                </div>
+              </nav>
+
               <!-- Avatar + identity -->
               <div class="rounded-ns-lg border border-ns-border bg-ns-card p-5">
                 <div class="mb-4 flex flex-col items-center text-center">
@@ -197,24 +220,6 @@ type TabId = 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
             <!-- Main content -->
             <div>
-              <!-- Tabs -->
-              <div class="mb-6 flex gap-0.5 border-b border-ns-border">
-                @for (tab of tabs; track tab.id) {
-                  <button
-                    type="button"
-                    class="px-4 py-2.5 text-sm font-medium transition-colors"
-                    [class.text-ns-primary]="activeTab() === tab.id"
-                    [class.border-b-2]="activeTab() === tab.id"
-                    [class.border-ns-primary]="activeTab() === tab.id"
-                    [class.text-ns-muted]="activeTab() !== tab.id"
-                    [class.hover:text-ns-text]="activeTab() !== tab.id"
-                    (click)="activeTab.set(tab.id)"
-                  >
-                    {{ tab.label }}
-                  </button>
-                }
-              </div>
-
               <!-- Tab: Overview -->
               @if (activeTab() === 'overview') {
                 <div class="space-y-6">
