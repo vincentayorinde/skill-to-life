@@ -157,54 +157,56 @@ const TABS: TabFilter[] = [
             >
           </ns-page-header>
 
-          <!-- Tab filter -->
-          <div class="mt-4 overflow-x-auto pb-1">
-            <ns-tabs
-              [tabs]="tabItems"
-              [activeId]="activeTab()"
-              (activeIdChange)="setActiveTab($event)"
-            />
-          </div>
-
-          <!-- Career filter -->
-          <div class="mt-4 flex flex-wrap items-center gap-3">
-            <label
-              for="career-filter"
-              class="text-sm font-semibold text-ns-text"
-              >Career:</label
-            >
-            <select
-              id="career-filter"
-              class="rounded-ns border border-ns-border bg-ns-card px-3 py-1.5 text-sm text-ns-text focus:outline-none focus:ring-1 focus:ring-ns-primary"
-              [value]="activeCareer()"
-              (change)="setActiveCareer($any($event.target).value)"
-            >
-              <option value="all">All careers</option>
-              @for (career of careerOptions; track career.id) {
-                <option [value]="career.id">
-                  {{ career.emoji }} {{ career.title }}
-                </option>
-              }
-            </select>
-          </div>
-
           <div
-            class="mt-5 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-3 sm:flex-row sm:items-center sm:justify-between"
+            class="mt-4 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-2 xl:flex-row xl:items-center xl:justify-between"
           >
-            <label class="flex min-w-0 flex-1 flex-col gap-1 text-sm">
-              <span class="font-semibold text-ns-text">Search resources</span>
-              <input
-                type="search"
-                class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition placeholder:text-ns-muted focus:border-ns-primary"
-                placeholder="Search by title, platform, career, or type"
-                [value]="searchQuery()"
-                (input)="setSearchQuery($any($event.target).value)"
+            <div class="min-w-0 overflow-x-auto pb-1 xl:pb-0">
+              <ns-tabs
+                [tabs]="tabItems"
+                [activeId]="activeTab()"
+                (activeIdChange)="setActiveTab($event)"
               />
-            </label>
-            <label class="flex flex-col gap-1 text-sm sm:w-36">
-              <span class="font-semibold text-ns-text">Show</span>
+            </div>
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <label class="flex items-center gap-2 text-sm">
+                <span class="font-semibold text-ns-text">Career</span>
+                <select
+                  id="career-filter"
+                  class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition focus:border-ns-primary sm:w-56"
+                  [value]="activeCareer()"
+                  (change)="setActiveCareer($any($event.target).value)"
+                >
+                  <option value="all">All careers</option>
+                  @for (career of careerOptions; track career.id) {
+                    <option [value]="career.id">
+                      {{ career.emoji }} {{ career.title }}
+                    </option>
+                  }
+                </select>
+              </label>
+              <label class="min-w-0 text-sm sm:w-80">
+                <span class="sr-only">Search resources</span>
+                <input
+                  type="search"
+                  class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition placeholder:text-ns-muted focus:border-ns-primary"
+                  placeholder="Search title, platform, career, or type"
+                  [value]="searchQuery()"
+                  (input)="setSearchQuery($any($event.target).value)"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="m-0 text-sm text-ns-muted">
+              Showing {{ pageStart() }}-{{ pageEnd() }} of
+              {{ filtered().length }}
+              {{ filtered().length === 1 ? 'resource' : 'resources' }}
+            </p>
+            <label class="flex items-center gap-2 text-sm text-ns-muted">
+              <span>Show</span>
               <select
-                class="rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition focus:border-ns-primary"
+                class="rounded-ns-sm border border-ns-border bg-ns-card px-2.5 py-1.5 text-sm text-ns-text outline-none transition focus:border-ns-primary"
                 [value]="pageSize()"
                 (change)="setPageSize($any($event.target).value)"
               >
@@ -214,12 +216,6 @@ const TABS: TabFilter[] = [
               </select>
             </label>
           </div>
-
-          <p class="mt-4 text-sm text-ns-muted">
-            Showing {{ pageStart() }}-{{ pageEnd() }} of
-            {{ filtered().length }}
-            {{ filtered().length === 1 ? 'resource' : 'resources' }}
-          </p>
 
           @if (filtered().length === 0) {
             <div class="py-20 text-center">

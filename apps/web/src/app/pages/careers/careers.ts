@@ -75,19 +75,18 @@ const TABS: TabFilter[] = [
             >
           </ns-page-header>
 
-          <div class="mt-2 overflow-x-auto pb-1">
-            <ns-tabs
-              [tabs]="tabItems"
-              [activeId]="activeTab()"
-              (activeIdChange)="setActiveTab($event)"
-            />
-          </div>
-
           <div
-            class="mt-5 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-3 sm:flex-row sm:items-center sm:justify-between"
+            class="mt-2 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-2 lg:flex-row lg:items-center lg:justify-between"
           >
-            <label class="flex min-w-0 flex-1 flex-col gap-1 text-sm">
-              <span class="font-semibold text-ns-text">Search paths</span>
+            <div class="min-w-0 overflow-x-auto pb-1 lg:pb-0">
+              <ns-tabs
+                [tabs]="tabItems"
+                [activeId]="activeTab()"
+                (activeIdChange)="setActiveTab($event)"
+              />
+            </div>
+            <label class="min-w-0 text-sm lg:w-80">
+              <span class="sr-only">Search paths</span>
               <input
                 type="search"
                 class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition placeholder:text-ns-muted focus:border-ns-primary"
@@ -96,10 +95,17 @@ const TABS: TabFilter[] = [
                 (input)="setSearchQuery($any($event.target).value)"
               />
             </label>
-            <label class="flex flex-col gap-1 text-sm sm:w-36">
-              <span class="font-semibold text-ns-text">Show</span>
+          </div>
+
+          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="m-0 text-sm text-ns-muted">
+              Showing {{ pageStart() }}-{{ pageEnd() }} of
+              {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
+            </p>
+            <label class="flex items-center gap-2 text-sm text-ns-muted">
+              <span>Show</span>
               <select
-                class="rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition focus:border-ns-primary"
+                class="rounded-ns-sm border border-ns-border bg-ns-card px-2.5 py-1.5 text-sm text-ns-text outline-none transition focus:border-ns-primary"
                 [value]="pageSize()"
                 (change)="setPageSize($any($event.target).value)"
               >
@@ -109,11 +115,6 @@ const TABS: TabFilter[] = [
               </select>
             </label>
           </div>
-
-          <p class="mt-4 text-sm text-ns-muted">
-            Showing {{ pageStart() }}-{{ pageEnd() }} of
-            {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
-          </p>
 
           <div
             class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
