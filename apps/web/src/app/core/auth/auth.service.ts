@@ -14,9 +14,14 @@ export class AuthService {
 
   readonly currentUser$ = this._currentUser$.asObservable();
   readonly isAuthenticated$ = this.currentUser$.pipe(map((u) => u !== null));
+  readonly isDev = environment.devMode;
 
   loginWithGoogle(): void {
     window.location.href = `${environment.apiUrl}/api/auth/google`;
+  }
+
+  devLogin(): void {
+    window.location.href = `${environment.apiUrl}/api/auth/dev-login`;
   }
 
   handleCallback(token: string): Observable<User> {

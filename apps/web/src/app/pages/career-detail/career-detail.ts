@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -7,6 +8,7 @@ import {
   NsBadgeComponent,
   NsButtonComponent,
   NsCardComponent,
+  NsExternalLinkService,
   NsPageHeaderComponent,
   NsScrollIndicatorComponent,
 } from 'ui';
@@ -23,12 +25,14 @@ import {
   getEntrepreneurshipDataByCareerId,
   formatSalaryRange,
 } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-career-detail',
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
@@ -37,7 +41,15 @@ import {
     NsScrollIndicatorComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-5xl">
           @if (!career) {
@@ -209,10 +221,9 @@ import {
                                     res of step.resources;
                                     track res.title
                                   ) {
-                                    <a
-                                      [href]="res.url"
-                                      target="_blank"
-                                      rel="noreferrer"
+                                    <button
+                                      type="button"
+                                      (click)="openRoadmapResource(res)"
                                       class="inline-flex items-center gap-1.5 rounded-full border border-ns-border bg-ns-canvasSubtle px-3 py-1 text-xs font-semibold text-ns-primary no-underline transition hover:bg-ns-primarySoft"
                                     >
                                       {{ res.title }}
@@ -228,7 +239,7 @@ import {
                                           res.type === 'paid' ? 'Paid' : 'Free'
                                         }}
                                       </span>
-                                    </a>
+                                    </button>
                                   }
                                 </div>
                               }
@@ -550,13 +561,13 @@ import {
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <a
+                          <button
+                            type="button"
+                            (click)="openResource(resource, 'free')"
                             class="text-sm font-semibold text-ns-primary no-underline hover:underline"
-                            [href]="resource.url"
-                            target="_blank"
-                            rel="noreferrer"
-                            >{{ resource.title }} →</a
                           >
+                            {{ resource.title }} →
+                          </button>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -588,13 +599,13 @@ import {
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <a
+                          <button
+                            type="button"
+                            (click)="openResource(resource, 'paid')"
                             class="text-sm font-semibold text-ns-primary no-underline hover:underline"
-                            [href]="resource.url"
-                            target="_blank"
-                            rel="noreferrer"
-                            >{{ resource.title }} →</a
                           >
+                            {{ resource.title }} →
+                          </button>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -660,6 +671,7 @@ import {
   `,
 })
 export class CareerDetailComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
   career: CareerPath | undefined;
   roadmap: CareerRoadmap | undefined;
   salaryData: CareerSalaryData | undefined;
@@ -679,6 +691,7 @@ export class CareerDetailComponent implements OnInit {
   ];
 
   private readonly route = inject(ActivatedRoute);
+  private readonly externalLink = inject(NsExternalLinkService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -708,6 +721,34 @@ export class CareerDetailComponent implements OnInit {
   salaryBarWidth(max: number): number {
     const SCALE_MAX = 180000;
     return Math.min(Math.round((max / SCALE_MAX) * 100), 100);
+  }
+
+  openRoadmapResource(resource: {
+    title: string;
+    url: string;
+    platform?: string;
+    type?: string;
+  }): void {
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      careerTitle: this.career?.title,
+      cost: resource.type === 'paid' ? 'paid' : 'free',
+      context: 'career',
+    });
+  }
+
+  openResource(resource: { title: string; url?: string }, cost: string): void {
+    if (!resource.url) return;
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: this.externalLink.extractDomain(resource.url),
+      careerTitle: this.career?.title,
+      cost,
+      context: 'career',
+    });
   }
 
   levelBadgeClass(level: string): string {

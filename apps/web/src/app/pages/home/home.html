@@ -2,7 +2,9 @@
   brand="NextSkill"
   [links]="shellLinks"
   [authUser]="(auth.currentUser$ | async)"
+  [devMode]="auth.isDev"
   (signIn)="auth.loginWithGoogle()"
+  (devLogin)="auth.devLogin()"
   (signOut)="auth.logout()"
 >
   <!-- ── Hero ─────────────────────────────────────────────────────────────── -->

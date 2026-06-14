@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -11,9 +12,10 @@ import {
   NsScrollIndicatorComponent,
   NsTabsComponent,
   NsTabItem,
+  NsExternalLinkService,
 } from 'ui';
 import { CAREER_PATHS, CAREER_ROADMAPS, FREE_CAREER_RESOURCES } from 'types';
-import type { RoadmapResource, CareerResource } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
 
 interface FlatResource {
   title: string;
@@ -124,6 +126,7 @@ const TABS: TabFilter[] = [
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
@@ -133,7 +136,15 @@ const TABS: TabFilter[] = [
     NsTabsComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-7xl">
           <ns-page-header
@@ -216,13 +227,13 @@ const TABS: TabFilter[] = [
                   >
                 </div>
 
-                <a
-                  [href]="resource.url"
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  (click)="openResource(resource)"
                   class="mt-4 inline-flex text-sm font-semibold text-ns-primary no-underline transition hover:underline"
-                  >Start learning →</a
                 >
+                  Start learning →
+                </button>
               </ns-card>
             }
           </div>
@@ -233,6 +244,8 @@ const TABS: TabFilter[] = [
   `,
 })
 export class ResourcesComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
+  private readonly externalLink = inject(NsExternalLinkService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -284,6 +297,17 @@ export class ResourcesComponent implements OnInit {
       return matchesCareer && matchesTab;
     });
   });
+
+  openResource(resource: FlatResource): void {
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: resource.platform,
+      careerTitle: resource.careerTitle,
+      cost: resource.cost,
+      context: 'resources',
+    });
+  }
 
   costVariant(cost: string): 'success' | 'warning' | 'accent' | 'neutral' {
     if (cost === 'free') return 'success';

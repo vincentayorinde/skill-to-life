@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -11,6 +12,7 @@ import {
   NsScrollIndicatorComponent,
 } from 'ui';
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
 
 interface SalaryCard {
   careerId: string;
@@ -66,6 +68,7 @@ type SortKey = 'senior' | 'junior' | 'name';
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
@@ -74,7 +77,15 @@ type SortKey = 'senior' | 'junior' | 'name';
     NsScrollIndicatorComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-7xl">
           <ns-page-header
@@ -197,6 +208,7 @@ type SortKey = 'senior' | 'junior' | 'name';
   `,
 })
 export class SalariesComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 

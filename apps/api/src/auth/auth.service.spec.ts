@@ -18,6 +18,10 @@ const mockPrisma = {
     findUnique: jest.fn(),
     create: jest.fn(),
   },
+  profile: {
+    findUnique: jest.fn(),
+    create: jest.fn(),
+  },
 };
 
 const mockJwt = {
@@ -43,6 +47,7 @@ describe('AuthService', () => {
   describe('findOrCreateUser', () => {
     it('returns existing user when found by googleId', async () => {
       mockPrisma.user.findUnique.mockResolvedValue(mockUser);
+      mockPrisma.profile.findUnique.mockResolvedValue({ id: 'profile-1' });
 
       const result = await service.findOrCreateUser({
         googleId: 'google-123',
@@ -51,12 +56,17 @@ describe('AuthService', () => {
       });
 
       expect(result).toEqual(mockUser);
+      expect(mockPrisma.profile.findUnique).toHaveBeenCalledWith({
+        where: { userId: mockUser.id },
+      });
       expect(mockPrisma.user.create).not.toHaveBeenCalled();
     });
 
     it('creates and returns new user when not found', async () => {
       mockPrisma.user.findUnique.mockResolvedValue(null);
       mockPrisma.user.create.mockResolvedValue(mockUser);
+      mockPrisma.profile.findUnique.mockResolvedValue(null);
+      mockPrisma.profile.create.mockResolvedValue({ id: 'profile-1' });
 
       const result = await service.findOrCreateUser({
         googleId: 'google-123',
@@ -72,6 +82,9 @@ describe('AuthService', () => {
           avatar: undefined,
           googleId: 'google-123',
         },
+      });
+      expect(mockPrisma.profile.create).toHaveBeenCalledWith({
+        data: { userId: mockUser.id },
       });
     });
   });

@@ -6,6 +6,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import {
   NsButtonComponent,
   NsBadgeComponent,
+  NsExternalLinkModalComponent,
+  NsExternalLinkService,
   NsScrollIndicatorComponent,
   NsToastComponent,
 } from 'ui';
@@ -39,6 +41,7 @@ import { environment } from '../../../environments/environment';
     AsyncPipe,
     NsButtonComponent,
     NsBadgeComponent,
+    NsExternalLinkModalComponent,
     NsScrollIndicatorComponent,
     NsToastComponent,
   ],
@@ -460,14 +463,13 @@ import { environment } from '../../../environments/environment';
                           {{ step.estimatedTime }}
                         </p>
                         @if (step.resources[0]) {
-                          <a
-                            [href]="step.resources[0].url"
-                            target="_blank"
-                            rel="noreferrer"
+                          <button
+                            type="button"
+                            (click)="openRoadmapResource(step.resources[0])"
                             class="mt-2 inline-flex text-xs font-semibold text-ns-primary no-underline hover:underline"
                           >
                             {{ step.resources[0].title }} →
-                          </a>
+                          </button>
                         }
                       </div>
                     </li>
@@ -532,14 +534,13 @@ import { environment } from '../../../environments/environment';
                     >
                       <div class="min-w-0 flex-1">
                         @if (res.url) {
-                          <a
-                            [href]="res.url"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            type="button"
+                            (click)="openCareerResource(res)"
                             class="text-sm font-semibold text-ns-primary no-underline hover:underline"
                           >
                             {{ res.title }}
-                          </a>
+                          </button>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ res.title }}
@@ -1094,6 +1095,7 @@ import { environment } from '../../../environments/environment';
       <!-- ─── Toast notification ────────────────────────────────── -->
       <ns-toast [message]="toastMessage()" [visible]="toastVisible()" />
       <ns-scroll-indicator />
+      <ns-external-link-modal />
     </div>
   `,
 })
@@ -1103,6 +1105,7 @@ export class AssessmentResultsComponent implements OnInit {
   private readonly title = inject(Title);
   protected readonly auth = inject(AuthService);
   private readonly http = inject(HttpClient);
+  private readonly externalLink = inject(NsExternalLinkService);
 
   readonly loading = signal(true);
   readonly animated = signal(false);
@@ -1236,6 +1239,34 @@ export class AssessmentResultsComponent implements OnInit {
   get easiestEntrepreneurshipPath() {
     if (!this.topEntrepreneurshipData) return null;
     return getEasiestPath(this.topEntrepreneurshipData.careerId) ?? null;
+  }
+
+  openRoadmapResource(resource: {
+    title: string;
+    url: string;
+    platform?: string;
+    type?: string;
+  }): void {
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      careerTitle: this.topCareer?.title,
+      cost: resource.type === 'paid' ? 'paid' : 'free',
+      context: 'results',
+    });
+  }
+
+  openCareerResource(resource: { title: string; url?: string }): void {
+    if (!resource.url) return;
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: this.externalLink.extractDomain(resource.url),
+      careerTitle: this.topCareer?.title,
+      cost: 'free',
+      context: 'results',
+    });
   }
 
   ngOnInit(): void {

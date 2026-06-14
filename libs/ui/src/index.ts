@@ -10,3 +10,5 @@ export * from './lib/progress/progress';
 export * from './lib/scroll-indicator/scroll-indicator';
 export * from './lib/tabs/tabs';
 export * from './lib/toast/toast';
+export * from './lib/external-link/external-link.service';
+export * from './lib/external-link/external-link.modal';

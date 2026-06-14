@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NsCookieNoticeComponent } from '../cookie-notice/cookie-notice';
+import { NsExternalLinkModalComponent } from '../external-link/external-link.modal';
 
 export interface NsAppShellLink {
   label: string;
@@ -19,7 +20,12 @@ export interface NsAuthUser {
 @Component({
   selector: 'ns-app-shell',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, NsCookieNoticeComponent],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    NsCookieNoticeComponent,
+    NsExternalLinkModalComponent,
+  ],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
       <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -98,6 +104,9 @@ export interface NsAuthUser {
                 }
               </div>
             } @else {
+              @if (devMode) {
+                <button type="button" class="ns-dev-login" (click)="devLogin.emit()">Dev login</button>
+              }
               <button type="button" class="ns-sign-in" (click)="signIn.emit()">Sign in</button>
               <a class="ns-start-assessment" href="#assessment">Start assessment</a>
             }
@@ -193,6 +202,9 @@ export interface NsAuthUser {
 
             @if (!authUser) {
               <div class="ns-mobile-ctas">
+                @if (devMode) {
+                  <button type="button" class="ns-dev-login" (click)="devLogin.emit()">Dev login</button>
+                }
                 <button type="button" class="ns-sign-in" (click)="signIn.emit()">Sign in</button>
                 <a class="ns-start-assessment" href="#assessment" (click)="closeMenus()">Start assessment</a>
               </div>
@@ -205,6 +217,7 @@ export interface NsAuthUser {
         <ng-content />
       </main>
       <ns-cookie-notice />
+      <ns-external-link-modal />
     </div>
   `,
   styles: [
@@ -367,6 +380,7 @@ export interface NsAuthUser {
       }
 
       .ns-theme-toggle,
+      .ns-dev-login,
       .ns-sign-in,
       .ns-start-assessment,
       .ns-menu-toggle,
@@ -399,6 +413,23 @@ export interface NsAuthUser {
         background: transparent;
         color: var(--color-text, var(--ns-color-text));
         padding: 7px 16px;
+      }
+
+      .ns-dev-login {
+        border: 1px dashed rgba(255, 184, 0, 0.4);
+        border-radius: var(--radius-sm, var(--ns-radius-sm));
+        background: transparent;
+        color: rgba(255, 184, 0, 0.7);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+        min-height: 30px;
+        padding: 4px 10px;
+      }
+
+      .ns-dev-login:hover {
+        background: rgba(255, 184, 0, 0.08);
+        color: rgba(255, 184, 0, 0.9);
       }
 
       .ns-sign-in:hover {
@@ -605,8 +636,10 @@ export class NsAppShellComponent implements OnInit {
     { label: 'Open source', href: '#open-source' },
   ];
   @Input() authUser: NsAuthUser | null = null;
+  @Input() devMode = false;
   @Output() signIn = new EventEmitter<void>();
   @Output() signOut = new EventEmitter<void>();
+  @Output() devLogin = new EventEmitter<void>();
 
   theme: 'dark' | 'light' = 'dark';
   mobileMenuOpen = false;

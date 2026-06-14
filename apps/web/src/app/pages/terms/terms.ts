@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -7,18 +8,28 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
 } from 'ui';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-terms',
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsCardComponent,
     NsPageHeaderComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-3xl">
           <ns-page-header
@@ -134,6 +145,7 @@ import {
   `,
 })
 export class TermsComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'Home', routerLink: '/' },
     { label: 'Career paths', routerLink: '/careers' },
