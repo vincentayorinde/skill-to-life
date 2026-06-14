@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
@@ -26,6 +26,36 @@ import {
   formatSalaryRange,
 } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+
+type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
+
+interface RegionConfig {
+  label: SalaryRegion;
+  flag: string;
+  currency: 'GBP' | 'USD' | 'EUR' | 'NGN';
+  multiplier: number;
+  monthly: boolean;
+}
+
+const SALARY_REGIONS: RegionConfig[] = [
+  { label: 'UK', flag: '🇬🇧', currency: 'GBP', multiplier: 1, monthly: false },
+  { label: 'US', flag: '🇺🇸', currency: 'USD', multiplier: 1.5, monthly: false },
+  { label: 'Canada', flag: '🇨🇦', currency: 'USD', multiplier: 1.2, monthly: false },
+  { label: 'Europe', flag: '🇪🇺', currency: 'EUR', multiplier: 0.9, monthly: false },
+  { label: 'Nigeria', flag: '🇳🇬', currency: 'NGN', multiplier: 2000, monthly: true },
+  { label: 'Global', flag: '🌐', currency: 'GBP', multiplier: 1, monthly: false },
+];
+
+function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig): string {
+  const cMin = Math.round((gbpMin * config.multiplier) / (config.monthly ? 12 : 1));
+  const cMax = Math.round((gbpMax * config.multiplier) / (config.monthly ? 12 : 1));
+  if (config.currency === 'NGN') {
+    const fmt = (n: number) =>
+      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+    return `${fmt(cMin)}–${fmt(cMax)}/mo`;
+  }
+  return formatSalaryRange(cMin, cMax, config.currency);
+}
 
 @Component({
   selector: 'app-career-detail',
@@ -415,10 +445,29 @@ import { AuthService } from '../../core/auth/auth.service';
                         Earning potential
                       </h2>
                       <span class="text-xs text-ns-muted"
-                        >UK · {{ salaryData.lastUpdated }}</span
+                        >{{ salaryData.lastUpdated }}</span
                       >
                     </div>
-                    <p class="mt-2 text-sm leading-6 text-ns-muted">
+
+                    <!-- Region selector -->
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                      @for (region of salaryRegions; track region.label) {
+                        <button
+                          type="button"
+                          class="rounded-full border px-2 py-0.5 text-xs font-semibold transition"
+                          [class]="selectedSalaryRegion() === region.label
+                            ? 'border-ns-primary bg-ns-primary text-white'
+                            : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'"
+                          (click)="setSalaryRegion(region.label)"
+                        >{{ region.flag }} {{ region.label }}</button>
+                      }
+                    </div>
+
+                    @if (activeRegionConfig().monthly) {
+                      <p class="mt-2 text-[10px] text-ns-primary">Monthly figures (Nigeria)</p>
+                    }
+
+                    <p class="mt-3 text-sm leading-6 text-ns-muted">
                       {{ salaryData.summary }}
                     </p>
 
@@ -677,9 +726,16 @@ export class CareerDetailComponent implements OnInit {
   salaryData: CareerSalaryData | undefined;
   entrepreneurshipData: CareerEntrepreneurshipData | undefined;
 
+  readonly salaryRegions = SALARY_REGIONS;
+  readonly selectedSalaryRegion = signal<SalaryRegion>('UK');
+  readonly activeRegionConfig = computed(
+    () => SALARY_REGIONS.find((r) => r.label === this.selectedSalaryRegion())!,
+  );
+
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
   ];
 
@@ -707,8 +763,12 @@ export class CareerDetailComponent implements OnInit {
     }
   }
 
-  salaryRangeLabel(min: number, max: number, currency: string): string {
-    return formatSalaryRange(min, max, currency);
+  salaryRangeLabel(min: number, max: number, _currency: string): string {
+    return formatRegionSalary(min, max, this.activeRegionConfig());
+  }
+
+  setSalaryRegion(label: string): void {
+    this.selectedSalaryRegion.set(label as SalaryRegion);
   }
 
   salaryBarWidth(max: number): number {

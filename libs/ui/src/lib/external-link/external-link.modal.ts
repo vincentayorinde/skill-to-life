@@ -96,7 +96,7 @@ import { NsExternalLinkService } from './external-link.service';
         border: 1px solid var(--color-border, var(--ns-color-border));
         border-radius: 16px;
         padding: 28px;
-        max-width: 400px;
+        max-width: 600px;
         width: 100%;
         position: relative;
         box-shadow: var(--shadow-lg, var(--ns-shadow-lg));

@@ -14,6 +14,36 @@ import {
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 
+type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
+
+interface RegionConfig {
+  label: SalaryRegion;
+  flag: string;
+  currency: 'GBP' | 'USD' | 'EUR' | 'NGN';
+  multiplier: number;
+  monthly: boolean;
+}
+
+const SALARY_REGIONS: RegionConfig[] = [
+  { label: 'UK', flag: '🇬🇧', currency: 'GBP', multiplier: 1, monthly: false },
+  { label: 'US', flag: '🇺🇸', currency: 'USD', multiplier: 1.5, monthly: false },
+  { label: 'Canada', flag: '🇨🇦', currency: 'USD', multiplier: 1.2, monthly: false },
+  { label: 'Europe', flag: '🇪🇺', currency: 'EUR', multiplier: 0.9, monthly: false },
+  { label: 'Nigeria', flag: '🇳🇬', currency: 'NGN', multiplier: 2000, monthly: true },
+  { label: 'Global', flag: '🌐', currency: 'GBP', multiplier: 1, monthly: false },
+];
+
+function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig): string {
+  const cMin = Math.round((gbpMin * config.multiplier) / (config.monthly ? 12 : 1));
+  const cMax = Math.round((gbpMax * config.multiplier) / (config.monthly ? 12 : 1));
+  if (config.currency === 'NGN') {
+    const fmt = (n: number) =>
+      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+    return `${fmt(cMin)}–${fmt(cMax)}/mo`;
+  }
+  return formatSalaryRange(cMin, cMax, config.currency);
+}
+
 interface SalaryCard {
   careerId: string;
   title: string;
@@ -25,7 +55,7 @@ interface SalaryCard {
   seniorMax: number;
 }
 
-function buildSalaryCards(): SalaryCard[] {
+function buildSalaryCards(config: RegionConfig): SalaryCard[] {
   return CAREER_PATHS.map((career) => {
     const data = CAREER_SALARY_DATA.find((s) => s.careerId === career.id);
     if (!data) {
@@ -46,20 +76,14 @@ function buildSalaryCards(): SalaryCard[] {
       careerId: career.id,
       title: career.title,
       emoji: career.emoji,
-      juniorRange: junior
-        ? formatSalaryRange(junior.min, junior.max, junior.currency)
-        : '—',
-      seniorRange: senior
-        ? formatSalaryRange(senior.min, senior.max, senior.currency)
-        : '—',
+      juniorRange: junior ? formatRegionSalary(junior.min, junior.max, config) : '—',
+      seniorRange: senior ? formatRegionSalary(senior.min, senior.max, config) : '—',
       hasFreelance: !!data.freelanceRate,
-      juniorMax: junior?.max ?? 0,
-      seniorMax: senior?.max ?? 0,
+      juniorMax: junior ? Math.round(junior.max * config.multiplier) : 0,
+      seniorMax: senior ? Math.round(senior.max * config.multiplier) : 0,
     };
   });
 }
-
-const ALL_CARDS = buildSalaryCards();
 
 type SortKey = 'senior' | 'junior' | 'name';
 
@@ -91,33 +115,63 @@ type SortKey = 'senior' | 'junior' | 'name';
           <ns-page-header
             eyebrow="Salary guide"
             title="Tech career salaries."
-            description="Honest salary ranges across 26 tech paths. UK market estimates unless stated. Figures are approximate — always verify with current job listings."
+            description="Honest salary ranges across 26 tech paths. Figures are approximate — always verify with current job listings."
           >
             <ns-button routerLink="/careers" variant="secondary"
               >← Browse career paths</ns-button
             >
           </ns-page-header>
 
-          <!-- Sort -->
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <span class="text-sm font-semibold text-ns-text">Sort by:</span>
-            <div class="flex gap-2">
-              @for (s of sortOptions; track s.key) {
-                <button
-                  type="button"
-                  class="rounded-full border px-3 py-1 text-sm font-semibold transition"
-                  [class]="
-                    activeSort() === s.key
-                      ? 'border-ns-primary bg-ns-primary text-[#07111f]'
-                      : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
-                  "
-                  (click)="activeSort.set(s.key)"
-                >
-                  {{ s.label }}
-                </button>
-              }
+          <!-- Region + Sort filters -->
+          <div class="mt-6 space-y-4">
+            <!-- Region -->
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="text-sm font-semibold text-ns-text">Region:</span>
+              <div class="flex flex-wrap gap-2">
+                @for (region of salaryRegions; track region.label) {
+                  <button
+                    type="button"
+                    class="rounded-full border px-3 py-1 text-sm font-semibold transition"
+                    [class]="
+                      selectedRegion() === region.label
+                        ? 'border-ns-primary bg-ns-primary text-white'
+                        : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
+                    "
+                    (click)="setRegion(region.label)"
+                  >
+                    {{ region.flag }} {{ region.label }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- Sort -->
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="text-sm font-semibold text-ns-text">Sort by:</span>
+              <div class="flex gap-2">
+                @for (s of sortOptions; track s.key) {
+                  <button
+                    type="button"
+                    class="rounded-full border px-3 py-1 text-sm font-semibold transition"
+                    [class]="
+                      activeSort() === s.key
+                        ? 'border-ns-primary bg-ns-primary text-white'
+                        : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
+                    "
+                    (click)="activeSort.set(s.key)"
+                  >
+                    {{ s.label }}
+                  </button>
+                }
+              </div>
             </div>
           </div>
+
+          @if (activeRegionConfig().monthly) {
+            <p class="mt-3 text-xs text-ns-primary">
+              Showing estimated monthly figures for Nigeria (approximate — actual salaries vary widely by employer and role).
+            </p>
+          }
 
           <p class="mt-4 text-sm text-ns-muted">
             {{ sorted().length }} careers
@@ -174,10 +228,7 @@ type SortKey = 'senior' | 'junior' | 'name';
           >
             <p class="m-0 text-xs leading-6 text-ns-muted">
               <span class="font-semibold text-ns-text">Disclaimer:</span>
-              Salary data is approximate and based on UK market rates as of
-              2025. Actual salaries vary significantly by location, employer,
-              experience, and skills. US salaries are typically 30–100% higher
-              depending on role and employer. Always research current rates on
+              Salary data is approximate and based on UK market rates as of 2025. Non-UK figures are derived estimates using regional multipliers and may not reflect actual local market rates. Actual salaries vary significantly by location, employer, experience, and skills. Always research current rates on
               <a
                 href="https://www.glassdoor.co.uk"
                 target="_blank"
@@ -217,14 +268,28 @@ export class SalariesComponent implements OnInit {
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Honest UK salary ranges for 26 tech career paths — junior, mid, senior, and lead levels. Includes freelance day rates and factors that affect pay.',
+        'Honest salary ranges for 26 tech career paths across UK, US, Canada, Europe, and Nigeria — junior, mid, senior, and lead levels.',
     });
   }
+
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
   ];
+
+  readonly salaryRegions = SALARY_REGIONS;
+
+  readonly selectedRegion = signal<SalaryRegion>(
+    (localStorage.getItem('ns_salary_region') as SalaryRegion) ?? 'UK',
+  );
+
+  readonly activeRegionConfig = computed(
+    () => SALARY_REGIONS.find((r) => r.label === this.selectedRegion())!,
+  );
+
+  readonly cards = computed(() => buildSalaryCards(this.activeRegionConfig()));
 
   readonly sortOptions: { key: SortKey; label: string }[] = [
     { key: 'senior', label: 'Highest paid' },
@@ -236,10 +301,15 @@ export class SalariesComponent implements OnInit {
 
   readonly sorted = computed(() => {
     const key = this.activeSort();
-    return [...ALL_CARDS].sort((a, b) => {
+    return [...this.cards()].sort((a, b) => {
       if (key === 'senior') return b.seniorMax - a.seniorMax;
       if (key === 'junior') return b.juniorMax - a.juniorMax;
       return a.title.localeCompare(b.title);
     });
   });
+
+  setRegion(region: SalaryRegion): void {
+    this.selectedRegion.set(region);
+    localStorage.setItem('ns_salary_region', region);
+  }
 }
