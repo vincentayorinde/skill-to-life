@@ -149,6 +149,7 @@ export class TermsComponent implements OnInit {
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
   ];
 
