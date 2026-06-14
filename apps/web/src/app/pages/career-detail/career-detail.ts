@@ -26,6 +26,7 @@ import {
   formatSalaryRange,
 } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
 
 type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
 
@@ -115,20 +116,37 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
             </nav>
 
             <!-- Page header -->
-            <ns-page-header
-              [title]="career.title"
-              [description]="career.summary"
-            >
-              <ns-badge [variant]="difficultyVariant(career.difficultyLevel)">
-                {{ career.difficultyLevel }}
-              </ns-badge>
-              @if (career.remoteFriendly) {
-                <ns-badge variant="primary">Remote friendly</ns-badge>
+            <div class="flex items-start justify-between gap-4">
+              <ns-page-header
+                class="min-w-0 flex-1"
+                [title]="career.title"
+                [description]="career.summary"
+              >
+                <ns-badge [variant]="difficultyVariant(career.difficultyLevel)">
+                  {{ career.difficultyLevel }}
+                </ns-badge>
+                @if (career.remoteFriendly) {
+                  <ns-badge variant="primary">Remote friendly</ns-badge>
+                }
+                @if (career.beginnerFriendly) {
+                  <ns-badge variant="success">Beginner friendly</ns-badge>
+                }
+              </ns-page-header>
+
+              @if (auth.currentUser$ | async) {
+                <button
+                  type="button"
+                  class="mt-1 shrink-0 rounded-ns border px-3 py-2 text-xs font-semibold transition"
+                  [class]="careerSaved()
+                    ? 'border-ns-primary bg-ns-primarySoft text-ns-primary'
+                    : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'"
+                  (click)="toggleSaveCareer()"
+                  [attr.aria-label]="careerSaved() ? 'Unsave career' : 'Save career'"
+                >
+                  {{ careerSaved() ? '★ Saved' : '☆ Save' }}
+                </button>
               }
-              @if (career.beginnerFriendly) {
-                <ns-badge variant="success">Beginner friendly</ns-badge>
-              }
-            </ns-page-header>
+            </div>
 
             <div class="mt-8 grid gap-6 lg:grid-cols-3">
               <!-- Main content -->
@@ -613,13 +631,24 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <button
-                            type="button"
-                            (click)="openResource(resource, 'free')"
-                            class="block w-full text-left text-sm font-semibold text-ns-primary hover:underline"
-                          >
-                            {{ resource.title }} →
-                          </button>
+                          <div class="flex items-start gap-2">
+                            <button
+                              type="button"
+                              (click)="openResource(resource, 'free')"
+                              class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
+                            >
+                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                            </button>
+                            @if (auth.currentUser$ | async) {
+                              <button
+                                type="button"
+                                class="shrink-0 text-base leading-none transition"
+                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                (click)="toggleSaveResource(resource, 'free')"
+                              >{{ savedResourceUrls().has(resource.url) ? '★' : '☆' }}</button>
+                            }
+                          </div>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -651,13 +680,24 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <button
-                            type="button"
-                            (click)="openResource(resource, 'paid')"
-                            class="block w-full text-left text-sm font-semibold text-ns-primary hover:underline"
-                          >
-                            {{ resource.title }} →
-                          </button>
+                          <div class="flex items-start gap-2">
+                            <button
+                              type="button"
+                              (click)="openResource(resource, 'paid')"
+                              class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
+                            >
+                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                            </button>
+                            @if (auth.currentUser$ | async) {
+                              <button
+                                type="button"
+                                class="shrink-0 text-base leading-none transition"
+                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                (click)="toggleSaveResource(resource, 'paid')"
+                              >{{ savedResourceUrls().has(resource.url) ? '★' : '☆' }}</button>
+                            }
+                          </div>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -724,6 +764,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
 })
 export class CareerDetailComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   career: CareerPath | undefined;
   roadmap: CareerRoadmap | undefined;
   salaryData: CareerSalaryData | undefined;
@@ -734,6 +775,9 @@ export class CareerDetailComponent implements OnInit {
   readonly activeRegionConfig = computed(
     () => SALARY_REGIONS.find((r) => r.label === this.selectedSalaryRegion())!,
   );
+
+  readonly careerSaved = signal(false);
+  readonly savedResourceUrls = signal<Set<string>>(new Set());
 
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
@@ -763,6 +807,60 @@ export class CareerDetailComponent implements OnInit {
       this.entrepreneurshipData = getEntrepreneurshipDataByCareerId(
         this.career.id,
       );
+    }
+
+    this.auth.currentUser$.subscribe((user) => {
+      if (!user || !this.career) return;
+      this.savedService.getSavedCareers().subscribe(() => {
+        this.careerSaved.set(this.savedService.isCareerSaved(this.career!.id));
+      });
+      this.savedService.getSavedResources().subscribe((map) => {
+        const urls = new Set(Object.values(map).flat().map((r) => r.resourceUrl));
+        this.savedResourceUrls.set(urls);
+      });
+    });
+  }
+
+  toggleSaveCareer(): void {
+    if (!this.career) return;
+    if (this.careerSaved()) {
+      this.savedService.unsaveCareer(this.career.id).subscribe(() =>
+        this.careerSaved.set(false),
+      );
+    } else {
+      this.savedService
+        .saveCareer({
+          careerId: this.career.id,
+          careerTitle: this.career.title,
+          careerEmoji: this.career.emoji,
+          careerSlug: this.career.slug,
+        })
+        .subscribe(() => this.careerSaved.set(true));
+    }
+  }
+
+  toggleSaveResource(resource: { title: string; url?: string }, type: string): void {
+    if (!resource.url) return;
+    const urls = new Set(this.savedResourceUrls());
+    if (urls.has(resource.url)) {
+      this.savedService.unsaveResource(resource.url).subscribe(() => {
+        urls.delete(resource.url!);
+        this.savedResourceUrls.set(new Set(urls));
+      });
+    } else {
+      this.savedService
+        .saveResource({
+          resourceTitle: resource.title,
+          resourceUrl: resource.url,
+          platform: this.externalLink.extractDomain(resource.url),
+          careerId: this.career?.id,
+          careerTitle: this.career?.title,
+          type,
+        })
+        .subscribe(() => {
+          urls.add(resource.url!);
+          this.savedResourceUrls.set(new Set(urls));
+        });
     }
   }
 
