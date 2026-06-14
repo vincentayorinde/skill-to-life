@@ -7,7 +7,9 @@ import { of } from 'rxjs';
 
 const mockAuth = {
   currentUser$: of(null),
+  isDev: false,
   loginWithGoogle: () => undefined,
+  devLogin: () => undefined,
   logout: () => undefined,
 };
 
@@ -27,9 +29,9 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders the eyebrow tag with open-source label', () => {
+  it('renders the eyebrow tag with AI CV analysis label', () => {
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('OPEN-SOURCE CAREER TOOL');
+    expect(text).toContain('AI CV ANALYSIS + CAREER TOOL');
   });
 
   it('renders terminal card with assessment.ts label', () => {
@@ -37,9 +39,9 @@ describe('HomeComponent', () => {
     expect(text).toContain('assessment.ts');
   });
 
-  it('renders terminal card with result.json label', () => {
+  it('renders terminal card with cv-analysis.json label', () => {
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('result.json');
+    expect(text).toContain('cv-analysis.json');
   });
 
   it('renders stats bar with career count', () => {

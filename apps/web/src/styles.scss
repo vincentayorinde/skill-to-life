@@ -25,7 +25,7 @@
   /* Nav */
   --ns-color-nav:             rgba(10, 10, 15, 0.92);
 
-  /* Primary / Accent — vivid #006AFF blue */
+  /* Primary / Accent */
   --ns-color-primary:         #006AFF;
   --ns-color-primary-hover:   #0052CC;
   --ns-color-primary-soft:    rgba(0, 106, 255, 0.12);
@@ -46,10 +46,10 @@
   --ns-color-focus:           #FFB800;
 
   /* Shadows */
-  --ns-shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.4);
-  --ns-shadow-md:   0 4px 16px rgba(0, 0, 0, 0.5);
-  --ns-shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.6);
-  --ns-shadow-glow: 0 0 24px rgba(0, 106, 255, 0.25);
+  --ns-shadow-sm:   0 2px 10px rgba(0, 0, 0, 0.32);
+  --ns-shadow-md:   0 14px 42px rgba(0, 0, 0, 0.42), 0 0 34px rgba(255, 184, 0, 0.05);
+  --ns-shadow-lg:   0 24px 70px rgba(0, 0, 0, 0.52), 0 0 54px rgba(255, 184, 0, 0.08);
+  --ns-shadow-glow: 0 26px 80px rgba(0, 0, 0, 0.58), 0 0 44px rgba(255, 184, 0, 0.12);
 
   /* Radius */
   --ns-radius-sm: 6px;
@@ -62,7 +62,7 @@
 
   /* Hero gradient */
   --ns-hero-gradient:
-    radial-gradient(circle at 50% 0%, rgba(0, 106, 255, 0.18), transparent 32rem),
+    radial-gradient(circle at 50% 0%, rgba(255, 184, 0, 0.08), transparent 30rem),
     linear-gradient(180deg, #0A0A0F 0%, #0A0A0F 100%);
 
   /* --color-* aliases for new components */
@@ -116,12 +116,12 @@
   --ns-color-purple:          #7C3AED;
   --ns-color-purple-soft:     rgba(124, 58, 237, 0.1);
   --ns-color-focus:           #D97706;
-  --ns-shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.08);
-  --ns-shadow-md:   0 4px 16px rgba(0, 0, 0, 0.1);
-  --ns-shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.12);
-  --ns-shadow-glow: 0 0 24px rgba(0, 106, 255, 0.15);
+  --ns-shadow-sm:   0 2px 8px rgba(10, 10, 15, 0.06);
+  --ns-shadow-md:   0 14px 40px rgba(10, 10, 15, 0.1), 0 0 28px rgba(217, 119, 6, 0.06);
+  --ns-shadow-lg:   0 24px 64px rgba(10, 10, 15, 0.14), 0 0 44px rgba(217, 119, 6, 0.08);
+  --ns-shadow-glow: 0 26px 70px rgba(10, 10, 15, 0.16), 0 0 36px rgba(217, 119, 6, 0.12);
   --ns-hero-gradient:
-    radial-gradient(circle at 50% 0%, rgba(0, 106, 255, 0.1), transparent 32rem),
+    radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.06), transparent 30rem),
     linear-gradient(180deg, #F8F9FA 0%, #F8F9FA 100%);
 
   --color-bg-secondary: var(--ns-color-canvas-subtle);
@@ -223,7 +223,7 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--ns-color-primary);
+  background: var(--ns-color-warning);
   flex-shrink: 0;
   animation: ns-pulse 2s ease infinite;
 }

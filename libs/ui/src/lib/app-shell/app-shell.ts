@@ -244,6 +244,7 @@ export interface NsAuthUser {
         position: sticky;
         top: 0;
         z-index: 50;
+        isolation: isolate;
         border-bottom: 1px solid var(--color-border, var(--ns-color-border));
         background: rgba(10, 10, 15, 0.92);
         backdrop-filter: blur(16px);
@@ -577,9 +578,13 @@ export interface NsAuthUser {
       }
 
       .ns-mobile-profile {
-        margin-left: auto;
-        margin-right: 16px;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 16px;
+        z-index: 70;
+        width: min(260px, calc(100vw - 32px));
         max-width: 240px;
+        margin: 0;
         padding: 8px;
         border: 1px solid var(--color-border, var(--ns-color-border));
         border-radius: var(--radius-md, var(--ns-radius-md));
@@ -594,8 +599,15 @@ export interface NsAuthUser {
       }
 
       .ns-mobile-menu {
-        border-bottom: 1px solid var(--color-border, var(--ns-color-border));
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        z-index: 60;
+        border-top: 1px solid var(--color-border, var(--ns-color-border));
+        border-bottom: 0;
         background: var(--color-bg-card, var(--ns-color-card));
+        box-shadow: var(--shadow-lg, var(--ns-shadow-lg));
         padding: 16px;
       }
 
