@@ -10,6 +10,8 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
   NsScrollIndicatorComponent,
+  NsTabsComponent,
+  NsTabItem,
 } from 'ui';
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
@@ -39,7 +41,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
   if (config.currency === 'NGN') {
     const fmt = (n: number) =>
       n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
-    return `${fmt(cMin)}–${fmt(cMax)}/mo`;
+    return `${fmt(cMin)}–${fmt(cMax)}`;
   }
   return formatSalaryRange(cMin, cMax, config.currency);
 }
@@ -99,6 +101,7 @@ type SortKey = 'senior' | 'junior' | 'name';
     NsCardComponent,
     NsPageHeaderComponent,
     NsScrollIndicatorComponent,
+    NsTabsComponent,
   ],
   template: `
     <ns-app-shell
@@ -122,37 +125,24 @@ type SortKey = 'senior' | 'junior' | 'name';
             >
           </ns-page-header>
 
-          <!-- Region + Sort filters -->
-          <div class="mt-6 space-y-4">
-            <!-- Region -->
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="text-sm font-semibold text-ns-text">Region:</span>
-              <div class="flex flex-wrap gap-2">
-                @for (region of salaryRegions; track region.label) {
-                  <button
-                    type="button"
-                    class="rounded-full border px-3 py-1 text-sm font-semibold transition"
-                    [class]="
-                      selectedRegion() === region.label
-                        ? 'border-ns-primary bg-ns-primary text-white'
-                        : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
-                    "
-                    (click)="setRegion(region.label)"
-                  >
-                    {{ region.flag }} {{ region.label }}
-                  </button>
-                }
-              </div>
+          <!-- Filter bar -->
+          <div
+            class="mt-4 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-2 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div class="min-w-0 overflow-x-auto pb-1 sm:pb-0">
+              <ns-tabs
+                [tabs]="regionTabItems"
+                [activeId]="selectedRegion()"
+                (activeIdChange)="setRegion($event)"
+              />
             </div>
-
-            <!-- Sort -->
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="text-sm font-semibold text-ns-text">Sort by:</span>
-              <div class="flex gap-2">
+            <div class="flex shrink-0 items-center gap-2 pl-1">
+              <span class="text-xs font-semibold text-ns-muted">Sort:</span>
+              <div class="flex gap-1.5">
                 @for (s of sortOptions; track s.key) {
                   <button
                     type="button"
-                    class="rounded-full border px-3 py-1 text-sm font-semibold transition"
+                    class="rounded-full border px-3 py-1 text-xs font-semibold transition"
                     [class]="
                       activeSort() === s.key
                         ? 'border-ns-primary bg-ns-primary text-white'
@@ -281,6 +271,11 @@ export class SalariesComponent implements OnInit {
 
   readonly salaryRegions = SALARY_REGIONS;
 
+  readonly regionTabItems: NsTabItem[] = SALARY_REGIONS.map((r) => ({
+    id: r.label,
+    label: `${r.flag} ${r.label}`,
+  }));
+
   readonly selectedRegion = signal<SalaryRegion>(
     (localStorage.getItem('ns_salary_region') as SalaryRegion) ?? 'UK',
   );
@@ -308,8 +303,8 @@ export class SalariesComponent implements OnInit {
     });
   });
 
-  setRegion(region: SalaryRegion): void {
-    this.selectedRegion.set(region);
+  setRegion(region: string): void {
+    this.selectedRegion.set(region as SalaryRegion);
     localStorage.setItem('ns_salary_region', region);
   }
 }

@@ -52,7 +52,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
   if (config.currency === 'NGN') {
     const fmt = (n: number) =>
       n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
-    return `${fmt(cMin)}–${fmt(cMax)}/mo`;
+    return `${fmt(cMin)}–${fmt(cMax)}`;
   }
   return formatSalaryRange(cMin, cMax, config.currency);
 }

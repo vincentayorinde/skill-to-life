@@ -17,7 +17,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { CvAnalysisService } from '../../core/cv/cv-analysis.service';
 import { ProfileService } from '../../core/profile/profile.service';
 import { SavedService } from '../../core/saved/saved.service';
-import { NsAppShellComponent, NsExternalLinkService } from 'ui';
+import { NsAppShellComponent, NsAppShellLink, NsExternalLinkService } from 'ui';
 
 type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
@@ -27,6 +27,8 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
   imports: [AsyncPipe, DatePipe, FormsModule, RouterLink, NsAppShellComponent],
   template: `
     <ns-app-shell
+      brand="NextSkill"
+      [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
       (signIn)="auth.loginWithGoogle()"
@@ -624,6 +626,13 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 export class ProfilePageComponent implements OnInit {
   readonly auth = inject(AuthService);
   private readonly profileService = inject(ProfileService);
+
+  protected readonly shellLinks: NsAppShellLink[] = [
+    { label: 'How it works', href: '/#how-it-works' },
+    { label: 'Career paths', routerLink: '/careers' },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Resources', routerLink: '/resources' },
+  ];
   private readonly savedService = inject(SavedService);
   private readonly cvService = inject(CvAnalysisService);
   private readonly externalLink = inject(NsExternalLinkService);
