@@ -43,29 +43,6 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
             <!-- Sidebar -->
             <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
-              <!-- Section menu -->
-              <nav
-                class="overflow-x-auto rounded-ns-lg border border-ns-border bg-ns-card p-2 shadow-ns lg:overflow-visible"
-                aria-label="Profile sections"
-              >
-                <div class="flex min-w-max gap-1 lg:min-w-0 lg:flex-col">
-                  @for (tab of tabs; track tab.id) {
-                    <button
-                      type="button"
-                      class="whitespace-nowrap rounded-ns px-3 py-2 text-left text-sm font-medium transition-colors lg:w-full"
-                      [class.bg-ns-canvasSubtle]="activeTab() === tab.id"
-                      [class.text-ns-text]="activeTab() === tab.id"
-                      [class.text-ns-muted]="activeTab() !== tab.id"
-                      [class.hover:bg-ns-canvasSubtle]="activeTab() !== tab.id"
-                      [class.hover:text-ns-text]="activeTab() !== tab.id"
-                      (click)="activeTab.set(tab.id)"
-                    >
-                      {{ tab.label }}
-                    </button>
-                  }
-                </div>
-              </nav>
-
               <!-- Avatar + identity -->
               <div class="rounded-ns-lg border border-ns-border bg-ns-card p-5">
                 <div class="mb-4 flex flex-col items-center text-center">
@@ -100,6 +77,29 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                   </div>
                 </div>
               </div>
+
+              <!-- Section menu -->
+              <nav
+                class="overflow-x-auto rounded-ns-lg border border-ns-border bg-ns-card p-2 shadow-ns lg:overflow-visible"
+                aria-label="Profile sections"
+              >
+                <div class="flex min-w-max gap-1 lg:min-w-0 lg:flex-col">
+                  @for (tab of tabs; track tab.id) {
+                    <button
+                      type="button"
+                      class="whitespace-nowrap rounded-ns px-3 py-2 text-left text-sm font-medium transition-colors lg:w-full"
+                      [class.bg-ns-canvasSubtle]="activeTab() === tab.id"
+                      [class.text-ns-text]="activeTab() === tab.id"
+                      [class.text-ns-muted]="activeTab() !== tab.id"
+                      [class.hover:bg-ns-canvasSubtle]="activeTab() !== tab.id"
+                      [class.hover:text-ns-text]="activeTab() !== tab.id"
+                      (click)="activeTab.set(tab.id)"
+                    >
+                      {{ tab.label }}
+                    </button>
+                  }
+                </div>
+              </nav>
             </aside>
 
             <!-- Main content -->

@@ -92,10 +92,10 @@ export interface NsAuthUser {
                       <p class="ns-profile-name">{{ authUser.name ?? 'NextSkill user' }}</p>
                       <p class="ns-profile-email">{{ authUser.email }}</p>
                     </div>
-                    <a class="ns-profile-item" routerLink="/profile" (click)="closeMenus()">My profile</a>
-                    <a class="ns-profile-item" routerLink="/profile" fragment="results" (click)="closeMenus()">My results</a>
-                    <a class="ns-profile-item" routerLink="/profile" fragment="saved" (click)="closeMenus()">Saved careers</a>
-                    <a class="ns-profile-item" routerLink="/profile" fragment="cv" (click)="closeMenus()">CV analysis</a>
+                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
+                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'results' }" (click)="closeMenus()">My results</a>
+                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'saved' }" (click)="closeMenus()">Saved careers</a>
+                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'cv' }" (click)="closeMenus()">CV analysis</a>
                     <div class="ns-profile-divider"></div>
                     <button type="button" class="ns-profile-item ns-profile-signout" (click)="emitSignOut()">
                       Sign out
@@ -161,10 +161,10 @@ export interface NsAuthUser {
               <p class="ns-profile-name">{{ authUser.name ?? 'NextSkill user' }}</p>
               <p class="ns-profile-email">{{ authUser.email }}</p>
             </div>
-            <a class="ns-profile-item" routerLink="/profile" (click)="closeMenus()">My profile</a>
-            <a class="ns-profile-item" routerLink="/profile" fragment="results" (click)="closeMenus()">My results</a>
-            <a class="ns-profile-item" routerLink="/profile" fragment="saved" (click)="closeMenus()">Saved careers</a>
-            <a class="ns-profile-item" routerLink="/profile" fragment="cv" (click)="closeMenus()">CV analysis</a>
+            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
+            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'results' }" (click)="closeMenus()">My results</a>
+            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'saved' }" (click)="closeMenus()">Saved careers</a>
+            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'cv' }" (click)="closeMenus()">CV analysis</a>
             <div class="ns-profile-divider"></div>
             <button type="button" class="ns-profile-item ns-profile-signout" (click)="emitSignOut()">
               Sign out
