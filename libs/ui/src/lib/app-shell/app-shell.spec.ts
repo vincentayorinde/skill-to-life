@@ -26,6 +26,12 @@ describe('NsAppShellComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Start assessment');
   });
 
+  it('defaults to dark theme when no saved preference', () => {
+    fixture.detectChanges();
+    expect(fixture.componentInstance.theme).toBe('dark');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
   it('toggles and persists theme', () => {
     fixture.detectChanges();
 
@@ -37,5 +43,33 @@ describe('NsAppShellComponent', () => {
 
     expect(fixture.componentInstance.theme).toBe('light');
     expect(localStorage.getItem('nextskill-theme')).toBe('light');
+  });
+
+  it('restores saved dark theme from localStorage', async () => {
+    localStorage.setItem('nextskill-theme', 'dark');
+    fixture.detectChanges();
+    expect(fixture.componentInstance.theme).toBe('dark');
+  });
+
+  it('restores saved light theme from localStorage', () => {
+    localStorage.setItem('nextskill-theme', 'light');
+    fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.theme).toBe('light');
+  });
+
+  it('toggles back from light to dark', () => {
+    localStorage.setItem('nextskill-theme', 'light');
+    fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+
+    const toggle = fixture.debugElement.query(
+      By.css('button[aria-label="Switch to dark theme"]'),
+    );
+    toggle.triggerEventHandler('click');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.theme).toBe('dark');
+    expect(localStorage.getItem('nextskill-theme')).toBe('dark');
   });
 });

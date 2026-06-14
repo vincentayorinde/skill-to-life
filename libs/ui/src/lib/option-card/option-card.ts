@@ -33,11 +33,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         }
       </span>
       <span
-        class="mt-1 h-5 w-5 rounded-full border border-ns-border bg-ns-canvas transition group-hover:border-ns-primary"
+        class="mt-1 grid h-[18px] w-[18px] shrink-0 place-items-center rounded-ns-sm border border-ns-border bg-ns-canvas transition group-hover:border-ns-primary"
         [class.border-ns-primary]="selected"
         [class.bg-ns-primary]="selected"
         aria-hidden="true"
-      ></span>
+      >
+        @if (selected) {
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+            <path d="M1 3.5L3.8 6.5L9 1.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        }
+      </span>
     </button>
   `,
 })

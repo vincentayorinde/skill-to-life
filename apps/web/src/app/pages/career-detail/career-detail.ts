@@ -160,6 +160,7 @@ import {
                   <ns-card>
                     <div class="flex items-start justify-between gap-4">
                       <div>
+                        <p class="mb-1 font-mono text-xs text-ns-muted">// ROADMAP</p>
                         <h2 class="m-0 text-xl font-bold text-ns-text">
                           Your learning roadmap
                         </h2>
@@ -180,7 +181,7 @@ import {
                           <!-- Step header -->
                           <div class="flex items-start gap-3">
                             <span
-                              class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-black text-[#07111f]"
+                              class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-black text-white"
                               [class]="stepBadgeClass(step.type)"
                             >
                               {{ step.step }}
@@ -397,6 +398,7 @@ import {
                 <!-- Salary — rich version -->
                 @if (salaryData) {
                   <ns-card>
+                    <p class="mb-1 font-mono text-xs text-ns-muted">// EARNING POTENTIAL</p>
                     <div class="flex items-start justify-between gap-2">
                       <h2 class="m-0 text-xl font-bold text-ns-text">
                         Earning potential
@@ -529,6 +531,7 @@ import {
 
                 <!-- Free resources -->
                 <ns-card>
+                  <p class="mb-1 font-mono text-xs text-ns-muted">// RESOURCES</p>
                   <h2 class="m-0 text-xl font-bold text-ns-text">
                     Free resources to get started
                   </h2>

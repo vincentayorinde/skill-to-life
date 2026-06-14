@@ -53,6 +53,13 @@ export class HomeComponent implements OnInit {
     { label: 'Open source', href: '#open-source' },
   ];
 
+  protected readonly stats = [
+    { value: '26', label: 'career paths' },
+    { value: '12', label: 'assessment questions' },
+    { value: '100%', label: 'free & open source' },
+    { value: '6', label: 'salary regions' },
+  ];
+
   protected readonly trustBadges = [
     { label: 'Open source', variant: 'success' as const },
     { label: 'Beginner friendly', variant: 'warning' as const },
@@ -101,6 +108,7 @@ export class HomeComponent implements OnInit {
     title: c.title,
     slug: c.slug,
     copy: c.summary,
+    category: c.category,
     tags: c.tags.slice(0, 3),
   }));
 

@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
+import { UpperCasePipe } from '@angular/common';
 import { NsOptionCardComponent, NsProgressComponent } from 'ui';
 import {
   ASSESSMENT_CATEGORIES,
@@ -28,7 +29,7 @@ function delay(ms: number): Promise<void> {
 @Component({
   selector: 'app-assessment',
   standalone: true,
-  imports: [NsOptionCardComponent, NsProgressComponent],
+  imports: [UpperCasePipe, NsOptionCardComponent, NsProgressComponent],
   styles: [
     `
       .question-panel {
@@ -78,13 +79,10 @@ function delay(ms: number): Promise<void> {
 
           <div class="flex flex-1 flex-col gap-1.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-ns-muted">
-                Section {{ currentCategory().id }} of {{ categories.length }} —
-                {{ currentCategory().emoji }} {{ currentCategory().label }}
+              <span class="font-mono text-xs text-ns-muted">
+                // {{ currentCategory().label | uppercase }} — Q {{ currentStep() }} OF {{ total }}
               </span>
-              <span class="text-xs font-semibold text-ns-muted">
-                Question {{ currentStep() }} of {{ total }}
-              </span>
+              <span class="font-mono text-xs font-bold text-ns-primary">{{ progressPercent() }}%</span>
             </div>
             <ns-progress
               [value]="progressPercent()"
@@ -169,10 +167,10 @@ function delay(ms: number): Promise<void> {
             #questionPanel
           >
             <div class="mb-4 flex items-center justify-between gap-4">
-              <span class="text-xs font-semibold text-ns-muted">
-                {{ currentCategory().emoji }} {{ currentCategory().label }}
+              <span class="font-mono text-xs text-ns-muted">
+                // {{ currentCategory().label | uppercase }}
               </span>
-              <span class="text-xs font-semibold text-ns-muted">
+              <span class="font-mono text-xs text-ns-muted">
                 {{ currentStep() }} / {{ total }}
               </span>
             </div>
@@ -225,7 +223,7 @@ function delay(ms: number): Promise<void> {
 
               <button
                 type="button"
-                class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-6 text-sm font-semibold text-[#07111f] shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
+                class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-6 text-sm font-semibold text-white shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
                 [disabled]="!selectedOption()"
                 (click)="next()"
               >

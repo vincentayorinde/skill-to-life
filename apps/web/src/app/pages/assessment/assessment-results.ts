@@ -133,7 +133,7 @@ import { environment } from '../../../environments/environment';
         >
           <button
             type="button"
-            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-[#07111f] shadow-ns transition hover:bg-ns-primaryHover"
+            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-white shadow-ns transition hover:bg-ns-primaryHover"
             (click)="openShare()"
           >
             ↗ Share my result
@@ -448,7 +448,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-white"
                       >
                         {{ step.step }}
                       </span>
@@ -484,7 +484,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-white"
                       >
                         {{ i + 1 }}
                       </span>
@@ -839,7 +839,7 @@ import { environment } from '../../../environments/environment';
               <div class="mt-5">
                 <button
                   type="button"
-                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-[#07111f] shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
+                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-white shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
                   [disabled]="downloading()"
                   (click)="downloadCard()"
                   data-testid="download-card-btn"
@@ -862,7 +862,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'square'
-                          ? 'bg-ns-primary text-[#07111f]'
+                          ? 'bg-ns-primary text-white'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('square')"
@@ -874,7 +874,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'story'
-                          ? 'bg-ns-primary text-[#07111f]'
+                          ? 'bg-ns-primary text-white'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('story')"

@@ -23,7 +23,7 @@ export interface NsAuthUser {
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
       <a
         href="#main-content"
-        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ns focus:bg-ns-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[#07111f] focus:shadow-glow"
+        class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-ns focus:bg-ns-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-glow"
       >
         Skip to main content
       </a>
@@ -127,7 +127,7 @@ export interface NsAuthUser {
                 Sign in
               </button>
               <a
-                class="rounded-md border border-ns-primary bg-ns-primary px-3 py-2 text-sm font-semibold text-[#07111f] no-underline shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="rounded-md border border-ns-primary bg-ns-primary px-3 py-2 text-sm font-semibold text-white no-underline shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 href="#assessment"
               >
                 Start assessment
@@ -212,7 +212,7 @@ export interface NsAuthUser {
                   Sign in
                 </button>
                 <a
-                  class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-primary bg-ns-primary px-3 text-sm font-semibold text-[#07111f] no-underline"
+                  class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-primary bg-ns-primary px-3 text-sm font-semibold text-white no-underline"
                   href="#assessment"
                 >
                   Start assessment
