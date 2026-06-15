@@ -57,10 +57,7 @@ function delay(ms: number): Promise<void> {
     `,
   ],
   template: `
-    <div
-      class="flex min-h-screen flex-col bg-ns-bg text-ns-text"
-      data-theme="dark"
-    >
+    <div class="flex min-h-screen flex-col bg-ns-bg text-ns-text">
       <!-- Header -->
       <header
         class="sticky top-0 z-10 border-b border-ns-border bg-ns-nav backdrop-blur-xl"
@@ -247,7 +244,6 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
-  private savedTheme: string | null = null;
   private startedAt = new Date().toISOString();
   private resumeTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -526,33 +522,18 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Take the assessment — NextSkill');
+    this.titleService.setTitle('Take the assessment — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
         'Answer 10 quick questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
     });
-    try {
-      this.savedTheme = document.documentElement.getAttribute('data-theme');
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } catch {
-      // Non-browser environment — ignore.
-    }
     this.restoreProgress();
   }
 
   ngOnDestroy(): void {
     if (this.resumeTimer !== null) {
       clearTimeout(this.resumeTimer);
-    }
-    try {
-      if (this.savedTheme) {
-        document.documentElement.setAttribute('data-theme', this.savedTheme);
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-      }
-    } catch {
-      // Non-browser environment — ignore.
     }
   }
 }

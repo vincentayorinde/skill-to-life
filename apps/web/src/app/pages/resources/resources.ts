@@ -16,6 +16,7 @@ import {
 } from 'ui';
 import { CAREER_PATHS, CAREER_ROADMAPS, FREE_CAREER_RESOURCES } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
 
 interface FlatResource {
   title: string;
@@ -137,7 +138,7 @@ const TABS: TabFilter[] = [
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -234,9 +235,26 @@ const TABS: TabFilter[] = [
                   >
                     {{ resource.careerEmoji }} {{ resource.careerTitle }}
                   </span>
-                  <ns-badge [variant]="costVariant(resource.cost)">{{
-                    costLabel(resource.cost)
-                  }}</ns-badge>
+                  <div class="flex items-center gap-1.5">
+                    <ns-badge [variant]="costVariant(resource.cost)">{{
+                      costLabel(resource.cost)
+                    }}</ns-badge>
+                    @if (auth.currentUser$ | async) {
+                      <button
+                        type="button"
+                        class="rounded p-0.5 transition"
+                        [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                        [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave resource' : 'Save resource'"
+                        (click)="toggleSaveResource(resource, $event)"
+                      >
+                        @if (savedResourceUrls().has(resource.url)) {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        } @else {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        }
+                      </button>
+                    }
+                  </div>
                 </div>
 
                 <h3 class="mb-1 mt-3 text-sm font-bold leading-5 text-ns-text">
@@ -314,16 +332,30 @@ const TABS: TabFilter[] = [
 })
 export class ResourcesComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   private readonly externalLink = inject(NsExternalLinkService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
+  readonly savedResourceUrls = signal<Set<string>>(new Set());
+
   ngOnInit(): void {
-    this.titleService.setTitle('Learning resources — NextSkill');
+    this.titleService.setTitle('Learning resources — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
         'Curated free and paid learning resources across 26 tech career paths. Filter by career, type, or cost.',
+    });
+    this.auth.currentUser$.subscribe((user) => {
+      if (user) {
+        this.savedService.getSavedResources().subscribe((grouped) => {
+          const urls = new Set<string>();
+          for (const resources of Object.values(grouped)) {
+            for (const r of resources) urls.add(r.resourceUrl);
+          }
+          this.savedResourceUrls.set(urls);
+        });
+      }
     });
   }
   protected readonly shellLinks: NsAppShellLink[] = [
@@ -446,6 +478,30 @@ export class ResourcesComponent implements OnInit {
 
   nextPage(): void {
     this.goToPage(this.currentPageSafe() + 1);
+  }
+
+  toggleSaveResource(resource: FlatResource, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const urls = new Set(this.savedResourceUrls());
+    if (urls.has(resource.url)) {
+      this.savedService.unsaveResource(resource.url).subscribe(() => {
+        urls.delete(resource.url);
+        this.savedResourceUrls.set(new Set(urls));
+      });
+    } else {
+      this.savedService.saveResource({
+        resourceTitle: resource.title,
+        resourceUrl: resource.url,
+        platform: resource.platform,
+        careerId: resource.careerId,
+        careerTitle: resource.careerTitle,
+        type: resource.type,
+      }).subscribe(() => {
+        urls.add(resource.url);
+        this.savedResourceUrls.set(new Set(urls));
+      });
+    }
   }
 
   openResource(resource: FlatResource): void {

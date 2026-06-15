@@ -105,7 +105,7 @@ type SortKey = 'senior' | 'junior' | 'name';
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -248,7 +248,7 @@ export class SalariesComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Tech career salaries — NextSkill');
+    this.titleService.setTitle('Tech career salaries — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:

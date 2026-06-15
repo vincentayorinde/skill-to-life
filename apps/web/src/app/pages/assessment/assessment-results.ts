@@ -72,7 +72,7 @@ import { environment } from '../../../environments/environment';
     `,
   ],
   template: `
-    <div class="min-h-screen bg-ns-bg text-ns-text" data-theme="dark">
+    <div class="min-h-screen bg-ns-bg text-ns-text">
       <!-- ─── LOADING SKELETON ──────────────────────────────────── -->
       @if (loading()) {
         <div class="mx-auto max-w-2xl animate-pulse space-y-6 px-4 py-12">
@@ -270,7 +270,7 @@ import { environment } from '../../../environments/environment';
                   class="mt-8 text-right text-xs tracking-wider text-white/25"
                   aria-hidden="true"
                 >
-                  nextskill.dev
+                  skilltolife.com
                 </p>
               </div>
             </div>
@@ -833,7 +833,7 @@ import { environment } from '../../../environments/environment';
                 Share your result
               </h2>
               <p class="mt-1 text-sm text-ns-muted">
-                Tell others what's your NextSkill.
+                Tell others which tech path fits you.
               </p>
 
               <!-- Download card section -->
@@ -1357,7 +1357,7 @@ export class AssessmentResultsComponent implements OnInit {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `my-nextskill-${this.matches[0].careerId}.png`;
+      link.download = `my-skill-to-life-${this.matches[0].careerId}.png`;
       link.click();
       URL.revokeObjectURL(url);
       this.showToast('Card downloaded — ready to share!');
@@ -1380,7 +1380,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const text = encodeURIComponent(
-      `I just found my NextSkill! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind out yours 👇\nnextskill.dev`,
+      `I just found my best-fit tech path with Skill to Life! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind yours 👇\nskilltolife.com`,
     );
     window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
     this.closeShare();
@@ -1390,7 +1390,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const text = encodeURIComponent(
-      `Just found my NextSkill 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
+      `Just found my best-fit tech path 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nFind yours 👇\nskilltolife.com #SkillToLife #TechCareers`,
     );
     window.open(
       `https://twitter.com/intent/tweet?text=${text}`,
@@ -1401,7 +1401,7 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   shareToLinkedIn(): void {
-    const url = encodeURIComponent('https://nextskill.dev');
+    const url = encodeURIComponent('https://skilltolife.com');
     window.open(
       `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
       '_blank',
@@ -1414,7 +1414,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const body = encodeURIComponent(
-      `Check this out — I just found my NextSkill!\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: nextskill.dev`,
+      `Check this out — I just found my best-fit tech path with Skill to Life.\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: skilltolife.com`,
     );
     window.location.href = `sms:?body=${body}`;
     this.closeShare();
@@ -1422,7 +1422,7 @@ export class AssessmentResultsComponent implements OnInit {
 
   async copyLink(): Promise<void> {
     try {
-      await navigator.clipboard.writeText('https://nextskill.dev/assessment');
+      await navigator.clipboard.writeText('https://skilltolife.com/assessment');
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2500);
       this.showToast('Link copied — share it anywhere!');
@@ -1436,9 +1436,9 @@ export class AssessmentResultsComponent implements OnInit {
     const top = this.matches[0];
     try {
       await navigator.share({
-        title: `My NextSkill — ${top.title}`,
-        text: `${top.emoji} ${top.title} — ${top.percentage}% match. What's yours?`,
-        url: 'https://nextskill.dev/assessment',
+        title: `My career path result — ${top.title}`,
+        text: `${top.emoji} ${top.title} — ${top.percentage}% match. Find your best-fit path.`,
+        url: 'https://skilltolife.com/assessment',
       });
       this.closeShare();
     } catch {
@@ -1458,16 +1458,16 @@ export class AssessmentResultsComponent implements OnInit {
     const insight = this.topInsight;
     const ogImage = '/og-default.svg';
 
-    this.title.setTitle(`Your NextSkill — ${top.title} | NextSkill`);
+    this.title.setTitle(`Your Skill to Life result — ${top.title} | Skill to Life`);
 
-    const ogTitle = `I found my NextSkill — ${top.title}`;
-    const ogDesc = `${insight} — What's yours?`;
-    const ogUrl = 'https://nextskill.dev/assessment/results';
+    const ogTitle = `I found my best-fit tech path — ${top.title}`;
+    const ogDesc = `${insight} — Find your best-fit path with Skill to Life.`;
+    const ogUrl = 'https://skilltolife.com/assessment/results';
 
     this.meta.updateTag({ property: 'og:title', content: ogTitle });
     this.meta.updateTag({ property: 'og:description', content: ogDesc });
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
-    this.meta.updateTag({ property: 'og:site_name', content: 'NextSkill' });
+    this.meta.updateTag({ property: 'og:site_name', content: 'Skill to Life' });
     this.meta.updateTag({ property: 'og:image', content: ogImage });
     this.meta.updateTag({ property: 'og:image:width', content: '1200' });
     this.meta.updateTag({ property: 'og:image:height', content: '630' });

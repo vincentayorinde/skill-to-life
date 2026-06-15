@@ -69,7 +69,7 @@ export class CvAnalysisService {
     let profileText: string;
     try {
       const res = await fetch(linkedinUrl, {
-        headers: { 'User-Agent': 'NextSkill/1.0' },
+        headers: { 'User-Agent': 'SkillToLife/1.0' },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const html = await res.text();

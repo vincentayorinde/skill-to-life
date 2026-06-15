@@ -33,7 +33,7 @@ export interface NsAuthUser {
       <header class="ns-nav-shell">
         <div class="ns-nav-inner">
           <a class="ns-brand" href="/">
-            <span class="ns-brand-mark" aria-hidden="true">NS</span>
+            <span class="ns-brand-mark" aria-hidden="true">SL</span>
             <span class="ns-brand-name">{{ brand }}</span>
           </a>
 
@@ -98,7 +98,7 @@ export interface NsAuthUser {
                 @if (profileMenuOpen) {
                   <div class="ns-profile-dropdown">
                     <div class="ns-profile-header">
-                      <p class="ns-profile-name">{{ authUser.name ?? 'NextSkill user' }}</p>
+                      <p class="ns-profile-name">{{ authUser.name ?? 'Skill to Life user' }}</p>
                       <p class="ns-profile-email">{{ authUser.email }}</p>
                     </div>
                     <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
@@ -156,7 +156,10 @@ export interface NsAuthUser {
               </button>
             } @else {
               <button type="button" class="ns-mobile-sign-in" aria-label="Sign in" (click)="signIn.emit()">
-                In
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 21a8 8 0 0 0-16 0" />
+                  <circle cx="12" cy="8" r="4" />
+                </svg>
               </button>
             }
 
@@ -176,7 +179,7 @@ export interface NsAuthUser {
         @if (profileMenuOpen && authUser) {
           <div class="ns-mobile-profile">
             <div class="ns-profile-header">
-              <p class="ns-profile-name">{{ authUser.name ?? 'NextSkill user' }}</p>
+              <p class="ns-profile-name">{{ authUser.name ?? 'Skill to Life user' }}</p>
               <p class="ns-profile-email">{{ authUser.email }}</p>
             </div>
             <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
@@ -223,7 +226,6 @@ export interface NsAuthUser {
                 @if (devMode) {
                   <button type="button" class="ns-dev-login" (click)="devLogin.emit()">Dev login</button>
                 }
-                <button type="button" class="ns-sign-in" (click)="signIn.emit()">Sign in</button>
                 <a class="ns-start-assessment" href="#assessment" (click)="closeMenus()">Start assessment</a>
               </div>
             }
@@ -601,9 +603,21 @@ export interface NsAuthUser {
       .ns-mobile-sign-in {
         width: 36px;
         height: 36px;
+        display: grid;
+        place-items: center;
         border: 1px solid var(--color-border, var(--ns-color-border));
         background: transparent;
         color: var(--color-text, var(--ns-color-text));
+      }
+
+      .ns-mobile-sign-in svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       .ns-mobile-profile {
@@ -670,7 +684,7 @@ export interface NsAuthUser {
   ],
 })
 export class NsAppShellComponent implements OnInit {
-  @Input() brand = 'NextSkill';
+  @Input() brand = 'Skill to Life';
   @Input() links: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
@@ -727,7 +741,7 @@ export class NsAppShellComponent implements OnInit {
     this.theme = theme;
 
     try {
-      globalThis.localStorage?.setItem('nextskill-theme', theme);
+      globalThis.localStorage?.setItem('skill-to-life-theme', theme);
       globalThis.document?.documentElement.setAttribute('data-theme', theme);
     } catch {
       // Theme persistence is progressive enhancement.
@@ -736,7 +750,7 @@ export class NsAppShellComponent implements OnInit {
 
   private readSavedTheme(): 'dark' | 'light' | null {
     try {
-      const savedTheme = globalThis.localStorage?.getItem('nextskill-theme');
+      const savedTheme = globalThis.localStorage?.getItem('skill-to-life-theme');
 
       return savedTheme === 'dark' || savedTheme === 'light'
         ? savedTheme

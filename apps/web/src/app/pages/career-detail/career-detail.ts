@@ -73,7 +73,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -811,7 +811,7 @@ export class CareerDetailComponent implements OnInit {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     this.career = getCareerBySlug(slug);
     if (this.career) {
-      this.titleService.setTitle(`${this.career.title} — NextSkill`);
+      this.titleService.setTitle(`${this.career.title} — Skill to Life`);
       this.metaService.updateTag({
         name: 'description',
         content: this.career.summary,

@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AssessmentStateService {
-  private readonly storageKey = 'nextskill_assessment_answers';
+  private readonly storageKey = 'skill_to_life_assessment_answers';
   private readonly _answers = signal<Record<number, string>>({});
   readonly answers = this._answers.asReadonly();
 

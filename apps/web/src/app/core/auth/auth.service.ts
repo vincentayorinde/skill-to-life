@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { User } from 'types';
 import { environment } from '../../../environments/environment';
 
-const TOKEN_KEY = 'ns_token';
+const TOKEN_KEY = 'skill_to_life_token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

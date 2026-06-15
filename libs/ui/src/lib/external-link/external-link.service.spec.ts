@@ -26,7 +26,7 @@ describe('NsExternalLinkService', () => {
     expect(p?.domain).toBe('example.com');
     expect(p?.careerTitle).toBe('your chosen');
     expect(p?.costLabel).toBe('external resource');
-    expect(p?.cancelLabel).toBe('Stay on NextSkill');
+    expect(p?.cancelLabel).toBe('Stay on Skill to Life');
     expect(p?.context).toBe('default');
   });
 

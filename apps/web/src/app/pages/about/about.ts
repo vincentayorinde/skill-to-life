@@ -24,7 +24,7 @@ import { AuthService } from '../../core/auth/auth.service';
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -36,7 +36,7 @@ import { AuthService } from '../../core/auth/auth.service';
         <div class="mx-auto max-w-3xl">
           <ns-page-header
             eyebrow="About"
-            title="About NextSkill."
+            title="About Skill to Life."
             description="Free, open-source career discovery for people figuring out their path in tech."
           >
           </ns-page-header>
@@ -44,11 +44,11 @@ import { AuthService } from '../../core/auth/auth.service';
           <div class="mt-10 space-y-6">
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">
-                What is NextSkill?
+                What is Skill to Life?
               </h2>
               <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  NextSkill is a free, open-source career assessment platform
+                  Skill to Life is a free, open-source career assessment platform
                   for anyone trying to figure out their path in tech.
                 </p>
                 <p class="m-0">
@@ -77,14 +77,14 @@ import { AuthService } from '../../core/auth/auth.service';
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Open source</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is fully open source under the MIT licence. The
+                Skill to Life is fully open source under the MIT licence. The
                 scoring engine, career data, and assessment questions are all
                 public and auditable. Contributions, feedback, and ideas are
                 welcome.
               </p>
               <div class="mt-5 flex flex-wrap gap-3">
                 <a
-                  href="https://github.com/vincentayorinde/nextskill"
+                  href="https://github.com/vincentayorinde/skill-to-life"
                   target="_blank"
                   rel="noreferrer"
                   class="inline-flex items-center gap-2 rounded-ns border border-ns-border bg-ns-canvasSubtle px-4 py-2 text-sm font-semibold text-ns-text no-underline transition hover:border-ns-primary hover:text-ns-primary"
@@ -92,7 +92,7 @@ import { AuthService } from '../../core/auth/auth.service';
                   View on GitHub →
                 </a>
                 <a
-                  href="https://github.com/vincentayorinde/nextskill/blob/main/CONTRIBUTING.md"
+                  href="https://github.com/vincentayorinde/skill-to-life/blob/main/CONTRIBUTING.md"
                   target="_blank"
                   rel="noreferrer"
                   class="inline-flex items-center gap-2 rounded-ns border border-ns-border bg-ns-canvasSubtle px-4 py-2 text-sm font-semibold text-ns-text no-underline transition hover:border-ns-primary hover:text-ns-primary"
@@ -107,7 +107,7 @@ import { AuthService } from '../../core/auth/auth.service';
               <ul class="mt-4 space-y-3 text-sm leading-6 text-ns-muted">
                 <li class="flex items-start gap-2">
                   <span class="text-ns-primary" aria-hidden="true">✓</span>
-                  A 10-question assessment that matches you to one of 26 tech
+                  A 30-question assessment that matches you to one of 26 tech
                   career paths
                 </li>
                 <li class="flex items-start gap-2">
@@ -139,22 +139,22 @@ import { AuthService } from '../../core/auth/auth.service';
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Built by</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill was built by
+                Skill to Life was built by
                 <a
-                  href="https://github.com/vincentayorinde"
+                  href="https://vincenttechblog.com"
                   target="_blank"
                   rel="noreferrer"
                   class="font-semibold text-ns-primary no-underline hover:underline"
-                  >Vincent Ayorinde</a
+                  >Vincent Olagbemide</a
                 >. If you have feedback, ideas, or want to contribute, open an
                 issue or a pull request on GitHub.
               </p>
               <p class="mt-3 text-sm leading-6 text-ns-muted">
                 For data requests or privacy enquiries, email
                 <a
-                  href="mailto:mrvincentayorinde@gmail.com"
+                  href="mailto:skilltolife.contact@gmail.com"
                   class="font-semibold text-ns-primary no-underline hover:underline"
-                  >mrvincentayorinde&#64;gmail.com</a
+                  >skilltolife.contact&#64;gmail.com</a
                 >.
               </p>
             </ns-card>
@@ -177,11 +177,11 @@ export class AboutComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('About — NextSkill');
+    this.titleService.setTitle('About — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'NextSkill is a free, open-source career assessment platform for anyone figuring out their path in tech. No paywalls, no upsells — just honest guidance.',
+        'Skill to Life helps you discover your best-fit tech career path, identify skill gaps, follow practical roadmaps, and turn learning into real career outcomes.',
     });
   }
 }

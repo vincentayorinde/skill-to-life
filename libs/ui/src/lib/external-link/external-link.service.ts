@@ -102,7 +102,7 @@ export class NsExternalLinkService {
       case 'results':
         return 'Stay on my results';
       default:
-        return 'Stay on NextSkill';
+        return 'Stay on Skill to Life';
     }
   }
 }

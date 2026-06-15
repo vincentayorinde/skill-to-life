@@ -1,5 +1,5 @@
 <ns-app-shell
-  brand="NextSkill"
+  brand="Skill to Life"
   [links]="shellLinks"
   [authUser]="(auth.currentUser$ | async)"
   [devMode]="auth.isDev"
@@ -34,7 +34,7 @@
             <ns-button routerLink="/assessment" size="lg">Start assessment</ns-button>
             <button
               type="button"
-              class="inline-flex cursor-pointer items-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-6 py-3 text-base font-semibold tracking-tight text-ns-text transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary"
+              class="inline-flex w-auto self-start cursor-pointer items-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-6 py-3 text-base font-semibold tracking-tight text-ns-text transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary"
               (click)="auth.loginWithGoogle()"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -112,7 +112,7 @@
               <div class="mt-4 grid gap-2 text-sm">
                 <div class="flex items-center justify-between gap-3">
                   <span class="text-ns-muted">Best-fit path</span>
-                  <span class="font-semibold text-ns-text">Cloud Engineer</span>
+                  <span class="font-semibold text-ns-text">AI Engineer</span>
                 </div>
                 <div class="flex items-center justify-between gap-3">
                   <span class="text-ns-muted">Skill gap</span>
@@ -280,17 +280,17 @@
         <p class="mt-4 max-w-3xl text-lg leading-8 text-ns-muted">
           Your result becomes a clean card you can share on LinkedIn, X, Instagram, or WhatsApp.
         </p>
-        <p class="mt-3 font-mono text-sm text-ns-muted">What's your NextSkill?</p>
+        <p class="mt-3 font-mono text-sm text-ns-muted">What path fits you?</p>
       </div>
       <div
         class="rounded-ns border border-white/20 bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-700 p-7 text-white shadow-glow"
         aria-label="Example result card"
       >
-        <p class="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-yellow-200">My NextSkill</p>
-        <h3 class="m-0 mt-5 text-4xl font-black leading-none tracking-tight">Cybersecurity Analyst</h3>
-        <div class="mt-6 inline-flex rounded-full bg-white px-4 py-2 font-mono text-sm font-black text-slate-950">89% match</div>
-        <p class="mt-4 text-sm leading-6 text-blue-100">You think in systems and spot risks early.</p>
-        <p class="mt-8 font-mono text-xs font-bold">What's your NextSkill?</p>
+        <p class="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-yellow-200">My career path</p>
+        <h3 class="m-0 mt-5 text-4xl font-black leading-none tracking-tight">AI Engineer</h3>
+        <div class="mt-6 inline-flex rounded-full bg-white px-4 py-2 font-mono text-sm font-black text-slate-950">94% match</div>
+        <p class="mt-4 text-sm leading-6 text-blue-100">You build and deploy intelligent systems at scale.</p>
+        <p class="mt-8 font-mono text-xs font-bold">What path fits you?</p>
       </div>
     </div>
   </section>
@@ -307,12 +307,12 @@
           Open source, so people can trust how it works.
         </h2>
         <p class="mt-4 max-w-3xl text-lg leading-8 text-ns-muted">
-          NextSkill is built in public so developers, educators, and career communities can improve the questions, roadmaps, and scoring model together.
+          Skill to Life is built in public so developers, educators, and career communities can improve the questions, roadmaps, and scoring model together.
         </p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
           <ns-button
             variant="secondary"
-            href="https://github.com/vincentayorinde/nextskill"
+            href="https://github.com/vincentayorinde/skill-to-life"
             target="_blank"
           >View repository</ns-button>
           <ns-button variant="ghost" href="#open-source">Read contribution guide</ns-button>
@@ -362,7 +362,19 @@
       </p>
       <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <ns-button routerLink="/assessment">Start anonymously</ns-button>
-        <ns-button variant="secondary" (click)="auth.loginWithGoogle()">Continue with Google</ns-button>
+        <button
+          type="button"
+          class="inline-flex w-auto self-center cursor-pointer items-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-6 py-3 text-base font-semibold tracking-tight text-ns-text transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary sm:self-auto"
+          (click)="auth.loginWithGoogle()"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
       </div>
     </div>
   </section>
@@ -376,8 +388,8 @@
             <span
               class="grid h-9 w-9 place-items-center rounded-ns border border-ns-border bg-ns-cardElevated font-mono text-sm font-bold text-ns-text"
               aria-hidden="true"
-            >NS</span>
-            <span class="font-bold text-ns-text">NextSkill</span>
+            >SL</span>
+            <span class="font-bold text-ns-text">Skill to Life</span>
           </div>
           <p class="mt-4 max-w-xs text-sm leading-6 text-ns-muted">
             Open-source career discovery for people choosing their next tech skill.
@@ -411,7 +423,7 @@
         </nav>
       </div>
       <div class="mt-10 flex flex-col gap-1 border-t border-ns-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p class="m-0 font-mono text-xs text-ns-muted">© 2025 NextSkill. Open source under MIT licence.</p>
+        <p class="m-0 font-mono text-xs text-ns-muted">© 2025 Skill to Life. Open source under MIT licence.</p>
         <p class="m-0 font-mono text-xs text-ns-muted">Built for anyone figuring out their path in tech.</p>
       </div>
     </div>

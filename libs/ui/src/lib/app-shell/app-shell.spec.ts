@@ -17,10 +17,10 @@ describe('NsAppShellComponent', () => {
   });
 
   it('renders brand, navigation, and actions', () => {
-    fixture.componentRef.setInput('brand', 'NextSkill');
+    fixture.componentRef.setInput('brand', 'Skill to Life');
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('NextSkill');
+    expect(fixture.nativeElement.textContent).toContain('Skill to Life');
     expect(fixture.nativeElement.textContent).toContain('How it works');
     expect(fixture.nativeElement.textContent).toContain('Career paths');
     expect(fixture.nativeElement.textContent).toContain('Start assessment');
@@ -42,24 +42,24 @@ describe('NsAppShellComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.theme).toBe('light');
-    expect(localStorage.getItem('nextskill-theme')).toBe('light');
+    expect(localStorage.getItem('skill-to-life-theme')).toBe('light');
   });
 
   it('restores saved dark theme from localStorage', async () => {
-    localStorage.setItem('nextskill-theme', 'dark');
+    localStorage.setItem('skill-to-life-theme', 'dark');
     fixture.detectChanges();
     expect(fixture.componentInstance.theme).toBe('dark');
   });
 
   it('restores saved light theme from localStorage', () => {
-    localStorage.setItem('nextskill-theme', 'light');
+    localStorage.setItem('skill-to-life-theme', 'light');
     fixture.componentInstance.ngOnInit();
     fixture.detectChanges();
     expect(fixture.componentInstance.theme).toBe('light');
   });
 
   it('toggles back from light to dark', () => {
-    localStorage.setItem('nextskill-theme', 'light');
+    localStorage.setItem('skill-to-life-theme', 'light');
     fixture.componentInstance.ngOnInit();
     fixture.detectChanges();
 
@@ -70,6 +70,6 @@ describe('NsAppShellComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.theme).toBe('dark');
-    expect(localStorage.getItem('nextskill-theme')).toBe('dark');
+    expect(localStorage.getItem('skill-to-life-theme')).toBe('dark');
   });
 });

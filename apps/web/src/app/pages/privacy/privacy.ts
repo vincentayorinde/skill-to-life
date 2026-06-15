@@ -22,7 +22,7 @@ import { AuthService } from '../../core/auth/auth.service';
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -35,7 +35,7 @@ import { AuthService } from '../../core/auth/auth.service';
           <ns-page-header
             eyebrow="Legal"
             title="Privacy policy."
-            description="Last updated: 2025. This policy explains what data NextSkill collects, how it is used, and your rights."
+            description="Last updated: 2025. This policy explains what data Skill to Life collects, how it is used, and your rights."
           >
           </ns-page-header>
 
@@ -71,12 +71,12 @@ import { AuthService } from '../../core/auth/auth.service';
                 </p>
                 <p class="m-0">
                   <span class="font-semibold text-ns-text"
-                    >Essential cookies.</span
+                    >Essential session storage.</span
                   >
-                  We use a session token cookie (
+                  We use a local session token (
                   <code
                     class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
-                    >ns_token</code
+                    >skill_to_life_token</code
                   >) to keep you signed in. We also store your theme preference
                   locally. No advertising or tracking cookies are used.
                 </p>
@@ -123,14 +123,14 @@ import { AuthService } from '../../core/auth/auth.service';
                 maintainer. Data is not replicated to third-party services.
               </p>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is open source. The full data schema and server code
+                Skill to Life is open source. The full data schema and server code
                 is publicly auditable at
                 <a
-                  href="https://github.com/vincentayorinde/nextskill"
+                  href="https://github.com/vincentayorinde/skill-to-life"
                   target="_blank"
                   rel="noreferrer"
                   class="font-semibold text-ns-primary no-underline hover:underline"
-                  >github.com/vincentayorinde/nextskill</a
+                  >github.com/vincentayorinde/skill-to-life</a
                 >.
               </p>
             </ns-card>
@@ -147,9 +147,9 @@ import { AuthService } from '../../core/auth/auth.service';
                 <p class="m-0">
                   To request data deletion or ask any privacy question, contact:
                   <a
-                    href="mailto:mrvincentayorinde@gmail.com"
+                    href="mailto:skilltolife.contact@gmail.com"
                     class="font-semibold text-ns-primary no-underline hover:underline"
-                    >mrvincentayorinde&#64;gmail.com</a
+                    >skilltolife.contact&#64;gmail.com</a
                   >
                 </p>
               </div>
@@ -190,11 +190,11 @@ export class PrivacyComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Privacy policy — NextSkill');
+    this.titleService.setTitle('Privacy policy — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'NextSkill privacy policy. We collect only what is needed, never sell data, and have no advertising or tracking.',
+        'Skill to Life privacy policy. We collect only what is needed, never sell data, and have no advertising or tracking.',
     });
   }
 }

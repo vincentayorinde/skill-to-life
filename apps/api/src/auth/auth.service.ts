@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   async findOrCreateDevUser(): Promise<User> {
-    const devEmail = 'dev@nextskill.local';
+    const devEmail = 'dev@skilltolife.local';
 
     let user = await this.prisma.user.findUnique({
       where: { email: devEmail },

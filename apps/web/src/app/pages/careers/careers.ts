@@ -56,7 +56,7 @@ const TABS: TabFilter[] = [
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -242,7 +242,7 @@ export class CareersComponent implements OnInit {
   readonly savedIds = signal<Set<string>>(new Set());
 
   ngOnInit(): void {
-    this.titleService.setTitle('Tech career paths — NextSkill');
+    this.titleService.setTitle('Tech career paths — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:

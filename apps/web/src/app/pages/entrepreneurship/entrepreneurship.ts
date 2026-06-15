@@ -99,7 +99,7 @@ const TABS: TabFilter[] = [
   ],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -191,7 +191,7 @@ export class EntrepreneurshipComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Go independent with tech — NextSkill');
+    this.titleService.setTitle('Go independent with tech — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:

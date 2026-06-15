@@ -12,7 +12,7 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
   imports: [AsyncPipe, RouterLink, NsAppShellComponent],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -104,7 +104,7 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
           <!-- CTA -->
           <div class="rounded-ns-lg border border-ns-border bg-ns-card p-6 text-center">
             <p class="mb-2 text-base font-semibold text-ns-text">Want to see your career matches?</p>
-            <p class="mb-4 text-sm text-ns-muted">Take the free NextSkill assessment →</p>
+            <p class="mb-4 text-sm text-ns-muted">Take the free Skill to Life assessment →</p>
             <a
               routerLink="/assessment"
               class="inline-flex items-center justify-center rounded-ns bg-ns-primary px-5 py-2.5 text-sm font-medium text-white no-underline hover:bg-ns-primaryHover"

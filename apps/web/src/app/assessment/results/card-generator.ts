@@ -90,7 +90,7 @@ export async function generateResultCard(
 
   ctx.font = '500 14px Inter, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.fillText('MY NEXTSKILL', centerX, y);
+  ctx.fillText('MY SKILL TO LIFE', centerX, y);
   y += 14 / 2 + 20 + 80 / 2;
 
   ctx.font = '80px serif';
@@ -145,13 +145,13 @@ export async function generateResultCard(
   y += 40;
   ctx.font = 'bold 22px Inter, sans-serif';
   ctx.fillStyle = '#60a5fa';
-  ctx.fillText("What's your NextSkill? 👇", centerX, y);
+  ctx.fillText('What path fits you? 👇', centerX, y);
 
   ctx.font = '14px Inter, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.25)';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'alphabetic';
-  ctx.fillText('nextskill.dev', width - 32, height - 32);
+  ctx.fillText('skilltolife.com', width - 32, height - 32);
 
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(

@@ -21,7 +21,7 @@ export class AppService {
 
     return {
       status: database === 'connected' ? 'ok' : 'degraded',
-      service: 'nextskill-api',
+      service: 'skill-to-life-api',
       version: '1.0.0',
       database,
       timestamp: new Date().toISOString(),

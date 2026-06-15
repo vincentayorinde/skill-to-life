@@ -35,7 +35,7 @@ describe('tokenInterceptor', () => {
   });
 
   it('adds Authorization header when token exists and URL contains /api', () => {
-    localStorage.setItem('ns_token', 'bearer-token');
+    localStorage.setItem('skill_to_life_token', 'bearer-token');
 
     client.get('http://localhost:3000/api/auth/me').subscribe();
 
@@ -55,7 +55,7 @@ describe('tokenInterceptor', () => {
   });
 
   it('does not add header for non-api URLs', () => {
-    localStorage.setItem('ns_token', 'bearer-token');
+    localStorage.setItem('skill_to_life_token', 'bearer-token');
 
     client.get('https://external.com/data').subscribe();
 

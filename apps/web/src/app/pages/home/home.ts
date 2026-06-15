@@ -40,12 +40,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle(
-      'NextSkill — Discover your next tech career skill',
+      'Skill to Life — Turn Your Skills Into a Real Career Path',
     );
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Find the tech career path that fits how you think and work. Free 30-question assessment across 26 careers. No paywalls, no upsells.',
+        'Discover your best-fit tech career path, identify skill gaps, follow practical roadmaps, compare salaries, and turn learning into real career outcomes.',
     });
     this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
     this.auth.currentUser$.subscribe((user) => {
@@ -169,17 +169,17 @@ export class HomeComponent implements OnInit {
         { label: 'About', href: '/about' },
         {
           label: 'Open source',
-          href: 'https://github.com/vincentayorinde/nextskill',
+          href: 'https://github.com/vincentayorinde/skill-to-life',
           external: true,
         },
         {
           label: 'Changelog',
-          href: 'https://github.com/vincentayorinde/nextskill/blob/main/CHANGELOG.md',
+          href: 'https://github.com/vincentayorinde/skill-to-life/blob/main/CHANGELOG.md',
           external: true,
         },
         {
           label: 'Roadmap',
-          href: 'https://github.com/vincentayorinde/nextskill/blob/main/ROADMAP.md',
+          href: 'https://github.com/vincentayorinde/skill-to-life/blob/main/ROADMAP.md',
           external: true,
         },
       ],

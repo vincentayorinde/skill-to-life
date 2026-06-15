@@ -27,7 +27,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
   imports: [AsyncPipe, DatePipe, FormsModule, RouterLink, NsAppShellComponent],
   template: `
     <ns-app-shell
-      brand="NextSkill"
+      brand="Skill to Life"
       [links]="shellLinks"
       [authUser]="auth.currentUser$ | async"
       [devMode]="auth.isDev"
@@ -235,7 +235,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                       <div class="mt-4 rounded-ns bg-ns-card p-3">
                         <p class="mb-1 text-xs text-ns-muted">Your public URL:</p>
                         <div class="flex min-w-0 items-center gap-2">
-                          <code class="min-w-0 flex-1 truncate text-xs text-ns-primary">nextskill.dev/u/{{ profile()!.username }}</code>
+                          <code class="min-w-0 flex-1 truncate text-xs text-ns-primary">skilltolife.com/u/{{ profile()!.username }}</code>
                           <button
                             type="button"
                             class="shrink-0 text-xs text-ns-muted hover:text-ns-text"
@@ -736,7 +736,7 @@ export class ProfilePageComponent implements OnInit {
   copyPublicUrl(): void {
     const username = this.profile()?.username;
     if (!username) return;
-    navigator.clipboard?.writeText(`https://nextskill.dev/u/${username}`);
+    navigator.clipboard?.writeText(`https://skilltolife.com/u/${username}`);
     this.copied.set(true);
     setTimeout(() => this.copied.set(false), 2000);
   }
