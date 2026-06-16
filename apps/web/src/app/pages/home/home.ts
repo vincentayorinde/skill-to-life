@@ -29,6 +29,29 @@ import { SavedService } from '../../core/saved/saved.service';
     NsProgressComponent,
   ],
   templateUrl: './home.html',
+  styles: [
+    `
+      .stl-footer-logo {
+        display: block;
+        width: 164px;
+        height: 40px;
+        object-fit: contain;
+        object-position: left center;
+      }
+
+      .stl-footer-logo-light {
+        display: none;
+      }
+
+      :host-context([data-theme='light']) .stl-footer-logo-dark {
+        display: none;
+      }
+
+      :host-context([data-theme='light']) .stl-footer-logo-light {
+        display: block;
+      }
+    `,
+  ],
 })
 export class HomeComponent implements OnInit {
   protected readonly auth = inject(AuthService);

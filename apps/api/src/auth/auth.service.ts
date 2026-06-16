@@ -41,22 +41,16 @@ export class AuthService {
   }
 
   async findOrCreateDevUser(): Promise<User> {
-    const devEmail = 'dev@skilltolife.local';
-
-    let user = await this.prisma.user.findUnique({
-      where: { email: devEmail },
+    const user = await this.prisma.user.upsert({
+      where: { googleId: 'dev-user-local' },
+      update: {},
+      create: {
+        email: 'dev@skilltolife.local',
+        name: 'Dev User',
+        avatar: null,
+        googleId: 'dev-user-local',
+      },
     });
-
-    if (!user) {
-      user = await this.prisma.user.create({
-        data: {
-          email: devEmail,
-          name: 'Dev User',
-          avatar: null,
-          googleId: 'dev-user-local',
-        },
-      });
-    }
 
     await this.ensureProfile(user.id);
     return user;

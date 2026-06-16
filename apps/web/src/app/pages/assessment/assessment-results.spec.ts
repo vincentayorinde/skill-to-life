@@ -418,7 +418,7 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     const metaService = TestBed.inject(Meta);
     const tag = metaService.getTag('property="og:image"');
-    expect(tag?.content).toBe('/og-default.svg');
+    expect(tag?.content).toBe('/assets/social-preview.png');
   });
 
   it('should set twitter:card to summary_large_image', () => {

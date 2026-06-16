@@ -884,6 +884,25 @@ import { environment } from '../../../environments/environment';
                     </button>
                   </div>
                 </div>
+
+                <!-- Stats toggle -->
+                <div class="mt-3 flex items-center justify-between gap-2 px-1">
+                  <span class="text-xs text-ns-muted">Include signal breakdown</span>
+                  <button
+                    type="button"
+                    class="relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none"
+                    [class]="showStats() ? 'bg-ns-primary' : 'bg-white/20'"
+                    (click)="showStats.set(!showStats())"
+                    role="switch"
+                    [attr.aria-checked]="showStats()"
+                    aria-label="Include signal breakdown"
+                  >
+                    <span
+                      class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
+                      [class]="showStats() ? 'translate-x-5' : 'translate-x-0'"
+                    ></span>
+                  </button>
+                </div>
               </div>
 
               <!-- Divider -->
@@ -894,7 +913,11 @@ import { environment } from '../../../environments/environment';
               </div>
 
               <!-- Social share grid — 3 columns -->
-              <div class="mt-4 grid grid-cols-3 gap-2">
+              <div
+                class="mt-4 grid grid-cols-3 gap-2 transition-opacity"
+                [class.opacity-50]="sharing()"
+                [class.pointer-events-none]="sharing()"
+              >
                 <!-- WhatsApp -->
                 <button
                   type="button"
@@ -1112,7 +1135,9 @@ export class AssessmentResultsComponent implements OnInit {
   readonly shareOpen = signal(false);
   readonly copied = signal(false);
   readonly downloading = signal(false);
+  readonly sharing = signal(false);
   readonly cardFormat = signal<'square' | 'story'>('square');
+  readonly showStats = signal(true);
   readonly toastMessage = signal('');
   readonly toastVisible = signal(false);
   readonly resultSaved = signal(false);
@@ -1125,6 +1150,7 @@ export class AssessmentResultsComponent implements OnInit {
   topEntrepreneurshipData: CareerEntrepreneurshipData | null = null;
   answerCount = 0;
   canNativeShare = false;
+  canNativeShareFiles = false;
 
   readonly CIRCUMFERENCE = 2 * Math.PI * 54;
 
@@ -1289,8 +1315,12 @@ export class AssessmentResultsComponent implements OnInit {
     }
 
     try {
-      this.canNativeShare =
-        typeof navigator !== 'undefined' && 'share' in navigator;
+      this.canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+      if (this.canNativeShare && 'canShare' in navigator) {
+        const testBlob = new Blob([''], { type: 'image/png' });
+        const testFile = new File([testBlob], 'test.png', { type: 'image/png' });
+        this.canNativeShareFiles = navigator.canShare({ files: [testFile] });
+      }
     } catch {
       this.canNativeShare = false;
     }
@@ -1339,30 +1369,52 @@ export class AssessmentResultsComponent implements OnInit {
     this.auth.loginWithGoogle();
   }
 
-  async downloadCard(): Promise<void> {
-    if (!this.matches.length) return;
+  private buildCardData() {
+    const top = this.matches[0];
+    return {
+      title: top.title,
+      emoji: top.emoji,
+      percentage: top.percentage,
+      matchTier: this.tierLabel(top.matchTier),
+      insight: this.topInsight,
+      stats: this.showStats()
+        ? this.topCategoryBreakdown()
+            .slice(0, 4)
+            .map((item) => ({ label: item.label, value: item.value }))
+        : undefined,
+    };
+  }
 
+  private async generateCard(): Promise<File | null> {
+    if (!this.matches.length) return null;
+    try {
+      const blob = await generateResultCard(this.buildCardData(), this.cardFormat());
+      return new File([blob], `my-skill-to-life-${this.matches[0].careerId}.png`, {
+        type: 'image/png',
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  private triggerDownload(file: File): void {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async downloadCard(): Promise<void> {
+    if (!this.matches.length || this.downloading()) return;
     this.downloading.set(true);
     try {
-      const blob = await generateResultCard(
-        {
-          title: this.matches[0].title,
-          emoji: this.matches[0].emoji,
-          percentage: this.matches[0].percentage,
-          matchTier: this.tierLabel(this.matches[0].matchTier),
-          insight: this.topInsight,
-        },
-        this.cardFormat(),
-      );
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `my-skill-to-life-${this.matches[0].careerId}.png`;
-      link.click();
-      URL.revokeObjectURL(url);
-      this.showToast('Card downloaded — ready to share!');
-    } catch {
-      // Canvas unavailable in this environment — silently fail.
+      const file = await this.generateCard();
+      if (file) {
+        this.triggerDownload(file);
+        this.showToast('Card downloaded — ready to share!');
+      }
     } finally {
       this.downloading.set(false);
     }
@@ -1376,48 +1428,98 @@ export class AssessmentResultsComponent implements OnInit {
     this.shareOpen.set(false);
   }
 
-  shareToWhatsApp(): void {
-    if (!this.matches.length) return;
+  async shareToWhatsApp(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const text = encodeURIComponent(
-      `I just found my best-fit tech path with Skill to Life! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind yours 👇\nskilltolife.com`,
-    );
-    window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({
+          files: [file],
+          title: `My Skill to Life result — ${top.title}`,
+          url: 'https://skilltolife.com/assessment',
+        });
+        this.closeShare();
+        return;
+      }
+      if (file) this.triggerDownload(file);
+      const text = encodeURIComponent(
+        `I just found my best-fit tech path with Skill to Life! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind yours 👇\nskilltolife.com`,
+      );
+      window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
+      if (file) this.showToast('Card saved — attach it to your WhatsApp message!');
+      this.closeShare();
+    } catch {
+      /* native share dismissed */
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToX(): void {
-    if (!this.matches.length) return;
+  async shareToX(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const text = encodeURIComponent(
-      `Just found my best-fit tech path 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nFind yours 👇\nskilltolife.com #SkillToLife #TechCareers`,
-    );
-    window.open(
-      `https://twitter.com/intent/tweet?text=${text}`,
-      '_blank',
-      'noreferrer',
-    );
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file) this.triggerDownload(file);
+      const text = encodeURIComponent(
+        `Just found my best-fit tech path 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nFind yours 👇\nskilltolife.com #SkillToLife #TechCareers`,
+      );
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noreferrer');
+      if (file) this.showToast('Card downloaded — attach it to your tweet!');
+      this.closeShare();
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToLinkedIn(): void {
-    const url = encodeURIComponent('https://skilltolife.com');
-    window.open(
-      `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      '_blank',
-      'noreferrer',
-    );
-    this.closeShare();
+  async shareToLinkedIn(): Promise<void> {
+    if (this.sharing()) return;
+    this.sharing.set(true);
+    try {
+      const file = await this.generateCard();
+      if (file) this.triggerDownload(file);
+      const url = encodeURIComponent('https://skilltolife.com');
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+        '_blank',
+        'noreferrer',
+      );
+      if (file) this.showToast('Card downloaded — attach it to your LinkedIn post!');
+      this.closeShare();
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToSMS(): void {
-    if (!this.matches.length) return;
+  async shareToSMS(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const body = encodeURIComponent(
-      `Check this out — I just found my best-fit tech path with Skill to Life.\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: skilltolife.com`,
-    );
-    window.location.href = `sms:?body=${body}`;
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({
+          files: [file],
+          title: `My Skill to Life result — ${top.title}`,
+          url: 'https://skilltolife.com/assessment',
+        });
+        this.closeShare();
+        return;
+      }
+      if (file) this.triggerDownload(file);
+      const body = encodeURIComponent(
+        `Check this out — I just found my best-fit tech path with Skill to Life.\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: skilltolife.com`,
+      );
+      window.location.href = `sms:?body=${body}`;
+      this.closeShare();
+    } catch {
+      /* native share dismissed */
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
   async copyLink(): Promise<void> {
@@ -1432,17 +1534,26 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   async nativeShare(): Promise<void> {
-    if (!this.matches.length || !this.canNativeShare) return;
+    if (!this.matches.length || !this.canNativeShare || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
     try {
-      await navigator.share({
+      const file = await this.generateCard();
+      const shareData: ShareData = {
         title: `My career path result — ${top.title}`,
         text: `${top.emoji} ${top.title} — ${top.percentage}% match. Find your best-fit path.`,
         url: 'https://skilltolife.com/assessment',
-      });
+      };
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({ ...shareData, files: [file] });
+      } else {
+        await navigator.share(shareData);
+      }
       this.closeShare();
     } catch {
-      // Share dismissed or not supported.
+      /* Share dismissed or not supported */
+    } finally {
+      this.sharing.set(false);
     }
   }
 
@@ -1456,7 +1567,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const insight = this.topInsight;
-    const ogImage = '/og-default.svg';
+    const ogImage = '/assets/social-preview.png';
 
     this.title.setTitle(`Your Skill to Life result — ${top.title} | Skill to Life`);
 
@@ -1469,8 +1580,8 @@ export class AssessmentResultsComponent implements OnInit {
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
     this.meta.updateTag({ property: 'og:site_name', content: 'Skill to Life' });
     this.meta.updateTag({ property: 'og:image', content: ogImage });
-    this.meta.updateTag({ property: 'og:image:width', content: '1200' });
-    this.meta.updateTag({ property: 'og:image:height', content: '630' });
+    this.meta.updateTag({ property: 'og:image:width', content: '1280' });
+    this.meta.updateTag({ property: 'og:image:height', content: '640' });
     this.meta.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',

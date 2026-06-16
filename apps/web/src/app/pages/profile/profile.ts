@@ -7,7 +7,9 @@ import {
 } from '@angular/core';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import {
   CvAnalysisResult,
   SavedResource,
@@ -625,6 +627,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 })
 export class ProfilePageComponent implements OnInit {
   readonly auth = inject(AuthService);
+  private readonly http = inject(HttpClient);
   private readonly profileService = inject(ProfileService);
 
   protected readonly shellLinks: NsAppShellLink[] = [
@@ -717,6 +720,11 @@ export class ProfilePageComponent implements OnInit {
 
     this.savedService.getSavedResources().subscribe((r) => this.savedResources.set(r));
     this.cvService.getAnalyses().subscribe((a) => this.analyses.set(a));
+    this.http
+      .get<{ id: string; topCareer: string; topPercentage: number; createdAt: string }[]>(
+        `${environment.apiUrl}/api/results`,
+      )
+      .subscribe({ next: (r) => this.results.set(r), error: () => {} });
   }
 
   saveProfile(): void {

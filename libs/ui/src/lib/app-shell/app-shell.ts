@@ -33,8 +33,24 @@ export interface NsAuthUser {
       <header class="ns-nav-shell">
         <div class="ns-nav-inner">
           <a class="ns-brand" href="/">
-            <span class="ns-brand-mark" aria-hidden="true">SL</span>
-            <span class="ns-brand-name">{{ brand }}</span>
+            <span class="ns-brand-picture">
+              <img
+                class="ns-brand-logo ns-brand-logo-full ns-brand-logo-full-dark"
+                src="/assets/logo-full-light.png"
+                [alt]="brand"
+              />
+              <img
+                class="ns-brand-logo ns-brand-logo-full ns-brand-logo-full-light"
+                src="/assets/logo-full.png"
+                [alt]="brand"
+              />
+            </span>
+            <img
+              class="ns-brand-logo ns-brand-logo-mark"
+              src="/assets/logo-mark.png"
+              [alt]="brand + ' logo'"
+            />
+            <span class="ns-brand-sr">{{ brand }}</span>
           </a>
 
           <nav class="ns-nav-links" aria-label="Primary navigation">
@@ -302,35 +318,52 @@ export interface NsAuthUser {
       .ns-brand {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
         color: var(--color-text, var(--ns-color-text));
         text-decoration: none;
         flex-shrink: 0;
+        min-height: 40px;
       }
 
-      .ns-brand-mark {
-        width: 36px;
+      .ns-brand-picture {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .ns-brand-logo {
+        display: block;
+        object-fit: contain;
+      }
+
+      .ns-brand-logo-full {
+        width: clamp(120px, 30vw, 180px);
         height: 36px;
-        display: grid;
-        place-items: center;
-        border-radius: var(--radius-sm, var(--ns-radius-sm));
-        border: 1px solid var(--color-border, var(--ns-color-border));
-        background: var(--color-bg-tertiary, var(--ns-color-card-elevated));
-        color: var(--color-text, var(--ns-color-text));
-        font-size: 14px;
-        font-weight: 700;
       }
 
-      :host-context([data-theme='light']) .ns-brand-mark {
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        background: #F1F3F5;
-        color: #0A0A0F;
+      .ns-brand-logo-full-light {
+        display: none;
       }
 
-      .ns-brand-name {
-        color: var(--color-text, var(--ns-color-text));
-        font-size: 16px;
-        font-weight: 700;
+      :host-context([data-theme='light']) .ns-brand-logo-full-dark {
+        display: none;
+      }
+
+      :host-context([data-theme='light']) .ns-brand-logo-full-light {
+        display: block;
+      }
+
+      .ns-brand-logo-mark {
+        display: none;
+        width: 38px;
+        height: 38px;
+      }
+
+      .ns-brand-sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
       }
 
       .ns-nav-links {

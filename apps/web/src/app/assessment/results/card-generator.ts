@@ -4,6 +4,7 @@ export interface ResultCardData {
   percentage: number;
   matchTier: string;
   insight: string;
+  stats?: { label: string; value: number }[];
 }
 
 export function wrapText(
@@ -146,6 +147,54 @@ export async function generateResultCard(
   ctx.font = 'bold 22px Inter, sans-serif';
   ctx.fillStyle = '#60a5fa';
   ctx.fillText('What path fits you? 👇', centerX, y);
+
+  if (data.stats?.length) {
+    const statsToShow = data.stats.slice(0, 4);
+    const barWidth = 400;
+    const barX = centerX - barWidth / 2;
+
+    y += 28;
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    ctx.moveTo(centerX - 100, y);
+    ctx.lineTo(centerX + 100, y);
+    ctx.stroke();
+    y += 16;
+
+    ctx.font = '500 11px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.textAlign = 'center';
+    ctx.fillText('SIGNAL BREAKDOWN', centerX, y);
+    y += 18;
+
+    for (const stat of statsToShow) {
+      ctx.textAlign = 'left';
+      ctx.font = '500 13px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.fillText(stat.label, barX, y);
+
+      ctx.textAlign = 'right';
+      ctx.font = 'bold 13px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.fillText(`${stat.value}%`, barX + barWidth, y);
+
+      y += 10;
+
+      drawRoundedRect(ctx, barX, y, barWidth, 5, 2.5);
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      ctx.fill();
+
+      const fillWidth = Math.max((barWidth * stat.value) / 100, 8);
+      drawRoundedRect(ctx, barX, y, fillWidth, 5, 2.5);
+      ctx.fillStyle = 'rgba(96,165,250,0.7)';
+      ctx.fill();
+
+      y += 5 + 10;
+    }
+
+    ctx.textAlign = 'center';
+  }
 
   ctx.font = '14px Inter, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.25)';
