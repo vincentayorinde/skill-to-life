@@ -20,6 +20,7 @@ module.exports = {
           borderMuted: 'var(--ns-color-border-muted)',
           nav: 'var(--ns-color-nav)',
           primary: 'var(--ns-color-primary)',
+          primaryFg: 'var(--ns-color-primary-fg)',
           primaryHover: 'var(--ns-color-primary-hover)',
           primarySoft: 'var(--ns-color-primary-soft)',
           success: 'var(--ns-color-success)',

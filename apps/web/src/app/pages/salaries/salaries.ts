@@ -145,7 +145,7 @@ type SortKey = 'senior' | 'junior' | 'name';
                     class="rounded-full border px-3 py-1 text-xs font-semibold transition"
                     [class]="
                       activeSort() === s.key
-                        ? 'border-ns-primary bg-ns-primary text-white'
+                        ? 'border-ns-primary bg-ns-primary text-ns-primaryFg'
                         : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
                     "
                     (click)="activeSort.set(s.key)"

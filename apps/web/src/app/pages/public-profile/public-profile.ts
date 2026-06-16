@@ -107,7 +107,7 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
             <p class="mb-4 text-sm text-ns-muted">Take the free Skill to Life assessment →</p>
             <a
               routerLink="/assessment"
-              class="inline-flex items-center justify-center rounded-ns bg-ns-primary px-5 py-2.5 text-sm font-medium text-white no-underline hover:bg-ns-primaryHover"
+              class="inline-flex items-center justify-center rounded-ns bg-ns-primary px-5 py-2.5 text-sm font-medium text-ns-primaryFg no-underline hover:bg-ns-primaryHover"
             >Take the free assessment</a>
           </div>
         }

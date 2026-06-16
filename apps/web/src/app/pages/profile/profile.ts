@@ -118,7 +118,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     </div>
                     <button
                       type="button"
-                      class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-white hover:bg-ns-primaryHover disabled:opacity-50"
+                      class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
                       [disabled]="saving()"
                       (click)="saveProfile()"
                     >
@@ -297,7 +297,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     </div>
                   } @else {
                     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      @for (career of profile()!.savedCareers; track career.id) {
+                      @for (career of paginatedSavedCareers(); track career.id) {
                         <div class="rounded-ns-card border border-ns-border bg-ns-card p-4">
                           <div class="mb-2 flex items-start justify-between gap-2">
                             <div class="flex items-center gap-2">
@@ -321,6 +321,23 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         </div>
                       }
                     </div>
+                    @if (savedCareersTotalPages() > 1) {
+                      <div class="mt-6 flex items-center justify-between">
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="savedCareersPage() === 0"
+                          (click)="savedCareersPage.set(savedCareersPage() - 1)"
+                        >← Previous</button>
+                        <span class="text-xs text-ns-muted">Page {{ savedCareersPage() + 1 }} of {{ savedCareersTotalPages() }}</span>
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="savedCareersPage() >= savedCareersTotalPages() - 1"
+                          (click)="savedCareersPage.set(savedCareersPage() + 1)"
+                        >Next →</button>
+                      </div>
+                    }
                   }
                 </div>
               }
@@ -335,7 +352,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     </div>
                   } @else {
                     <div class="space-y-6">
-                      @for (group of savedResourceGroups(); track group.label) {
+                      @for (group of paginatedResourceGroups(); track group.label) {
                         <div>
                           <h3 class="mb-3 text-sm font-semibold text-ns-muted uppercase tracking-wider">{{ group.label }}</h3>
                           <div class="space-y-2">
@@ -356,6 +373,23 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         </div>
                       }
                     </div>
+                    @if (resourceGroupsTotalPages() > 1) {
+                      <div class="mt-6 flex items-center justify-between">
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="resourceGroupsPage() === 0"
+                          (click)="resourceGroupsPage.set(resourceGroupsPage() - 1)"
+                        >← Previous</button>
+                        <span class="text-xs text-ns-muted">Page {{ resourceGroupsPage() + 1 }} of {{ resourceGroupsTotalPages() }}</span>
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="resourceGroupsPage() >= resourceGroupsTotalPages() - 1"
+                          (click)="resourceGroupsPage.set(resourceGroupsPage() + 1)"
+                        >Next →</button>
+                      </div>
+                    }
                   }
                 </div>
               }
@@ -370,7 +404,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     </div>
                   } @else {
                     <div class="space-y-3">
-                      @for (result of results(); track result.id) {
+                      @for (result of paginatedResults(); track result.id) {
                         <div class="flex items-center justify-between gap-4 rounded-ns-card border border-ns-border bg-ns-card px-5 py-4">
                           <div>
                             <p class="text-sm font-semibold text-ns-text">{{ result.topCareer }}</p>
@@ -380,6 +414,23 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         </div>
                       }
                     </div>
+                    @if (resultsTotalPages() > 1) {
+                      <div class="mt-6 flex items-center justify-between">
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="resultsPage() === 0"
+                          (click)="resultsPage.set(resultsPage() - 1)"
+                        >← Previous</button>
+                        <span class="text-xs text-ns-muted">Page {{ resultsPage() + 1 }} of {{ resultsTotalPages() }}</span>
+                        <button
+                          type="button"
+                          class="rounded-ns border border-ns-border px-4 py-2 text-sm text-ns-muted hover:border-ns-primary hover:text-ns-text disabled:opacity-40 transition-colors"
+                          [disabled]="resultsPage() >= resultsTotalPages() - 1"
+                          (click)="resultsPage.set(resultsPage() + 1)"
+                        >Next →</button>
+                      </div>
+                    }
                   }
                 </div>
               }
@@ -439,7 +490,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     <div class="mt-5">
                       <button
                         type="button"
-                        class="rounded-ns bg-ns-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-ns-primaryHover disabled:opacity-50"
+                        class="rounded-ns bg-ns-primary px-6 py-2.5 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
                         [disabled]="analysing() || !hasInput()"
                         (click)="runAnalysis()"
                       >
@@ -610,7 +661,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         <button type="button" class="rounded-ns border border-ns-border bg-ns-card px-4 py-2 text-sm font-medium text-ns-text hover:bg-ns-canvasSubtle" (click)="resetAndRunNew()">
                           Analyse new CV
                         </button>
-                        <button type="button" class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-white hover:bg-ns-primaryHover" (click)="runAnalysis()">
+                        <button type="button" class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover" (click)="runAnalysis()">
                           Re-analyse
                         </button>
                       </div>
@@ -685,6 +736,42 @@ export class ProfilePageComponent implements OnInit {
 
   readonly savedResourceGroups = computed(() =>
     Object.entries(this.savedResources()).map(([label, items]) => ({ label, items })),
+  );
+
+  // Pagination
+  private readonly CAREERS_PER_PAGE = 9;
+  private readonly RESOURCES_PER_PAGE = 5;
+  private readonly RESULTS_PER_PAGE = 10;
+
+  readonly savedCareersPage = signal(0);
+  readonly resourceGroupsPage = signal(0);
+  readonly resultsPage = signal(0);
+
+  readonly paginatedSavedCareers = computed(() => {
+    const all = this.profile()?.savedCareers ?? [];
+    const start = this.savedCareersPage() * this.CAREERS_PER_PAGE;
+    return all.slice(start, start + this.CAREERS_PER_PAGE);
+  });
+  readonly savedCareersTotalPages = computed(() =>
+    Math.ceil((this.profile()?.savedCareers.length ?? 0) / this.CAREERS_PER_PAGE),
+  );
+
+  readonly paginatedResourceGroups = computed(() => {
+    const all = this.savedResourceGroups();
+    const start = this.resourceGroupsPage() * this.RESOURCES_PER_PAGE;
+    return all.slice(start, start + this.RESOURCES_PER_PAGE);
+  });
+  readonly resourceGroupsTotalPages = computed(() =>
+    Math.ceil(this.savedResourceGroups().length / this.RESOURCES_PER_PAGE),
+  );
+
+  readonly paginatedResults = computed(() => {
+    const all = this.results();
+    const start = this.resultsPage() * this.RESULTS_PER_PAGE;
+    return all.slice(start, start + this.RESULTS_PER_PAGE);
+  });
+  readonly resultsTotalPages = computed(() =>
+    Math.ceil(this.results().length / this.RESULTS_PER_PAGE),
   );
 
   readonly hasInput = computed(

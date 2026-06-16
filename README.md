@@ -1,10 +1,18 @@
-# Skill to Life
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vincentayorinde/skill-to-life/main/apps/web/src/assets/logo-full-light.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/vincentayorinde/skill-to-life/main/apps/web/src/assets/logo-full.png">
+    <img src="https://raw.githubusercontent.com/vincentayorinde/skill-to-life/main/apps/web/src/assets/logo-full.png" alt="Skill to Life" width="240">
+  </picture>
+</p>
 
-**Turn your skills into a real career path.**
+<p align="center"><strong>Turn your skills into a real career path.</strong></p>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](CHANGELOG.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Open Source](https://img.shields.io/badge/open%20source-yes-brightgreen)](https://github.com/vincentayorinde/skill-to-life)
+<p align="center">
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT"></a>
+  <a href="https://github.com/vincentayorinde/skill-to-life"><img src="https://img.shields.io/badge/open%20source-yes-brightgreen" alt="Open Source"></a>
+</p>
 
 Skill to Life helps people discover the right tech career path, understand their skill gaps, follow a practical roadmap, improve their CV, and turn learning into real career outcomes. Answer 30 questions to find which of 26 tech career paths fits how you think and work — then upload your CV to get AI-powered gap analysis, personalised next steps, and a shareable result card.
 
@@ -34,7 +42,7 @@ Skill to Life helps people discover the right tech career path, understand their
 | Backend  | NestJS 11, Passport (JWT + Google OAuth) |
 | Database | PostgreSQL + Prisma 5                    |
 | Monorepo | Nx 22, pnpm workspaces                   |
-| AI       | OpenAI API (CV analysis)                 |
+| AI       | Anthropic Claude API (CV analysis)       |
 | Testing  | Vitest (frontend), Jest (backend)        |
 | CI       | GitHub Actions                           |
 
@@ -72,7 +80,7 @@ Edit `apps/api/.env` and fill in:
 | `GOOGLE_CLIENT_SECRET` | From same OAuth 2.0 credential                                                              |
 | `GOOGLE_CALLBACK_URL`  | `http://localhost:3000/api/auth/google/callback`                                            |
 | `FRONTEND_URL`         | `http://localhost:4200`                                                                     |
-| `OPENAI_API_KEY`       | From [platform.openai.com](https://platform.openai.com/) — used for CV analysis             |
+| `ANTHROPIC_API_KEY`    | From [console.anthropic.com](https://console.anthropic.com/) — used for CV analysis         |
 
 For Google OAuth, add `http://localhost:3000/api/auth/google/callback` as an authorised redirect URI in Google Cloud Console.
 

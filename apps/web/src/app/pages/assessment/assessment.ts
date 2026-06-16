@@ -220,7 +220,7 @@ function delay(ms: number): Promise<void> {
 
               <button
                 type="button"
-                class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-6 text-sm font-semibold text-white shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
+                class="inline-flex min-h-12 items-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-6 text-sm font-semibold text-ns-primaryFg shadow-ns transition duration-base ease-ns hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus disabled:pointer-events-none disabled:opacity-50"
                 [disabled]="!selectedOption()"
                 (click)="next()"
               >

@@ -478,7 +478,7 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                           type="button"
                           class="rounded-full border px-2 py-0.5 text-xs font-semibold transition"
                           [class]="selectedSalaryRegion() === region.label
-                            ? 'border-ns-primary bg-ns-primary text-white'
+                            ? 'border-ns-primary bg-ns-primary text-ns-primaryFg'
                             : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'"
                           (click)="setSalaryRegion(region.label)"
                         >{{ region.flag }} {{ region.label }}</button>

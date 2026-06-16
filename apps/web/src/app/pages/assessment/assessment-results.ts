@@ -69,10 +69,40 @@ import { environment } from '../../../environments/environment';
       .section-enter {
         animation: fadeUp 500ms ease-out both;
       }
+      .result-logo-light { display: none; }
+      :host-context([data-theme='light']) .result-logo-dark { display: none; }
+      :host-context([data-theme='light']) .result-logo-light { display: block; }
     `,
   ],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text">
+      <!-- ─── Minimal nav ──────────────────────────────────────── -->
+      <nav class="sticky top-0 z-20 flex items-center justify-between border-b border-ns-border bg-ns-bg/95 px-4 py-3 backdrop-blur-sm">
+        <a
+          routerLink="/"
+          class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
+          aria-label="Back to home"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Home
+        </a>
+        <a routerLink="/" aria-label="Skill to Life" class="no-underline">
+          <img src="/assets/logo-full-light.png" alt="Skill to Life" class="result-logo-dark h-7 w-auto" />
+          <img src="/assets/logo-full.png" alt="Skill to Life" class="result-logo-light h-7 w-auto" />
+        </a>
+        @if (auth.currentUser$ | async) {
+          <a
+            routerLink="/profile"
+            class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
+          >
+            My profile
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </a>
+        } @else {
+          <div class="w-16"></div>
+        }
+      </nav>
+
       <!-- ─── LOADING SKELETON ──────────────────────────────────── -->
       @if (loading()) {
         <div class="mx-auto max-w-2xl animate-pulse space-y-6 px-4 py-12">
@@ -136,7 +166,7 @@ import { environment } from '../../../environments/environment';
         >
           <button
             type="button"
-            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-white shadow-ns transition hover:bg-ns-primaryHover"
+            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover"
             (click)="openShare()"
           >
             ↗ Share my result
@@ -451,7 +481,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-white"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-ns-primaryFg"
                       >
                         {{ step.step }}
                       </span>
@@ -486,7 +516,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-white"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-ns-primaryFg"
                       >
                         {{ i + 1 }}
                       </span>
@@ -840,7 +870,7 @@ import { environment } from '../../../environments/environment';
               <div class="mt-5">
                 <button
                   type="button"
-                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-white shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
+                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
                   [disabled]="downloading()"
                   (click)="downloadCard()"
                   data-testid="download-card-btn"
@@ -863,7 +893,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'square'
-                          ? 'bg-ns-primary text-white'
+                          ? 'bg-ns-primary text-ns-primaryFg'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('square')"
@@ -875,7 +905,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'story'
-                          ? 'bg-ns-primary text-white'
+                          ? 'bg-ns-primary text-ns-primaryFg'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('story')"
@@ -1334,6 +1364,14 @@ export class AssessmentResultsComponent implements OnInit {
   private saveResult(): void {
     if (!this.matches.length) return;
     const top = this.matches[0];
+
+    // Skip if this exact result was already saved earlier in this session
+    const cacheKey = `ns_saved_${top.careerId}_${Math.round(top.percentage)}`;
+    if (sessionStorage.getItem(cacheKey)) {
+      this.resultSaved.set(true);
+      return;
+    }
+
     const payload = {
       answers: this.stateService.answers(),
       topCareer: top.careerId,
@@ -1349,6 +1387,7 @@ export class AssessmentResultsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.resultSaved.set(true);
+          sessionStorage.setItem(cacheKey, res.id ?? '1');
           if (res.anonymousToken) {
             sessionStorage.setItem(
               'ns_pending_claim',
