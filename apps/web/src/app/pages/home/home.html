@@ -8,36 +8,65 @@
   <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
   <section
     id="assessment"
-    class="border-b border-ns-border bg-ns-bg px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8"
+    class="relative isolate overflow-hidden px-4 py-20 sm:px-6 sm:py-28 lg:px-8"
+    style="background: var(--ns-hero-gradient)"
   >
+    <div
+      class="pointer-events-none absolute left-1/2 top-16 -z-10 h-96 w-96 -translate-x-1/2 rounded-full bg-ns-purple opacity-20 blur-3xl"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 opacity-40"
+      aria-hidden="true"
+      style="
+        background-image: radial-gradient(
+          circle,
+          rgb(148 163 184 / 0.12) 1px,
+          transparent 1px
+        );
+        background-size: 28px 28px;
+      "
+    ></div>
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-ns-primary to-transparent opacity-60"
+      aria-hidden="true"
+    ></div>
+
     <div class="mx-auto max-w-7xl">
-      <div class="mx-auto max-w-3xl text-center">
+      <div class="mx-auto max-w-4xl text-center">
         <p
-          class="mb-4 text-xs font-semibold uppercase tracking-widest text-ns-primary"
+          class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-ns-primary"
         >
-          {{ 'hero.eyebrow' | translate }}
+          Stop guessing your way into tech.
         </p>
         <h1
-          class="m-0 text-5xl font-bold leading-[1.08] tracking-tight text-ns-text sm:text-6xl"
+          class="m-0 text-5xl font-bold leading-[1.04] tracking-tight text-ns-text sm:text-7xl lg:text-8xl"
         >
-          {{ 'hero.heading' | translate }}
+          Find the tech path that fits you.
         </h1>
         <p
           class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-ns-muted sm:text-xl"
         >
-          {{ 'hero.subheading' | translate }}
+          Take a short assessment and discover your top tech career matches,
+          what to learn, and how to start.
         </p>
         <p class="mx-auto mt-2 max-w-xl text-base leading-7 text-ns-muted">
-          {{ 'hero.tagline' | translate }}
+          No pressure. No confusing roadmaps. Just a clearer first step.
         </p>
 
         <div
           class="mt-10 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap"
           aria-label="Primary actions"
         >
-          <ns-button routerLink="/assessment" size="lg">{{ 'hero.cta.startAssessment' | translate }}</ns-button>
-          <ns-button variant="google" size="lg" href="#google-placeholder">{{ 'hero.cta.continueWithGoogle' | translate }}</ns-button>
-          <ns-button variant="secondary" size="lg" href="#anonymous">{{ 'hero.cta.tryAnonymously' | translate }}</ns-button>
+          <ns-button routerLink="/assessment" size="lg"
+            >Start assessment</ns-button
+          >
+          <ns-button variant="google" size="lg" href="#google-placeholder">
+            Continue with Google
+          </ns-button>
+          <ns-button variant="secondary" size="lg" href="#anonymous"
+            >Try anonymously</ns-button
+          >
         </div>
         <div class="mt-4">
           <ns-button

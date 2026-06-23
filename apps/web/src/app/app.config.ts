@@ -5,9 +5,11 @@ import {
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
-import { provideTranslateService } from '@ngx-translate/core';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withFetch,
+} from '@angular/common/http';
 import { appRoutes } from './app.routes';
 import { tokenInterceptor } from './core/auth/token.interceptor';
 import { AuthService } from './core/auth/auth.service';
@@ -22,8 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(appRoutes),
     provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
-    provideTranslateService({ defaultLanguage: 'en' }),
-    ...provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
     {
       provide: APP_INITIALIZER,
       useFactory: initAuth,

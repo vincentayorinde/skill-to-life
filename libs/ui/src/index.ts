@@ -8,7 +8,5 @@ export * from './lib/option-card/option-card';
 export * from './lib/page-header/page-header';
 export * from './lib/progress/progress';
 export * from './lib/scroll-indicator/scroll-indicator';
-export * from './lib/language-switcher/language-switcher';
-export * from './lib/region-filter/region-filter';
 export * from './lib/tabs/tabs';
 export * from './lib/toast/toast';
