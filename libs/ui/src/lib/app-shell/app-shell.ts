@@ -1,20 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { NsCookieNoticeComponent } from '../cookie-notice/cookie-notice';
-import { NsLanguageSwitcherComponent } from '../language-switcher/language-switcher';
-
-const LANG_KEY = 'ns_language';
-const VALID_LANGS = ['en', 'fr', 'es', 'de', 'pt'];
-
-function readSavedLang(): string {
-  try {
-    const v = globalThis.localStorage?.getItem(LANG_KEY);
-    return v && VALID_LANGS.includes(v) ? v : 'en';
-  } catch {
-    return 'en';
-  }
-}
 
 export interface NsAppShellLink {
   label: string;
@@ -32,7 +18,7 @@ export interface NsAuthUser {
 @Component({
   selector: 'ns-app-shell',
   standalone: true,
-  imports: [RouterLink, NsCookieNoticeComponent, NsLanguageSwitcherComponent],
+  imports: [RouterLink, NsCookieNoticeComponent],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
       <a
@@ -95,10 +81,6 @@ export interface NsAuthUser {
           </nav>
 
           <div class="hidden shrink-0 items-center gap-2 md:flex">
-            <ns-language-switcher
-              [active]="activeLang"
-              (languageChange)="setLanguage($event)"
-            />
             <button
               type="button"
               class="inline-flex min-h-9 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-muted transition duration-base ease-ns hover:border-ns-primary hover:text-ns-text focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
@@ -201,10 +183,6 @@ export interface NsAuthUser {
             </nav>
 
             <div class="mt-4 grid gap-2">
-              <ns-language-switcher
-                [active]="activeLang"
-                (languageChange)="setLanguage($event)"
-              />
               <button
                 type="button"
                 class="inline-flex min-h-10 items-center justify-center rounded-md border border-ns-border bg-ns-card px-3 text-sm font-semibold text-ns-text transition duration-base ease-ns hover:border-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
@@ -265,30 +243,10 @@ export class NsAppShellComponent implements OnInit {
 
   theme: 'dark' | 'light' = 'dark';
   mobileMenuOpen = false;
-  activeLang = 'en';
-
-  private readonly translate = inject(TranslateService, { optional: true });
 
   ngOnInit(): void {
     const savedTheme = this.readSavedTheme();
     this.setTheme(savedTheme ?? 'dark');
-
-    const savedLang = readSavedLang();
-    this.activeLang = savedLang;
-    if (this.translate) {
-      this.translate.setDefaultLang('en');
-      this.translate.use(savedLang);
-    }
-  }
-
-  setLanguage(code: string): void {
-    this.activeLang = code;
-    this.translate?.use(code);
-    try {
-      globalThis.localStorage?.setItem(LANG_KEY, code);
-    } catch {
-      // localStorage unavailable
-    }
   }
 
   toggleTheme(): void {

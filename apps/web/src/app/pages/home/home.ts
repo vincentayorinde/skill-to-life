@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
-import { TranslatePipe } from '@ngx-translate/core';
 import {
   NsAppShellComponent,
   NsAppShellLink,
@@ -21,7 +20,6 @@ import { AuthService } from '../../core/auth/auth.service';
   imports: [
     AsyncPipe,
     RouterLink,
-    TranslatePipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
