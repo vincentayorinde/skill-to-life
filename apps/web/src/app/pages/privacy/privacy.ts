@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -7,24 +8,34 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
 } from 'ui';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-privacy',
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsCardComponent,
     NsPageHeaderComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="Skill to Life"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-3xl">
           <ns-page-header
             eyebrow="Legal"
             title="Privacy policy."
-            description="Last updated: 2025. This policy explains what data NextSkill collects, how it is used, and your rights."
+            description="Last updated: 2025. This policy explains what data Skill to Life collects, how it is used, and your rights."
           >
           </ns-page-header>
 
@@ -60,12 +71,12 @@ import {
                 </p>
                 <p class="m-0">
                   <span class="font-semibold text-ns-text"
-                    >Essential cookies.</span
+                    >Essential session storage.</span
                   >
-                  We use a session token cookie (
+                  We use a local session token (
                   <code
                     class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
-                    >ns_token</code
+                    >skill_to_life_token</code
                   >) to keep you signed in. We also store your theme preference
                   locally. No advertising or tracking cookies are used.
                 </p>
@@ -112,14 +123,14 @@ import {
                 maintainer. Data is not replicated to third-party services.
               </p>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is open source. The full data schema and server code
+                Skill to Life is open source. The full data schema and server code
                 is publicly auditable at
                 <a
-                  href="https://github.com/vincentayorinde/nextskill"
+                  href="https://github.com/vincentayorinde/skill-to-life"
                   target="_blank"
                   rel="noreferrer"
                   class="font-semibold text-ns-primary no-underline hover:underline"
-                  >github.com/vincentayorinde/nextskill</a
+                  >github.com/vincentayorinde/skill-to-life</a
                 >.
               </p>
             </ns-card>
@@ -136,9 +147,9 @@ import {
                 <p class="m-0">
                   To request data deletion or ask any privacy question, contact:
                   <a
-                    href="mailto:mrvincentayorinde@gmail.com"
+                    href="mailto:skilltolife.contact@gmail.com"
                     class="font-semibold text-ns-primary no-underline hover:underline"
-                    >mrvincentayorinde&#64;gmail.com</a
+                    >skilltolife.contact&#64;gmail.com</a
                   >
                 </p>
               </div>
@@ -167,26 +178,23 @@ import {
   `,
 })
 export class PrivacyComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'Home', routerLink: '/' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'About', routerLink: '/about' },
-    {
-      label: 'Open source',
-      href: 'https://github.com/vincentayorinde/nextskill',
-      external: true,
-    },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
 
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Privacy policy — NextSkill');
+    this.titleService.setTitle('Privacy policy — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'NextSkill privacy policy. We collect only what is needed, never sell data, and have no advertising or tracking.',
+        'Skill to Life privacy policy. We collect only what is needed, never sell data, and have no advertising or tracking.',
     });
   }
 }

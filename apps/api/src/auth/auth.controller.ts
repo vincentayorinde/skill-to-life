@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
@@ -30,11 +38,30 @@ export class AuthController {
     res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
   }
 
+  @SkipThrottle()
+  @Get('dev-login')
+  async devLogin(@Res() res: Response): Promise<void> {
+    if (process.env['NODE_ENV'] !== 'development') {
+      throw new NotFoundException('This endpoint is not available');
+    }
+
+    const devUser = await this.authService.findOrCreateDevUser();
+    const token = this.authService.generateToken(devUser);
+    const frontendUrl = process.env['FRONTEND_URL'] ?? 'http://localhost:4200';
+    res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
+  }
+
   @Get('me')
   @UseGuards(JwtAuthGuard)
   getMe(@CurrentUser() user: User): Omit<User, 'googleId'> {
-    const { googleId: _, ...safe } = user;
-    return safe;
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 
   @Post('logout')

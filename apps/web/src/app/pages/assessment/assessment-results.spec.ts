@@ -52,7 +52,7 @@ function createCanvasDownloadMock() {
     });
 
   Object.defineProperty(URL, 'createObjectURL', {
-    value: vi.fn(() => 'blob:nextskill-card'),
+    value: vi.fn(() => 'blob:skill-to-life-card'),
     configurable: true,
   });
   Object.defineProperty(URL, 'revokeObjectURL', {
@@ -325,7 +325,7 @@ describe('AssessmentResultsComponent', () => {
     await downloadPromise;
 
     const careerId = fixture.componentInstance.matches[0].careerId;
-    expect(link.download).toBe(`my-nextskill-${careerId}.png`);
+    expect(link.download).toBe(`my-skill-to-life-${careerId}.png`);
     vi.useRealTimers();
   });
 
@@ -418,7 +418,7 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     const metaService = TestBed.inject(Meta);
     const tag = metaService.getTag('property="og:image"');
-    expect(tag?.content).toBe('/og-default.svg');
+    expect(tag?.content).toBe('/assets/social-preview.png');
   });
 
   it('should set twitter:card to summary_large_image', () => {
@@ -444,7 +444,7 @@ describe('AssessmentResultsComponent', () => {
     await fixture.componentInstance.copyLink();
     fixture.detectChanges();
 
-    expect(writeMock).toHaveBeenCalledWith('https://nextskill.dev/assessment');
+    expect(writeMock).toHaveBeenCalledWith('https://skilltolife.com/assessment');
     expect(fixture.componentInstance.toastVisible()).toBe(true);
     expect(fixture.componentInstance.toastMessage()).toContain('copied');
   });
@@ -515,7 +515,9 @@ describe('AssessmentResultsComponent', () => {
       '_blank',
       'noreferrer',
     );
-    expect(openSpy.mock.calls[0][0]).toContain('NextSkill');
+    expect(decodeURIComponent(openSpy.mock.calls[0][0] as string)).toContain(
+      'Skill to Life',
+    );
     openSpy.mockRestore();
   });
 
@@ -547,7 +549,7 @@ describe('AssessmentResultsComponent', () => {
     openSpy.mockRestore();
   });
 
-  it('copyLink copies nextskill.dev URL to clipboard', async () => {
+  it('copyLink copies skilltolife.com URL to clipboard', async () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
@@ -558,7 +560,7 @@ describe('AssessmentResultsComponent', () => {
       .spyOn(navigator.clipboard, 'writeText')
       .mockResolvedValue(undefined);
     await fixture.componentInstance.copyLink();
-    expect(writeSpy).toHaveBeenCalledWith('https://nextskill.dev/assessment');
+    expect(writeSpy).toHaveBeenCalledWith('https://skilltolife.com/assessment');
     writeSpy.mockRestore();
   });
 

@@ -3,6 +3,95 @@ export interface User {
   email: string;
   name?: string;
   avatar?: string;
+  profile?: UserProfile;
+}
+
+export interface UserProfile {
+  id: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  linkedinUrl?: string;
+  githubUrl?: string;
+  isPublic: boolean;
+  username?: string;
+  currentRole?: string;
+  experienceLevel?: string;
+  savedCareers: SavedCareer[];
+  savedResources: SavedResource[];
+  cvAnalysisCount: number;
+}
+
+export interface SavedCareer {
+  id: string;
+  careerId: string;
+  careerTitle: string;
+  careerEmoji: string;
+  careerSlug: string;
+  notes?: string;
+  savedAt: string;
+}
+
+export interface SavedResource {
+  id: string;
+  resourceTitle: string;
+  resourceUrl: string;
+  platform: string;
+  careerId?: string;
+  careerTitle?: string;
+  type: string;
+  savedAt: string;
+}
+
+export interface CvCareerMatch {
+  careerId: string;
+  careerTitle: string;
+  matchPercentage: number;
+  matchReason: string;
+  tier: 'strong' | 'good' | 'possible';
+}
+
+export interface CvStrength {
+  title: string;
+  description: string;
+}
+
+export interface CvGap {
+  title: string;
+  description: string;
+  impactedCareers: string[];
+}
+
+export interface CvImprovement {
+  priority: 'high' | 'medium' | 'low';
+  action: string;
+  detail: string;
+  impactScore: number;
+}
+
+export interface CvRecommendedCareer {
+  careerId: string;
+  careerTitle: string;
+  whyNow: string;
+  timeToReady: string;
+  keyGap: string;
+}
+
+export interface CvAnalysisResult {
+  id: string;
+  profileScore: number;
+  profileScoreLabel: string;
+  topMatches: CvCareerMatch[];
+  strengths: CvStrength[];
+  gaps: CvGap[];
+  improvements: CvImprovement[];
+  recommendedCareers: CvRecommendedCareer[];
+  summary: string;
+  fullAnalysis?: string;
+  aiModel: string;
+  inputType: string;
+  fileName?: string;
+  createdAt: string;
 }
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';

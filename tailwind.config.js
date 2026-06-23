@@ -20,6 +20,7 @@ module.exports = {
           borderMuted: 'var(--ns-color-border-muted)',
           nav: 'var(--ns-color-nav)',
           primary: 'var(--ns-color-primary)',
+          primaryFg: 'var(--ns-color-primary-fg)',
           primaryHover: 'var(--ns-color-primary-hover)',
           primarySoft: 'var(--ns-color-primary-soft)',
           success: 'var(--ns-color-success)',
@@ -47,6 +48,16 @@ module.exports = {
           'Segoe UI',
           'sans-serif',
         ],
+        mono: [
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          'Liberation Mono',
+          'monospace',
+        ],
       },
       spacing: {
         18: '4.5rem',
@@ -54,6 +65,7 @@ module.exports = {
       },
       borderRadius: {
         ns: '0.5rem',
+        'ns-sm': '0.375rem',
       },
       boxShadow: {
         ns: 'var(--ns-shadow-sm)',

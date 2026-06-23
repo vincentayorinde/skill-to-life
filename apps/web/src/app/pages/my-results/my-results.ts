@@ -83,10 +83,10 @@ export class MyResultsComponent implements OnInit {
   readonly results = signal<SavedResult[]>([]);
 
   ngOnInit(): void {
-    this.titleService.setTitle('My saved results — NextSkill');
+    this.titleService.setTitle('My saved results — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
-      content: 'View your saved NextSkill assessment results.',
+      content: 'View your saved Skill to Life assessment results.',
     });
     this.http
       .get<SavedResult[]>(`${environment.apiUrl}/api/results`)

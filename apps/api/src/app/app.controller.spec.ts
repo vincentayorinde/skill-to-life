@@ -29,7 +29,7 @@ describe('AppController', () => {
       const appController = app.get<AppController>(AppController);
       const result = await appController.getHealth();
       expect(result.status).toBe('ok');
-      expect(result.service).toBe('nextskill-api');
+      expect(result.service).toBe('skill-to-life-api');
       expect(result.version).toBe('1.0.0');
       expect(result.database).toBe('connected');
       expect(result.timestamp).toBeTruthy();

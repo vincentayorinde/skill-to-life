@@ -18,7 +18,7 @@ export class NsCardComponent {
       'block rounded-ns border border-ns-border bg-ns-card text-ns-text shadow-ns transition duration-base ease-ns',
       this.elevated ? 'bg-ns-cardElevated shadow-ns-lg' : '',
       this.interactive
-        ? 'hover:-translate-y-1 hover:border-ns-primary hover:shadow-glow'
+        ? 'cursor-pointer hover:-translate-y-0.5 hover:border-ns-border hover:shadow-glow'
         : '',
       this.padded ? 'p-5 sm:p-6' : '',
     ].join(' ');

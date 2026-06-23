@@ -112,7 +112,7 @@ export class NsButtonComponent {
   private get variantClasses(): string {
     const variants: Record<NsButtonVariant, string> = {
       primary:
-        'border-ns-primary bg-ns-primary text-[#07111f] hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow',
+        'border-ns-primary bg-ns-primary text-ns-primaryFg hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow',
       secondary:
         'border-ns-border bg-ns-card text-ns-text hover:border-ns-primary hover:bg-ns-cardElevated',
       ghost:
@@ -120,7 +120,7 @@ export class NsButtonComponent {
       danger:
         'border-ns-danger bg-ns-danger text-white hover:border-ns-dangerHover hover:bg-ns-dangerHover',
       success:
-        'border-ns-success bg-ns-success text-[#07111f] hover:border-ns-successHover hover:bg-ns-successHover',
+        'border-ns-success bg-ns-success text-white hover:border-ns-successHover hover:bg-ns-successHover',
       google:
         'border-ns-border bg-ns-cardElevated text-ns-text hover:border-ns-primary hover:bg-ns-card hover:shadow-glow',
     };

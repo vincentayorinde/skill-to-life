@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import {
 } from 'ui';
 import { CAREER_PATHS } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
 
 @Component({
   selector: 'app-home',
@@ -28,36 +29,74 @@ import { AuthService } from '../../core/auth/auth.service';
     NsProgressComponent,
   ],
   templateUrl: './home.html',
+  styles: [
+    `
+      .stl-footer-logo {
+        display: block;
+        width: 164px;
+        height: 40px;
+        object-fit: contain;
+        object-position: left center;
+      }
+
+      .stl-footer-logo-light {
+        display: none;
+      }
+
+      :host-context([data-theme='light']) .stl-footer-logo-dark {
+        display: none;
+      }
+
+      :host-context([data-theme='light']) .stl-footer-logo-light {
+        display: block;
+      }
+    `,
+  ],
 })
 export class HomeComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
+  readonly savedIds = signal<Set<string>>(new Set());
+
   ngOnInit(): void {
     this.titleService.setTitle(
-      'NextSkill — Discover your next tech career skill',
+      'Skill to Life — Turn Your Skills Into a Real Career Path',
     );
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Find the tech career path that fits how you think and work. Free 10-question assessment across 26 careers. No paywalls, no upsells.',
+        'Discover your best-fit tech career path, identify skill gaps, follow practical roadmaps, compare salaries, and turn learning into real career outcomes.',
+    });
+    this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
+    this.auth.currentUser$.subscribe((user) => {
+      if (user) this.savedService.getSavedCareers().subscribe();
     });
   }
+
+  toggleSaveCareer(careerId: string, careerTitle: string, careerEmoji: string, careerSlug: string, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.savedIds().has(careerId)) {
+      this.savedService.unsaveCareer(careerId).subscribe();
+    } else {
+      this.savedService.saveCareer({ careerId, careerTitle, careerEmoji, careerSlug }).subscribe();
+    }
+  }
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'How it works', href: '#how-it-works' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
-    { label: 'Go independent', routerLink: '/entrepreneurship' },
     { label: 'Resources', routerLink: '/resources' },
-    { label: 'Open source', href: '#open-source' },
   ];
 
-  protected readonly trustBadges = [
-    { label: 'Open source', variant: 'success' as const },
-    { label: 'Beginner friendly', variant: 'warning' as const },
-    { label: 'Anonymous mode', variant: 'neutral' as const },
-    { label: 'Shareable results', variant: 'purple' as const },
+  protected readonly stats = [
+    { value: '26', label: 'career paths' },
+    { value: '30', label: 'assessment questions' },
+    { value: 'Free', label: 'free and open source' },
+    { value: '6', label: 'salary regions' },
   ];
 
   protected readonly problemCards = [
@@ -97,10 +136,12 @@ export class HomeComponent implements OnInit {
   ];
 
   protected readonly careerPreviews = CAREER_PATHS.slice(0, 12).map((c) => ({
+    id: c.id,
     emoji: c.emoji,
     title: c.title,
     slug: c.slug,
     copy: c.summary,
+    category: c.category,
     tags: c.tags.slice(0, 3),
   }));
 
@@ -151,17 +192,17 @@ export class HomeComponent implements OnInit {
         { label: 'About', href: '/about' },
         {
           label: 'Open source',
-          href: 'https://github.com/vincentayorinde/nextskill',
+          href: 'https://github.com/vincentayorinde/skill-to-life',
           external: true,
         },
         {
           label: 'Changelog',
-          href: 'https://github.com/vincentayorinde/nextskill/blob/main/CHANGELOG.md',
+          href: 'https://github.com/vincentayorinde/skill-to-life/blob/main/CHANGELOG.md',
           external: true,
         },
         {
           label: 'Roadmap',
-          href: 'https://github.com/vincentayorinde/nextskill/blob/main/ROADMAP.md',
+          href: 'https://github.com/vincentayorinde/skill-to-life/blob/main/ROADMAP.md',
           external: true,
         },
       ],

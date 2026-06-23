@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { User } from 'types';
 import { environment } from '../../../environments/environment';
 
-const TOKEN_KEY = 'ns_token';
+const TOKEN_KEY = 'skill_to_life_token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,9 +14,14 @@ export class AuthService {
 
   readonly currentUser$ = this._currentUser$.asObservable();
   readonly isAuthenticated$ = this.currentUser$.pipe(map((u) => u !== null));
+  readonly isDev = environment.devMode;
 
   loginWithGoogle(): void {
     window.location.href = `${environment.apiUrl}/api/auth/google`;
+  }
+
+  devLogin(): void {
+    window.location.href = `${environment.apiUrl}/api/auth/dev-login`;
   }
 
   handleCallback(token: string): Observable<User> {

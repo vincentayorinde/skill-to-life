@@ -22,9 +22,12 @@ export class AuthService {
       where: { googleId: profile.googleId },
     });
 
-    if (existing) return existing;
+    if (existing) {
+      await this.ensureProfile(existing.id);
+      return existing;
+    }
 
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         email: profile.email,
         name: profile.name,
@@ -32,6 +35,25 @@ export class AuthService {
         googleId: profile.googleId,
       },
     });
+
+    await this.ensureProfile(user.id);
+    return user;
+  }
+
+  async findOrCreateDevUser(): Promise<User> {
+    const user = await this.prisma.user.upsert({
+      where: { googleId: 'dev-user-local' },
+      update: {},
+      create: {
+        email: 'dev@skilltolife.local',
+        name: 'Dev User',
+        avatar: null,
+        googleId: 'dev-user-local',
+      },
+    });
+
+    await this.ensureProfile(user.id);
+    return user;
   }
 
   generateToken(user: User): string {
@@ -43,5 +65,12 @@ export class AuthService {
 
   async validateUser(payload: { sub: string }): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id: payload.sub } });
+  }
+
+  private async ensureProfile(userId: string): Promise<void> {
+    const existing = await this.prisma.profile.findUnique({ where: { userId } });
+    if (!existing) {
+      await this.prisma.profile.create({ data: { userId } });
+    }
   }
 }

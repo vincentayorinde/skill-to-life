@@ -39,7 +39,7 @@ export class NotFoundComponent implements OnInit {
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Page not found — NextSkill');
+    this.titleService.setTitle('Page not found — Skill to Life');
     this.metaService.updateTag({ name: 'robots', content: 'noindex' });
   }
 }

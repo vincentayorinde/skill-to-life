@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NsTopLoaderComponent } from 'ui';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NsTopLoaderComponent],
   selector: 'app-root',
-  template: '<router-outlet />',
+  template: `
+    <ns-top-loader />
+    <router-outlet />
+  `,
 })
 export class App {}

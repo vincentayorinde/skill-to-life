@@ -32,16 +32,16 @@ describe('AuthService', () => {
     });
 
     http.expectOne('http://localhost:3000/api/auth/me').flush(mockUser);
-    expect(localStorage.getItem('ns_token')).toBe('test-jwt');
+    expect(localStorage.getItem('skill_to_life_token')).toBe('test-jwt');
   });
 
   it('logout clears token and resets user', () => {
-    localStorage.setItem('ns_token', 'some-token');
+    localStorage.setItem('skill_to_life_token', 'some-token');
 
     service.logout();
 
     http.expectOne('http://localhost:3000/api/auth/logout').flush({});
-    expect(localStorage.getItem('ns_token')).toBeNull();
+    expect(localStorage.getItem('skill_to_life_token')).toBeNull();
   });
 
   it('getToken returns null when not set', () => {
@@ -49,7 +49,7 @@ describe('AuthService', () => {
   });
 
   it('getToken returns stored token', () => {
-    localStorage.setItem('ns_token', 'my-token');
+    localStorage.setItem('skill_to_life_token', 'my-token');
     expect(service.getToken()).toBe('my-token');
   });
 });

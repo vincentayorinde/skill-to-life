@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
@@ -7,6 +8,7 @@ import {
   NsBadgeComponent,
   NsButtonComponent,
   NsCardComponent,
+  NsExternalLinkService,
   NsPageHeaderComponent,
   NsScrollIndicatorComponent,
 } from 'ui';
@@ -23,12 +25,45 @@ import {
   getEntrepreneurshipDataByCareerId,
   formatSalaryRange,
 } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
+
+type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
+
+interface RegionConfig {
+  label: SalaryRegion;
+  flag: string;
+  currency: 'GBP' | 'USD' | 'EUR' | 'NGN';
+  multiplier: number;
+  monthly: boolean;
+}
+
+const SALARY_REGIONS: RegionConfig[] = [
+  { label: 'UK', flag: '🇬🇧', currency: 'GBP', multiplier: 1, monthly: false },
+  { label: 'US', flag: '🇺🇸', currency: 'USD', multiplier: 1.5, monthly: false },
+  { label: 'Canada', flag: '🇨🇦', currency: 'USD', multiplier: 1.2, monthly: false },
+  { label: 'Europe', flag: '🇪🇺', currency: 'EUR', multiplier: 0.9, monthly: false },
+  { label: 'Nigeria', flag: '🇳🇬', currency: 'NGN', multiplier: 2000, monthly: true },
+  { label: 'Global', flag: '🌐', currency: 'GBP', multiplier: 1, monthly: false },
+];
+
+function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig): string {
+  const cMin = Math.round((gbpMin * config.multiplier) / (config.monthly ? 12 : 1));
+  const cMax = Math.round((gbpMax * config.multiplier) / (config.monthly ? 12 : 1));
+  if (config.currency === 'NGN') {
+    const fmt = (n: number) =>
+      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+    return `${fmt(cMin)}–${fmt(cMax)}`;
+  }
+  return formatSalaryRange(cMin, cMax, config.currency);
+}
 
 @Component({
   selector: 'app-career-detail',
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
@@ -37,7 +72,15 @@ import {
     NsScrollIndicatorComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="Skill to Life"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-5xl">
           @if (!career) {
@@ -73,20 +116,41 @@ import {
             </nav>
 
             <!-- Page header -->
-            <ns-page-header
-              [title]="career.title"
-              [description]="career.summary"
-            >
-              <ns-badge [variant]="difficultyVariant(career.difficultyLevel)">
-                {{ career.difficultyLevel }}
-              </ns-badge>
-              @if (career.remoteFriendly) {
-                <ns-badge variant="primary">Remote friendly</ns-badge>
+            <div class="flex items-start justify-between gap-4">
+              <ns-page-header
+                class="min-w-0 flex-1"
+                [title]="career.title"
+                [description]="career.summary"
+              >
+                <ns-badge [variant]="difficultyVariant(career.difficultyLevel)">
+                  {{ career.difficultyLevel }}
+                </ns-badge>
+                @if (career.remoteFriendly) {
+                  <ns-badge variant="primary">Remote friendly</ns-badge>
+                }
+                @if (career.beginnerFriendly) {
+                  <ns-badge variant="success">Beginner friendly</ns-badge>
+                }
+              </ns-page-header>
+
+              @if (auth.currentUser$ | async) {
+                <button
+                  type="button"
+                  class="mt-2 shrink-0 rounded-ns border p-2 transition"
+                  [class]="careerSaved()
+                    ? 'border-ns-primary bg-ns-primarySoft text-ns-primary'
+                    : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'"
+                  (click)="toggleSaveCareer()"
+                  [attr.aria-label]="careerSaved() ? 'Unsave career' : 'Save career'"
+                >
+                  @if (careerSaved()) {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                  } @else {
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                  }
+                </button>
               }
-              @if (career.beginnerFriendly) {
-                <ns-badge variant="success">Beginner friendly</ns-badge>
-              }
-            </ns-page-header>
+            </div>
 
             <div class="mt-8 grid gap-6 lg:grid-cols-3">
               <!-- Main content -->
@@ -160,6 +224,7 @@ import {
                   <ns-card>
                     <div class="flex items-start justify-between gap-4">
                       <div>
+                        <p class="mb-1 font-mono text-xs text-ns-muted">// ROADMAP</p>
                         <h2 class="m-0 text-xl font-bold text-ns-text">
                           Your learning roadmap
                         </h2>
@@ -180,7 +245,7 @@ import {
                           <!-- Step header -->
                           <div class="flex items-start gap-3">
                             <span
-                              class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-black text-[#07111f]"
+                              class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-black text-white"
                               [class]="stepBadgeClass(step.type)"
                             >
                               {{ step.step }}
@@ -208,10 +273,9 @@ import {
                                     res of step.resources;
                                     track res.title
                                   ) {
-                                    <a
-                                      [href]="res.url"
-                                      target="_blank"
-                                      rel="noreferrer"
+                                    <button
+                                      type="button"
+                                      (click)="openRoadmapResource(res)"
                                       class="inline-flex items-center gap-1.5 rounded-full border border-ns-border bg-ns-canvasSubtle px-3 py-1 text-xs font-semibold text-ns-primary no-underline transition hover:bg-ns-primarySoft"
                                     >
                                       {{ res.title }}
@@ -227,7 +291,7 @@ import {
                                           res.type === 'paid' ? 'Paid' : 'Free'
                                         }}
                                       </span>
-                                    </a>
+                                    </button>
                                   }
                                 </div>
                               }
@@ -397,15 +461,31 @@ import {
                 <!-- Salary — rich version -->
                 @if (salaryData) {
                   <ns-card>
+                    <p class="mb-1 font-mono text-xs text-ns-muted">// EARNING POTENTIAL</p>
                     <div class="flex items-start justify-between gap-2">
                       <h2 class="m-0 text-xl font-bold text-ns-text">
                         Earning potential
                       </h2>
                       <span class="text-xs text-ns-muted"
-                        >UK · {{ salaryData.lastUpdated }}</span
+                        >{{ salaryData.lastUpdated }}</span
                       >
                     </div>
-                    <p class="mt-2 text-sm leading-6 text-ns-muted">
+
+                    <!-- Region selector -->
+                    <div class="mt-3 flex flex-wrap gap-1.5">
+                      @for (region of salaryRegions; track region.label) {
+                        <button
+                          type="button"
+                          class="rounded-full border px-2 py-0.5 text-xs font-semibold transition"
+                          [class]="selectedSalaryRegion() === region.label
+                            ? 'border-ns-primary bg-ns-primary text-ns-primaryFg'
+                            : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'"
+                          (click)="setSalaryRegion(region.label)"
+                        >{{ region.flag }} {{ region.label }}</button>
+                      }
+                    </div>
+
+                    <p class="mt-3 text-sm leading-6 text-ns-muted">
                       {{ salaryData.summary }}
                     </p>
 
@@ -446,40 +526,47 @@ import {
                         <p class="mb-2 text-xs font-semibold text-ns-text">
                           Freelance rates
                         </p>
-                        <div class="grid grid-cols-2 gap-2">
+                        @if (activeRegionConfig().monthly) {
                           <div
                             class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
                           >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Day rate
-                            </p>
+                            <p class="m-0 text-[10px] text-ns-muted">Monthly</p>
                             <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.daily.min,
-                                  salaryData.freelanceRate.daily.max,
-                                  salaryData.freelanceRate.daily.currency
-                                )
-                              }}
+                              {{ freelanceMonthlyLabel(salaryData.freelanceRate.daily.min, salaryData.freelanceRate.daily.max) }}
                             </p>
                           </div>
-                          <div
-                            class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
-                          >
-                            <p class="m-0 text-[10px] text-ns-muted">
-                              Hourly rate
-                            </p>
-                            <p class="m-0 text-xs font-bold text-ns-text">
-                              {{
-                                salaryRangeLabel(
-                                  salaryData.freelanceRate.hourly.min,
-                                  salaryData.freelanceRate.hourly.max,
-                                  salaryData.freelanceRate.hourly.currency
-                                )
-                              }}
-                            </p>
+                        } @else {
+                          <div class="grid grid-cols-2 gap-2">
+                            <div
+                              class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Day rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    salaryData.freelanceRate.daily.min,
+                                    salaryData.freelanceRate.daily.max,
+                                    salaryData.freelanceRate.daily.currency
+                                  )
+                                }}
+                              </p>
+                            </div>
+                            <div
+                              class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
+                            >
+                              <p class="m-0 text-[10px] text-ns-muted">Hourly rate</p>
+                              <p class="m-0 text-xs font-bold text-ns-text">
+                                {{
+                                  salaryRangeLabel(
+                                    salaryData.freelanceRate.hourly.min,
+                                    salaryData.freelanceRate.hourly.max,
+                                    salaryData.freelanceRate.hourly.currency
+                                  )
+                                }}
+                              </p>
+                            </div>
                           </div>
-                        </div>
+                        }
                       </div>
                     }
 
@@ -529,6 +616,7 @@ import {
 
                 <!-- Free resources -->
                 <ns-card>
+                  <p class="mb-1 font-mono text-xs text-ns-muted">// RESOURCES</p>
                   <h2 class="m-0 text-xl font-bold text-ns-text">
                     Free resources to get started
                   </h2>
@@ -547,13 +635,30 @@ import {
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <a
-                            class="text-sm font-semibold text-ns-primary no-underline hover:underline"
-                            [href]="resource.url"
-                            target="_blank"
-                            rel="noreferrer"
-                            >{{ resource.title }} →</a
-                          >
+                          <div class="flex items-start gap-2">
+                            <button
+                              type="button"
+                              (click)="openResource(resource, 'free')"
+                              class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
+                            >
+                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                            </button>
+                            @if (auth.currentUser$ | async) {
+                              <button
+                                type="button"
+                                class="shrink-0 text-base leading-none transition"
+                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                (click)="toggleSaveResource(resource, 'free')"
+                              >
+                                @if (savedResourceUrls().has(resource.url)) {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                } @else {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                }
+                              </button>
+                            }
+                          </div>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -585,13 +690,30 @@ import {
                         class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-3"
                       >
                         @if (resource.url) {
-                          <a
-                            class="text-sm font-semibold text-ns-primary no-underline hover:underline"
-                            [href]="resource.url"
-                            target="_blank"
-                            rel="noreferrer"
-                            >{{ resource.title }} →</a
-                          >
+                          <div class="flex items-start gap-2">
+                            <button
+                              type="button"
+                              (click)="openResource(resource, 'paid')"
+                              class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
+                            >
+                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                            </button>
+                            @if (auth.currentUser$ | async) {
+                              <button
+                                type="button"
+                                class="shrink-0 text-base leading-none transition"
+                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                (click)="toggleSaveResource(resource, 'paid')"
+                              >
+                                @if (savedResourceUrls().has(resource.url)) {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                } @else {
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                }
+                              </button>
+                            }
+                          </div>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ resource.title }}
@@ -657,25 +779,31 @@ import {
   `,
 })
 export class CareerDetailComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   career: CareerPath | undefined;
   roadmap: CareerRoadmap | undefined;
   salaryData: CareerSalaryData | undefined;
   entrepreneurshipData: CareerEntrepreneurshipData | undefined;
 
+  readonly salaryRegions = SALARY_REGIONS;
+  readonly selectedSalaryRegion = signal<SalaryRegion>('UK');
+  readonly activeRegionConfig = computed(
+    () => SALARY_REGIONS.find((r) => r.label === this.selectedSalaryRegion())!,
+  );
+
+  readonly careerSaved = signal(false);
+  readonly savedResourceUrls = signal<Set<string>>(new Set());
+
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'Home', routerLink: '/' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
-    { label: 'Go independent', routerLink: '/entrepreneurship' },
     { label: 'Resources', routerLink: '/resources' },
-    {
-      label: 'Open source',
-      href: 'https://github.com/vincentayorinde/nextskill',
-      external: true,
-    },
   ];
 
   private readonly route = inject(ActivatedRoute);
+  private readonly externalLink = inject(NsExternalLinkService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -683,7 +811,7 @@ export class CareerDetailComponent implements OnInit {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
     this.career = getCareerBySlug(slug);
     if (this.career) {
-      this.titleService.setTitle(`${this.career.title} — NextSkill`);
+      this.titleService.setTitle(`${this.career.title} — Skill to Life`);
       this.metaService.updateTag({
         name: 'description',
         content: this.career.summary,
@@ -696,15 +824,110 @@ export class CareerDetailComponent implements OnInit {
         this.career.id,
       );
     }
+
+    this.auth.currentUser$.subscribe((user) => {
+      if (!user || !this.career) return;
+      this.savedService.getSavedCareers().subscribe(() => {
+        this.careerSaved.set(this.savedService.isCareerSaved(this.career!.id));
+      });
+      this.savedService.getSavedResources().subscribe((map) => {
+        const urls = new Set(Object.values(map).flat().map((r) => r.resourceUrl));
+        this.savedResourceUrls.set(urls);
+      });
+    });
   }
 
-  salaryRangeLabel(min: number, max: number, currency: string): string {
-    return formatSalaryRange(min, max, currency);
+  toggleSaveCareer(): void {
+    if (!this.career) return;
+    if (this.careerSaved()) {
+      this.savedService.unsaveCareer(this.career.id).subscribe(() =>
+        this.careerSaved.set(false),
+      );
+    } else {
+      this.savedService
+        .saveCareer({
+          careerId: this.career.id,
+          careerTitle: this.career.title,
+          careerEmoji: this.career.emoji,
+          careerSlug: this.career.slug,
+        })
+        .subscribe(() => this.careerSaved.set(true));
+    }
+  }
+
+  toggleSaveResource(resource: { title: string; url?: string }, type: string): void {
+    if (!resource.url) return;
+    const urls = new Set(this.savedResourceUrls());
+    if (urls.has(resource.url)) {
+      this.savedService.unsaveResource(resource.url).subscribe(() => {
+        urls.delete(resource.url!);
+        this.savedResourceUrls.set(new Set(urls));
+      });
+    } else {
+      this.savedService
+        .saveResource({
+          resourceTitle: resource.title,
+          resourceUrl: resource.url,
+          platform: this.externalLink.extractDomain(resource.url),
+          careerId: this.career?.id,
+          careerTitle: this.career?.title,
+          type,
+        })
+        .subscribe(() => {
+          urls.add(resource.url!);
+          this.savedResourceUrls.set(new Set(urls));
+        });
+    }
+  }
+
+  salaryRangeLabel(min: number, max: number, _currency: string): string {
+    return formatRegionSalary(min, max, this.activeRegionConfig());
+  }
+
+  freelanceMonthlyLabel(dailyMin: number, dailyMax: number): string {
+    const config = this.activeRegionConfig();
+    const cMin = Math.round((dailyMin * 22 * config.multiplier) / 12);
+    const cMax = Math.round((dailyMax * 22 * config.multiplier) / 12);
+    const fmt = (n: number) =>
+      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+    return `${fmt(cMin)}–${fmt(cMax)}`;
+  }
+
+  setSalaryRegion(label: string): void {
+    this.selectedSalaryRegion.set(label as SalaryRegion);
   }
 
   salaryBarWidth(max: number): number {
     const SCALE_MAX = 180000;
     return Math.min(Math.round((max / SCALE_MAX) * 100), 100);
+  }
+
+  openRoadmapResource(resource: {
+    title: string;
+    url: string;
+    platform?: string;
+    type?: string;
+  }): void {
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      careerTitle: this.career?.title,
+      cost: resource.type === 'paid' ? 'paid' : 'free',
+      context: 'career',
+    });
+  }
+
+  openResource(resource: { title: string; url?: string }, cost: string): void {
+    if (!resource.url) return;
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: this.externalLink.extractDomain(resource.url),
+      careerTitle: this.career?.title,
+      cost,
+      context: 'career',
+    });
   }
 
   levelBadgeClass(level: string): string {

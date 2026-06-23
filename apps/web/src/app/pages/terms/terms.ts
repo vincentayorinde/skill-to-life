@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -7,24 +8,34 @@ import {
   NsCardComponent,
   NsPageHeaderComponent,
 } from 'ui';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-terms',
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsCardComponent,
     NsPageHeaderComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="Skill to Life"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-3xl">
           <ns-page-header
             eyebrow="Legal"
             title="Terms of use."
-            description="Last updated: 2025. By using NextSkill you agree to these terms."
+            description="Last updated: 2025. By using Skill to Life you agree to these terms."
           >
           </ns-page-header>
 
@@ -32,7 +43,7 @@ import {
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Free to use</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is free to use. There are no paywalls, premium tiers,
+                Skill to Life is free to use. There are no paywalls, premium tiers,
                 or paid features. The assessment, career data, salary
                 information, and learning resources are all free and will remain
                 so.
@@ -42,9 +53,9 @@ import {
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Open source</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is published under the
+                Skill to Life is published under the
                 <a
-                  href="https://github.com/vincentayorinde/nextskill/blob/main/LICENSE"
+                  href="https://github.com/vincentayorinde/skill-to-life/blob/main/LICENSE"
                   target="_blank"
                   rel="noreferrer"
                   class="font-semibold text-ns-primary no-underline hover:underline"
@@ -60,7 +71,7 @@ import {
               </h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  NextSkill provides career information and a personality-style
+                  Skill to Life provides career information and a personality-style
                   assessment to help you discover paths that may suit you. It is
                   a starting point for exploration, not a guarantee of
                   employment or salary.
@@ -81,7 +92,7 @@ import {
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Acceptable use</h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">When using NextSkill, you agree not to:</p>
+                <p class="m-0">When using Skill to Life, you agree not to:</p>
                 <ul class="mt-2 space-y-2 pl-4">
                   <li>
                     Attempt to reverse-engineer or scrape the service in ways
@@ -101,7 +112,7 @@ import {
                 Limitation of liability
               </h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                NextSkill is provided "as is" without warranty of any kind. We
+                Skill to Life is provided "as is" without warranty of any kind. We
                 make no guarantees about uptime, accuracy of information, or
                 fitness for a particular purpose. Use of this service is at your
                 own risk.
@@ -113,9 +124,9 @@ import {
               <p class="mt-3 text-sm leading-7 text-ns-muted">
                 If you have any questions about these terms, contact:
                 <a
-                  href="mailto:mrvincentayorinde@gmail.com"
+                  href="mailto:skilltolife.contact@gmail.com"
                   class="font-semibold text-ns-primary no-underline hover:underline"
-                  >mrvincentayorinde&#64;gmail.com</a
+                  >skilltolife.contact&#64;gmail.com</a
                 >
               </p>
             </ns-card>
@@ -134,26 +145,23 @@ import {
   `,
 })
 export class TermsComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'Home', routerLink: '/' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
-    { label: 'About', routerLink: '/about' },
-    {
-      label: 'Open source',
-      href: 'https://github.com/vincentayorinde/nextskill',
-      external: true,
-    },
+    { label: 'Salaries', routerLink: '/salaries' },
+    { label: 'Resources', routerLink: '/resources' },
   ];
 
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Terms of use — NextSkill');
+    this.titleService.setTitle('Terms of use — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'NextSkill terms of use. Free to use, open source under MIT, no guarantees on career outcomes.',
+        'Skill to Life terms of use. Free to use, open source under MIT, no guarantees on career outcomes.',
     });
   }
 }

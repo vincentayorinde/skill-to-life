@@ -34,7 +34,7 @@ export class AuthCallbackComponent implements OnInit {
   private claimPendingResult(): void {
     const raw = sessionStorage.getItem('ns_pending_claim');
     if (!raw) {
-      this.router.navigate(['/assessment/results']);
+      this.router.navigate(['/']);
       return;
     }
 
@@ -50,11 +50,11 @@ export class AuthCallbackComponent implements OnInit {
       .subscribe({
         complete: () => {
           sessionStorage.removeItem('ns_pending_claim');
-          this.router.navigate(['/assessment/results']);
+          this.router.navigate(['/']);
         },
         error: () => {
           sessionStorage.removeItem('ns_pending_claim');
-          this.router.navigate(['/assessment/results']);
+          this.router.navigate(['/']);
         },
       });
   }

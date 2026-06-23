@@ -2,110 +2,141 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens — dark first ─────────────────────────────────────── */
 :root {
   color-scheme: dark;
-  --ns-color-bg: #070b14;
-  --ns-color-foreground: #f8fafc;
-  --ns-color-canvas: #0c1220;
-  --ns-color-canvas-subtle: #111827;
-  --ns-color-card: rgb(15 23 42 / 0.78);
-  --ns-color-card-elevated: rgb(17 24 39 / 0.9);
-  --ns-color-text: #f8fafc;
-  --ns-color-muted: #a8b3cf;
-  --ns-color-border: rgb(148 163 184 / 0.24);
-  --ns-color-border-muted: rgb(148 163 184 / 0.14);
-  --ns-color-nav: rgb(7 11 20 / 0.76);
-  --ns-color-primary: #58a6ff;
-  --ns-color-primary-hover: #79c0ff;
-  --ns-color-primary-soft: rgb(56 139 253 / 0.16);
-  --ns-color-success: #3fb950;
-  --ns-color-success-hover: #56d364;
-  --ns-color-success-soft: rgb(63 185 80 / 0.14);
-  --ns-color-danger: #f85149;
-  --ns-color-danger-hover: #ff7b72;
-  --ns-color-danger-soft: rgb(248 81 73 / 0.16);
-  --ns-color-warning: #d29922;
-  --ns-color-warning-soft: rgb(210 153 34 / 0.16);
-  --ns-color-accent: #58a6ff;
-  --ns-color-accent-soft: rgb(88 166 255 / 0.14);
-  --ns-color-purple: #a371f7;
-  --ns-color-purple-soft: rgb(163 113 247 / 0.16);
-  --ns-color-focus: #f2cc60;
-  --ns-hero-gradient:
-    radial-gradient(
-      circle at 50% 0%,
-      rgb(88 166 255 / 0.26),
-      transparent 34rem
-    ),
-    radial-gradient(
-      circle at 80% 18%,
-      rgb(163 113 247 / 0.22),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #090d18 0%, #070b14 60%, #070b14 100%);
-  --ns-radius-sm: 0.375rem;
-  --ns-radius-md: 0.5rem;
-  --ns-radius-lg: 0.75rem;
-  --ns-shadow-sm: 0 16px 48px rgb(0 0 0 / 0.2);
-  --ns-shadow-md:
-    0 18px 50px rgb(0 0 0 / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.04);
-  --ns-shadow-lg: 0 28px 80px rgb(0 0 0 / 0.36);
-  --ns-shadow-glow: 0 0 46px rgb(88 166 255 / 0.22);
-  --ns-focus-ring: 0 0 0 3px rgb(250 204 21 / 0.45);
+
+  /* Backgrounds */
+  --ns-color-bg:              #0A0A0F;
+  --ns-color-canvas:          #0A0A0F;
+  --ns-color-canvas-subtle:   #16161E;
+  --ns-color-card:            #111118;
+  --ns-color-card-elevated:   #1E1E28;
+  --ns-color-foreground:      #F0F0F5;
+
+  /* Text */
+  --ns-color-text:            #F0F0F5;
+  --ns-color-muted:           #8B8B9E;
+
+  /* Borders */
+  --ns-color-border:          rgba(255, 255, 255, 0.08);
+  --ns-color-border-muted:    rgba(255, 255, 255, 0.05);
+
+  /* Nav */
+  --ns-color-nav:             rgba(10, 10, 15, 0.92);
+
+  /* Primary / Accent */
+  --ns-color-primary:         #A3E635;
+  --ns-color-primary-fg:      #0a0a0f;
+  --ns-color-primary-hover:   #8FCE1A;
+  --ns-color-primary-soft:    rgba(163, 230, 53, 0.12);
+  --ns-color-accent:          #A3E635;
+  --ns-color-accent-soft:     rgba(163, 230, 53, 0.12);
+
+  /* Status */
+  --ns-color-success:         #00C896;
+  --ns-color-success-hover:   #00A87C;
+  --ns-color-success-soft:    rgba(0, 200, 150, 0.12);
+  --ns-color-danger:          #FF4560;
+  --ns-color-danger-hover:    #E03050;
+  --ns-color-danger-soft:     rgba(255, 69, 96, 0.16);
+  --ns-color-warning:         #A3E635;
+  --ns-color-warning-soft:    rgba(163, 230, 53, 0.14);
+  --ns-color-purple:          #A371F7;
+  --ns-color-purple-soft:     rgba(163, 113, 247, 0.14);
+  --ns-color-focus:           #A3E635;
+
+  /* Shadows */
+  --ns-shadow-sm:   0 2px 10px rgba(0, 0, 0, 0.32);
+  --ns-shadow-md:   0 14px 42px rgba(0, 0, 0, 0.42), 0 0 34px rgba(163, 230, 53, 0.05);
+  --ns-shadow-lg:   0 24px 70px rgba(0, 0, 0, 0.52), 0 0 54px rgba(163, 230, 53, 0.08);
+  --ns-shadow-glow: 0 26px 80px rgba(0, 0, 0, 0.58), 0 0 44px rgba(163, 230, 53, 0.12);
+
+  /* Radius */
+  --ns-radius-sm: 6px;
+  --ns-radius-md: 10px;
+  --ns-radius-lg: 14px;
+
+  /* Motion */
   --ns-motion-fast: 120ms;
   --ns-motion-base: 180ms;
+
+  /* Hero gradient */
+  --ns-hero-gradient:
+    linear-gradient(180deg, #0A0A0F 0%, #0A0A0F 100%);
+
+  /* --color-* aliases for new components */
+  --color-bg:              var(--ns-color-bg);
+  --color-bg-card:         var(--ns-color-card);
+  --color-bg-secondary:    var(--ns-color-canvas-subtle);
+  --color-bg-tertiary:     var(--ns-color-card-elevated);
+  --color-text:            var(--ns-color-text);
+  --color-text-secondary:  var(--ns-color-muted);
+  --color-border:          var(--ns-color-border);
+  --color-border-strong:   rgba(255, 255, 255, 0.15);
+  --color-border-accent:   rgba(163, 230, 53, 0.4);
+  --color-accent:          var(--ns-color-primary);
+  --color-accent-hover:    var(--ns-color-primary-hover);
+  --color-accent-light:    var(--ns-color-primary-soft);
+  --color-accent-glow:     rgba(163, 230, 53, 0.25);
+  --color-error:           var(--ns-color-danger);
+  --color-error-light:     var(--ns-color-danger-soft);
+  --color-success:         var(--ns-color-success);
+  --shadow-lg:             var(--ns-shadow-lg);
 }
 
+/* ── Light mode overrides ────────────────────────────────────────────── */
 [data-theme='light'] {
   color-scheme: light;
-  --ns-color-bg: #f6f8fa;
-  --ns-color-foreground: #111827;
-  --ns-color-canvas: #ffffff;
-  --ns-color-canvas-subtle: #f8fafc;
-  --ns-color-card: rgb(255 255 255 / 0.92);
-  --ns-color-card-elevated: #ffffff;
-  --ns-color-text: #111827;
-  --ns-color-muted: #64748b;
-  --ns-color-border: #d8dee4;
-  --ns-color-border-muted: #e5e7eb;
-  --ns-color-nav: rgb(255 255 255 / 0.8);
-  --ns-color-primary: #2563eb;
-  --ns-color-primary-hover: #1d4ed8;
-  --ns-color-primary-soft: #dbeafe;
-  --ns-color-success: #16a34a;
-  --ns-color-success-hover: #15803d;
-  --ns-color-success-soft: #dcfce7;
-  --ns-color-danger: #dc2626;
-  --ns-color-danger-hover: #b91c1c;
-  --ns-color-danger-soft: #fee2e2;
-  --ns-color-warning: #d97706;
-  --ns-color-warning-soft: #fef3c7;
-  --ns-color-accent: #2563eb;
-  --ns-color-accent-soft: #dbeafe;
-  --ns-color-purple: #7c3aed;
-  --ns-color-purple-soft: #ede9fe;
-  --ns-color-focus: #ca8a04;
+
+  --ns-color-bg:              #F8F9FA;
+  --ns-color-canvas:          #FFFFFF;
+  --ns-color-canvas-subtle:   #F1F3F5;
+  --ns-color-card:            #FFFFFF;
+  --ns-color-card-elevated:   #E8EAED;
+  --ns-color-foreground:      #0A0A0F;
+  --ns-color-text:            #0A0A0F;
+  --ns-color-muted:           #5F6368;
+  --ns-color-border:          rgba(0, 0, 0, 0.08);
+  --ns-color-border-muted:    rgba(0, 0, 0, 0.05);
+  --ns-color-nav:             rgba(248, 249, 250, 0.92);
+  --ns-color-primary:         #4D7C0F;
+  --ns-color-primary-fg:      #ffffff;
+  --ns-color-primary-hover:   #3A6309;
+  --ns-color-primary-soft:    rgba(77, 124, 15, 0.1);
+  --ns-color-accent:          #4D7C0F;
+  --ns-color-accent-soft:     rgba(77, 124, 15, 0.1);
+  --ns-color-success:         #00A87C;
+  --ns-color-success-hover:   #008F68;
+  --ns-color-success-soft:    rgba(0, 168, 124, 0.1);
+  --ns-color-danger:          #E03050;
+  --ns-color-danger-hover:    #C02040;
+  --ns-color-danger-soft:     rgba(224, 48, 80, 0.1);
+  --ns-color-warning:         #65A30D;
+  --ns-color-warning-soft:    rgba(101, 163, 13, 0.1);
+  --ns-color-purple:          #7C3AED;
+  --ns-color-purple-soft:     rgba(124, 58, 237, 0.1);
+  --ns-color-focus:           #65A30D;
+  --ns-shadow-sm:   0 2px 8px rgba(10, 10, 15, 0.06);
+  --ns-shadow-md:   0 14px 40px rgba(10, 10, 15, 0.1), 0 0 28px rgba(101, 163, 13, 0.06);
+  --ns-shadow-lg:   0 24px 64px rgba(10, 10, 15, 0.14), 0 0 44px rgba(101, 163, 13, 0.08);
+  --ns-shadow-glow: 0 26px 70px rgba(10, 10, 15, 0.16), 0 0 36px rgba(101, 163, 13, 0.12);
   --ns-hero-gradient:
-    radial-gradient(circle at 50% 0%, rgb(37 99 235 / 0.18), transparent 34rem),
-    radial-gradient(
-      circle at 80% 18%,
-      rgb(124 58 237 / 0.14),
-      transparent 28rem
-    ),
-    linear-gradient(180deg, #ffffff 0%, #f6f8fa 72%, #f6f8fa 100%);
-  --ns-shadow-sm:
-    0 1px 2px rgb(17 24 39 / 0.06), 0 1px 3px rgb(17 24 39 / 0.08);
-  --ns-shadow-md:
-    0 10px 25px -12px rgb(17 24 39 / 0.28),
-    0 4px 12px -8px rgb(37 99 235 / 0.24);
-  --ns-shadow-lg: 0 24px 70px -32px rgb(17 24 39 / 0.42);
-  --ns-shadow-glow: 0 0 40px rgb(37 99 235 / 0.16);
+    linear-gradient(180deg, #F8F9FA 0%, #F8F9FA 100%);
+
+  --color-bg-secondary: var(--ns-color-canvas-subtle);
+  --color-bg-tertiary:  var(--ns-color-card-elevated);
+  --color-border:       var(--ns-color-border);
+  --color-border-strong: rgba(0, 0, 0, 0.15);
+  --color-error:        var(--ns-color-danger);
+  --color-error-light:  var(--ns-color-danger-soft);
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
 }
 
+/* ── Global reset ────────────────────────────────────────────────────── */
 html {
   min-height: 100%;
   background: var(--ns-color-bg);
@@ -119,38 +150,93 @@ body {
   margin: 0;
   background: var(--ns-color-bg);
   color: var(--ns-color-text);
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 ::selection {
-  background: #dbeafe;
-  color: #111827;
+  background: rgba(163, 230, 53, 0.25);
+  color: #F0F0F5;
 }
 
 :focus-visible {
-  outline: 3px solid var(--ns-color-focus);
+  outline: 2px solid var(--ns-color-focus);
   outline-offset: 3px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* ── Grid background ─────────────────────────────────────────────────── */
+.grid-bg {
+  position: relative;
+}
+
+.grid-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--ns-color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ns-color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+}
+
+.grid-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-headline-accent {
+  background: linear-gradient(135deg, #FFFFFF 0%, #A0A0B8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .hero-headline-accent {
+  background: none;
+  -webkit-text-fill-color: var(--ns-color-text);
+  color: var(--ns-color-text);
+}
+
+/* ── Pulsing dot ─────────────────────────────────────────────────────── */
+@keyframes ns-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.ns-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ns-color-warning);
+  flex-shrink: 0;
+  animation: ns-pulse 2s ease infinite;
+}
+
+/* ── Wobble animation for hero cards ────────────────────────────────── */
+@keyframes ns-wobble {
+  0%   { transform: translateY(0px) rotate(0deg); }
+  25%  { transform: translateY(-4px) rotate(0.5deg); }
+  50%  { transform: translateY(-2px) rotate(-0.3deg); }
+  75%  { transform: translateY(-5px) rotate(0.3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.ns-wobble {
+  animation: ns-wobble 5s ease-in-out infinite;
 }

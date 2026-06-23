@@ -6,6 +6,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import {
   NsButtonComponent,
   NsBadgeComponent,
+  NsExternalLinkModalComponent,
+  NsExternalLinkService,
   NsScrollIndicatorComponent,
   NsToastComponent,
 } from 'ui';
@@ -39,6 +41,7 @@ import { environment } from '../../../environments/environment';
     AsyncPipe,
     NsButtonComponent,
     NsBadgeComponent,
+    NsExternalLinkModalComponent,
     NsScrollIndicatorComponent,
     NsToastComponent,
   ],
@@ -66,10 +69,40 @@ import { environment } from '../../../environments/environment';
       .section-enter {
         animation: fadeUp 500ms ease-out both;
       }
+      .result-logo-light { display: none; }
+      :host-context([data-theme='light']) .result-logo-dark { display: none; }
+      :host-context([data-theme='light']) .result-logo-light { display: block; }
     `,
   ],
   template: `
-    <div class="min-h-screen bg-ns-bg text-ns-text" data-theme="dark">
+    <div class="min-h-screen bg-ns-bg text-ns-text">
+      <!-- ─── Minimal nav ──────────────────────────────────────── -->
+      <nav class="sticky top-0 z-20 flex items-center justify-between border-b border-ns-border bg-ns-bg/95 px-4 py-3 backdrop-blur-sm">
+        <a
+          routerLink="/"
+          class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
+          aria-label="Back to home"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Home
+        </a>
+        <a routerLink="/" aria-label="Skill to Life" class="no-underline">
+          <img src="/assets/logo-full-light.png" alt="Skill to Life" class="result-logo-dark h-7 w-auto" />
+          <img src="/assets/logo-full.png" alt="Skill to Life" class="result-logo-light h-7 w-auto" />
+        </a>
+        @if (auth.currentUser$ | async) {
+          <a
+            routerLink="/profile"
+            class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
+          >
+            My profile
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </a>
+        } @else {
+          <div class="w-16"></div>
+        }
+      </nav>
+
       <!-- ─── LOADING SKELETON ──────────────────────────────────── -->
       @if (loading()) {
         <div class="mx-auto max-w-2xl animate-pulse space-y-6 px-4 py-12">
@@ -133,7 +166,7 @@ import { environment } from '../../../environments/environment';
         >
           <button
             type="button"
-            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-[#07111f] shadow-ns transition hover:bg-ns-primaryHover"
+            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover"
             (click)="openShare()"
           >
             ↗ Share my result
@@ -267,7 +300,7 @@ import { environment } from '../../../environments/environment';
                   class="mt-8 text-right text-xs tracking-wider text-white/25"
                   aria-hidden="true"
                 >
-                  nextskill.dev
+                  skilltolife.com
                 </p>
               </div>
             </div>
@@ -448,7 +481,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-ns-primaryFg"
                       >
                         {{ step.step }}
                       </span>
@@ -460,14 +493,13 @@ import { environment } from '../../../environments/environment';
                           {{ step.estimatedTime }}
                         </p>
                         @if (step.resources[0]) {
-                          <a
-                            [href]="step.resources[0].url"
-                            target="_blank"
-                            rel="noreferrer"
+                          <button
+                            type="button"
+                            (click)="openRoadmapResource(step.resources[0])"
                             class="mt-2 inline-flex text-xs font-semibold text-ns-primary no-underline hover:underline"
                           >
                             {{ step.resources[0].title }} →
-                          </a>
+                          </button>
                         }
                       </div>
                     </li>
@@ -484,7 +516,7 @@ import { environment } from '../../../environments/environment';
                       class="flex items-start gap-4 rounded-2xl border border-ns-border bg-ns-card p-4"
                     >
                       <span
-                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-[#07111f]"
+                        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-ns-primary text-sm font-black text-ns-primaryFg"
                       >
                         {{ i + 1 }}
                       </span>
@@ -532,14 +564,13 @@ import { environment } from '../../../environments/environment';
                     >
                       <div class="min-w-0 flex-1">
                         @if (res.url) {
-                          <a
-                            [href]="res.url"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            type="button"
+                            (click)="openCareerResource(res)"
                             class="text-sm font-semibold text-ns-primary no-underline hover:underline"
                           >
                             {{ res.title }}
-                          </a>
+                          </button>
                         } @else {
                           <p class="m-0 text-sm font-semibold text-ns-text">
                             {{ res.title }}
@@ -832,14 +863,14 @@ import { environment } from '../../../environments/environment';
                 Share your result
               </h2>
               <p class="mt-1 text-sm text-ns-muted">
-                Tell others what's your NextSkill.
+                Tell others which tech path fits you.
               </p>
 
               <!-- Download card section -->
               <div class="mt-5">
                 <button
                   type="button"
-                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-[#07111f] shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
+                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover disabled:pointer-events-none disabled:opacity-60"
                   [disabled]="downloading()"
                   (click)="downloadCard()"
                   data-testid="download-card-btn"
@@ -862,7 +893,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'square'
-                          ? 'bg-ns-primary text-[#07111f]'
+                          ? 'bg-ns-primary text-ns-primaryFg'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('square')"
@@ -874,7 +905,7 @@ import { environment } from '../../../environments/environment';
                       class="px-3 py-1 text-xs font-semibold transition"
                       [class]="
                         cardFormat() === 'story'
-                          ? 'bg-ns-primary text-[#07111f]'
+                          ? 'bg-ns-primary text-ns-primaryFg'
                           : 'bg-ns-card text-ns-muted hover:text-ns-text'
                       "
                       (click)="cardFormat.set('story')"
@@ -882,6 +913,25 @@ import { environment } from '../../../environments/environment';
                       Story
                     </button>
                   </div>
+                </div>
+
+                <!-- Stats toggle -->
+                <div class="mt-3 flex items-center justify-between gap-2 px-1">
+                  <span class="text-xs text-ns-muted">Include signal breakdown</span>
+                  <button
+                    type="button"
+                    class="relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none"
+                    [class]="showStats() ? 'bg-ns-primary' : 'bg-white/20'"
+                    (click)="showStats.set(!showStats())"
+                    role="switch"
+                    [attr.aria-checked]="showStats()"
+                    aria-label="Include signal breakdown"
+                  >
+                    <span
+                      class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
+                      [class]="showStats() ? 'translate-x-5' : 'translate-x-0'"
+                    ></span>
+                  </button>
                 </div>
               </div>
 
@@ -893,7 +943,11 @@ import { environment } from '../../../environments/environment';
               </div>
 
               <!-- Social share grid — 3 columns -->
-              <div class="mt-4 grid grid-cols-3 gap-2">
+              <div
+                class="mt-4 grid grid-cols-3 gap-2 transition-opacity"
+                [class.opacity-50]="sharing()"
+                [class.pointer-events-none]="sharing()"
+              >
                 <!-- WhatsApp -->
                 <button
                   type="button"
@@ -1094,6 +1148,7 @@ import { environment } from '../../../environments/environment';
       <!-- ─── Toast notification ────────────────────────────────── -->
       <ns-toast [message]="toastMessage()" [visible]="toastVisible()" />
       <ns-scroll-indicator />
+      <ns-external-link-modal />
     </div>
   `,
 })
@@ -1103,13 +1158,16 @@ export class AssessmentResultsComponent implements OnInit {
   private readonly title = inject(Title);
   protected readonly auth = inject(AuthService);
   private readonly http = inject(HttpClient);
+  private readonly externalLink = inject(NsExternalLinkService);
 
   readonly loading = signal(true);
   readonly animated = signal(false);
   readonly shareOpen = signal(false);
   readonly copied = signal(false);
   readonly downloading = signal(false);
+  readonly sharing = signal(false);
   readonly cardFormat = signal<'square' | 'story'>('square');
+  readonly showStats = signal(true);
   readonly toastMessage = signal('');
   readonly toastVisible = signal(false);
   readonly resultSaved = signal(false);
@@ -1122,6 +1180,7 @@ export class AssessmentResultsComponent implements OnInit {
   topEntrepreneurshipData: CareerEntrepreneurshipData | null = null;
   answerCount = 0;
   canNativeShare = false;
+  canNativeShareFiles = false;
 
   readonly CIRCUMFERENCE = 2 * Math.PI * 54;
 
@@ -1238,6 +1297,34 @@ export class AssessmentResultsComponent implements OnInit {
     return getEasiestPath(this.topEntrepreneurshipData.careerId) ?? null;
   }
 
+  openRoadmapResource(resource: {
+    title: string;
+    url: string;
+    platform?: string;
+    type?: string;
+  }): void {
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      careerTitle: this.topCareer?.title,
+      cost: resource.type === 'paid' ? 'paid' : 'free',
+      context: 'results',
+    });
+  }
+
+  openCareerResource(resource: { title: string; url?: string }): void {
+    if (!resource.url) return;
+    this.externalLink.openExternalLink({
+      url: resource.url,
+      title: resource.title,
+      platform: this.externalLink.extractDomain(resource.url),
+      careerTitle: this.topCareer?.title,
+      cost: 'free',
+      context: 'results',
+    });
+  }
+
   ngOnInit(): void {
     this.hasResults = this.stateService.hasResults();
     this.answerCount = Object.keys(this.stateService.answers()).length;
@@ -1258,8 +1345,12 @@ export class AssessmentResultsComponent implements OnInit {
     }
 
     try {
-      this.canNativeShare =
-        typeof navigator !== 'undefined' && 'share' in navigator;
+      this.canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+      if (this.canNativeShare && 'canShare' in navigator) {
+        const testBlob = new Blob([''], { type: 'image/png' });
+        const testFile = new File([testBlob], 'test.png', { type: 'image/png' });
+        this.canNativeShareFiles = navigator.canShare({ files: [testFile] });
+      }
     } catch {
       this.canNativeShare = false;
     }
@@ -1273,6 +1364,14 @@ export class AssessmentResultsComponent implements OnInit {
   private saveResult(): void {
     if (!this.matches.length) return;
     const top = this.matches[0];
+
+    // Skip if this exact result was already saved earlier in this session
+    const cacheKey = `ns_saved_${top.careerId}_${Math.round(top.percentage)}`;
+    if (sessionStorage.getItem(cacheKey)) {
+      this.resultSaved.set(true);
+      return;
+    }
+
     const payload = {
       answers: this.stateService.answers(),
       topCareer: top.careerId,
@@ -1288,6 +1387,7 @@ export class AssessmentResultsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.resultSaved.set(true);
+          sessionStorage.setItem(cacheKey, res.id ?? '1');
           if (res.anonymousToken) {
             sessionStorage.setItem(
               'ns_pending_claim',
@@ -1308,30 +1408,52 @@ export class AssessmentResultsComponent implements OnInit {
     this.auth.loginWithGoogle();
   }
 
-  async downloadCard(): Promise<void> {
-    if (!this.matches.length) return;
+  private buildCardData() {
+    const top = this.matches[0];
+    return {
+      title: top.title,
+      emoji: top.emoji,
+      percentage: top.percentage,
+      matchTier: this.tierLabel(top.matchTier),
+      insight: this.topInsight,
+      stats: this.showStats()
+        ? this.topCategoryBreakdown()
+            .slice(0, 4)
+            .map((item) => ({ label: item.label, value: item.value }))
+        : undefined,
+    };
+  }
 
+  private async generateCard(): Promise<File | null> {
+    if (!this.matches.length) return null;
+    try {
+      const blob = await generateResultCard(this.buildCardData(), this.cardFormat());
+      return new File([blob], `my-skill-to-life-${this.matches[0].careerId}.png`, {
+        type: 'image/png',
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  private triggerDownload(file: File): void {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async downloadCard(): Promise<void> {
+    if (!this.matches.length || this.downloading()) return;
     this.downloading.set(true);
     try {
-      const blob = await generateResultCard(
-        {
-          title: this.matches[0].title,
-          emoji: this.matches[0].emoji,
-          percentage: this.matches[0].percentage,
-          matchTier: this.tierLabel(this.matches[0].matchTier),
-          insight: this.topInsight,
-        },
-        this.cardFormat(),
-      );
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `my-nextskill-${this.matches[0].careerId}.png`;
-      link.click();
-      URL.revokeObjectURL(url);
-      this.showToast('Card downloaded — ready to share!');
-    } catch {
-      // Canvas unavailable in this environment — silently fail.
+      const file = await this.generateCard();
+      if (file) {
+        this.triggerDownload(file);
+        this.showToast('Card downloaded — ready to share!');
+      }
     } finally {
       this.downloading.set(false);
     }
@@ -1345,53 +1467,103 @@ export class AssessmentResultsComponent implements OnInit {
     this.shareOpen.set(false);
   }
 
-  shareToWhatsApp(): void {
-    if (!this.matches.length) return;
+  async shareToWhatsApp(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const text = encodeURIComponent(
-      `I just found my NextSkill! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind out yours 👇\nnextskill.dev`,
-    );
-    window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({
+          files: [file],
+          title: `My Skill to Life result — ${top.title}`,
+          url: 'https://skilltolife.com/assessment',
+        });
+        this.closeShare();
+        return;
+      }
+      if (file) this.triggerDownload(file);
+      const text = encodeURIComponent(
+        `I just found my best-fit tech path with Skill to Life! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind yours 👇\nskilltolife.com`,
+      );
+      window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
+      if (file) this.showToast('Card saved — attach it to your WhatsApp message!');
+      this.closeShare();
+    } catch {
+      /* native share dismissed */
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToX(): void {
-    if (!this.matches.length) return;
+  async shareToX(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const text = encodeURIComponent(
-      `Just found my NextSkill 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nWhat's yours? 👇\nnextskill.dev #NextSkill #TechCareers`,
-    );
-    window.open(
-      `https://twitter.com/intent/tweet?text=${text}`,
-      '_blank',
-      'noreferrer',
-    );
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file) this.triggerDownload(file);
+      const text = encodeURIComponent(
+        `Just found my best-fit tech path 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nFind yours 👇\nskilltolife.com #SkillToLife #TechCareers`,
+      );
+      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noreferrer');
+      if (file) this.showToast('Card downloaded — attach it to your tweet!');
+      this.closeShare();
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToLinkedIn(): void {
-    const url = encodeURIComponent('https://nextskill.dev');
-    window.open(
-      `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      '_blank',
-      'noreferrer',
-    );
-    this.closeShare();
+  async shareToLinkedIn(): Promise<void> {
+    if (this.sharing()) return;
+    this.sharing.set(true);
+    try {
+      const file = await this.generateCard();
+      if (file) this.triggerDownload(file);
+      const url = encodeURIComponent('https://skilltolife.com');
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+        '_blank',
+        'noreferrer',
+      );
+      if (file) this.showToast('Card downloaded — attach it to your LinkedIn post!');
+      this.closeShare();
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
-  shareToSMS(): void {
-    if (!this.matches.length) return;
+  async shareToSMS(): Promise<void> {
+    if (!this.matches.length || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
-    const body = encodeURIComponent(
-      `Check this out — I just found my NextSkill!\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: nextskill.dev`,
-    );
-    window.location.href = `sms:?body=${body}`;
-    this.closeShare();
+    try {
+      const file = await this.generateCard();
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({
+          files: [file],
+          title: `My Skill to Life result — ${top.title}`,
+          url: 'https://skilltolife.com/assessment',
+        });
+        this.closeShare();
+        return;
+      }
+      if (file) this.triggerDownload(file);
+      const body = encodeURIComponent(
+        `Check this out — I just found my best-fit tech path with Skill to Life.\n${top.emoji} ${top.title} — ${top.percentage}% match\nTry it yourself: skilltolife.com`,
+      );
+      window.location.href = `sms:?body=${body}`;
+      this.closeShare();
+    } catch {
+      /* native share dismissed */
+    } finally {
+      this.sharing.set(false);
+    }
   }
 
   async copyLink(): Promise<void> {
     try {
-      await navigator.clipboard.writeText('https://nextskill.dev/assessment');
+      await navigator.clipboard.writeText('https://skilltolife.com/assessment');
       this.copied.set(true);
       setTimeout(() => this.copied.set(false), 2500);
       this.showToast('Link copied — share it anywhere!');
@@ -1401,17 +1573,26 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   async nativeShare(): Promise<void> {
-    if (!this.matches.length || !this.canNativeShare) return;
+    if (!this.matches.length || !this.canNativeShare || this.sharing()) return;
+    this.sharing.set(true);
     const top = this.matches[0];
     try {
-      await navigator.share({
-        title: `My NextSkill — ${top.title}`,
-        text: `${top.emoji} ${top.title} — ${top.percentage}% match. What's yours?`,
-        url: 'https://nextskill.dev/assessment',
-      });
+      const file = await this.generateCard();
+      const shareData: ShareData = {
+        title: `My career path result — ${top.title}`,
+        text: `${top.emoji} ${top.title} — ${top.percentage}% match. Find your best-fit path.`,
+        url: 'https://skilltolife.com/assessment',
+      };
+      if (file && this.canNativeShareFiles) {
+        await navigator.share({ ...shareData, files: [file] });
+      } else {
+        await navigator.share(shareData);
+      }
       this.closeShare();
     } catch {
-      // Share dismissed or not supported.
+      /* Share dismissed or not supported */
+    } finally {
+      this.sharing.set(false);
     }
   }
 
@@ -1425,21 +1606,21 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const insight = this.topInsight;
-    const ogImage = '/og-default.svg';
+    const ogImage = '/assets/social-preview.png';
 
-    this.title.setTitle(`Your NextSkill — ${top.title} | NextSkill`);
+    this.title.setTitle(`Your Skill to Life result — ${top.title} | Skill to Life`);
 
-    const ogTitle = `I found my NextSkill — ${top.title}`;
-    const ogDesc = `${insight} — What's yours?`;
-    const ogUrl = 'https://nextskill.dev/assessment/results';
+    const ogTitle = `I found my best-fit tech path — ${top.title}`;
+    const ogDesc = `${insight} — Find your best-fit path with Skill to Life.`;
+    const ogUrl = 'https://skilltolife.com/assessment/results';
 
     this.meta.updateTag({ property: 'og:title', content: ogTitle });
     this.meta.updateTag({ property: 'og:description', content: ogDesc });
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
-    this.meta.updateTag({ property: 'og:site_name', content: 'NextSkill' });
+    this.meta.updateTag({ property: 'og:site_name', content: 'Skill to Life' });
     this.meta.updateTag({ property: 'og:image', content: ogImage });
-    this.meta.updateTag({ property: 'og:image:width', content: '1200' });
-    this.meta.updateTag({ property: 'og:image:height', content: '630' });
+    this.meta.updateTag({ property: 'og:image:width', content: '1280' });
+    this.meta.updateTag({ property: 'og:image:height', content: '640' });
     this.meta.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',

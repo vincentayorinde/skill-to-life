@@ -1,6 +1,6 @@
-# NextSkill Roadmap
+# Skill to Life Roadmap
 
-NextSkill is built milestone by milestone, in public. This roadmap tracks what has shipped and what comes next.
+Skill to Life is built milestone by milestone, in public. This roadmap tracks what has shipped and what comes next.
 
 ---
 

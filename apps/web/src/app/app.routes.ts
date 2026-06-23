@@ -81,6 +81,19 @@ export const appRoutes: Route[] = [
       import('./pages/terms/terms').then((m) => m.TermsComponent),
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile').then((m) => m.ProfilePageComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'u/:username',
+    loadComponent: () =>
+      import('./pages/public-profile/public-profile').then(
+        (m) => m.PublicProfileComponent,
+      ),
+  },
+  {
     path: 'not-found',
     loadComponent: () =>
       import('./pages/not-found/not-found').then((m) => m.NotFoundComponent),

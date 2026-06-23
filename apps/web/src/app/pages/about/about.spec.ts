@@ -15,11 +15,11 @@ describe('AboutComponent', () => {
     expect(fixture.nativeElement).toBeTruthy();
   });
 
-  it('shows "About NextSkill" heading', () => {
+  it('shows "About Skill to Life" heading', () => {
     const fixture = TestBed.createComponent(AboutComponent);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.textContent).toContain('About NextSkill');
+    expect(el.textContent).toContain('About Skill to Life');
   });
 
   it('mentions open source', () => {

@@ -1,4 +1,5 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, OnInit, computed, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
@@ -13,6 +14,8 @@ import {
 } from 'ui';
 import type { CareerCategory, CareerPath } from 'types';
 import { CAREER_PATHS } from 'types';
+import { AuthService } from '../../core/auth/auth.service';
+import { SavedService } from '../../core/saved/saved.service';
 
 interface TabFilter {
   id: string;
@@ -43,6 +46,7 @@ const TABS: TabFilter[] = [
   standalone: true,
   imports: [
     RouterLink,
+    AsyncPipe,
     NsAppShellComponent,
     NsBadgeComponent,
     NsButtonComponent,
@@ -51,7 +55,15 @@ const TABS: TabFilter[] = [
     NsTabsComponent,
   ],
   template: `
-    <ns-app-shell brand="NextSkill" [links]="shellLinks">
+    <ns-app-shell
+      brand="Skill to Life"
+      [links]="shellLinks"
+      [authUser]="auth.currentUser$ | async"
+      [devMode]="auth.isDev"
+      (signIn)="auth.loginWithGoogle()"
+      (devLogin)="auth.devLogin()"
+      (signOut)="auth.logout()"
+    >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
         <div class="mx-auto max-w-7xl">
           <ns-page-header
@@ -64,28 +76,57 @@ const TABS: TabFilter[] = [
             >
           </ns-page-header>
 
-          <div class="mt-2 overflow-x-auto pb-1">
-            <ns-tabs
-              [tabs]="tabItems"
-              [activeId]="activeTab()"
-              (activeIdChange)="activeTab.set($event)"
-            />
+          <div
+            class="mt-2 flex flex-col gap-3 rounded-ns border border-ns-border bg-ns-card p-2 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div class="min-w-0 overflow-x-auto pb-1 lg:pb-0">
+              <ns-tabs
+                [tabs]="tabItems"
+                [activeId]="activeTab()"
+                (activeIdChange)="setActiveTab($event)"
+              />
+            </div>
+            <label class="min-w-0 text-sm lg:w-80">
+              <span class="sr-only">Search paths</span>
+              <input
+                type="search"
+                class="w-full rounded-ns-sm border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text outline-none transition placeholder:text-ns-muted focus:border-ns-primary"
+                placeholder="Search by title, skill, or category"
+                [value]="searchQuery()"
+                (input)="setSearchQuery($any($event.target).value)"
+              />
+            </label>
           </div>
 
-          <p class="mt-5 text-sm text-ns-muted">
-            {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
-          </p>
+          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="m-0 text-sm text-ns-muted">
+              Showing {{ pageStart() }}-{{ pageEnd() }} of
+              {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
+            </p>
+            <label class="flex items-center gap-2 text-sm text-ns-muted">
+              <span>Show</span>
+              <select
+                class="rounded-ns-sm border border-ns-border bg-ns-card px-2.5 py-1.5 text-sm text-ns-text outline-none transition focus:border-ns-primary"
+                [value]="pageSize()"
+                (change)="setPageSize($any($event.target).value)"
+              >
+                @for (size of pageSizeOptions; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </label>
+          </div>
 
           <div
             class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           >
-            @for (career of filtered(); track career.slug) {
+            @for (career of paginatedCareers(); track career.slug) {
               <ns-card [interactive]="true">
                 <div class="flex items-start justify-between gap-3">
                   <span class="text-3xl leading-none" aria-hidden="true">{{
                     career.emoji
                   }}</span>
-                  <div class="flex flex-wrap gap-1.5">
+                  <div class="flex flex-wrap items-center gap-1.5">
                     <ns-badge
                       [variant]="difficultyVariant(career.difficultyLevel)"
                     >
@@ -93,6 +134,21 @@ const TABS: TabFilter[] = [
                     </ns-badge>
                     @if (career.beginnerFriendly) {
                       <ns-badge variant="success">Beginner ok</ns-badge>
+                    }
+                    @if (auth.currentUser$ | async) {
+                      <button
+                        type="button"
+                        class="rounded p-0.5 transition"
+                        [class]="savedIds().has(career.id) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
+                        [attr.aria-label]="savedIds().has(career.id) ? 'Unsave' : 'Save career'"
+                        (click)="toggleSaveCareer(career, $event)"
+                      >
+                        @if (savedIds().has(career.id)) {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        } @else {
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        }
+                      </button>
                     }
                   </div>
                 </div>
@@ -122,6 +178,51 @@ const TABS: TabFilter[] = [
             }
           </div>
 
+          @if (totalPages() > 1) {
+            <nav
+              class="mt-8 flex flex-col items-center justify-between gap-3 border-t border-ns-border pt-5 sm:flex-row"
+              aria-label="Career pagination"
+            >
+              <p class="m-0 text-sm text-ns-muted">
+                Page {{ currentPageSafe() }} of {{ totalPages() }}
+              </p>
+              <div class="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  type="button"
+                  class="rounded-ns-sm border border-ns-border bg-ns-card px-3 py-2 text-sm font-semibold text-ns-text transition hover:border-ns-primary hover:text-ns-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-ns-border disabled:hover:text-ns-text"
+                  [disabled]="currentPageSafe() === 1"
+                  (click)="previousPage()"
+                >
+                  Previous
+                </button>
+                @for (page of visiblePages(); track page) {
+                  <button
+                    type="button"
+                    class="min-w-10 rounded-ns-sm border px-3 py-2 text-sm font-semibold transition"
+                    [class.border-ns-primary]="page === currentPageSafe()"
+                    [class.bg-ns-primary]="page === currentPageSafe()"
+                    [class.text-white]="page === currentPageSafe()"
+                    [class.border-ns-border]="page !== currentPageSafe()"
+                    [class.bg-ns-card]="page !== currentPageSafe()"
+                    [class.text-ns-text]="page !== currentPageSafe()"
+                    (click)="goToPage(page)"
+                    [attr.aria-current]="page === currentPageSafe() ? 'page' : null"
+                  >
+                    {{ page }}
+                  </button>
+                }
+                <button
+                  type="button"
+                  class="rounded-ns-sm border border-ns-border bg-ns-card px-3 py-2 text-sm font-semibold text-ns-text transition hover:border-ns-primary hover:text-ns-primary disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-ns-border disabled:hover:text-ns-text"
+                  [disabled]="currentPageSafe() === totalPages()"
+                  (click)="nextPage()"
+                >
+                  Next
+                </button>
+              </div>
+            </nav>
+          }
+
           @if (filtered().length === 0) {
             <div class="py-20 text-center">
               <p class="text-ns-muted">No paths in this category yet.</p>
@@ -133,43 +234,142 @@ const TABS: TabFilter[] = [
   `,
 })
 export class CareersComponent implements OnInit {
+  protected readonly auth = inject(AuthService);
+  private readonly savedService = inject(SavedService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
+  readonly savedIds = signal<Set<string>>(new Set());
+
   ngOnInit(): void {
-    this.titleService.setTitle('Tech career paths — NextSkill');
+    this.titleService.setTitle('Tech career paths — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
         'Explore 26 tech career paths — frontend, backend, data, AI, security, design, and more. Find the path that fits how you think and work.',
     });
+    this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
+    this.auth.currentUser$.subscribe((user) => {
+      if (user) this.savedService.getSavedCareers().subscribe();
+    });
+  }
+
+  toggleSaveCareer(career: CareerPath, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.savedIds().has(career.id)) {
+      this.savedService.unsaveCareer(career.id).subscribe();
+    } else {
+      this.savedService.saveCareer({
+        careerId: career.id,
+        careerTitle: career.title,
+        careerEmoji: career.emoji,
+        careerSlug: career.slug,
+      }).subscribe();
+    }
   }
   protected readonly shellLinks: NsAppShellLink[] = [
-    { label: 'Home', routerLink: '/' },
+    { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
-    { label: 'Go independent', routerLink: '/entrepreneurship' },
     { label: 'Resources', routerLink: '/resources' },
-    {
-      label: 'Open source',
-      href: 'https://github.com/vincentayorinde/nextskill',
-      external: true,
-    },
   ];
 
   readonly tabItems: NsTabItem[] = TABS.map((t) => ({
     id: t.id,
     label: t.label,
   }));
+  readonly pageSizeOptions = [10, 20, 30, 50];
+  readonly pageSize = signal<number>(10);
   readonly activeTab = signal<string>('all');
+  readonly searchQuery = signal<string>('');
+  readonly currentPage = signal<number>(1);
 
-  readonly filtered = (): CareerPath[] => {
+  readonly filtered = computed((): CareerPath[] => {
     const id = this.activeTab();
     const tab = TABS.find((t) => t.id === id);
-    return tab?.category
+    const query = this.searchQuery().trim().toLowerCase();
+    const byCategory = tab?.category
       ? CAREER_PATHS.filter((c) => c.category === tab.category)
       : CAREER_PATHS;
-  };
+
+    if (!query) return byCategory;
+
+    return byCategory.filter((career) =>
+      [
+        career.title,
+        career.summary,
+        career.category,
+        career.difficultyLevel,
+        ...career.tags,
+      ]
+        .join(' ')
+        .toLowerCase()
+        .includes(query),
+    );
+  });
+
+  readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filtered().length / this.pageSize())),
+  );
+
+  readonly currentPageSafe = computed(() =>
+    Math.min(this.currentPage(), this.totalPages()),
+  );
+
+  readonly paginatedCareers = computed(() => {
+    const start = (this.currentPageSafe() - 1) * this.pageSize();
+    return this.filtered().slice(start, start + this.pageSize());
+  });
+
+  readonly pageStart = computed(() =>
+    this.filtered().length === 0
+      ? 0
+      : (this.currentPageSafe() - 1) * this.pageSize() + 1,
+  );
+
+  readonly pageEnd = computed(() =>
+    Math.min(this.currentPageSafe() * this.pageSize(), this.filtered().length),
+  );
+
+  readonly visiblePages = computed(() => {
+    const total = this.totalPages();
+    const current = this.currentPageSafe();
+    const maxVisible = 5;
+    const half = Math.floor(maxVisible / 2);
+    const start = Math.max(1, Math.min(current - half, total - maxVisible + 1));
+    const end = Math.min(total, start + maxVisible - 1);
+
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  });
+
+  setActiveTab(tabId: string): void {
+    this.activeTab.set(tabId);
+    this.currentPage.set(1);
+  }
+
+  setSearchQuery(query: string): void {
+    this.searchQuery.set(query);
+    this.currentPage.set(1);
+  }
+
+  setPageSize(size: string | number): void {
+    const parsed = Number(size);
+    this.pageSize.set(this.pageSizeOptions.includes(parsed) ? parsed : 10);
+    this.currentPage.set(1);
+  }
+
+  goToPage(page: number): void {
+    this.currentPage.set(Math.min(Math.max(page, 1), this.totalPages()));
+  }
+
+  previousPage(): void {
+    this.goToPage(this.currentPageSafe() - 1);
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPageSafe() + 1);
+  }
 
   difficultyVariant(level: string): 'success' | 'warning' | 'accent' {
     if (level === 'beginner') return 'success';
