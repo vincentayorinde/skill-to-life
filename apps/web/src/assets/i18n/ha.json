@@ -1,0 +1,93 @@
+{
+  "_note": "Hausa translation — technical vocabulary for software/tech careers is not yet standardised in Hausa. English terms are retained where no established equivalent exists.",
+  "nav": {
+    "howItWorks": "Yadda yake aiki",
+    "careerPaths": "Hanyoyin sana'a",
+    "salaries": "Albasoshi",
+    "goIndependent": "Zama mai zaman kai",
+    "resources": "Kayan aiki",
+    "openSource": "Open source",
+    "myResults": "Sakamakon na",
+    "signIn": "Shiga",
+    "signOut": "Fita",
+    "startAssessment": "Fara gwaji",
+    "darkMode": "Yanayin duhu",
+    "lightMode": "Yanayin haske"
+  },
+  "hero": {
+    "eyebrow": "Daina yin hasashe game da fasaha.",
+    "heading": "Sami hanyar fasaha da ta dace da kai.",
+    "subheading": "Yi ɗan gajeren gwaji ka gano manyan zaɓuɓɓukan sana'ar fasaha da suka dace da kai, abin da za ka koya, da kuma yadda za ka fara.",
+    "tagline": "Babu matsin lamba. Babu taswirorin da suka rikitar. Kawai mataki na farko mafi sauƙi.",
+    "cta": {
+      "startAssessment": "Fara gwaji",
+      "continueWithGoogle": "Ci gaba da Google",
+      "tryAnonymously": "Gwada ba tare da bayyana suna ba",
+      "viewOpenSource": "Duba aikin open source"
+    }
+  },
+  "assessment": {
+    "title": "Gwaji",
+    "question": "Tambaya {{current}} daga {{total}}",
+    "progress": "Ci gaban gwaji",
+    "next": "Na gaba",
+    "back": "Koma baya",
+    "submit": "Duba sakamakon na",
+    "skipLabel": "Tsallake wannan tambaya"
+  },
+  "results": {
+    "title": "Sakamakon ka",
+    "topMatch": "Mafi dacewa",
+    "matchScore": "Maki dacewa",
+    "matchPercent": "{{percent}}% dacewa",
+    "viewRoadmap": "Duba taswiran koyo",
+    "viewSalary": "Duba jagorar albashi",
+    "shareResults": "Raba sakamakon na",
+    "retake": "Sake gwajin"
+  },
+  "careers": {
+    "title": "Hanyoyin sana'a",
+    "browseAll": "Duba dukkanin {{count}} hanyoyi",
+    "viewPath": "Duba hanya",
+    "difficulty": {
+      "beginner": "Yana da kyau ga masu fara",
+      "intermediate": "Matsakaici",
+      "advanced": "Na gaba"
+    },
+    "remote": "Aiki nesa yana yiwuwa",
+    "salary": "Duba albashi"
+  },
+  "salaries": {
+    "title": "Albasoshi a sana'ar fasaha.",
+    "eyebrow": "Jagoran albashi",
+    "sortBy": "Tsara bisa:",
+    "sort": {
+      "highest": "Mafi albashi",
+      "entryLevel": "Mafi kyau don farawa",
+      "az": "A–Z"
+    },
+    "levels": {
+      "junior": "Matashi",
+      "mid": "Matsakaici",
+      "senior": "Babba",
+      "lead": "Jagora"
+    },
+    "region": "Yanki:",
+    "freelance": "Freelance",
+    "viewFullDetails": "Duba cikakken bayanai",
+    "disclaimer": "Bayanan albashi ba daidai ba ne gaba ɗaya kuma sun wakilci yanayin kasuwa na 2025."
+  },
+  "footer": {
+    "tagline": "Nemo sana'a ta open source ga masu zaɓar ƙwarewar fasaha na gaba.",
+    "copyright": "© 2025 NextSkill. Open source a ƙarƙashin lasisin MIT.",
+    "madeWith": "An gina shi da ❤️ don kowa da ke neman hanya a cikin fasaha."
+  },
+  "common": {
+    "loading": "Ana lodi...",
+    "error": "Wani abu ya yi kuskure.",
+    "back": "Koma baya",
+    "learnMore": "Kara koyo",
+    "included": "An haɗa",
+    "preview": "Gwanjo"
+  }
+}

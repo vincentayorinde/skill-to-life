@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "howItWorks": "How it works",
+    "careerPaths": "Career paths",
+    "salaries": "Salaries",
+    "goIndependent": "Go independent",
+    "resources": "Resources",
+    "openSource": "Open source",
+    "myResults": "My results",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "startAssessment": "Start assessment",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "hero": {
+    "eyebrow": "Stop guessing your way into tech.",
+    "heading": "Find the tech path that fits you.",
+    "subheading": "Take a short assessment and discover your top tech career matches, what to learn, and how to start.",
+    "tagline": "No pressure. No confusing roadmaps. Just a clearer first step.",
+    "cta": {
+      "startAssessment": "Start assessment",
+      "continueWithGoogle": "Continue with Google",
+      "tryAnonymously": "Try anonymously",
+      "viewOpenSource": "View open-source project"
+    }
+  },
+  "assessment": {
+    "title": "Assessment",
+    "question": "Question {{current}} of {{total}}",
+    "progress": "Assessment progress",
+    "next": "Next",
+    "back": "Back",
+    "submit": "See my results",
+    "skipLabel": "Skip this question"
+  },
+  "results": {
+    "title": "Your results",
+    "topMatch": "Top match",
+    "matchScore": "Match score",
+    "matchPercent": "{{percent}}% match",
+    "viewRoadmap": "View learning roadmap",
+    "viewSalary": "View salary guide",
+    "shareResults": "Share my results",
+    "retake": "Retake assessment"
+  },
+  "careers": {
+    "title": "Career paths",
+    "browseAll": "Browse all {{count}} paths",
+    "viewPath": "View path",
+    "difficulty": {
+      "beginner": "Beginner friendly",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "remote": "Remote friendly",
+    "salary": "Salary insight"
+  },
+  "salaries": {
+    "title": "Tech career salaries.",
+    "eyebrow": "Salary guide",
+    "sortBy": "Sort by:",
+    "sort": {
+      "highest": "Highest paid",
+      "entryLevel": "Best entry level",
+      "az": "A–Z"
+    },
+    "levels": {
+      "junior": "Junior",
+      "mid": "Mid",
+      "senior": "Senior",
+      "lead": "Lead"
+    },
+    "region": "Region:",
+    "freelance": "Freelance",
+    "viewFullDetails": "View full details",
+    "disclaimer": "Salary data is approximate and representative of market conditions as of 2025."
+  },
+  "footer": {
+    "tagline": "Open-source career discovery for people choosing their next tech skill.",
+    "copyright": "© 2025 NextSkill. Open source under MIT licence.",
+    "madeWith": "Built with ❤️ for anyone figuring out their path in tech."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "back": "Back",
+    "learnMore": "Learn more",
+    "included": "Included",
+    "preview": "Preview"
+  }
+}
