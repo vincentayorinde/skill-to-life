@@ -8,11 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
 import { User } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { GoogleOAuthGuard } from './guards/google-oauth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
@@ -21,14 +21,14 @@ export class AuthController {
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleOAuthGuard)
   googleLogin(): void {
     // Passport redirects to Google
   }
 
   @SkipThrottle()
   @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(GoogleOAuthGuard)
   async googleCallback(
     @Req() req: Request & { user: User },
     @Res() res: Response,
