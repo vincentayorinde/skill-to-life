@@ -1,7 +1,7 @@
 {
   "name": "skill-to-life",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "nx": "nx",
     "postinstall": "cd apps/api && npx prisma generate",
