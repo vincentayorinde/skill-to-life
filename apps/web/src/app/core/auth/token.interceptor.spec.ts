@@ -9,12 +9,10 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { tokenInterceptor } from './token.interceptor';
-import { AuthService } from './auth.service';
 
 describe('tokenInterceptor', () => {
   let http: HttpTestingController;
   let client: HttpClient;
-  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +23,6 @@ describe('tokenInterceptor', () => {
     });
     client = TestBed.inject(HttpClient);
     http = TestBed.inject(HttpTestingController);
-    authService = TestBed.inject(AuthService);
     localStorage.clear();
   });
 

@@ -1297,7 +1297,12 @@ export class ProfilePageComponent implements OnInit {
           createdAt: string;
         }[]
       >(`${environment.apiUrl}/api/results`)
-      .subscribe({ next: (r) => this.results.set(r), error: () => {} });
+      .subscribe({
+        next: (r) => this.results.set(r),
+        error: () => {
+          // Results are optional on the profile page; leave the section empty.
+        },
+      });
   }
 
   saveProfile(): void {

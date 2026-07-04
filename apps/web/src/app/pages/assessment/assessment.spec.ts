@@ -348,7 +348,10 @@ describe('AssessmentComponent', () => {
 
     const raw = sessionStorage.getItem('ns_assessment_progress');
     expect(raw).not.toBeNull();
-    const parsed = JSON.parse(raw!);
+    if (raw === null) {
+      throw new Error('Expected assessment progress to be saved.');
+    }
+    const parsed = JSON.parse(raw);
     expect(parsed.currentQuestionIndex).toBe(0);
     expect(parsed.selectedOption).toBe(
       ASSESSMENT_QUESTIONS[0].options[0].label,

@@ -71,6 +71,10 @@ const SALARY_REGIONS: RegionConfig[] = [
   },
 ];
 
+function getRegionConfig(label: SalaryRegion): RegionConfig {
+  return SALARY_REGIONS.find((r) => r.label === label) ?? SALARY_REGIONS[0];
+}
+
 function formatRegionSalary(
   gbpMin: number,
   gbpMax: number,
@@ -936,7 +940,7 @@ export class CareerDetailComponent implements OnInit {
   readonly salaryRegions = SALARY_REGIONS;
   readonly selectedSalaryRegion = signal<SalaryRegion>('UK');
   readonly activeRegionConfig = computed(
-    () => SALARY_REGIONS.find((r) => r.label === this.selectedSalaryRegion())!,
+    () => getRegionConfig(this.selectedSalaryRegion()),
   );
 
   readonly careerSaved = signal(false);
@@ -974,8 +978,9 @@ export class CareerDetailComponent implements OnInit {
 
     this.auth.currentUser$.subscribe((user) => {
       if (!user || !this.career) return;
+      const career = this.career;
       this.savedService.getSavedCareers().subscribe(() => {
-        this.careerSaved.set(this.savedService.isCareerSaved(this.career!.id));
+        this.careerSaved.set(this.savedService.isCareerSaved(career.id));
       });
       this.savedService.getSavedResources().subscribe((map) => {
         const urls = new Set(
@@ -1011,30 +1016,32 @@ export class CareerDetailComponent implements OnInit {
     type: string,
   ): void {
     if (!resource.url) return;
+    const resourceUrl = resource.url;
     const urls = new Set(this.savedResourceUrls());
-    if (urls.has(resource.url)) {
-      this.savedService.unsaveResource(resource.url).subscribe(() => {
-        urls.delete(resource.url!);
+    if (urls.has(resourceUrl)) {
+      this.savedService.unsaveResource(resourceUrl).subscribe(() => {
+        urls.delete(resourceUrl);
         this.savedResourceUrls.set(new Set(urls));
       });
     } else {
       this.savedService
         .saveResource({
           resourceTitle: resource.title,
-          resourceUrl: resource.url,
-          platform: this.externalLink.extractDomain(resource.url),
+          resourceUrl: resourceUrl,
+          platform: this.externalLink.extractDomain(resourceUrl),
           careerId: this.career?.id,
           careerTitle: this.career?.title,
           type,
         })
         .subscribe(() => {
-          urls.add(resource.url!);
+          urls.add(resourceUrl);
           this.savedResourceUrls.set(new Set(urls));
         });
     }
   }
 
-  salaryRangeLabel(min: number, max: number, _currency: string): string {
+  salaryRangeLabel(min: number, max: number, currency: string): string {
+    void currency;
     return formatRegionSalary(min, max, this.activeRegionConfig());
   }
 

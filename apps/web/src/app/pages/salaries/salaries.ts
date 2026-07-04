@@ -59,6 +59,10 @@ const SALARY_REGIONS: RegionConfig[] = [
   },
 ];
 
+function getRegionConfig(label: SalaryRegion): RegionConfig {
+  return SALARY_REGIONS.find((r) => r.label === label) ?? SALARY_REGIONS[0];
+}
+
 function formatRegionSalary(
   gbpMin: number,
   gbpMax: number,
@@ -317,7 +321,7 @@ export class SalariesComponent implements OnInit {
   );
 
   readonly activeRegionConfig = computed(
-    () => SALARY_REGIONS.find((r) => r.label === this.selectedRegion())!,
+    () => getRegionConfig(this.selectedRegion()),
   );
 
   readonly cards = computed(() => buildSalaryCards(this.activeRegionConfig()));
