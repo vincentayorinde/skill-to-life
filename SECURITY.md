@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of Still To Life seriously. If you believe you have found a security vulnerability, please report it to us responsibly.
+We take the security of Skill To Life seriously. If you believe you have found a security vulnerability, please report it to us responsibly.
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
@@ -30,4 +30,4 @@ This policy applies to the latest released version and the `main` branch. Please
 - Performing actions that could degrade the service for other users (e.g. denial of service)
 - Social engineering, phishing, or physical attacks
 
-Thank you for helping keep Still To Life and its users safe.
+Thank you for helping keep Skill To Life and its users safe.
