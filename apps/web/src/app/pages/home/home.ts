@@ -70,19 +70,29 @@ export class HomeComponent implements OnInit {
       content:
         'Discover your best-fit tech career path, identify skill gaps, follow practical roadmaps, compare salaries, and turn learning into real career outcomes.',
     });
-    this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
+    this.savedService.savedCareerIds$.subscribe((ids) =>
+      this.savedIds.set(new Set(ids)),
+    );
     this.auth.currentUser$.subscribe((user) => {
       if (user) this.savedService.getSavedCareers().subscribe();
     });
   }
 
-  toggleSaveCareer(careerId: string, careerTitle: string, careerEmoji: string, careerSlug: string, event: MouseEvent): void {
+  toggleSaveCareer(
+    careerId: string,
+    careerTitle: string,
+    careerEmoji: string,
+    careerSlug: string,
+    event: MouseEvent,
+  ): void {
     event.preventDefault();
     event.stopPropagation();
     if (this.savedIds().has(careerId)) {
       this.savedService.unsaveCareer(careerId).subscribe();
     } else {
-      this.savedService.saveCareer({ careerId, careerTitle, careerEmoji, careerSlug }).subscribe();
+      this.savedService
+        .saveCareer({ careerId, careerTitle, careerEmoji, careerSlug })
+        .subscribe();
     }
   }
   protected readonly shellLinks: NsAppShellLink[] = [

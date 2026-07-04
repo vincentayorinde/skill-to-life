@@ -77,9 +77,12 @@ function delay(ms: number): Promise<void> {
           <div class="flex flex-1 flex-col gap-1.5">
             <div class="flex items-center justify-between">
               <span class="font-mono text-xs text-ns-muted">
-                // {{ currentCategory().label | uppercase }} — Q {{ currentStep() }} OF {{ total }}
+                // {{ currentCategory().label | uppercase }} — Q
+                {{ currentStep() }} OF {{ total }}
               </span>
-              <span class="font-mono text-xs font-bold text-ns-primary">{{ progressPercent() }}%</span>
+              <span class="font-mono text-xs font-bold text-ns-primary"
+                >{{ progressPercent() }}%</span
+              >
             </div>
             <ns-progress
               [value]="progressPercent()"

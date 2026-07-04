@@ -20,7 +20,9 @@ export class CvAnalysisService {
   }
 
   analyseLinkedIn(linkedinUrl: string): Observable<CvAnalysisResult> {
-    return this.http.post<CvAnalysisResult>(`${this.base}/linkedin`, { linkedinUrl });
+    return this.http.post<CvAnalysisResult>(`${this.base}/linkedin`, {
+      linkedinUrl,
+    });
   }
 
   getAnalyses(): Observable<CvAnalysisResult[]> {

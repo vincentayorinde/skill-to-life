@@ -98,10 +98,14 @@ const TABS: TabFilter[] = [
             </label>
           </div>
 
-          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+          >
             <p class="m-0 text-sm text-ns-muted">
               Showing {{ pageStart() }}-{{ pageEnd() }} of
-              {{ filtered().length }} path{{ filtered().length === 1 ? '' : 's' }}
+              {{ filtered().length }} path{{
+                filtered().length === 1 ? '' : 's'
+              }}
             </p>
             <label class="flex items-center gap-2 text-sm text-ns-muted">
               <span>Show</span>
@@ -139,14 +143,44 @@ const TABS: TabFilter[] = [
                       <button
                         type="button"
                         class="rounded p-0.5 transition"
-                        [class]="savedIds().has(career.id) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
-                        [attr.aria-label]="savedIds().has(career.id) ? 'Unsave' : 'Save career'"
+                        [class]="
+                          savedIds().has(career.id)
+                            ? 'text-ns-primary'
+                            : 'text-ns-muted hover:text-ns-primary'
+                        "
+                        [attr.aria-label]="
+                          savedIds().has(career.id) ? 'Unsave' : 'Save career'
+                        "
                         (click)="toggleSaveCareer(career, $event)"
                       >
                         @if (savedIds().has(career.id)) {
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                            />
+                          </svg>
                         } @else {
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                            />
+                          </svg>
                         }
                       </button>
                     }
@@ -206,7 +240,9 @@ const TABS: TabFilter[] = [
                     [class.bg-ns-card]="page !== currentPageSafe()"
                     [class.text-ns-text]="page !== currentPageSafe()"
                     (click)="goToPage(page)"
-                    [attr.aria-current]="page === currentPageSafe() ? 'page' : null"
+                    [attr.aria-current]="
+                      page === currentPageSafe() ? 'page' : null
+                    "
                   >
                     {{ page }}
                   </button>
@@ -248,7 +284,9 @@ export class CareersComponent implements OnInit {
       content:
         'Explore 26 tech career paths — frontend, backend, data, AI, security, design, and more. Find the path that fits how you think and work.',
     });
-    this.savedService.savedCareerIds$.subscribe((ids) => this.savedIds.set(new Set(ids)));
+    this.savedService.savedCareerIds$.subscribe((ids) =>
+      this.savedIds.set(new Set(ids)),
+    );
     this.auth.currentUser$.subscribe((user) => {
       if (user) this.savedService.getSavedCareers().subscribe();
     });
@@ -260,12 +298,14 @@ export class CareersComponent implements OnInit {
     if (this.savedIds().has(career.id)) {
       this.savedService.unsaveCareer(career.id).subscribe();
     } else {
-      this.savedService.saveCareer({
-        careerId: career.id,
-        careerTitle: career.title,
-        careerEmoji: career.emoji,
-        careerSlug: career.slug,
-      }).subscribe();
+      this.savedService
+        .saveCareer({
+          careerId: career.id,
+          careerTitle: career.title,
+          careerEmoji: career.emoji,
+          careerSlug: career.slug,
+        })
+        .subscribe();
     }
   }
   protected readonly shellLinks: NsAppShellLink[] = [

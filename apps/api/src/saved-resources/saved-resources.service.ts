@@ -30,7 +30,12 @@ export class SavedResourcesService {
   async saveResource(userId: string, dto: SaveResourceDto) {
     const profile = await this.profileService.findOrCreate(userId);
     return this.prisma.savedResource.upsert({
-      where: { profileId_resourceUrl: { profileId: profile.id, resourceUrl: dto.resourceUrl } },
+      where: {
+        profileId_resourceUrl: {
+          profileId: profile.id,
+          resourceUrl: dto.resourceUrl,
+        },
+      },
       update: dto,
       create: { profileId: profile.id, ...dto },
     });

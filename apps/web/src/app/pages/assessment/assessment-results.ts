@@ -69,26 +69,54 @@ import { environment } from '../../../environments/environment';
       .section-enter {
         animation: fadeUp 500ms ease-out both;
       }
-      .result-logo-light { display: none; }
-      :host-context([data-theme='light']) .result-logo-dark { display: none; }
-      :host-context([data-theme='light']) .result-logo-light { display: block; }
+      .result-logo-light {
+        display: none;
+      }
+      :host-context([data-theme='light']) .result-logo-dark {
+        display: none;
+      }
+      :host-context([data-theme='light']) .result-logo-light {
+        display: block;
+      }
     `,
   ],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text">
       <!-- ─── Minimal nav ──────────────────────────────────────── -->
-      <nav class="sticky top-0 z-20 flex items-center justify-between border-b border-ns-border bg-ns-bg/95 px-4 py-3 backdrop-blur-sm">
+      <nav
+        class="sticky top-0 z-20 flex items-center justify-between border-b border-ns-border bg-ns-bg/95 px-4 py-3 backdrop-blur-sm"
+      >
         <a
           routerLink="/"
           class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
           aria-label="Back to home"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
           Home
         </a>
         <a routerLink="/" aria-label="Skill to Life" class="no-underline">
-          <img src="/assets/logo-full-light.png" alt="Skill to Life" class="result-logo-dark h-7 w-auto" />
-          <img src="/assets/logo-full.png" alt="Skill to Life" class="result-logo-light h-7 w-auto" />
+          <img
+            src="/assets/logo-full-light.png"
+            alt="Skill to Life"
+            class="result-logo-dark h-7 w-auto"
+          />
+          <img
+            src="/assets/logo-full.png"
+            alt="Skill to Life"
+            class="result-logo-light h-7 w-auto"
+          />
         </a>
         @if (auth.currentUser$ | async) {
           <a
@@ -96,7 +124,20 @@ import { environment } from '../../../environments/environment';
             class="flex items-center gap-1.5 text-sm font-semibold text-ns-muted no-underline transition hover:text-ns-text"
           >
             My profile
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
           </a>
         } @else {
           <div class="w-16"></div>
@@ -917,7 +958,9 @@ import { environment } from '../../../environments/environment';
 
                 <!-- Stats toggle -->
                 <div class="mt-3 flex items-center justify-between gap-2 px-1">
-                  <span class="text-xs text-ns-muted">Include signal breakdown</span>
+                  <span class="text-xs text-ns-muted"
+                    >Include signal breakdown</span
+                  >
                   <button
                     type="button"
                     class="relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none"
@@ -1306,7 +1349,8 @@ export class AssessmentResultsComponent implements OnInit {
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
-      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      platform:
+        resource.platform ?? this.externalLink.extractDomain(resource.url),
       careerTitle: this.topCareer?.title,
       cost: resource.type === 'paid' ? 'paid' : 'free',
       context: 'results',
@@ -1345,10 +1389,13 @@ export class AssessmentResultsComponent implements OnInit {
     }
 
     try {
-      this.canNativeShare = typeof navigator !== 'undefined' && 'share' in navigator;
+      this.canNativeShare =
+        typeof navigator !== 'undefined' && 'share' in navigator;
       if (this.canNativeShare && 'canShare' in navigator) {
         const testBlob = new Blob([''], { type: 'image/png' });
-        const testFile = new File([testBlob], 'test.png', { type: 'image/png' });
+        const testFile = new File([testBlob], 'test.png', {
+          type: 'image/png',
+        });
         this.canNativeShareFiles = navigator.canShare({ files: [testFile] });
       }
     } catch {
@@ -1427,10 +1474,17 @@ export class AssessmentResultsComponent implements OnInit {
   private async generateCard(): Promise<File | null> {
     if (!this.matches.length) return null;
     try {
-      const blob = await generateResultCard(this.buildCardData(), this.cardFormat());
-      return new File([blob], `my-skill-to-life-${this.matches[0].careerId}.png`, {
-        type: 'image/png',
-      });
+      const blob = await generateResultCard(
+        this.buildCardData(),
+        this.cardFormat(),
+      );
+      return new File(
+        [blob],
+        `my-skill-to-life-${this.matches[0].careerId}.png`,
+        {
+          type: 'image/png',
+        },
+      );
     } catch {
       return null;
     }
@@ -1487,7 +1541,8 @@ export class AssessmentResultsComponent implements OnInit {
         `I just found my best-fit tech path with Skill to Life! 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\nFind yours 👇\nskilltolife.com`,
       );
       window.open(`https://wa.me/?text=${text}`, '_blank', 'noreferrer');
-      if (file) this.showToast('Card saved — attach it to your WhatsApp message!');
+      if (file)
+        this.showToast('Card saved — attach it to your WhatsApp message!');
       this.closeShare();
     } catch {
       /* native share dismissed */
@@ -1506,7 +1561,11 @@ export class AssessmentResultsComponent implements OnInit {
       const text = encodeURIComponent(
         `Just found my best-fit tech path 🎯\n${top.emoji} ${top.title} — ${top.percentage}% match\n"${this.topInsight}"\nFind yours 👇\nskilltolife.com #SkillToLife #TechCareers`,
       );
-      window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank', 'noreferrer');
+      window.open(
+        `https://twitter.com/intent/tweet?text=${text}`,
+        '_blank',
+        'noreferrer',
+      );
       if (file) this.showToast('Card downloaded — attach it to your tweet!');
       this.closeShare();
     } finally {
@@ -1526,7 +1585,8 @@ export class AssessmentResultsComponent implements OnInit {
         '_blank',
         'noreferrer',
       );
-      if (file) this.showToast('Card downloaded — attach it to your LinkedIn post!');
+      if (file)
+        this.showToast('Card downloaded — attach it to your LinkedIn post!');
       this.closeShare();
     } finally {
       this.sharing.set(false);
@@ -1608,7 +1668,9 @@ export class AssessmentResultsComponent implements OnInit {
     const insight = this.topInsight;
     const ogImage = '/assets/social-preview.png';
 
-    this.title.setTitle(`Your Skill to Life result — ${top.title} | Skill to Life`);
+    this.title.setTitle(
+      `Your Skill to Life result — ${top.title} | Skill to Life`,
+    );
 
     const ogTitle = `I found my best-fit tech path — ${top.title}`;
     const ogDesc = `${insight} — Find your best-fit path with Skill to Life.`;

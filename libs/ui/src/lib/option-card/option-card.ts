@@ -24,7 +24,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       <span class="ns-option-check" aria-hidden="true">
         @if (selected) {
           <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-            <path d="M1 3.5L3.8 6.5L9 1.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M1 3.5L3.8 6.5L9 1.5"
+              stroke="white"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
         }
       </span>
@@ -56,7 +62,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
       }
 
-      :host-context([data-theme='light']) .ns-option-card:not(.ns-option-selected):hover {
+      :host-context([data-theme='light'])
+        .ns-option-card:not(.ns-option-selected):hover {
         border-color: rgba(0, 0, 0, 0.15);
       }
 

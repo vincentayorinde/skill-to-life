@@ -81,17 +81,25 @@ export interface NsAuthUser {
             <button
               type="button"
               class="ns-theme-toggle"
-              [attr.aria-label]="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+              [attr.aria-label]="
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              "
               (click)="toggleTheme()"
             >
               @if (theme === 'dark') {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                  />
                 </svg>
               } @else {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z" />
+                  <path
+                    d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z"
+                  />
                 </svg>
               }
             </button>
@@ -106,7 +114,10 @@ export interface NsAuthUser {
                   (click)="toggleProfileMenu()"
                 >
                   @if (authUser.avatar) {
-                    <img [src]="authUser.avatar" [alt]="authUser.name ?? 'User avatar'" />
+                    <img
+                      [src]="authUser.avatar"
+                      [alt]="authUser.name ?? 'User avatar'"
+                    />
                   } @else {
                     {{ userInitials(authUser) }}
                   }
@@ -114,15 +125,45 @@ export interface NsAuthUser {
                 @if (profileMenuOpen) {
                   <div class="ns-profile-dropdown">
                     <div class="ns-profile-header">
-                      <p class="ns-profile-name">{{ authUser.name ?? 'Skill to Life user' }}</p>
+                      <p class="ns-profile-name">
+                        {{ authUser.name ?? 'Skill to Life user' }}
+                      </p>
                       <p class="ns-profile-email">{{ authUser.email }}</p>
                     </div>
-                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
-                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'results' }" (click)="closeMenus()">My results</a>
-                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'saved' }" (click)="closeMenus()">Saved careers</a>
-                    <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'cv' }" (click)="closeMenus()">CV analysis</a>
+                    <a
+                      class="ns-profile-item"
+                      routerLink="/profile"
+                      [queryParams]="{ tab: 'profile' }"
+                      (click)="closeMenus()"
+                      >My profile</a
+                    >
+                    <a
+                      class="ns-profile-item"
+                      routerLink="/profile"
+                      [queryParams]="{ tab: 'results' }"
+                      (click)="closeMenus()"
+                      >My results</a
+                    >
+                    <a
+                      class="ns-profile-item"
+                      routerLink="/profile"
+                      [queryParams]="{ tab: 'saved' }"
+                      (click)="closeMenus()"
+                      >Saved careers</a
+                    >
+                    <a
+                      class="ns-profile-item"
+                      routerLink="/profile"
+                      [queryParams]="{ tab: 'cv' }"
+                      (click)="closeMenus()"
+                      >CV analysis</a
+                    >
                     <div class="ns-profile-divider"></div>
-                    <button type="button" class="ns-profile-item ns-profile-signout" (click)="emitSignOut()">
+                    <button
+                      type="button"
+                      class="ns-profile-item ns-profile-signout"
+                      (click)="emitSignOut()"
+                    >
                       Sign out
                     </button>
                   </div>
@@ -130,10 +171,20 @@ export interface NsAuthUser {
               </div>
             } @else {
               @if (devMode) {
-                <button type="button" class="ns-dev-login" (click)="devLogin.emit()">Dev login</button>
+                <button
+                  type="button"
+                  class="ns-dev-login"
+                  (click)="devLogin.emit()"
+                >
+                  Dev login
+                </button>
               }
-              <button type="button" class="ns-sign-in" (click)="signIn.emit()">Sign in</button>
-              <a class="ns-start-assessment" href="#assessment">Start assessment</a>
+              <button type="button" class="ns-sign-in" (click)="signIn.emit()">
+                Sign in
+              </button>
+              <a class="ns-start-assessment" href="#assessment"
+                >Start assessment</a
+              >
             }
           </div>
 
@@ -141,17 +192,25 @@ export interface NsAuthUser {
             <button
               type="button"
               class="ns-theme-toggle ns-theme-toggle-mobile"
-              [attr.aria-label]="theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+              [attr.aria-label]="
+                theme === 'dark'
+                  ? 'Switch to light theme'
+                  : 'Switch to dark theme'
+              "
               (click)="toggleTheme()"
             >
               @if (theme === 'dark') {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  <path
+                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                  />
                 </svg>
               } @else {
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z" />
+                  <path
+                    d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8Z"
+                  />
                 </svg>
               }
             </button>
@@ -165,13 +224,21 @@ export interface NsAuthUser {
                 (click)="toggleProfileMenu()"
               >
                 @if (authUser.avatar) {
-                  <img [src]="authUser.avatar" [alt]="authUser.name ?? 'User avatar'" />
+                  <img
+                    [src]="authUser.avatar"
+                    [alt]="authUser.name ?? 'User avatar'"
+                  />
                 } @else {
                   {{ userInitials(authUser) }}
                 }
               </button>
             } @else {
-              <button type="button" class="ns-mobile-sign-in" aria-label="Sign in" (click)="signIn.emit()">
+              <button
+                type="button"
+                class="ns-mobile-sign-in"
+                aria-label="Sign in"
+                (click)="signIn.emit()"
+              >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M20 21a8 8 0 0 0-16 0" />
                   <circle cx="12" cy="8" r="4" />
@@ -195,15 +262,45 @@ export interface NsAuthUser {
         @if (profileMenuOpen && authUser) {
           <div class="ns-mobile-profile">
             <div class="ns-profile-header">
-              <p class="ns-profile-name">{{ authUser.name ?? 'Skill to Life user' }}</p>
+              <p class="ns-profile-name">
+                {{ authUser.name ?? 'Skill to Life user' }}
+              </p>
               <p class="ns-profile-email">{{ authUser.email }}</p>
             </div>
-            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'profile' }" (click)="closeMenus()">My profile</a>
-            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'results' }" (click)="closeMenus()">My results</a>
-            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'saved' }" (click)="closeMenus()">Saved careers</a>
-            <a class="ns-profile-item" routerLink="/profile" [queryParams]="{ tab: 'cv' }" (click)="closeMenus()">CV analysis</a>
+            <a
+              class="ns-profile-item"
+              routerLink="/profile"
+              [queryParams]="{ tab: 'profile' }"
+              (click)="closeMenus()"
+              >My profile</a
+            >
+            <a
+              class="ns-profile-item"
+              routerLink="/profile"
+              [queryParams]="{ tab: 'results' }"
+              (click)="closeMenus()"
+              >My results</a
+            >
+            <a
+              class="ns-profile-item"
+              routerLink="/profile"
+              [queryParams]="{ tab: 'saved' }"
+              (click)="closeMenus()"
+              >Saved careers</a
+            >
+            <a
+              class="ns-profile-item"
+              routerLink="/profile"
+              [queryParams]="{ tab: 'cv' }"
+              (click)="closeMenus()"
+              >CV analysis</a
+            >
             <div class="ns-profile-divider"></div>
-            <button type="button" class="ns-profile-item ns-profile-signout" (click)="emitSignOut()">
+            <button
+              type="button"
+              class="ns-profile-item ns-profile-signout"
+              (click)="emitSignOut()"
+            >
               Sign out
             </button>
           </div>
@@ -240,9 +337,20 @@ export interface NsAuthUser {
             @if (!authUser) {
               <div class="ns-mobile-ctas">
                 @if (devMode) {
-                  <button type="button" class="ns-dev-login" (click)="devLogin.emit()">Dev login</button>
+                  <button
+                    type="button"
+                    class="ns-dev-login"
+                    (click)="devLogin.emit()"
+                  >
+                    Dev login
+                  </button>
                 }
-                <a class="ns-start-assessment" href="#assessment" (click)="closeMenus()">Start assessment</a>
+                <a
+                  class="ns-start-assessment"
+                  href="#assessment"
+                  (click)="closeMenus()"
+                  >Start assessment</a
+                >
               </div>
             }
           </div>
@@ -389,7 +497,7 @@ export interface NsAuthUser {
 
       :host-context([data-theme='light']) .ns-nav-link,
       :host-context([data-theme='light']) .ns-mobile-link {
-        color: #5F6368;
+        color: #5f6368;
       }
 
       .ns-nav-link {
@@ -417,7 +525,7 @@ export interface NsAuthUser {
 
       :host-context([data-theme='light']) .ns-nav-link:hover,
       :host-context([data-theme='light']) .ns-nav-link.is-active {
-        color: #0A0A0F;
+        color: #0a0a0f;
       }
 
       .ns-desktop-actions {
@@ -510,7 +618,7 @@ export interface NsAuthUser {
         justify-content: center;
         border: 1px solid var(--color-accent, var(--ns-color-primary));
         background: var(--color-accent, var(--ns-color-primary));
-        color: #FFFFFF;
+        color: #ffffff;
         padding: 7px 16px;
         text-decoration: none;
       }
@@ -532,7 +640,7 @@ export interface NsAuthUser {
         border: 0;
         border-radius: 50%;
         background: var(--color-accent, var(--ns-color-primary));
-        color: #FFFFFF;
+        color: #ffffff;
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
@@ -783,7 +891,9 @@ export class NsAppShellComponent implements OnInit {
 
   private readSavedTheme(): 'dark' | 'light' | null {
     try {
-      const savedTheme = globalThis.localStorage?.getItem('skill-to-life-theme');
+      const savedTheme = globalThis.localStorage?.getItem(
+        'skill-to-life-theme',
+      );
 
       return savedTheme === 'dark' || savedTheme === 'light'
         ? savedTheme

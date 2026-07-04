@@ -51,10 +51,7 @@ export class CvAnalysisController {
   }
 
   @Post('text')
-  analyseText(
-    @CurrentUser() user: User,
-    @Body() dto: AnalyseCvTextDto,
-  ) {
+  analyseText(@CurrentUser() user: User, @Body() dto: AnalyseCvTextDto) {
     return this.cvAnalysisService.analyseFromText(user.id, dto.text);
   }
 

@@ -10,7 +10,9 @@ export class SavedService {
   private readonly careersBase = `${environment.apiUrl}/api/saved-careers`;
   private readonly resourcesBase = `${environment.apiUrl}/api/saved-resources`;
 
-  private readonly _savedCareerIds$ = new BehaviorSubject<Set<string>>(new Set());
+  private readonly _savedCareerIds$ = new BehaviorSubject<Set<string>>(
+    new Set(),
+  );
   readonly savedCareerIds$ = this._savedCareerIds$.asObservable();
 
   getSavedCareers(): Observable<SavedCareer[]> {
@@ -21,7 +23,9 @@ export class SavedService {
     );
   }
 
-  saveCareer(career: Omit<SavedCareer, 'id' | 'savedAt'>): Observable<SavedCareer> {
+  saveCareer(
+    career: Omit<SavedCareer, 'id' | 'savedAt'>,
+  ): Observable<SavedCareer> {
     return this.http.post<SavedCareer>(this.careersBase, career).pipe(
       tap((saved) => {
         const ids = new Set(this._savedCareerIds$.value);
@@ -49,7 +53,9 @@ export class SavedService {
     return this.http.get<Record<string, SavedResource[]>>(this.resourcesBase);
   }
 
-  saveResource(resource: Omit<SavedResource, 'id' | 'savedAt'>): Observable<SavedResource> {
+  saveResource(
+    resource: Omit<SavedResource, 'id' | 'savedAt'>,
+  ): Observable<SavedResource> {
     return this.http.post<SavedResource>(this.resourcesBase, resource);
   }
 

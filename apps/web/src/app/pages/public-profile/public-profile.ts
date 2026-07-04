@@ -23,12 +23,20 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
       <div class="mx-auto max-w-2xl px-4 py-12 sm:px-6">
         @if (loading()) {
           <div class="flex items-center justify-center py-20">
-            <div class="h-8 w-8 animate-spin rounded-full border-2 border-ns-primary border-t-transparent"></div>
+            <div
+              class="h-8 w-8 animate-spin rounded-full border-2 border-ns-primary border-t-transparent"
+            ></div>
           </div>
         } @else if (notFound()) {
           <div class="py-20 text-center">
-            <p class="text-base font-medium text-ns-text">This profile is private.</p>
-            <a routerLink="/" class="mt-3 inline-block text-sm text-ns-primary no-underline hover:underline">Go home →</a>
+            <p class="text-base font-medium text-ns-text">
+              This profile is private.
+            </p>
+            <a
+              routerLink="/"
+              class="mt-3 inline-block text-sm text-ns-primary no-underline hover:underline"
+              >Go home →</a
+            >
           </div>
         } @else if (profile()) {
           <!-- Header -->
@@ -40,36 +48,66 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
                 class="h-16 w-16 rounded-full border-2 border-ns-border"
               />
             } @else {
-              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-ns-primarySoft text-2xl font-bold text-ns-primary">
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-ns-primarySoft text-2xl font-bold text-ns-primary"
+              >
                 {{ (profile()!.user?.name ?? '?').charAt(0).toUpperCase() }}
               </div>
             }
             <div>
-              <h1 class="text-xl font-bold text-ns-text">{{ profile()!.user?.name }}</h1>
+              <h1 class="text-xl font-bold text-ns-text">
+                {{ profile()!.user?.name }}
+              </h1>
               @if (profile()!.currentRole) {
-                <p class="text-sm text-ns-muted">{{ profile()!.currentRole }}</p>
+                <p class="text-sm text-ns-muted">
+                  {{ profile()!.currentRole }}
+                </p>
               }
               @if (profile()!.location) {
-                <p class="text-xs text-ns-muted">📍 {{ profile()!.location }}</p>
+                <p class="text-xs text-ns-muted">
+                  📍 {{ profile()!.location }}
+                </p>
               }
             </div>
           </div>
 
           @if (profile()!.bio) {
-            <p class="mb-8 text-sm leading-relaxed text-ns-text">{{ profile()!.bio }}</p>
+            <p class="mb-8 text-sm leading-relaxed text-ns-text">
+              {{ profile()!.bio }}
+            </p>
           }
 
           <!-- Links -->
-          @if (profile()!.website || profile()!.linkedinUrl || profile()!.githubUrl) {
+          @if (
+            profile()!.website || profile()!.linkedinUrl || profile()!.githubUrl
+          ) {
             <div class="mb-8 flex flex-wrap gap-3">
               @if (profile()!.website) {
-                <a [href]="profile()!.website" target="_blank" rel="noreferrer" class="text-sm text-ns-primary no-underline hover:underline">🌐 Website</a>
+                <a
+                  [href]="profile()!.website"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="text-sm text-ns-primary no-underline hover:underline"
+                  >🌐 Website</a
+                >
               }
               @if (profile()!.linkedinUrl) {
-                <a [href]="profile()!.linkedinUrl" target="_blank" rel="noreferrer" class="text-sm text-ns-primary no-underline hover:underline">in LinkedIn</a>
+                <a
+                  [href]="profile()!.linkedinUrl"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="text-sm text-ns-primary no-underline hover:underline"
+                  >in LinkedIn</a
+                >
               }
               @if (profile()!.githubUrl) {
-                <a [href]="profile()!.githubUrl" target="_blank" rel="noreferrer" class="text-sm text-ns-primary no-underline hover:underline">⌥ GitHub</a>
+                <a
+                  [href]="profile()!.githubUrl"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="text-sm text-ns-primary no-underline hover:underline"
+                  >⌥ GitHub</a
+                >
               }
             </div>
           }
@@ -77,8 +115,12 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
           <!-- Stats -->
           <div class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
             @if (profile()!.savedCareers.length > 0) {
-              <div class="rounded-ns-card border border-ns-border bg-ns-card p-4 text-center">
-                <p class="text-2xl font-bold text-ns-primary">{{ profile()!.savedCareers.length }}</p>
+              <div
+                class="rounded-ns-card border border-ns-border bg-ns-card p-4 text-center"
+              >
+                <p class="text-2xl font-bold text-ns-primary">
+                  {{ profile()!.savedCareers.length }}
+                </p>
                 <p class="text-xs text-ns-muted">Career paths saved</p>
               </div>
             }
@@ -87,7 +129,9 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
           <!-- Saved careers -->
           @if (profile()!.savedCareers.length > 0) {
             <div class="mb-8">
-              <h2 class="mb-4 text-base font-semibold text-ns-text">Interested in</h2>
+              <h2 class="mb-4 text-base font-semibold text-ns-text">
+                Interested in
+              </h2>
               <div class="flex flex-wrap gap-2">
                 @for (career of profile()!.savedCareers; track career.id) {
                   <a
@@ -102,13 +146,20 @@ import { NsAppShellComponent, NsAppShellLink } from 'ui';
           }
 
           <!-- CTA -->
-          <div class="rounded-ns-lg border border-ns-border bg-ns-card p-6 text-center">
-            <p class="mb-2 text-base font-semibold text-ns-text">Want to see your career matches?</p>
-            <p class="mb-4 text-sm text-ns-muted">Take the free Skill to Life assessment →</p>
+          <div
+            class="rounded-ns-lg border border-ns-border bg-ns-card p-6 text-center"
+          >
+            <p class="mb-2 text-base font-semibold text-ns-text">
+              Want to see your career matches?
+            </p>
+            <p class="mb-4 text-sm text-ns-muted">
+              Take the free Skill to Life assessment →
+            </p>
             <a
               routerLink="/assessment"
               class="inline-flex items-center justify-center rounded-ns bg-ns-primary px-5 py-2.5 text-sm font-medium text-ns-primaryFg no-underline hover:bg-ns-primaryHover"
-            >Take the free assessment</a>
+              >Take the free assessment</a
+            >
           </div>
         }
       </div>
@@ -129,13 +180,24 @@ export class PublicProfileComponent implements OnInit {
 
   readonly loading = signal(true);
   readonly notFound = signal(false);
-  readonly profile = signal<(UserProfile & { user?: { name?: string; avatar?: string; email: string } }) | null>(null);
+  readonly profile = signal<
+    | (UserProfile & {
+        user?: { name?: string; avatar?: string; email: string };
+      })
+    | null
+  >(null);
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username') ?? '';
     this.profileService.getPublicProfile(username).subscribe({
-      next: (p) => { this.profile.set(p as never); this.loading.set(false); },
-      error: () => { this.notFound.set(true); this.loading.set(false); },
+      next: (p) => {
+        this.profile.set(p as never);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.notFound.set(true);
+        this.loading.set(false);
+      },
     });
   }
 }

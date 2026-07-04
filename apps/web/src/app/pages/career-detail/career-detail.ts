@@ -41,18 +41,52 @@ interface RegionConfig {
 const SALARY_REGIONS: RegionConfig[] = [
   { label: 'UK', flag: '🇬🇧', currency: 'GBP', multiplier: 1, monthly: false },
   { label: 'US', flag: '🇺🇸', currency: 'USD', multiplier: 1.5, monthly: false },
-  { label: 'Canada', flag: '🇨🇦', currency: 'USD', multiplier: 1.2, monthly: false },
-  { label: 'Europe', flag: '🇪🇺', currency: 'EUR', multiplier: 0.9, monthly: false },
-  { label: 'Nigeria', flag: '🇳🇬', currency: 'NGN', multiplier: 2000, monthly: true },
-  { label: 'Global', flag: '🌐', currency: 'GBP', multiplier: 1, monthly: false },
+  {
+    label: 'Canada',
+    flag: '🇨🇦',
+    currency: 'USD',
+    multiplier: 1.2,
+    monthly: false,
+  },
+  {
+    label: 'Europe',
+    flag: '🇪🇺',
+    currency: 'EUR',
+    multiplier: 0.9,
+    monthly: false,
+  },
+  {
+    label: 'Nigeria',
+    flag: '🇳🇬',
+    currency: 'NGN',
+    multiplier: 2000,
+    monthly: true,
+  },
+  {
+    label: 'Global',
+    flag: '🌐',
+    currency: 'GBP',
+    multiplier: 1,
+    monthly: false,
+  },
 ];
 
-function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig): string {
-  const cMin = Math.round((gbpMin * config.multiplier) / (config.monthly ? 12 : 1));
-  const cMax = Math.round((gbpMax * config.multiplier) / (config.monthly ? 12 : 1));
+function formatRegionSalary(
+  gbpMin: number,
+  gbpMax: number,
+  config: RegionConfig,
+): string {
+  const cMin = Math.round(
+    (gbpMin * config.multiplier) / (config.monthly ? 12 : 1),
+  );
+  const cMax = Math.round(
+    (gbpMax * config.multiplier) / (config.monthly ? 12 : 1),
+  );
   if (config.currency === 'NGN') {
     const fmt = (n: number) =>
-      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+      n >= 1_000_000
+        ? `₦${(n / 1_000_000).toFixed(1)}M`
+        : `₦${Math.round(n / 1000)}k`;
     return `${fmt(cMin)}–${fmt(cMax)}`;
   }
   return formatSalaryRange(cMin, cMax, config.currency);
@@ -137,16 +171,44 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                 <button
                   type="button"
                   class="mt-2 shrink-0 rounded-ns border p-2 transition"
-                  [class]="careerSaved()
-                    ? 'border-ns-primary bg-ns-primarySoft text-ns-primary'
-                    : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'"
+                  [class]="
+                    careerSaved()
+                      ? 'border-ns-primary bg-ns-primarySoft text-ns-primary'
+                      : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-primary'
+                  "
                   (click)="toggleSaveCareer()"
-                  [attr.aria-label]="careerSaved() ? 'Unsave career' : 'Save career'"
+                  [attr.aria-label]="
+                    careerSaved() ? 'Unsave career' : 'Save career'
+                  "
                 >
                   @if (careerSaved()) {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                      />
+                    </svg>
                   } @else {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                      />
+                    </svg>
                   }
                 </button>
               }
@@ -224,7 +286,9 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                   <ns-card>
                     <div class="flex items-start justify-between gap-4">
                       <div>
-                        <p class="mb-1 font-mono text-xs text-ns-muted">// ROADMAP</p>
+                        <p class="mb-1 font-mono text-xs text-ns-muted">
+                          // ROADMAP
+                        </p>
                         <h2 class="m-0 text-xl font-bold text-ns-text">
                           Your learning roadmap
                         </h2>
@@ -461,14 +525,16 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                 <!-- Salary — rich version -->
                 @if (salaryData) {
                   <ns-card>
-                    <p class="mb-1 font-mono text-xs text-ns-muted">// EARNING POTENTIAL</p>
+                    <p class="mb-1 font-mono text-xs text-ns-muted">
+                      // EARNING POTENTIAL
+                    </p>
                     <div class="flex items-start justify-between gap-2">
                       <h2 class="m-0 text-xl font-bold text-ns-text">
                         Earning potential
                       </h2>
-                      <span class="text-xs text-ns-muted"
-                        >{{ salaryData.lastUpdated }}</span
-                      >
+                      <span class="text-xs text-ns-muted">{{
+                        salaryData.lastUpdated
+                      }}</span>
                     </div>
 
                     <!-- Region selector -->
@@ -477,11 +543,15 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                         <button
                           type="button"
                           class="rounded-full border px-2 py-0.5 text-xs font-semibold transition"
-                          [class]="selectedSalaryRegion() === region.label
-                            ? 'border-ns-primary bg-ns-primary text-ns-primaryFg'
-                            : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'"
+                          [class]="
+                            selectedSalaryRegion() === region.label
+                              ? 'border-ns-primary bg-ns-primary text-ns-primaryFg'
+                              : 'border-ns-border text-ns-muted hover:border-ns-primary hover:text-ns-text'
+                          "
                           (click)="setSalaryRegion(region.label)"
-                        >{{ region.flag }} {{ region.label }}</button>
+                        >
+                          {{ region.flag }} {{ region.label }}
+                        </button>
                       }
                     </div>
 
@@ -532,7 +602,12 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                           >
                             <p class="m-0 text-[10px] text-ns-muted">Monthly</p>
                             <p class="m-0 text-xs font-bold text-ns-text">
-                              {{ freelanceMonthlyLabel(salaryData.freelanceRate.daily.min, salaryData.freelanceRate.daily.max) }}
+                              {{
+                                freelanceMonthlyLabel(
+                                  salaryData.freelanceRate.daily.min,
+                                  salaryData.freelanceRate.daily.max
+                                )
+                              }}
                             </p>
                           </div>
                         } @else {
@@ -540,7 +615,9 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                             <div
                               class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
                             >
-                              <p class="m-0 text-[10px] text-ns-muted">Day rate</p>
+                              <p class="m-0 text-[10px] text-ns-muted">
+                                Day rate
+                              </p>
                               <p class="m-0 text-xs font-bold text-ns-text">
                                 {{
                                   salaryRangeLabel(
@@ -554,7 +631,9 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                             <div
                               class="rounded-ns border border-ns-border bg-ns-canvasSubtle p-2 text-center"
                             >
-                              <p class="m-0 text-[10px] text-ns-muted">Hourly rate</p>
+                              <p class="m-0 text-[10px] text-ns-muted">
+                                Hourly rate
+                              </p>
                               <p class="m-0 text-xs font-bold text-ns-text">
                                 {{
                                   salaryRangeLabel(
@@ -616,7 +695,9 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
 
                 <!-- Free resources -->
                 <ns-card>
-                  <p class="mb-1 font-mono text-xs text-ns-muted">// RESOURCES</p>
+                  <p class="mb-1 font-mono text-xs text-ns-muted">
+                    // RESOURCES
+                  </p>
                   <h2 class="m-0 text-xl font-bold text-ns-text">
                     Free resources to get started
                   </h2>
@@ -641,20 +722,53 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                               (click)="openResource(resource, 'free')"
                               class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
                             >
-                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                              {{ resource.title }}
+                              <span class="inline-block shrink-0">→</span>
                             </button>
                             @if (auth.currentUser$ | async) {
                               <button
                                 type="button"
                                 class="shrink-0 text-base leading-none transition"
-                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
-                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                [class]="
+                                  savedResourceUrls().has(resource.url)
+                                    ? 'text-ns-primary'
+                                    : 'text-ns-muted hover:text-ns-primary'
+                                "
+                                [attr.aria-label]="
+                                  savedResourceUrls().has(resource.url)
+                                    ? 'Unsave'
+                                    : 'Save'
+                                "
                                 (click)="toggleSaveResource(resource, 'free')"
                               >
                                 @if (savedResourceUrls().has(resource.url)) {
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                                    />
+                                  </svg>
                                 } @else {
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                                    />
+                                  </svg>
                                 }
                               </button>
                             }
@@ -696,20 +810,53 @@ function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig
                               (click)="openResource(resource, 'paid')"
                               class="min-w-0 flex-1 text-left text-sm font-semibold text-ns-primary hover:underline"
                             >
-                              {{ resource.title }} <span class="inline-block shrink-0">→</span>
+                              {{ resource.title }}
+                              <span class="inline-block shrink-0">→</span>
                             </button>
                             @if (auth.currentUser$ | async) {
                               <button
                                 type="button"
                                 class="shrink-0 text-base leading-none transition"
-                                [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
-                                [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave' : 'Save'"
+                                [class]="
+                                  savedResourceUrls().has(resource.url)
+                                    ? 'text-ns-primary'
+                                    : 'text-ns-muted hover:text-ns-primary'
+                                "
+                                [attr.aria-label]="
+                                  savedResourceUrls().has(resource.url)
+                                    ? 'Unsave'
+                                    : 'Save'
+                                "
                                 (click)="toggleSaveResource(resource, 'paid')"
                               >
                                 @if (savedResourceUrls().has(resource.url)) {
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                                    />
+                                  </svg>
                                 } @else {
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                  >
+                                    <path
+                                      d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                                    />
+                                  </svg>
                                 }
                               </button>
                             }
@@ -831,7 +978,11 @@ export class CareerDetailComponent implements OnInit {
         this.careerSaved.set(this.savedService.isCareerSaved(this.career!.id));
       });
       this.savedService.getSavedResources().subscribe((map) => {
-        const urls = new Set(Object.values(map).flat().map((r) => r.resourceUrl));
+        const urls = new Set(
+          Object.values(map)
+            .flat()
+            .map((r) => r.resourceUrl),
+        );
         this.savedResourceUrls.set(urls);
       });
     });
@@ -840,9 +991,9 @@ export class CareerDetailComponent implements OnInit {
   toggleSaveCareer(): void {
     if (!this.career) return;
     if (this.careerSaved()) {
-      this.savedService.unsaveCareer(this.career.id).subscribe(() =>
-        this.careerSaved.set(false),
-      );
+      this.savedService
+        .unsaveCareer(this.career.id)
+        .subscribe(() => this.careerSaved.set(false));
     } else {
       this.savedService
         .saveCareer({
@@ -855,7 +1006,10 @@ export class CareerDetailComponent implements OnInit {
     }
   }
 
-  toggleSaveResource(resource: { title: string; url?: string }, type: string): void {
+  toggleSaveResource(
+    resource: { title: string; url?: string },
+    type: string,
+  ): void {
     if (!resource.url) return;
     const urls = new Set(this.savedResourceUrls());
     if (urls.has(resource.url)) {
@@ -889,7 +1043,9 @@ export class CareerDetailComponent implements OnInit {
     const cMin = Math.round((dailyMin * 22 * config.multiplier) / 12);
     const cMax = Math.round((dailyMax * 22 * config.multiplier) / 12);
     const fmt = (n: number) =>
-      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+      n >= 1_000_000
+        ? `₦${(n / 1_000_000).toFixed(1)}M`
+        : `₦${Math.round(n / 1000)}k`;
     return `${fmt(cMin)}–${fmt(cMax)}`;
   }
 
@@ -911,7 +1067,8 @@ export class CareerDetailComponent implements OnInit {
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
-      platform: resource.platform ?? this.externalLink.extractDomain(resource.url),
+      platform:
+        resource.platform ?? this.externalLink.extractDomain(resource.url),
       careerTitle: this.career?.title,
       cost: resource.type === 'paid' ? 'paid' : 'free',
       context: 'career',

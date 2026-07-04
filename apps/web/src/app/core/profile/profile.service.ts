@@ -28,6 +28,8 @@ export class ProfileService {
   }
 
   getPublicProfile(username: string): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.base}/${encodeURIComponent(username)}`);
+    return this.http.get<UserProfile>(
+      `${this.base}/${encodeURIComponent(username)}`,
+    );
   }
 }

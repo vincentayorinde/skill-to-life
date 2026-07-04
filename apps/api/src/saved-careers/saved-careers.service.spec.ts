@@ -51,7 +51,10 @@ describe('SavedCareersService', () => {
 
     it('creates saved career when not duplicate', async () => {
       mockPrisma.savedCareer.findUnique.mockResolvedValue(null);
-      mockPrisma.savedCareer.create.mockResolvedValue({ id: 'sc1', careerId: 'frontend-developer' });
+      mockPrisma.savedCareer.create.mockResolvedValue({
+        id: 'sc1',
+        careerId: 'frontend-developer',
+      });
       const result = await service.saveCareer('user1', {
         careerId: 'frontend-developer',
         careerTitle: 'Frontend Developer',
@@ -75,12 +78,16 @@ describe('SavedCareersService', () => {
   describe('isCareerSaved', () => {
     it('returns true when saved', async () => {
       mockPrisma.savedCareer.findUnique.mockResolvedValue({ id: 'sc1' });
-      expect(await service.isCareerSaved('user1', 'frontend-developer')).toBe(true);
+      expect(await service.isCareerSaved('user1', 'frontend-developer')).toBe(
+        true,
+      );
     });
 
     it('returns false when not saved', async () => {
       mockPrisma.savedCareer.findUnique.mockResolvedValue(null);
-      expect(await service.isCareerSaved('user1', 'frontend-developer')).toBe(false);
+      expect(await service.isCareerSaved('user1', 'frontend-developer')).toBe(
+        false,
+      );
     });
   });
 });

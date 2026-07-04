@@ -18,7 +18,8 @@ const STORAGE_KEY = 'ns_cookie_notice';
           class="mx-auto flex max-w-7xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between"
         >
           <p class="m-0 text-xs leading-5 text-ns-muted">
-            Skill to Life uses essential cookies only — no tracking, no advertising.
+            Skill to Life uses essential cookies only — no tracking, no
+            advertising.
             <a
               routerLink="/privacy"
               class="font-semibold text-ns-primary no-underline hover:underline"

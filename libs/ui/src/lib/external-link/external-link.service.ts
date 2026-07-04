@@ -1,6 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 
-export type ExternalLinkContext = 'roadmap' | 'resources' | 'career' | 'results' | 'default';
+export type ExternalLinkContext =
+  | 'roadmap'
+  | 'resources'
+  | 'career'
+  | 'results'
+  | 'default';
 
 export interface ExternalLinkPending {
   url: string;

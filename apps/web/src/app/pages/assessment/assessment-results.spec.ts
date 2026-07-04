@@ -444,7 +444,9 @@ describe('AssessmentResultsComponent', () => {
     await fixture.componentInstance.copyLink();
     fixture.detectChanges();
 
-    expect(writeMock).toHaveBeenCalledWith('https://skilltolife.com/assessment');
+    expect(writeMock).toHaveBeenCalledWith(
+      'https://skilltolife.com/assessment',
+    );
     expect(fixture.componentInstance.toastVisible()).toBe(true);
     expect(fixture.componentInstance.toastMessage()).toContain('copied');
   });

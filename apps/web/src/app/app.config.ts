@@ -22,7 +22,10 @@ function initAuth(): () => void {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(appRoutes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
+    provideRouter(
+      appRoutes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+    ),
     provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
     {
       provide: APP_INITIALIZER,

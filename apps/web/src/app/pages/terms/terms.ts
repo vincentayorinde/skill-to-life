@@ -43,8 +43,8 @@ import { AuthService } from '../../core/auth/auth.service';
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Free to use</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Skill to Life is free to use. There are no paywalls, premium tiers,
-                or paid features. The assessment, career data, salary
+                Skill to Life is free to use. There are no paywalls, premium
+                tiers, or paid features. The assessment, career data, salary
                 information, and learning resources are all free and will remain
                 so.
               </p>
@@ -71,10 +71,10 @@ import { AuthService } from '../../core/auth/auth.service';
               </h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  Skill to Life provides career information and a personality-style
-                  assessment to help you discover paths that may suit you. It is
-                  a starting point for exploration, not a guarantee of
-                  employment or salary.
+                  Skill to Life provides career information and a
+                  personality-style assessment to help you discover paths that
+                  may suit you. It is a starting point for exploration, not a
+                  guarantee of employment or salary.
                 </p>
                 <p class="m-0">
                   Salary data is approximate and based on publicly available
@@ -112,8 +112,8 @@ import { AuthService } from '../../core/auth/auth.service';
                 Limitation of liability
               </h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Skill to Life is provided "as is" without warranty of any kind. We
-                make no guarantees about uptime, accuracy of information, or
+                Skill to Life is provided "as is" without warranty of any kind.
+                We make no guarantees about uptime, accuracy of information, or
                 fitness for a particular purpose. Use of this service is at your
                 own risk.
               </p>

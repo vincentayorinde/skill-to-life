@@ -68,7 +68,11 @@ describe('NsExternalLinkService', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     svc.openLink('https://example.com');
     svc.confirm();
-    expect(openSpy).toHaveBeenCalledWith('https://example.com', '_blank', 'noreferrer,noopener');
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://example.com',
+      '_blank',
+      'noreferrer,noopener',
+    );
     vi.restoreAllMocks();
   });
 
@@ -80,17 +84,31 @@ describe('NsExternalLinkService', () => {
   });
 
   it('openExternalLink without careerTitle uses the chosen path fallback', () => {
-    svc.openExternalLink({ url: 'https://mdn.com', title: 'MDN Docs', platform: 'MDN' });
+    svc.openExternalLink({
+      url: 'https://mdn.com',
+      title: 'MDN Docs',
+      platform: 'MDN',
+    });
     expect(svc.pending()?.careerTitle).toBe('your chosen');
   });
 
   it('shows free training for free resources', () => {
-    svc.openExternalLink({ url: 'https://mdn.com', title: 'MDN Docs', platform: 'MDN', cost: 'free' });
+    svc.openExternalLink({
+      url: 'https://mdn.com',
+      title: 'MDN Docs',
+      platform: 'MDN',
+      cost: 'free',
+    });
     expect(svc.pending()?.costLabel).toBe('free training');
   });
 
   it('shows paid course for paid resources', () => {
-    svc.openExternalLink({ url: 'https://udemy.com/course', title: 'Course', platform: 'Udemy', cost: 'paid' });
+    svc.openExternalLink({
+      url: 'https://udemy.com/course',
+      title: 'Course',
+      platform: 'Udemy',
+      cost: 'paid',
+    });
     expect(svc.pending()?.costLabel).toBe('paid course');
   });
 
@@ -105,7 +123,9 @@ describe('NsExternalLinkService', () => {
   });
 
   it('extractDomain removes www from valid URLs and returns invalid input unchanged', () => {
-    expect(svc.extractDomain('https://www.skillbuilder.aws/path')).toBe('skillbuilder.aws');
+    expect(svc.extractDomain('https://www.skillbuilder.aws/path')).toBe(
+      'skillbuilder.aws',
+    );
     expect(svc.extractDomain('not a url')).toBe('not a url');
   });
 });

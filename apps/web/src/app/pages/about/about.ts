@@ -48,8 +48,8 @@ import { AuthService } from '../../core/auth/auth.service';
               </h2>
               <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  Skill to Life is a free, open-source career assessment platform
-                  for anyone trying to figure out their path in tech.
+                  Skill to Life is a free, open-source career assessment
+                  platform for anyone trying to figure out their path in tech.
                 </p>
                 <p class="m-0">
                   We built it because too many people are told to "just learn to

@@ -14,15 +14,15 @@ Thanks for taking the time to contribute. Skill to Life is open source and built
 
 ## Ways to contribute
 
-| Type | Examples |
-| ---- | -------- |
-| Bug report | Something is broken or behaves unexpectedly |
-| Feature request | A missing feature that would help users |
-| Career data | Improve a career description, roadmap step, or salary range |
-| New career path | Propose a missing tech path with data to back it up |
-| UI / accessibility | Layout bugs, contrast issues, mobile experience |
-| Tests | Add unit or integration tests for untested code |
-| Docs | Fix a README typo, improve setup instructions |
+| Type               | Examples                                                    |
+| ------------------ | ----------------------------------------------------------- |
+| Bug report         | Something is broken or behaves unexpectedly                 |
+| Feature request    | A missing feature that would help users                     |
+| Career data        | Improve a career description, roadmap step, or salary range |
+| New career path    | Propose a missing tech path with data to back it up         |
+| UI / accessibility | Layout bugs, contrast issues, mobile experience             |
+| Tests              | Add unit or integration tests for untested code             |
+| Docs               | Fix a README typo, improve setup instructions               |
 
 Good first issues are labelled [`good first issue`](https://github.com/vincentayorinde/skill-to-life/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 

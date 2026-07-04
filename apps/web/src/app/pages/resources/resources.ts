@@ -198,7 +198,9 @@ const TABS: TabFilter[] = [
             </div>
           </div>
 
-          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+          >
             <p class="m-0 text-sm text-ns-muted">
               Showing {{ pageStart() }}-{{ pageEnd() }} of
               {{ filtered().length }}
@@ -243,14 +245,46 @@ const TABS: TabFilter[] = [
                       <button
                         type="button"
                         class="rounded p-0.5 transition"
-                        [class]="savedResourceUrls().has(resource.url) ? 'text-ns-primary' : 'text-ns-muted hover:text-ns-primary'"
-                        [attr.aria-label]="savedResourceUrls().has(resource.url) ? 'Unsave resource' : 'Save resource'"
+                        [class]="
+                          savedResourceUrls().has(resource.url)
+                            ? 'text-ns-primary'
+                            : 'text-ns-muted hover:text-ns-primary'
+                        "
+                        [attr.aria-label]="
+                          savedResourceUrls().has(resource.url)
+                            ? 'Unsave resource'
+                            : 'Save resource'
+                        "
                         (click)="toggleSaveResource(resource, $event)"
                       >
                         @if (savedResourceUrls().has(resource.url)) {
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                            />
+                          </svg>
                         } @else {
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                            />
+                          </svg>
                         }
                       </button>
                     }
@@ -308,7 +342,9 @@ const TABS: TabFilter[] = [
                     [class.bg-ns-card]="page !== currentPageSafe()"
                     [class.text-ns-text]="page !== currentPageSafe()"
                     (click)="goToPage(page)"
-                    [attr.aria-current]="page === currentPageSafe() ? 'page' : null"
+                    [attr.aria-current]="
+                      page === currentPageSafe() ? 'page' : null
+                    "
                   >
                     {{ page }}
                   </button>
@@ -490,17 +526,19 @@ export class ResourcesComponent implements OnInit {
         this.savedResourceUrls.set(new Set(urls));
       });
     } else {
-      this.savedService.saveResource({
-        resourceTitle: resource.title,
-        resourceUrl: resource.url,
-        platform: resource.platform,
-        careerId: resource.careerId,
-        careerTitle: resource.careerTitle,
-        type: resource.type,
-      }).subscribe(() => {
-        urls.add(resource.url);
-        this.savedResourceUrls.set(new Set(urls));
-      });
+      this.savedService
+        .saveResource({
+          resourceTitle: resource.title,
+          resourceUrl: resource.url,
+          platform: resource.platform,
+          careerId: resource.careerId,
+          careerTitle: resource.careerTitle,
+          type: resource.type,
+        })
+        .subscribe(() => {
+          urls.add(resource.url);
+          this.savedResourceUrls.set(new Set(urls));
+        });
     }
   }
 

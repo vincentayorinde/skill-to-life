@@ -123,8 +123,8 @@ import { AuthService } from '../../core/auth/auth.service';
                 maintainer. Data is not replicated to third-party services.
               </p>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Skill to Life is open source. The full data schema and server code
-                is publicly auditable at
+                Skill to Life is open source. The full data schema and server
+                code is publicly auditable at
                 <a
                   href="https://github.com/vincentayorinde/skill-to-life"
                   target="_blank"

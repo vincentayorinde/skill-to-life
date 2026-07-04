@@ -38,7 +38,10 @@ export class SavedCareersController {
     @CurrentUser() user: User,
     @Param('careerId') careerId: string,
   ) {
-    const saved = await this.savedCareersService.isCareerSaved(user.id, careerId);
+    const saved = await this.savedCareersService.isCareerSaved(
+      user.id,
+      careerId,
+    );
     return { saved };
   }
 }

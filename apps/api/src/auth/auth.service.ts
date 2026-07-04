@@ -68,7 +68,9 @@ export class AuthService {
   }
 
   private async ensureProfile(userId: string): Promise<void> {
-    const existing = await this.prisma.profile.findUnique({ where: { userId } });
+    const existing = await this.prisma.profile.findUnique({
+      where: { userId },
+    });
     if (!existing) {
       await this.prisma.profile.create({ data: { userId } });
     }

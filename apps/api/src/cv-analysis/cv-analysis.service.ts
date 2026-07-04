@@ -9,7 +9,9 @@ import { ProfileService } from '../profile/profile.service';
 import { AiConfigService } from '../ai-config/ai-config.service';
 import { CvAnalysisProcessor } from './cv-analysis.processor';
 
-const pdfParse = require('pdf-parse') as (buf: Buffer) => Promise<{ text: string }>;
+const pdfParse = require('pdf-parse') as (
+  buf: Buffer,
+) => Promise<{ text: string }>;
 
 export interface CvUploadFile {
   mimetype: string;
@@ -26,10 +28,7 @@ export class CvAnalysisService {
     private readonly processor: CvAnalysisProcessor,
   ) {}
 
-  async analyseFromFile(
-    userId: string,
-    file: CvUploadFile,
-  ) {
+  async analyseFromFile(userId: string, file: CvUploadFile) {
     if (file.mimetype !== 'application/pdf') {
       throw new BadRequestException('Please upload a PDF file.');
     }
@@ -74,14 +73,23 @@ export class CvAnalysisService {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const html = await res.text();
       // Extract readable text from HTML (basic — LinkedIn blocks scrapers)
-      profileText = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      profileText = html
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
     } catch {
       throw new ServiceUnavailableException(
         'We could not access that LinkedIn URL. Make sure the profile is public, or paste your CV text instead.',
       );
     }
 
-    return this.runAnalysis(userId, profileText, 'linkedin', undefined, linkedinUrl);
+    return this.runAnalysis(
+      userId,
+      profileText,
+      'linkedin',
+      undefined,
+      linkedinUrl,
+    );
   }
 
   async getAnalyses(userId: string) {

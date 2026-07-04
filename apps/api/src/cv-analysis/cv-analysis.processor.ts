@@ -9,7 +9,9 @@ import { ClaudeProvider } from './providers/claude.provider';
 import { GeminiProvider } from './providers/gemini.provider';
 import { OpenAIProvider } from './providers/openai.provider';
 
-const USER_PROMPT_TEMPLATE = (cvText: string) => `Analyse this CV/profile and return a JSON career assessment:
+const USER_PROMPT_TEMPLATE = (
+  cvText: string,
+) => `Analyse this CV/profile and return a JSON career assessment:
 
 --- CV START ---
 ${cvText}
@@ -96,7 +98,10 @@ export class CvAnalysisProcessor {
     try {
       return JSON.parse(stripped) as Record<string, unknown>;
     } catch {
-      this.logger.error('Failed to parse AI response as JSON', raw.slice(0, 200));
+      this.logger.error(
+        'Failed to parse AI response as JSON',
+        raw.slice(0, 200),
+      );
       throw new ServiceUnavailableException(
         'Analysis failed. Please try again in a moment.',
       );

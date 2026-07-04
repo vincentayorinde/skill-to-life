@@ -78,7 +78,10 @@ describe('ProfileService', () => {
     it('updates profile successfully', async () => {
       mockPrisma.profile.findFirst.mockResolvedValue(null);
       mockPrisma.profile.findUnique.mockResolvedValue(mockProfile);
-      mockPrisma.profile.update.mockResolvedValue({ ...mockProfile, bio: 'Hello' });
+      mockPrisma.profile.update.mockResolvedValue({
+        ...mockProfile,
+        bio: 'Hello',
+      });
       const result = await service.updateProfile('user1', { bio: 'Hello' });
       expect(result.bio).toBe('Hello');
     });
@@ -87,7 +90,10 @@ describe('ProfileService', () => {
   describe('toggleVisibility', () => {
     it('sets isPublic to true', async () => {
       mockPrisma.profile.findUnique.mockResolvedValue(mockProfile);
-      mockPrisma.profile.update.mockResolvedValue({ ...mockProfile, isPublic: true });
+      mockPrisma.profile.update.mockResolvedValue({
+        ...mockProfile,
+        isPublic: true,
+      });
       const result = await service.toggleVisibility('user1', true);
       expect(result.isPublic).toBe(true);
       expect(mockPrisma.profile.update).toHaveBeenCalledWith({
@@ -99,17 +105,29 @@ describe('ProfileService', () => {
 
   describe('getPublicProfile', () => {
     it('throws NotFoundException for private profile', async () => {
-      mockPrisma.profile.findUnique.mockResolvedValue({ ...mockProfile, isPublic: false });
-      await expect(service.getPublicProfile('test')).rejects.toThrow(NotFoundException);
+      mockPrisma.profile.findUnique.mockResolvedValue({
+        ...mockProfile,
+        isPublic: false,
+      });
+      await expect(service.getPublicProfile('test')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws NotFoundException when profile not found', async () => {
       mockPrisma.profile.findUnique.mockResolvedValue(null);
-      await expect(service.getPublicProfile('missing')).rejects.toThrow(NotFoundException);
+      await expect(service.getPublicProfile('missing')).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('returns public profile', async () => {
-      const pub = { ...mockProfile, isPublic: true, username: 'test', user: { name: 'Alice', avatar: null, email: 'a@b.com' } };
+      const pub = {
+        ...mockProfile,
+        isPublic: true,
+        username: 'test',
+        user: { name: 'Alice', avatar: null, email: 'a@b.com' },
+      };
       mockPrisma.profile.findUnique.mockResolvedValue(pub);
       const result = await service.getPublicProfile('test');
       expect(result.isPublic).toBe(true);

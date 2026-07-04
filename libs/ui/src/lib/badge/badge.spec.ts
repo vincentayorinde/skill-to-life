@@ -31,7 +31,14 @@ describe('NsBadgeComponent', () => {
   });
 
   it('applies variant-specific classes for each variant', () => {
-    const variants = ['neutral', 'primary', 'success', 'warning', 'accent', 'purple'] as const;
+    const variants = [
+      'neutral',
+      'primary',
+      'success',
+      'warning',
+      'accent',
+      'purple',
+    ] as const;
     for (const variant of variants) {
       fixture.componentRef.setInput('variant', variant);
       fixture.detectChanges();

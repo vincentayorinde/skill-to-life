@@ -17,7 +17,8 @@ export class ClaudeProvider implements AiProvider {
     });
 
     const block = message.content[0];
-    if (block.type !== 'text') throw new Error('Unexpected response type from Claude');
+    if (block.type !== 'text')
+      throw new Error('Unexpected response type from Claude');
     return block.text;
   }
 }

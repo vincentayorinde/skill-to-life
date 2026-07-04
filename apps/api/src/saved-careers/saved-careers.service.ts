@@ -22,7 +22,9 @@ export class SavedCareersService {
     const profile = await this.profileService.findOrCreate(userId);
 
     const existing = await this.prisma.savedCareer.findUnique({
-      where: { profileId_careerId: { profileId: profile.id, careerId: dto.careerId } },
+      where: {
+        profileId_careerId: { profileId: profile.id, careerId: dto.careerId },
+      },
     });
     if (existing) throw new ConflictException('Career already saved');
 

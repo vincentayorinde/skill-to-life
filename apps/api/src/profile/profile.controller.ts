@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -40,7 +33,8 @@ export class ProfileController {
 
   @Get('username/check/:username')
   async checkUsername(@Param('username') username: string) {
-    const available = await this.profileService.checkUsernameAvailable(username);
+    const available =
+      await this.profileService.checkUsernameAvailable(username);
     return { available };
   }
 

@@ -72,15 +72,15 @@ cp apps/api/.env.example apps/api/.env
 
 Edit `apps/api/.env` and fill in:
 
-| Variable               | Description                                                                                 |
-| ---------------------- | ------------------------------------------------------------------------------------------- |
+| Variable               | Description                                                                                     |
+| ---------------------- | ----------------------------------------------------------------------------------------------- |
 | `DATABASE_URL`         | PostgreSQL connection string e.g. `postgresql://postgres:password@localhost:5432/skill_to_life` |
-| `JWT_SECRET`           | Random string 32+ characters                                                                |
-| `GOOGLE_CLIENT_ID`     | From [Google Cloud Console](https://console.cloud.google.com/) → OAuth 2.0 Client ID        |
-| `GOOGLE_CLIENT_SECRET` | From same OAuth 2.0 credential                                                              |
-| `GOOGLE_CALLBACK_URL`  | `http://localhost:3000/api/auth/google/callback`                                            |
-| `FRONTEND_URL`         | `http://localhost:4200`                                                                     |
-| `ANTHROPIC_API_KEY`    | From [console.anthropic.com](https://console.anthropic.com/) — used for CV analysis         |
+| `JWT_SECRET`           | Random string 32+ characters                                                                    |
+| `GOOGLE_CLIENT_ID`     | From [Google Cloud Console](https://console.cloud.google.com/) → OAuth 2.0 Client ID            |
+| `GOOGLE_CLIENT_SECRET` | From same OAuth 2.0 credential                                                                  |
+| `GOOGLE_CALLBACK_URL`  | `http://localhost:3000/api/auth/google/callback`                                                |
+| `FRONTEND_URL`         | `http://localhost:4200`                                                                         |
+| `ANTHROPIC_API_KEY`    | From [console.anthropic.com](https://console.anthropic.com/) — used for CV analysis             |
 
 For Google OAuth, add `http://localhost:3000/api/auth/google/callback` as an authorised redirect URI in Google Cloud Console.
 

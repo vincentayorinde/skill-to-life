@@ -18,7 +18,12 @@ describe('NsExternalLinkModalComponent', () => {
     svc = TestBed.inject(NsExternalLinkService);
   });
 
-  function openModal(options: { cost?: string; context?: 'roadmap' | 'resources' | 'career' | 'results' | 'default' } = {}): void {
+  function openModal(
+    options: {
+      cost?: string;
+      context?: 'roadmap' | 'resources' | 'career' | 'results' | 'default';
+    } = {},
+  ): void {
     svc.openExternalLink({
       url: 'https://www.skillbuilder.aws/learn',
       title: 'AWS Skill Builder - free training',

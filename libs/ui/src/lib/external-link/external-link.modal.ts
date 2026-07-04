@@ -39,7 +39,9 @@ import { NsExternalLinkService } from './external-link.service';
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
                 <polyline points="15 3 21 3 21 9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
@@ -57,7 +59,8 @@ import { NsExternalLinkService } from './external-link.service';
 
           <p class="ext-modal-body">
             You are about to open an external learning resource to help you
-            progress on <strong>{{ careerPathLabel(link.careerTitle) }}</strong> path.
+            progress on
+            <strong>{{ careerPathLabel(link.careerTitle) }}</strong> path.
           </p>
           <p class="ext-modal-note">
             This opens in a new tab so you can come back and continue your

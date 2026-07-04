@@ -29,18 +29,52 @@ interface RegionConfig {
 const SALARY_REGIONS: RegionConfig[] = [
   { label: 'UK', flag: '🇬🇧', currency: 'GBP', multiplier: 1, monthly: false },
   { label: 'US', flag: '🇺🇸', currency: 'USD', multiplier: 1.5, monthly: false },
-  { label: 'Canada', flag: '🇨🇦', currency: 'USD', multiplier: 1.2, monthly: false },
-  { label: 'Europe', flag: '🇪🇺', currency: 'EUR', multiplier: 0.9, monthly: false },
-  { label: 'Nigeria', flag: '🇳🇬', currency: 'NGN', multiplier: 2000, monthly: true },
-  { label: 'Global', flag: '🌐', currency: 'GBP', multiplier: 1, monthly: false },
+  {
+    label: 'Canada',
+    flag: '🇨🇦',
+    currency: 'USD',
+    multiplier: 1.2,
+    monthly: false,
+  },
+  {
+    label: 'Europe',
+    flag: '🇪🇺',
+    currency: 'EUR',
+    multiplier: 0.9,
+    monthly: false,
+  },
+  {
+    label: 'Nigeria',
+    flag: '🇳🇬',
+    currency: 'NGN',
+    multiplier: 2000,
+    monthly: true,
+  },
+  {
+    label: 'Global',
+    flag: '🌐',
+    currency: 'GBP',
+    multiplier: 1,
+    monthly: false,
+  },
 ];
 
-function formatRegionSalary(gbpMin: number, gbpMax: number, config: RegionConfig): string {
-  const cMin = Math.round((gbpMin * config.multiplier) / (config.monthly ? 12 : 1));
-  const cMax = Math.round((gbpMax * config.multiplier) / (config.monthly ? 12 : 1));
+function formatRegionSalary(
+  gbpMin: number,
+  gbpMax: number,
+  config: RegionConfig,
+): string {
+  const cMin = Math.round(
+    (gbpMin * config.multiplier) / (config.monthly ? 12 : 1),
+  );
+  const cMax = Math.round(
+    (gbpMax * config.multiplier) / (config.monthly ? 12 : 1),
+  );
   if (config.currency === 'NGN') {
     const fmt = (n: number) =>
-      n >= 1_000_000 ? `₦${(n / 1_000_000).toFixed(1)}M` : `₦${Math.round(n / 1000)}k`;
+      n >= 1_000_000
+        ? `₦${(n / 1_000_000).toFixed(1)}M`
+        : `₦${Math.round(n / 1000)}k`;
     return `${fmt(cMin)}–${fmt(cMax)}`;
   }
   return formatSalaryRange(cMin, cMax, config.currency);
@@ -78,8 +112,12 @@ function buildSalaryCards(config: RegionConfig): SalaryCard[] {
       careerId: career.id,
       title: career.title,
       emoji: career.emoji,
-      juniorRange: junior ? formatRegionSalary(junior.min, junior.max, config) : '—',
-      seniorRange: senior ? formatRegionSalary(senior.min, senior.max, config) : '—',
+      juniorRange: junior
+        ? formatRegionSalary(junior.min, junior.max, config)
+        : '—',
+      seniorRange: senior
+        ? formatRegionSalary(senior.min, senior.max, config)
+        : '—',
       hasFreelance: !!data.freelanceRate,
       juniorMax: junior ? Math.round(junior.max * config.multiplier) : 0,
       seniorMax: senior ? Math.round(senior.max * config.multiplier) : 0,
@@ -212,7 +250,11 @@ type SortKey = 'senior' | 'junior' | 'name';
           >
             <p class="m-0 text-xs leading-6 text-ns-muted">
               <span class="font-semibold text-ns-text">Disclaimer:</span>
-              Salary data is approximate and based on UK market rates as of 2025. Non-UK figures are derived estimates using regional multipliers and may not reflect actual local market rates. Actual salaries vary significantly by location, employer, experience, and skills. Always research current rates on
+              Salary data is approximate and based on UK market rates as of
+              2025. Non-UK figures are derived estimates using regional
+              multipliers and may not reflect actual local market rates. Actual
+              salaries vary significantly by location, employer, experience, and
+              skills. Always research current rates on
               <a
                 href="https://www.glassdoor.co.uk"
                 target="_blank"
