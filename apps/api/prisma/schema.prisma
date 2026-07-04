@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  avatar    String?
+  googleId  String?   @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  results   Result[]
+  profile   Profile?
+}
+
+model Result {
+  id             String   @id @default(cuid())
+  userId         String?
+  user           User?    @relation(fields: [userId], references: [id])
+  answers        Json
+  topCareer      String
+  topPercentage  Int
+  allMatches     Json
+  anonymous      Boolean  @default(false)
+  anonymousToken String?  @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Profile {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  user            User            @relation(fields: [userId], references: [id])
+  bio             String?
+  location        String?
+  website         String?
+  linkedinUrl     String?
+  githubUrl       String?
+  isPublic        Boolean         @default(false)
+  username        String?         @unique
+  avatarUrl       String?
+  currentRole     String?
+  experienceLevel String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  savedCareers    SavedCareer[]
+  savedResources  SavedResource[]
+  cvAnalyses      CvAnalysis[]
+}
+
+model SavedCareer {
+  id          String   @id @default(cuid())
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id])
+  careerId    String
+  careerTitle String
+  careerEmoji String
+  careerSlug  String
+  notes       String?
+  savedAt     DateTime @default(now())
+
+  @@unique([profileId, careerId])
+}
+
+model SavedResource {
+  id            String   @id @default(cuid())
+  profileId     String
+  profile       Profile  @relation(fields: [profileId], references: [id])
+  resourceTitle String
+  resourceUrl   String
+  platform      String
+  careerId      String?
+  careerTitle   String?
+  type          String
+  savedAt       DateTime @default(now())
+
+  @@unique([profileId, resourceUrl])
+}
+
+model CvAnalysis {
+  id                 String   @id @default(cuid())
+  profileId          String
+  profile            Profile  @relation(fields: [profileId], references: [id])
+  inputType          String
+  rawInput           String   @db.Text
+  fileName           String?
+  linkedinUrl        String?
+  aiModel            String
+  profileScore       Int
+  topMatches         Json
+  strengths          Json
+  gaps               Json
+  improvements       Json
+  recommendedCareers Json
+  fullAnalysis       String   @db.Text
+  createdAt          DateTime @default(now())
+}
+
+model AiConfig {
+  id           String   @id @default(cuid())
+  provider     String
+  model        String
+  systemPrompt String   @db.Text
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

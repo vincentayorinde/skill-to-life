@@ -1,0 +1,86 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './apps/web/src/**/*.{html,ts,scss}',
+    './libs/ui/src/**/*.{html,ts,scss,css}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        ns: {
+          bg: 'var(--ns-color-bg)',
+          foreground: 'var(--ns-color-foreground)',
+          canvas: 'var(--ns-color-canvas)',
+          canvasSubtle: 'var(--ns-color-canvas-subtle)',
+          card: 'var(--ns-color-card)',
+          cardElevated: 'var(--ns-color-card-elevated)',
+          text: 'var(--ns-color-text)',
+          muted: 'var(--ns-color-muted)',
+          border: 'var(--ns-color-border)',
+          borderMuted: 'var(--ns-color-border-muted)',
+          nav: 'var(--ns-color-nav)',
+          primary: 'var(--ns-color-primary)',
+          primaryFg: 'var(--ns-color-primary-fg)',
+          primaryHover: 'var(--ns-color-primary-hover)',
+          primarySoft: 'var(--ns-color-primary-soft)',
+          success: 'var(--ns-color-success)',
+          successHover: 'var(--ns-color-success-hover)',
+          successSoft: 'var(--ns-color-success-soft)',
+          danger: 'var(--ns-color-danger)',
+          dangerHover: 'var(--ns-color-danger-hover)',
+          dangerSoft: 'var(--ns-color-danger-soft)',
+          warning: 'var(--ns-color-warning)',
+          warningSoft: 'var(--ns-color-warning-soft)',
+          accent: 'var(--ns-color-accent)',
+          accentSoft: 'var(--ns-color-accent-soft)',
+          purple: 'var(--ns-color-purple)',
+          purpleSoft: 'var(--ns-color-purple-soft)',
+          focus: 'var(--ns-color-focus)',
+        },
+      },
+      fontFamily: {
+        sans: [
+          'Inter',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'sans-serif',
+        ],
+        mono: [
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          'Liberation Mono',
+          'monospace',
+        ],
+      },
+      spacing: {
+        18: '4.5rem',
+        22: '5.5rem',
+      },
+      borderRadius: {
+        ns: '0.5rem',
+        'ns-sm': '0.375rem',
+      },
+      boxShadow: {
+        ns: 'var(--ns-shadow-sm)',
+        'ns-lg': 'var(--ns-shadow-lg)',
+        glow: 'var(--ns-shadow-glow)',
+      },
+      transitionDuration: {
+        fast: '120ms',
+        base: '180ms',
+        slow: '260ms',
+      },
+      transitionTimingFunction: {
+        ns: 'cubic-bezier(0.2, 0, 0, 1)',
+      },
+    },
+  },
+  plugins: [],
+};

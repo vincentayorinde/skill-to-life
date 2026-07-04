@@ -1,0 +1,12 @@
+# Add files here to ignore them from prettier formatting
+/dist
+/coverage
+/.nx/cache
+/.nx/workspace-data
+/.agents
+/.codex
+/.gemini
+/.github/agents
+/.github/prompts
+/.github/skills
+.angular

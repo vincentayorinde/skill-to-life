@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens — dark first ─────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --ns-color-bg: #0a0a0f;
+  --ns-color-canvas: #0a0a0f;
+  --ns-color-canvas-subtle: #16161e;
+  --ns-color-card: #111118;
+  --ns-color-card-elevated: #1e1e28;
+  --ns-color-foreground: #f0f0f5;
+
+  /* Text */
+  --ns-color-text: #f0f0f5;
+  --ns-color-muted: #8b8b9e;
+
+  /* Borders */
+  --ns-color-border: rgba(255, 255, 255, 0.08);
+  --ns-color-border-muted: rgba(255, 255, 255, 0.05);
+
+  /* Nav */
+  --ns-color-nav: rgba(10, 10, 15, 0.92);
+
+  /* Primary / Accent */
+  --ns-color-primary: #a3e635;
+  --ns-color-primary-fg: #0a0a0f;
+  --ns-color-primary-hover: #8fce1a;
+  --ns-color-primary-soft: rgba(163, 230, 53, 0.12);
+  --ns-color-accent: #a3e635;
+  --ns-color-accent-soft: rgba(163, 230, 53, 0.12);
+
+  /* Status */
+  --ns-color-success: #00c896;
+  --ns-color-success-hover: #00a87c;
+  --ns-color-success-soft: rgba(0, 200, 150, 0.12);
+  --ns-color-danger: #ff4560;
+  --ns-color-danger-hover: #e03050;
+  --ns-color-danger-soft: rgba(255, 69, 96, 0.16);
+  --ns-color-warning: #a3e635;
+  --ns-color-warning-soft: rgba(163, 230, 53, 0.14);
+  --ns-color-purple: #a371f7;
+  --ns-color-purple-soft: rgba(163, 113, 247, 0.14);
+  --ns-color-focus: #a3e635;
+
+  /* Shadows */
+  --ns-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.32);
+  --ns-shadow-md:
+    0 14px 42px rgba(0, 0, 0, 0.42), 0 0 34px rgba(163, 230, 53, 0.05);
+  --ns-shadow-lg:
+    0 24px 70px rgba(0, 0, 0, 0.52), 0 0 54px rgba(163, 230, 53, 0.08);
+  --ns-shadow-glow:
+    0 26px 80px rgba(0, 0, 0, 0.58), 0 0 44px rgba(163, 230, 53, 0.12);
+
+  /* Radius */
+  --ns-radius-sm: 6px;
+  --ns-radius-md: 10px;
+  --ns-radius-lg: 14px;
+
+  /* Motion */
+  --ns-motion-fast: 120ms;
+  --ns-motion-base: 180ms;
+
+  /* Hero gradient */
+  --ns-hero-gradient: linear-gradient(180deg, #0a0a0f 0%, #0a0a0f 100%);
+
+  /* --color-* aliases for new components */
+  --color-bg: var(--ns-color-bg);
+  --color-bg-card: var(--ns-color-card);
+  --color-bg-secondary: var(--ns-color-canvas-subtle);
+  --color-bg-tertiary: var(--ns-color-card-elevated);
+  --color-text: var(--ns-color-text);
+  --color-text-secondary: var(--ns-color-muted);
+  --color-border: var(--ns-color-border);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-border-accent: rgba(163, 230, 53, 0.4);
+  --color-accent: var(--ns-color-primary);
+  --color-accent-hover: var(--ns-color-primary-hover);
+  --color-accent-light: var(--ns-color-primary-soft);
+  --color-accent-glow: rgba(163, 230, 53, 0.25);
+  --color-error: var(--ns-color-danger);
+  --color-error-light: var(--ns-color-danger-soft);
+  --color-success: var(--ns-color-success);
+  --shadow-lg: var(--ns-shadow-lg);
+}
+
+/* ── Light mode overrides ────────────────────────────────────────────── */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --ns-color-bg: #f8f9fa;
+  --ns-color-canvas: #ffffff;
+  --ns-color-canvas-subtle: #f1f3f5;
+  --ns-color-card: #ffffff;
+  --ns-color-card-elevated: #e8eaed;
+  --ns-color-foreground: #0a0a0f;
+  --ns-color-text: #0a0a0f;
+  --ns-color-muted: #5f6368;
+  --ns-color-border: rgba(0, 0, 0, 0.08);
+  --ns-color-border-muted: rgba(0, 0, 0, 0.05);
+  --ns-color-nav: rgba(248, 249, 250, 0.92);
+  --ns-color-primary: #4d7c0f;
+  --ns-color-primary-fg: #ffffff;
+  --ns-color-primary-hover: #3a6309;
+  --ns-color-primary-soft: rgba(77, 124, 15, 0.1);
+  --ns-color-accent: #4d7c0f;
+  --ns-color-accent-soft: rgba(77, 124, 15, 0.1);
+  --ns-color-success: #00a87c;
+  --ns-color-success-hover: #008f68;
+  --ns-color-success-soft: rgba(0, 168, 124, 0.1);
+  --ns-color-danger: #e03050;
+  --ns-color-danger-hover: #c02040;
+  --ns-color-danger-soft: rgba(224, 48, 80, 0.1);
+  --ns-color-warning: #65a30d;
+  --ns-color-warning-soft: rgba(101, 163, 13, 0.1);
+  --ns-color-purple: #7c3aed;
+  --ns-color-purple-soft: rgba(124, 58, 237, 0.1);
+  --ns-color-focus: #65a30d;
+  --ns-shadow-sm: 0 2px 8px rgba(10, 10, 15, 0.06);
+  --ns-shadow-md:
+    0 14px 40px rgba(10, 10, 15, 0.1), 0 0 28px rgba(101, 163, 13, 0.06);
+  --ns-shadow-lg:
+    0 24px 64px rgba(10, 10, 15, 0.14), 0 0 44px rgba(101, 163, 13, 0.08);
+  --ns-shadow-glow:
+    0 26px 70px rgba(10, 10, 15, 0.16), 0 0 36px rgba(101, 163, 13, 0.12);
+  --ns-hero-gradient: linear-gradient(180deg, #f8f9fa 0%, #f8f9fa 100%);
+
+  --color-bg-secondary: var(--ns-color-canvas-subtle);
+  --color-bg-tertiary: var(--ns-color-card-elevated);
+  --color-border: var(--ns-color-border);
+  --color-border-strong: rgba(0, 0, 0, 0.15);
+  --color-error: var(--ns-color-danger);
+  --color-error-light: var(--ns-color-danger-soft);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* ── Global reset ────────────────────────────────────────────────────── */
+html {
+  min-height: 100%;
+  background: var(--ns-color-bg);
+  transition:
+    background-color var(--ns-motion-base) cubic-bezier(0.2, 0, 0, 1),
+    color var(--ns-motion-base) cubic-bezier(0.2, 0, 0, 1);
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--ns-color-bg);
+  color: var(--ns-color-text);
+  font-family:
+    'Inter',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(163, 230, 53, 0.25);
+  color: #f0f0f5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ns-color-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* ── Grid background ─────────────────────────────────────────────────── */
+.grid-bg {
+  position: relative;
+}
+
+.grid-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--ns-color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ns-color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+}
+
+.grid-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-headline-accent {
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='light'] .hero-headline-accent {
+  background: none;
+  -webkit-text-fill-color: var(--ns-color-text);
+  color: var(--ns-color-text);
+}
+
+/* ── Pulsing dot ─────────────────────────────────────────────────────── */
+@keyframes ns-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.ns-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ns-color-warning);
+  flex-shrink: 0;
+  animation: ns-pulse 2s ease infinite;
+}
+
+/* ── Wobble animation for hero cards ────────────────────────────────── */
+@keyframes ns-wobble {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(-0.3deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(0.3deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.ns-wobble {
+  animation: ns-wobble 5s ease-in-out infinite;
+}
