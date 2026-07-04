@@ -320,8 +320,8 @@ export class SalariesComponent implements OnInit {
     (localStorage.getItem('ns_salary_region') as SalaryRegion) ?? 'UK',
   );
 
-  readonly activeRegionConfig = computed(
-    () => getRegionConfig(this.selectedRegion()),
+  readonly activeRegionConfig = computed(() =>
+    getRegionConfig(this.selectedRegion()),
   );
 
   readonly cards = computed(() => buildSalaryCards(this.activeRegionConfig()));

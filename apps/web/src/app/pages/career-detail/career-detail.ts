@@ -939,8 +939,8 @@ export class CareerDetailComponent implements OnInit {
 
   readonly salaryRegions = SALARY_REGIONS;
   readonly selectedSalaryRegion = signal<SalaryRegion>('UK');
-  readonly activeRegionConfig = computed(
-    () => getRegionConfig(this.selectedSalaryRegion()),
+  readonly activeRegionConfig = computed(() =>
+    getRegionConfig(this.selectedSalaryRegion()),
   );
 
   readonly careerSaved = signal(false);
