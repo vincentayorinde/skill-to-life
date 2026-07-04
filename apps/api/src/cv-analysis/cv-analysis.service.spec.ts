@@ -25,13 +25,11 @@ const analysisResult = {
 
 const mockPrisma = {
   cvAnalysis: {
-    create: jest
-      .fn()
-      .mockResolvedValue({
-        id: 'analysis1',
-        ...analysisResult,
-        createdAt: new Date(),
-      }),
+    create: jest.fn().mockResolvedValue({
+      id: 'analysis1',
+      ...analysisResult,
+      createdAt: new Date(),
+    }),
     findMany: jest.fn().mockResolvedValue([]),
     findFirst: jest.fn(),
   },
