@@ -492,7 +492,7 @@ describe('AssessmentResultsComponent', () => {
     vi.useRealTimers();
   });
 
-  it('shareToWhatsApp opens whatsapp URL with encoded result text', () => {
+  it('shareToWhatsApp opens whatsapp URL with encoded result text', async () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
@@ -510,8 +510,14 @@ describe('AssessmentResultsComponent', () => {
     ];
     fixture.detectChanges();
 
+    vi.spyOn(
+      fixture.componentInstance as unknown as {
+        generateCard: () => Promise<File | null>;
+      },
+      'generateCard',
+    ).mockResolvedValue(null);
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
-    fixture.componentInstance.shareToWhatsApp();
+    await fixture.componentInstance.shareToWhatsApp();
     expect(openSpy).toHaveBeenCalledWith(
       expect.stringContaining('wa.me'),
       '_blank',
@@ -523,7 +529,7 @@ describe('AssessmentResultsComponent', () => {
     openSpy.mockRestore();
   });
 
-  it('shareToX opens twitter intent URL', () => {
+  it('shareToX opens twitter intent URL', async () => {
     withAnswers(FULL_ANSWERS);
     const fixture = TestBed.createComponent(AssessmentResultsComponent);
     fixture.detectChanges();
@@ -541,8 +547,14 @@ describe('AssessmentResultsComponent', () => {
     ];
     fixture.detectChanges();
 
+    vi.spyOn(
+      fixture.componentInstance as unknown as {
+        generateCard: () => Promise<File | null>;
+      },
+      'generateCard',
+    ).mockResolvedValue(null);
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
-    fixture.componentInstance.shareToX();
+    await fixture.componentInstance.shareToX();
     expect(openSpy).toHaveBeenCalledWith(
       expect.stringContaining('twitter.com/intent/tweet'),
       '_blank',

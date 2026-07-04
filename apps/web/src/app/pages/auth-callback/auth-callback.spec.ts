@@ -47,11 +47,11 @@ describe('AuthCallbackComponent', () => {
     expect(mockAuth.handleCallback).toHaveBeenCalledWith('test-token');
   });
 
-  it('redirects to /assessment/results after callback', async () => {
+  it('redirects home after callback when there is no pending claim', async () => {
     const fixture = TestBed.createComponent(AuthCallbackComponent);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/assessment/results']);
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 });
