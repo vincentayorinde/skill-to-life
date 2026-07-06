@@ -21,3 +21,5 @@ Dockerfile*
 .dockerignore
 README.md
 docs
+**/.nx
+**/dist
