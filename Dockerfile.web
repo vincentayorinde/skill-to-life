@@ -9,7 +9,7 @@ COPY apps ./apps
 COPY libs ./libs
 RUN pnpm install --frozen-lockfile
 ARG APP_NAME=web
-ARG CACHEBUST=1
+ARG CACHEBUST=2
 RUN pnpm nx run ${APP_NAME}:build:production --skip-nx-cache
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
