@@ -170,7 +170,7 @@ export interface NsAuthUser {
                 }
               </div>
             } @else {
-              @if (devMode) {
+              @if (showDevLogin) {
                 <button
                   type="button"
                   class="ns-dev-login"
@@ -336,7 +336,7 @@ export interface NsAuthUser {
 
             @if (!authUser) {
               <div class="ns-mobile-ctas">
-                @if (devMode) {
+                @if (showDevLogin) {
                   <button
                     type="button"
                     class="ns-dev-login"
@@ -618,13 +618,18 @@ export interface NsAuthUser {
         justify-content: center;
         border: 1px solid var(--color-accent, var(--ns-color-primary));
         background: var(--color-accent, var(--ns-color-primary));
-        color: #ffffff;
+        color: #0a0a0f;
         padding: 7px 16px;
         text-decoration: none;
       }
 
       .ns-start-assessment:hover {
         background: var(--color-accent-hover, var(--ns-color-primary-hover));
+        color: #0a0a0f;
+      }
+
+      .ns-start-assessment:focus-visible {
+        color: #0a0a0f;
       }
 
       .ns-user-menu {
@@ -841,6 +846,10 @@ export class NsAppShellComponent implements OnInit {
   mobileMenuOpen = false;
   profileMenuOpen = false;
 
+  get showDevLogin(): boolean {
+    return this.devMode && this.isLocalhost();
+  }
+
   ngOnInit(): void {
     const savedTheme = this.readSavedTheme();
     this.setTheme(savedTheme ?? 'dark');
@@ -900,6 +909,19 @@ export class NsAppShellComponent implements OnInit {
         : null;
     } catch {
       return null;
+    }
+  }
+
+  private isLocalhost(): boolean {
+    try {
+      const hostname = globalThis.window?.location.hostname;
+      return (
+        hostname === 'localhost' ||
+        hostname === '127.0.0.1' ||
+        hostname === '::1'
+      );
+    } catch {
+      return false;
     }
   }
 }
