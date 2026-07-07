@@ -35,11 +35,38 @@ import { AuthService } from '../../core/auth/auth.service';
           <ns-page-header
             eyebrow="Legal"
             title="Privacy policy."
-            description="Last updated: 2025. This policy explains what data Skill to Life collects, how it is used, and your rights."
+            description="Last updated: 2026. This policy explains what data Skill to Life collects, how it is used, and your rights."
           >
           </ns-page-header>
 
           <div class="mt-10 space-y-6">
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">Who we are</h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  Skill to Life is an open-source career discovery website that
+                  helps people explore tech career paths, assessment results,
+                  salaries, resources, and CV analysis. For privacy questions,
+                  contact
+                  <a
+                    href="mailto:skilltolife.contact@gmail.com"
+                    class="font-semibold text-ns-primary no-underline hover:underline"
+                    >skilltolife.contact&#64;gmail.com</a
+                  >.
+                </p>
+                <p class="m-0">
+                  This Privacy Policy is intended to explain how we process
+                  personal data in accordance with applicable data protection
+                  laws, including the UK GDPR, the EU GDPR where applicable, and
+                  applicable African data protection laws such as the Nigeria
+                  Data Protection Act 2023, South Africa’s Protection of
+                  Personal Information Act, Kenya’s Data Protection Act 2019,
+                  Ghana’s Data Protection Act 2012, and similar laws in
+                  countries where our users are located.
+                </p>
+              </div>
+            </ns-card>
+
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">
                 What data we collect
@@ -49,9 +76,9 @@ import { AuthService } from '../../core/auth/auth.service';
                   <span class="font-semibold text-ns-text"
                     >Anonymous assessment use.</span
                   >
-                  If you take the assessment without signing in, no personal
-                  data is stored. Your answers and results exist only in your
-                  browser session.
+                  If you take the assessment without signing in, your answers
+                  and results are kept in your browser session unless you choose
+                  to save them.
                 </p>
                 <p class="m-0">
                   <span class="font-semibold text-ns-text"
@@ -70,15 +97,22 @@ import { AuthService } from '../../core/auth/auth.service';
                   view your results again later.
                 </p>
                 <p class="m-0">
+                  <span class="font-semibold text-ns-text">CV analysis.</span>
+                  If you use CV analysis, your submitted CV, pasted text, or
+                  LinkedIn profile text may be processed by the API and AI
+                  provider configured for that feature so the service can return
+                  career guidance.
+                </p>
+                <p class="m-0">
                   <span class="font-semibold text-ns-text"
-                    >Essential session storage.</span
+                    >Essential local storage.</span
                   >
                   We use a local session token (
                   <code
                     class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
                     >skill_to_life_token</code
                   >) to keep you signed in. We also store your theme preference
-                  locally. No advertising or tracking cookies are used.
+                  and cookie preference locally.
                 </p>
               </div>
             </ns-card>
@@ -97,6 +131,16 @@ import { AuthService } from '../../core/auth/auth.service';
                   To identify your account across sessions
                 </li>
                 <li class="flex items-start gap-2">
+                  <span class="text-ns-primary" aria-hidden="true">✓</span>
+                  To analyse your CV or profile text when you choose to submit
+                  it
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-ns-primary" aria-hidden="true">✓</span>
+                  To understand website usage where analytics consent has been
+                  given
+                </li>
+                <li class="flex items-start gap-2">
                   <span class="text-red-400" aria-hidden="true">✗</span>
                   We do not sell your data to any third party
                 </li>
@@ -106,7 +150,7 @@ import { AuthService } from '../../core/auth/auth.service';
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-red-400" aria-hidden="true">✗</span>
-                  We do not share your data with any analytics platform
+                  We do not use your data for advertising
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-red-400" aria-hidden="true">✗</span>
@@ -116,33 +160,200 @@ import { AuthService } from '../../core/auth/auth.service';
             </ns-card>
 
             <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Data storage</h2>
-              <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Account and result data is stored in a PostgreSQL database. The
-                database is hosted on infrastructure controlled by the project
-                maintainer. Data is not replicated to third-party services.
-              </p>
-              <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Skill to Life is open source. The full data schema and server
-                code is publicly auditable at
-                <a
-                  href="https://github.com/vincentayorinde/skill-to-life"
-                  target="_blank"
-                  rel="noreferrer"
-                  class="font-semibold text-ns-primary no-underline hover:underline"
-                  >github.com/vincentayorinde/skill-to-life</a
-                >.
-              </p>
+              <h2 class="m-0 text-xl font-bold text-ns-text">Legal basis</h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  We process account, authentication, saved result, and security
+                  data because it is necessary to provide the service you ask us
+                  to provide. We process support and privacy requests because it
+                  is necessary to respond to you and comply with applicable law.
+                </p>
+                <p class="m-0">
+                  Our legal basis for using analytics cookies is your consent.
+                  Where we use aggregated analytics insights to improve the
+                  service, our interest is improving and operating Skill to
+                  Life, but analytics cookies will not be set unless consent has
+                  been given.
+                </p>
+              </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Analytics and website usage data
+              </h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  We use Google Analytics 4 to understand how visitors use Skill
+                  to Life, such as which pages are visited, how users move
+                  through the website, and which features are used. This helps
+                  us improve the website, measure product traction, and
+                  understand whether our career assessment and resources are
+                  useful.
+                </p>
+                <p class="m-0">
+                  Google Analytics may collect information such as page views,
+                  device and browser information, approximate location, referral
+                  source, interactions with website features, and similar usage
+                  data. We do not intentionally send names, email addresses,
+                  phone numbers, CV content, assessment free-text answers, or
+                  other directly identifying content to Google Analytics.
+                </p>
+                <p class="m-0">
+                  Google Analytics is provided by Google. Google Analytics 4
+                  does not log or store IP addresses from users in the UK, EU,
+                  or Switzerland. Google may process analytics data according to
+                  its own privacy terms and settings.
+                </p>
+                <p class="m-0">
+                  We use Google Analytics 4 only where analytics consent has
+                  been given. This applies to users in the UK, EEA, and African
+                  countries where consent or transparency is required for
+                  analytics cookies or similar tracking technologies. You can
+                  reject analytics cookies and still use Skill to Life.
+                </p>
+                <p class="m-0">
+                  You can withdraw your consent at any time by opening Cookie
+                  Preferences and choosing Reject analytics. Analytics events
+                  use safe metadata such as page paths, feature names, question
+                  indexes, category slugs, and completion percentages. We do not
+                  send names, emails, phone numbers, CV content, uploaded files,
+                  or assessment free-text answers to Google Analytics.
+                </p>
+              </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Cookies and similar technologies
+              </h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  We use essential cookies or local storage where needed for the
+                  website to function securely. These are necessary for the
+                  service.
+                </p>
+                <p class="m-0">
+                  We use optional analytics cookies and similar technologies
+                  only with your consent. These help us understand visits, page
+                  views, assessment funnel usage, and feature engagement.
+                </p>
+                <p class="m-0">
+                  You can accept or reject analytics cookies using the cookie
+                  banner. Rejecting analytics cookies does not stop you from
+                  using Skill to Life.
+                </p>
+              </div>
+              <div class="mt-5 overflow-x-auto">
+                <table class="w-full min-w-[560px] text-left text-sm">
+                  <thead class="text-ns-text">
+                    <tr>
+                      <th class="border-b border-ns-border py-2 pr-4">
+                        Cookie/category
+                      </th>
+                      <th class="border-b border-ns-border py-2 pr-4">
+                        Provider
+                      </th>
+                      <th class="border-b border-ns-border py-2 pr-4">
+                        Purpose
+                      </th>
+                      <th class="border-b border-ns-border py-2 pr-4">
+                        Required
+                      </th>
+                      <th class="border-b border-ns-border py-2">Consent</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-ns-muted">
+                    <tr>
+                      <td class="border-b border-ns-border py-3 pr-4">
+                        Essential
+                      </td>
+                      <td class="border-b border-ns-border py-3 pr-4">
+                        Skill to Life
+                      </td>
+                      <td class="border-b border-ns-border py-3 pr-4">
+                        Security, authentication, service functionality
+                      </td>
+                      <td class="border-b border-ns-border py-3 pr-4">Yes</td>
+                      <td class="border-b border-ns-border py-3">
+                        Not required where strictly necessary
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="py-3 pr-4">Analytics</td>
+                      <td class="py-3 pr-4">Google Analytics 4</td>
+                      <td class="py-3 pr-4">
+                        Website usage analytics, page views, feature engagement,
+                        product traction
+                      </td>
+                      <td class="py-3 pr-4">No</td>
+                      <td class="py-3">Required</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Storage, sharing, and international transfers
+              </h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  Account and result data is stored in a PostgreSQL database.
+                  Skill to Life may share data with service providers only where
+                  needed to operate the website, authentication, hosting,
+                  analytics, CV analysis, and support workflows.
+                </p>
+                <p class="m-0">
+                  Because Skill to Life and its service providers may operate
+                  across different countries, your personal data may be
+                  processed or stored outside your country of residence. Where
+                  this happens, we take steps designed to protect your data in
+                  line with applicable law, such as using appropriate
+                  contractual protections, limiting the data we share, and
+                  working with reputable service providers.
+                </p>
+                <p class="m-0">
+                  Skill to Life is open source. The full data schema and server
+                  code is publicly auditable at
+                  <a
+                    href="https://github.com/vincentayorinde/skill-to-life"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="font-semibold text-ns-primary no-underline hover:underline"
+                    >github.com/vincentayorinde/skill-to-life</a
+                  >.
+                </p>
+              </div>
             </ns-card>
 
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Your rights</h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
+                  Depending on where you live, you may have rights to access,
+                  correct, delete, restrict, or object to certain uses of your
+                  personal data. You may also have the right to data portability
+                  and the right to withdraw consent where processing is based on
+                  consent.
+                </p>
+                <p class="m-0">
+                  Users in African countries may also have privacy rights under
+                  their local data protection laws. Depending on your country,
+                  these rights may include the right to be informed about how
+                  your data is used, the right to access your personal data, the
+                  right to correct inaccurate data, the right to request
+                  deletion, the right to object to certain processing, the right
+                  to withdraw consent, and the right to complain to your local
+                  data protection authority.
+                </p>
+                <p class="m-0">
                   You can use the assessment without creating an account at any
                   time. If you have created an account and wish to have your
                   data deleted, email us and we will delete your account and all
-                  associated results within 30 days.
+                  associated results within 30 days where required by applicable
+                  law.
                 </p>
                 <p class="m-0">
                   To request data deletion or ask any privacy question, contact:
@@ -153,6 +364,36 @@ import { AuthService } from '../../core/auth/auth.service';
                   >
                 </p>
               </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">Complaints</h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  If you are in the UK, you may complain to the Information
+                  Commissioner’s Office if you are unhappy with how your privacy
+                  request is handled.
+                </p>
+                <p class="m-0">
+                  If you are located in an African country, you may also have
+                  the right to complain to your local data protection authority.
+                  Examples include the Nigeria Data Protection Commission, the
+                  Information Regulator in South Africa, the Office of the Data
+                  Protection Commissioner in Kenya, and the Data Protection
+                  Commission in Ghana.
+                </p>
+              </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Manual legal-review TODO
+              </h2>
+              <p class="mt-3 text-sm leading-7 text-ns-muted">
+                Because African privacy laws vary by country, this policy should
+                be reviewed by legal counsel before launch in specific African
+                markets.
+              </p>
             </ns-card>
 
             <ns-card>
@@ -194,7 +435,7 @@ export class PrivacyComponent implements OnInit {
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Skill to Life privacy policy. We collect only what is needed, never sell data, and have no advertising or tracking.',
+        'Skill to Life privacy policy covering data use, analytics consent, cookies, and privacy rights under applicable UK, EU, and African data protection laws.',
     });
   }
 }

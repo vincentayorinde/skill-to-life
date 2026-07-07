@@ -76,6 +76,11 @@ export const appRoutes: Route[] = [
       import('./pages/privacy/privacy').then((m) => m.PrivacyComponent),
   },
   {
+    path: 'privacy-policy',
+    loadComponent: () =>
+      import('./pages/privacy/privacy').then((m) => m.PrivacyComponent),
+  },
+  {
     path: 'terms',
     loadComponent: () =>
       import('./pages/terms/terms').then((m) => m.TermsComponent),

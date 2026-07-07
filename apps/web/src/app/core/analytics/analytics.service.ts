@@ -14,13 +14,14 @@ declare global {
 export class AnalyticsService {
   private readonly router = inject(Router);
   private initialized = false;
+  private analyticsAllowed = false;
+  private navigationTracked = false;
+  private documentClicksTracked = false;
 
   init(): void {
-    if (this.initialized || !environment.googleAnalyticsId) return;
+    if (!environment.googleAnalyticsId) return;
     if (!this.hasBrowserApis()) return;
 
-    this.initialized = true;
-    this.loadGoogleTagScript(environment.googleAnalyticsId);
     window.dataLayer = window.dataLayer ?? [];
     window.gtag =
       window.gtag ??
@@ -28,14 +29,74 @@ export class AnalyticsService {
         window.dataLayer?.push(args);
       };
 
-    window.gtag('js', new Date());
-    window.gtag('config', environment.googleAnalyticsId, {
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+
+    window.addEventListener('skilltolife-cookie-consent-changed', () => {
+      this.setAnalyticsConsent(this.hasAnalyticsConsent());
+    });
+
+    if (this.hasAnalyticsConsent()) {
+      this.initAfterConsent();
+    }
+  }
+
+  initAfterConsent(): void {
+    if (this.initialized || !environment.googleAnalyticsId) return;
+    if (!this.hasBrowserApis() || !this.hasAnalyticsConsent()) return;
+
+    this.analyticsAllowed = true;
+    this.initialized = true;
+    this.loadGoogleTagScript(environment.googleAnalyticsId);
+
+    window.gtag?.('consent', 'update', {
+      analytics_storage: 'granted',
+    });
+    window.gtag?.('js', new Date());
+    window.gtag?.('config', environment.googleAnalyticsId, {
       send_page_view: false,
     });
 
     this.trackPageView(this.currentPath(), document.title);
     this.trackNavigationEnd();
     this.trackSafeDocumentClicks();
+  }
+
+  setAnalyticsConsent(accepted: boolean): void {
+    if (!environment.googleAnalyticsId || !this.hasBrowserApis()) return;
+
+    try {
+      globalThis.localStorage?.setItem(
+        'skilltolife_cookie_consent',
+        accepted ? 'accepted_analytics' : 'rejected_analytics',
+      );
+    } catch {
+      // Consent persistence is best-effort; tracking still follows this choice.
+    }
+
+    this.analyticsAllowed = accepted;
+    window.gtag?.('consent', 'update', {
+      analytics_storage: accepted ? 'granted' : 'denied',
+    });
+
+    if (accepted) {
+      this.initAfterConsent();
+    }
+  }
+
+  hasAnalyticsConsent(): boolean {
+    try {
+      return (
+        globalThis.localStorage?.getItem('skilltolife_cookie_consent') ===
+        'accepted_analytics'
+      );
+    } catch {
+      return false;
+    }
   }
 
   trackPageView(path: string, title?: string): void {
@@ -57,6 +118,9 @@ export class AnalyticsService {
   }
 
   private trackNavigationEnd(): void {
+    if (this.navigationTracked) return;
+    this.navigationTracked = true;
+
     this.router.events
       .pipe(
         filter(
@@ -69,6 +133,9 @@ export class AnalyticsService {
   }
 
   private trackSafeDocumentClicks(): void {
+    if (this.documentClicksTracked) return;
+    this.documentClicksTracked = true;
+
     document.addEventListener(
       'click',
       (event) => {
@@ -101,8 +168,10 @@ export class AnalyticsService {
 
   private canTrack(): boolean {
     return (
+      this.analyticsAllowed &&
       this.initialized &&
       this.hasBrowserApis() &&
+      this.hasAnalyticsConsent() &&
       typeof window.gtag === 'function'
     );
   }

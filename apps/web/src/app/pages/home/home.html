@@ -677,7 +677,15 @@
             <ul class="mt-4 space-y-3 p-0 text-sm text-ns-muted">
               @for (link of column.links; track link.label) {
               <li>
-                @if (link.external) {
+                @if (link.action === 'cookiePreferences') {
+                <button
+                  type="button"
+                  class="cursor-pointer border-0 bg-transparent p-0 text-inherit no-underline hover:text-ns-text"
+                  (click)="openCookiePreferences()"
+                >
+                  {{ link.label }}
+                </button>
+                } @else if (link.external) {
                 <a
                   class="text-inherit no-underline hover:text-ns-text"
                   [href]="link.href"

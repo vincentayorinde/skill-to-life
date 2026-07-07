@@ -15,6 +15,18 @@ import { CAREER_PATHS } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 import { SavedService } from '../../core/saved/saved.service';
 
+interface FooterLink {
+  label: string;
+  href?: string;
+  external?: boolean;
+  action?: 'cookiePreferences';
+}
+
+interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -185,7 +197,7 @@ export class HomeComponent implements OnInit {
     'Transparent scoring model',
   ];
 
-  protected readonly footerLinks = [
+  protected readonly footerLinks: FooterSection[] = [
     {
       title: 'Product',
       links: [
@@ -220,9 +232,20 @@ export class HomeComponent implements OnInit {
     {
       title: 'Legal',
       links: [
-        { label: 'Privacy policy', href: '/privacy' },
+        { label: 'Privacy policy', href: '/privacy-policy' },
+        { label: 'Cookie preferences', action: 'cookiePreferences' },
         { label: 'Terms of use', href: '/terms' },
       ],
     },
   ];
+
+  openCookiePreferences(): void {
+    try {
+      globalThis.window?.dispatchEvent(
+        new CustomEvent('skilltolife-open-cookie-preferences'),
+      );
+    } catch {
+      // Cookie preferences are only available in the browser.
+    }
+  }
 }
