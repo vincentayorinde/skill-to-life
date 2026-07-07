@@ -31,6 +31,7 @@ import {
 } from 'types';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 import { AuthService } from '../../core/auth/auth.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -1202,6 +1203,7 @@ export class AssessmentResultsComponent implements OnInit {
   protected readonly auth = inject(AuthService);
   private readonly http = inject(HttpClient);
   private readonly externalLink = inject(NsExternalLinkService);
+  private readonly analytics = inject(AnalyticsService);
 
   readonly loading = signal(true);
   readonly animated = signal(false);
@@ -1346,6 +1348,9 @@ export class AssessmentResultsComponent implements OnInit {
     platform?: string;
     type?: string;
   }): void {
+    this.analytics.trackEvent('resource_opened', {
+      selected_category: this.topCareer?.slug,
+    });
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
@@ -1359,6 +1364,9 @@ export class AssessmentResultsComponent implements OnInit {
 
   openCareerResource(resource: { title: string; url?: string }): void {
     if (!resource.url) return;
+    this.analytics.trackEvent('resource_opened', {
+      selected_category: this.topCareer?.slug,
+    });
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
@@ -1384,6 +1392,10 @@ export class AssessmentResultsComponent implements OnInit {
         this.topEntrepreneurshipData =
           getEntrepreneurshipDataByCareerId(this.matches[0].careerId) ?? null;
         this.setMetaTags();
+        this.analytics.trackEvent('assessment_result_viewed', {
+          path_slug: this.topCareer?.slug,
+          completion_percentage: Math.round(this.matches[0].percentage),
+        });
         this.saveResult();
       }
     }

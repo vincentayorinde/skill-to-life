@@ -15,6 +15,7 @@ import {
 } from 'ui';
 import { CAREER_PATHS, CAREER_SALARY_DATA, formatSalaryRange } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 
 type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
 
@@ -290,6 +291,7 @@ type SortKey = 'senior' | 'junior' | 'name';
 })
 export class SalariesComponent implements OnInit {
   protected readonly auth = inject(AuthService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -299,6 +301,9 @@ export class SalariesComponent implements OnInit {
       name: 'description',
       content:
         'Honest salary ranges for 26 tech career paths across UK, US, Canada, Europe, and Nigeria — junior, mid, senior, and lead levels.',
+    });
+    this.analytics.trackEvent('salary_page_viewed', {
+      selected_category: this.selectedRegion(),
     });
   }
 

@@ -27,6 +27,7 @@ import {
 } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 import { SavedService } from '../../core/saved/saved.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 
 type SalaryRegion = 'UK' | 'US' | 'Canada' | 'Europe' | 'Nigeria' | 'Global';
 
@@ -955,6 +956,7 @@ export class CareerDetailComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly externalLink = inject(NsExternalLinkService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -966,6 +968,9 @@ export class CareerDetailComponent implements OnInit {
       this.metaService.updateTag({
         name: 'description',
         content: this.career.summary,
+      });
+      this.analytics.trackEvent('career_path_viewed', {
+        path_slug: this.career.slug,
       });
     }
     if (this.career) {
@@ -1071,6 +1076,10 @@ export class CareerDetailComponent implements OnInit {
     platform?: string;
     type?: string;
   }): void {
+    this.analytics.trackEvent('resource_opened', {
+      selected_category: this.career?.id,
+      path_slug: this.career?.slug,
+    });
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
@@ -1084,6 +1093,10 @@ export class CareerDetailComponent implements OnInit {
 
   openResource(resource: { title: string; url?: string }, cost: string): void {
     if (!resource.url) return;
+    this.analytics.trackEvent('resource_opened', {
+      selected_category: this.career?.id,
+      path_slug: this.career?.slug,
+    });
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,

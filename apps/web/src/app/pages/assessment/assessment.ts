@@ -19,6 +19,7 @@ import {
   CATEGORY_MICROCOPY,
 } from './questions.data';
 import { AssessmentStateService } from '../../services/assessment-state.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 
 const STORAGE_KEY = 'ns_assessment_progress';
 
@@ -244,6 +245,7 @@ function delay(ms: number): Promise<void> {
 export class AssessmentComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly stateService = inject(AssessmentStateService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   private readonly optionContainer = viewChild<ElementRef>('optionContainer');
@@ -300,6 +302,12 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   selectOption(label: string): void {
     this.selectedOption.set(label);
     this.saveProgress();
+    this.analytics.trackEvent('assessment_question_answered', {
+      question_index: this.currentIndex() + 1,
+      question_type: this.currentCategory().slug,
+      selected_category: this.currentCategory().slug,
+      completion_percentage: this.progressPercent(),
+    });
   }
 
   async next(): Promise<void> {
@@ -317,6 +325,9 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       this.isComplete = true;
       this.clearProgress();
       this.stateService.save(this.answers());
+      this.analytics.trackEvent('assessment_completed', {
+        completion_percentage: 100,
+      });
       await this.router.navigate(['/assessment/results']);
       return;
     }
@@ -532,6 +543,9 @@ export class AssessmentComponent implements OnInit, OnDestroy {
         'Answer 10 quick questions and discover which of 26 tech career paths fits how you think and work. Takes about 3 minutes.',
     });
     this.restoreProgress();
+    this.analytics.trackEvent('assessment_started', {
+      completion_percentage: this.progressPercent(),
+    });
   }
 
   ngOnDestroy(): void {

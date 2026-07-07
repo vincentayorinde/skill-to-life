@@ -20,6 +20,16 @@
             "input": "apps/web/public"
           },
           {
+            "glob": "sitemap.xml",
+            "input": "apps/web/src",
+            "output": "."
+          },
+          {
+            "glob": "robots.txt",
+            "input": "apps/web/src",
+            "output": "."
+          },
+          {
             "glob": "**/*",
             "input": "apps/web/src/assets",
             "output": "assets"

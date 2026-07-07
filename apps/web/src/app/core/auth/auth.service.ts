@@ -4,12 +4,14 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { User } from 'types';
 import { environment } from '../../../environments/environment';
+import { AnalyticsService } from '../analytics/analytics.service';
 
 const TOKEN_KEY = 'skill_to_life_token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly analytics = inject(AnalyticsService);
   private readonly _currentUser$ = new BehaviorSubject<User | null>(null);
 
   readonly currentUser$ = this._currentUser$.asObservable();
@@ -17,6 +19,8 @@ export class AuthService {
   readonly isDev = environment.devMode;
 
   loginWithGoogle(): void {
+    this.analytics.trackEvent('sign_in_clicked');
+    this.analytics.trackEvent('google_signin_clicked');
     window.location.href = `${environment.apiUrl}/api/auth/google`;
   }
 

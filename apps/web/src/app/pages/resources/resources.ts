@@ -17,6 +17,7 @@ import {
 import { CAREER_PATHS, CAREER_ROADMAPS, FREE_CAREER_RESOURCES } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 import { SavedService } from '../../core/saved/saved.service';
+import { AnalyticsService } from '../../core/analytics/analytics.service';
 
 interface FlatResource {
   title: string;
@@ -370,6 +371,7 @@ export class ResourcesComponent implements OnInit {
   protected readonly auth = inject(AuthService);
   private readonly savedService = inject(SavedService);
   private readonly externalLink = inject(NsExternalLinkService);
+  private readonly analytics = inject(AnalyticsService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
@@ -543,6 +545,10 @@ export class ResourcesComponent implements OnInit {
   }
 
   openResource(resource: FlatResource): void {
+    this.analytics.trackEvent('resource_opened', {
+      selected_category: resource.careerId,
+      question_type: resource.type,
+    });
     this.externalLink.openExternalLink({
       url: resource.url,
       title: resource.title,
