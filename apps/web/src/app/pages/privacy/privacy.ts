@@ -386,17 +386,6 @@ import { AuthService } from '../../core/auth/auth.service';
             </ns-card>
 
             <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                Manual legal-review TODO
-              </h2>
-              <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Because African privacy laws vary by country, this policy should
-                be reviewed by legal counsel before launch in specific African
-                markets.
-              </p>
-            </ns-card>
-
-            <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Changes</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
                 If this policy changes, we will update the date at the top of

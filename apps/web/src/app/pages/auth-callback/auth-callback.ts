@@ -32,9 +32,11 @@ export class AuthCallbackComponent implements OnInit {
   }
 
   private claimPendingResult(): void {
+    const returnTo = this.consumeReturnUrl();
     const raw = sessionStorage.getItem('ns_pending_claim');
+
     if (!raw) {
-      this.router.navigate(['/']);
+      this.router.navigate([returnTo]);
       return;
     }
 
@@ -50,12 +52,22 @@ export class AuthCallbackComponent implements OnInit {
       .subscribe({
         complete: () => {
           sessionStorage.removeItem('ns_pending_claim');
-          this.router.navigate(['/']);
+          this.router.navigate([returnTo]);
         },
         error: () => {
           sessionStorage.removeItem('ns_pending_claim');
-          this.router.navigate(['/']);
+          this.router.navigate([returnTo]);
         },
       });
+  }
+
+  private consumeReturnUrl(): string {
+    try {
+      const url = localStorage.getItem('skilltolife_result_return') ?? '/';
+      localStorage.removeItem('skilltolife_result_return');
+      return url;
+    } catch {
+      return '/';
+    }
   }
 }

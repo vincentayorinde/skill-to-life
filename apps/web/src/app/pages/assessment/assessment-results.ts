@@ -202,18 +202,189 @@ import { environment } from '../../../environments/environment';
 
       <!-- ─── RESULTS ───────────────────────────────────────────────── -->
       @if (!loading() && matches.length > 0) {
-        <!-- Mobile sticky share button -->
-        <div
-          class="fixed bottom-0 left-0 right-0 z-20 border-t border-ns-border bg-ns-bg/95 px-4 pb-4 pt-3 backdrop-blur-sm sm:hidden"
-        >
-          <button
-            type="button"
-            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover"
-            (click)="openShare()"
+
+        <!-- ─── RESULT GATE ────────────────────────────────────────── -->
+        @if (gateVisible()) {
+          <div
+            class="flex min-h-[calc(100vh-56px)] flex-col items-center justify-center px-4 py-12"
           >
-            ↗ Share my result
-          </button>
-        </div>
+            <div class="w-full max-w-md">
+              <!-- Header -->
+              <div class="mb-8 text-center">
+                <p class="text-5xl" aria-hidden="true">🎉</p>
+                <h1 class="mt-4 text-2xl font-bold text-ns-text">
+                  Your Skill to Life result is ready!
+                </h1>
+                <p class="mx-auto mt-3 max-w-sm text-sm leading-6 text-ns-muted">
+                  Before you view your result, follow Skill to Life for career
+                  tips, salary insights, and resources to help you grow.
+                </p>
+              </div>
+
+              <!-- Social follow buttons -->
+              <div class="space-y-3">
+                <a
+                  href="https://x.com/skilltolife"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (click)="openSocialLink('x')"
+                  class="flex min-h-12 w-full items-center justify-center gap-3 rounded-ns border border-ns-border bg-ns-card px-5 text-sm font-semibold text-ns-text no-underline transition hover:border-ns-primary hover:bg-ns-card/80"
+                >
+                  @if (xFollowClicked()) {
+                    <svg
+                      class="h-4 w-4 text-green-400"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span>Followed on X</span>
+                  } @else {
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.635 5.903-5.635Zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                      />
+                    </svg>
+                    <span>Follow &#64;skilltolife on X</span>
+                  }
+                </a>
+
+                <a
+                  href="https://instagram.com/skilltolife"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (click)="openSocialLink('instagram')"
+                  class="flex min-h-12 w-full items-center justify-center gap-3 rounded-ns border border-ns-border bg-ns-card px-5 text-sm font-semibold text-ns-text no-underline transition hover:border-ns-primary hover:bg-ns-card/80"
+                >
+                  @if (instagramFollowClicked()) {
+                    <svg
+                      class="h-4 w-4 text-green-400"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span>Followed on Instagram</span>
+                  } @else {
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>Follow &#64;skilltolife on Instagram</span>
+                  }
+                </a>
+
+                <button
+                  type="button"
+                  class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover"
+                  (click)="onGateComplete('followed')"
+                >
+                  I've followed — show my result
+                </button>
+              </div>
+
+              <!-- Divider -->
+              <div class="my-6 flex items-center gap-4">
+                <div class="h-px flex-1 bg-ns-border"></div>
+                <span class="text-xs text-ns-muted">or</span>
+                <div class="h-px flex-1 bg-ns-border"></div>
+              </div>
+
+              <!-- Save with Google -->
+              <div
+                class="rounded-2xl border border-ns-border bg-ns-card p-6 text-center"
+              >
+                <h2 class="m-0 text-base font-bold text-ns-text">
+                  Want to keep this result?
+                </h2>
+                <p
+                  class="mx-auto mt-2 max-w-xs text-sm leading-6 text-ns-muted"
+                >
+                  Sign in with Google to save your assessment result and come
+                  back to it later.
+                </p>
+                <div class="mt-4 space-y-2">
+                  <button
+                    type="button"
+                    class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-ns border border-ns-border bg-white px-5 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50"
+                    (click)="signInWithGoogleFromGate()"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      />
+                    </svg>
+                    Sign in with Google to save result
+                  </button>
+                  <button
+                    type="button"
+                    class="inline-flex min-h-11 w-full items-center justify-center rounded-ns px-5 text-sm text-ns-muted transition hover:text-ns-text"
+                    (click)="onGateComplete('skipped')"
+                  >
+                    Continue without saving
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- ─── RESULT CONTENT (after gate) ─────────────────────── -->
+        @if (!gateVisible()) {
+          <!-- Mobile sticky share button -->
+          <div
+            class="fixed bottom-0 left-0 right-0 z-20 border-t border-ns-border bg-ns-bg/95 px-4 pb-4 pt-3 backdrop-blur-sm sm:hidden"
+          >
+            <button
+              type="button"
+              class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg shadow-ns transition hover:bg-ns-primaryHover"
+              (click)="openShare()"
+            >
+              ↗ Share my result
+            </button>
+          </div>
 
         <div class="mx-auto max-w-2xl px-4 pb-28 pt-10 sm:py-16 sm:pb-16">
           <!-- Summary header -->
@@ -1186,6 +1357,7 @@ import { environment } from '../../../environments/environment';
             </div>
           </div>
         }
+        }
       }
       <!-- end results -->
 
@@ -1205,6 +1377,9 @@ export class AssessmentResultsComponent implements OnInit {
   private readonly externalLink = inject(NsExternalLinkService);
   private readonly analytics = inject(AnalyticsService);
 
+  private readonly GATE_DONE_KEY = 'skilltolife_result_gate_done';
+  private readonly RESULT_RETURN_KEY = 'skilltolife_result_return';
+
   readonly loading = signal(true);
   readonly animated = signal(false);
   readonly shareOpen = signal(false);
@@ -1216,6 +1391,9 @@ export class AssessmentResultsComponent implements OnInit {
   readonly toastMessage = signal('');
   readonly toastVisible = signal(false);
   readonly resultSaved = signal(false);
+  readonly gateVisible = signal(false);
+  readonly xFollowClicked = signal(false);
+  readonly instagramFollowClicked = signal(false);
 
   hasResults = false;
   matches: CareerMatch[] = [];
@@ -1392,11 +1570,26 @@ export class AssessmentResultsComponent implements OnInit {
         this.topEntrepreneurshipData =
           getEntrepreneurshipDataByCareerId(this.matches[0].careerId) ?? null;
         this.setMetaTags();
-        this.analytics.trackEvent('assessment_result_viewed', {
-          path_slug: this.topCareer?.slug,
-          completion_percentage: Math.round(this.matches[0].percentage),
-        });
-        this.saveResult();
+
+        const resultKey = this.resultGateKey();
+        let gateDone = false;
+        try {
+          gateDone = localStorage.getItem(this.GATE_DONE_KEY) === resultKey;
+        } catch { /* localStorage unavailable */ }
+
+        if (gateDone) {
+          this.gateVisible.set(false);
+          this.analytics.trackEvent('assessment_result_viewed', {
+            path_slug: this.topCareer?.slug,
+            completion_percentage: Math.round(this.matches[0].percentage),
+          });
+          this.saveResult();
+        } else {
+          this.gateVisible.set(true);
+          this.analytics.trackEvent('result_gate_viewed', {
+            path_slug: this.topCareer?.slug,
+          });
+        }
       }
     }
 
@@ -1464,7 +1657,56 @@ export class AssessmentResultsComponent implements OnInit {
   }
 
   loginWithGoogle(): void {
+    this.loginWithGoogleAndReturn();
+  }
+
+  loginWithGoogleAndReturn(): void {
+    this.stateService.saveToLocalStorage();
+    try {
+      localStorage.setItem(this.RESULT_RETURN_KEY, '/assessment/results');
+    } catch { /* localStorage unavailable */ }
+    this.analytics.trackEvent('google_save_result_clicked');
     this.auth.loginWithGoogle();
+  }
+
+  openSocialLink(platform: 'x' | 'instagram'): void {
+    this.analytics.trackEvent('social_follow_clicked', { platform });
+    if (platform === 'x') {
+      this.xFollowClicked.set(true);
+      window.open('https://x.com/skilltolife', '_blank', 'noopener,noreferrer');
+    } else {
+      this.instagramFollowClicked.set(true);
+      window.open('https://instagram.com/skilltolife', '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  onGateComplete(source: 'followed' | 'skipped'): void {
+    try {
+      localStorage.setItem(this.GATE_DONE_KEY, this.resultGateKey());
+    } catch { /* localStorage unavailable */ }
+    this.stateService.clearLocalStorage();
+    this.analytics.trackEvent('result_gate_completed', { source });
+    this.gateVisible.set(false);
+    this.analytics.trackEvent('assessment_result_viewed', {
+      path_slug: this.topCareer?.slug,
+      completion_percentage: Math.round(this.matches[0]?.percentage ?? 0),
+    });
+    this.saveResult();
+  }
+
+  signInWithGoogleFromGate(): void {
+    try {
+      localStorage.setItem(this.GATE_DONE_KEY, this.resultGateKey());
+      localStorage.setItem(this.RESULT_RETURN_KEY, '/assessment/results');
+    } catch { /* localStorage unavailable */ }
+    this.stateService.saveToLocalStorage();
+    this.analytics.trackEvent('google_save_result_clicked');
+    this.auth.loginWithGoogle();
+  }
+
+  private resultGateKey(): string {
+    if (!this.matches.length) return 'unknown';
+    return `${this.matches[0].careerId}_${Math.round(this.matches[0].percentage)}`;
   }
 
   private buildCardData() {
