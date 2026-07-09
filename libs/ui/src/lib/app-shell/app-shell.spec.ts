@@ -34,8 +34,8 @@ describe('NsAppShellComponent', () => {
     ).not.toBeNull();
 
     const content = fixture.nativeElement.querySelector('.app-content');
-    expect(getComputedStyle(content).position).toBe('relative');
-    expect(getComputedStyle(content).zIndex).toBe('1');
+    expect(content.classList).toContain('relative');
+    expect(content.classList).toContain('z-[1]');
   });
 
   it('defaults to dark theme when no saved preference', () => {

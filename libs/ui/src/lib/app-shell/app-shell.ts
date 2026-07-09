@@ -363,7 +363,7 @@ export interface NsAuthUser {
 
       <ns-growth-bricks />
 
-      <main id="main-content" class="app-content" tabindex="-1">
+      <main id="main-content" class="app-content relative z-[1]" tabindex="-1">
         <ng-content />
       </main>
       <ns-cookie-notice />
@@ -388,11 +388,6 @@ export interface NsAuthUser {
 
       .skip-link:focus {
         transform: translateY(0);
-      }
-
-      .app-content {
-        position: relative;
-        z-index: 1;
       }
 
       .ns-nav-shell {
@@ -636,25 +631,6 @@ export interface NsAuthUser {
 
       .ns-start-assessment:hover {
         background: var(--color-accent-hover, var(--ns-color-primary-hover));
-        color: #ffffff !important;
-      }
-
-      .ns-start-assessment:focus-visible {
-        color: #ffffff !important;
-      }
-
-      .nav-cta-primary,
-      nav .btn-primary,
-      nav button[variant='primary'] {
-        color: #ffffff !important;
-        background: var(--color-accent, var(--ns-color-primary));
-      }
-
-      :host-context([data-theme='light']) .nav-cta-primary,
-      :host-context([data-theme='light']) nav .btn-primary,
-      :host-context([data-theme='light']) nav button[variant='primary'] {
-        color: #ffffff !important;
-        background: var(--color-accent, var(--ns-color-primary));
       }
 
       .ns-user-menu {
@@ -764,10 +740,6 @@ export interface NsAuthUser {
         .ns-mobile-actions {
           display: none;
         }
-      }
-
-      .ns-theme-toggle-mobile {
-        padding: 0;
       }
 
       .ns-menu-toggle,
