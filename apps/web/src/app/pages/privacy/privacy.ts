@@ -169,11 +169,11 @@ import { AuthService } from '../../core/auth/auth.service';
                   is necessary to respond to you and comply with applicable law.
                 </p>
                 <p class="m-0">
-                  Our legal basis for using analytics cookies is your consent.
-                  Where we use aggregated analytics insights to improve the
-                  service, our interest is improving and operating Skill to
-                  Life, but analytics cookies will not be set unless consent has
-                  been given.
+                  Our legal basis for optional analytics cookies is your
+                  consent. Where we use aggregated analytics insights to improve
+                  the service, our interest is improving and operating Skill to
+                  Life. If you reject optional cookies, analytics cookies will
+                  not be used.
                 </p>
               </div>
             </ns-card>
@@ -184,19 +184,16 @@ import { AuthService } from '../../core/auth/auth.service';
               </h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  We use Google Analytics 4 to understand how visitors use Skill
-                  to Life, such as which pages are visited, how users move
-                  through the website, and which features are used. This helps
-                  us improve the website, measure product traction, and
-                  understand whether our career assessment and resources are
-                  useful.
+                  We use Google Analytics 4 to understand how people use Skill
+                  to Life, including page views, feature usage, approximate
+                  location, device/browser information, and assessment flow
+                  events. This helps us improve the website and understand
+                  product traction.
                 </p>
                 <p class="m-0">
-                  Google Analytics may collect information such as page views,
-                  device and browser information, approximate location, referral
-                  source, interactions with website features, and similar usage
-                  data. We do not intentionally send names, email addresses,
-                  phone numbers, CV content, assessment free-text answers, or
+                  We do not use analytics to identify you, and we do not
+                  intentionally send names, email addresses, phone numbers, CV
+                  content, uploaded files, assessment free-text answers, or
                   other directly identifying content to Google Analytics.
                 </p>
                 <p class="m-0">
@@ -206,19 +203,25 @@ import { AuthService } from '../../core/auth/auth.service';
                   its own privacy terms and settings.
                 </p>
                 <p class="m-0">
-                  We use Google Analytics 4 only where analytics consent has
-                  been given. This applies to users in the UK, EEA, and African
-                  countries where consent or transparency is required for
-                  analytics cookies or similar tracking technologies. You can
-                  reject analytics cookies and still use Skill to Life.
+                  Where possible, we use Google Analytics in a privacy-conscious
+                  mode. If you reject optional cookies, Google Analytics should
+                  not read or write analytics cookies, but may receive
+                  cookieless measurement signals. If you accept optional
+                  cookies, Google Analytics may use analytics cookies to improve
+                  measurement.
                 </p>
                 <p class="m-0">
-                  You can withdraw your consent at any time by opening Cookie
-                  Preferences and choosing Reject analytics. Analytics events
-                  use safe metadata such as page paths, feature names, question
-                  indexes, category slugs, and completion percentages. We do not
-                  send names, emails, phone numbers, CV content, uploaded files,
-                  or assessment free-text answers to Google Analytics.
+                  You can accept or reject optional cookies. Rejecting optional
+                  cookies does not stop you from using Skill to Life. You can
+                  withdraw your consent at any time by opening Cookie
+                  Preferences and choosing Reject cookies.
+                </p>
+                <p class="m-0">
+                  Analytics events use safe metadata such as page paths, feature
+                  names, question indexes, category slugs, platforms, and
+                  completion percentages. We do not send names, emails, phone
+                  numbers, CV content, uploaded files, or assessment free-text
+                  answers to Google Analytics.
                 </p>
               </div>
             </ns-card>
@@ -234,14 +237,16 @@ import { AuthService } from '../../core/auth/auth.service';
                   service.
                 </p>
                 <p class="m-0">
-                  We use optional analytics cookies and similar technologies
-                  only with your consent. These help us understand visits, page
-                  views, assessment funnel usage, and feature engagement.
+                  We use optional analytics cookies only if you accept cookies.
+                  These help Google Analytics improve measurement of visits,
+                  page views, assessment flow usage, and feature engagement.
                 </p>
                 <p class="m-0">
-                  You can accept or reject analytics cookies using the cookie
-                  banner. Rejecting analytics cookies does not stop you from
-                  using Skill to Life.
+                  If you reject optional cookies, analytics should remain
+                  cookieless where supported and analytics cookies should not be
+                  read or written. Essential storage may still be used for
+                  security, authentication, saved assessment state, and
+                  remembering your cookie preference.
                 </p>
               </div>
               <div class="mt-5 overflow-x-auto">

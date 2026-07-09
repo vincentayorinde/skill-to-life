@@ -1685,7 +1685,9 @@ export class AssessmentResultsComponent implements OnInit {
       localStorage.setItem(this.GATE_DONE_KEY, this.resultGateKey());
     } catch { /* localStorage unavailable */ }
     this.stateService.clearLocalStorage();
-    this.analytics.trackEvent('result_gate_completed', { source });
+    this.analytics.trackEvent('result_gate_completed', {
+      button_location: source,
+    });
     this.gateVisible.set(false);
     this.analytics.trackEvent('assessment_result_viewed', {
       path_slug: this.topCareer?.slug,
