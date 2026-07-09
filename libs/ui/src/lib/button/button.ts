@@ -112,7 +112,7 @@ export class NsButtonComponent {
   private get variantClasses(): string {
     const variants: Record<NsButtonVariant, string> = {
       primary:
-        'border-ns-primary bg-ns-primary text-ns-primaryFg hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow',
+        'border-ns-primary bg-ns-primary text-white hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow',
       secondary:
         'border-ns-border bg-ns-card text-ns-text hover:border-ns-primary hover:bg-ns-cardElevated',
       ghost:

@@ -13,3 +13,4 @@ export * from './lib/toast/toast';
 export * from './lib/top-loader/top-loader';
 export * from './lib/external-link/external-link.service';
 export * from './lib/external-link/external-link.modal';
+export * from './lib/growth-bricks/growth-bricks';

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NsCookieNoticeComponent } from '../cookie-notice/cookie-notice';
 import { NsExternalLinkModalComponent } from '../external-link/external-link.modal';
+import { NsGrowthBricksComponent } from '../growth-bricks/growth-bricks';
 
 export interface NsAppShellLink {
   label: string;
@@ -25,6 +26,7 @@ export interface NsAuthUser {
     RouterLinkActive,
     NsCookieNoticeComponent,
     NsExternalLinkModalComponent,
+    NsGrowthBricksComponent,
   ],
   template: `
     <div class="min-h-screen bg-ns-bg text-ns-text" [attr.data-theme]="theme">
@@ -182,7 +184,9 @@ export interface NsAuthUser {
               <button type="button" class="ns-sign-in" (click)="signIn.emit()">
                 Sign in
               </button>
-              <a class="ns-start-assessment" href="#assessment"
+              <a
+                class="ns-start-assessment nav-cta-primary"
+                href="#assessment"
                 >Start assessment</a
               >
             }
@@ -346,7 +350,7 @@ export interface NsAuthUser {
                   </button>
                 }
                 <a
-                  class="ns-start-assessment"
+                  class="ns-start-assessment nav-cta-primary"
                   href="#assessment"
                   (click)="closeMenus()"
                   >Start assessment</a
@@ -357,7 +361,9 @@ export interface NsAuthUser {
         }
       </header>
 
-      <main id="main-content" tabindex="-1">
+      <ns-growth-bricks />
+
+      <main id="main-content" class="app-content" tabindex="-1">
         <ng-content />
       </main>
       <ns-cookie-notice />
@@ -382,6 +388,11 @@ export interface NsAuthUser {
 
       .skip-link:focus {
         transform: translateY(0);
+      }
+
+      .app-content {
+        position: relative;
+        z-index: 1;
       }
 
       .ns-nav-shell {
@@ -618,18 +629,32 @@ export interface NsAuthUser {
         justify-content: center;
         border: 1px solid var(--color-accent, var(--ns-color-primary));
         background: var(--color-accent, var(--ns-color-primary));
-        color: #0a0a0f;
+        color: #ffffff !important;
         padding: 7px 16px;
         text-decoration: none;
       }
 
       .ns-start-assessment:hover {
         background: var(--color-accent-hover, var(--ns-color-primary-hover));
-        color: #0a0a0f;
+        color: #ffffff !important;
       }
 
       .ns-start-assessment:focus-visible {
-        color: #0a0a0f;
+        color: #ffffff !important;
+      }
+
+      .nav-cta-primary,
+      nav .btn-primary,
+      nav button[variant='primary'] {
+        color: #ffffff !important;
+        background: var(--color-accent, var(--ns-color-primary));
+      }
+
+      :host-context([data-theme='light']) .nav-cta-primary,
+      :host-context([data-theme='light']) nav .btn-primary,
+      :host-context([data-theme='light']) nav button[variant='primary'] {
+        color: #ffffff !important;
+        background: var(--color-accent, var(--ns-color-primary));
       }
 
       .ns-user-menu {

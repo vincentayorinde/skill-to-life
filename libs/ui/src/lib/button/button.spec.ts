@@ -37,4 +37,12 @@ describe('NsButtonComponent', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.className).toContain('bg-ns-success');
   });
+
+  it('sets primary button text to white explicitly', () => {
+    fixture.componentRef.setInput('variant', 'primary');
+    fixture.detectChanges();
+
+    const button = fixture.debugElement.query(By.css('button')).nativeElement;
+    expect(button.className).toContain('text-white');
+  });
 });

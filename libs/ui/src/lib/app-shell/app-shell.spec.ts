@@ -26,10 +26,29 @@ describe('NsAppShellComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Start assessment');
   });
 
+  it('renders growth bricks behind app content', () => {
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('ns-growth-bricks'),
+    ).not.toBeNull();
+
+    const content = fixture.nativeElement.querySelector('.app-content');
+    expect(getComputedStyle(content).position).toBe('relative');
+    expect(getComputedStyle(content).zIndex).toBe('1');
+  });
+
   it('defaults to dark theme when no saved preference', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.theme).toBe('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  });
+
+  it('keeps the primary nav CTA text white in dark mode', () => {
+    fixture.detectChanges();
+
+    const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
+    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
   });
 
   it('toggles and persists theme', () => {
@@ -56,6 +75,15 @@ describe('NsAppShellComponent', () => {
     fixture.componentInstance.ngOnInit();
     fixture.detectChanges();
     expect(fixture.componentInstance.theme).toBe('light');
+  });
+
+  it('keeps the primary nav CTA text white in light mode', () => {
+    localStorage.setItem('skill-to-life-theme', 'light');
+    fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+
+    const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
+    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
   });
 
   it('toggles back from light to dark', () => {

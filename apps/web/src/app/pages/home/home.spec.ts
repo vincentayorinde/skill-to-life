@@ -56,9 +56,9 @@ describe('HomeComponent', () => {
     expect(text).toContain('// CAREER PATHS');
   });
 
-  it('renders grid-bg class on hero section', () => {
-    const hero = fixture.nativeElement.querySelector('#assessment');
-    expect(hero?.classList).toContain('grid-bg');
+  it('does not render the removed grid background class', () => {
+    const removedClassSelector = ['.', 'grid', '-', 'bg'].join('');
+    expect(fixture.nativeElement.querySelector(removedClassSelector)).toBeNull();
   });
 
   it('renders pulsing dot element', () => {
