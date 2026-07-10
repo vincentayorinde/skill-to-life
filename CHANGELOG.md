@@ -11,6 +11,7 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- AI provider fallback for CV analysis across Claude, OpenAI, and Gemini, with provider status checks and documentation in `docs/ai-providers.md`
 - 30-question scenario-based assessment across 6 categories: Work Style, Day to Day, Problem Solving, Temperament, Soft Skills, and Career Goals
 - Category-aware progress display with section labels, overall 30-question progress, section indicators, and transition cards between categories
 - Category microcopy tailored to each section

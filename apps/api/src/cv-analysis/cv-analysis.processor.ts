@@ -9,9 +9,7 @@ import { ClaudeProvider } from './providers/claude.provider';
 import { GeminiProvider } from './providers/gemini.provider';
 import { OpenAIProvider } from './providers/openai.provider';
 
-const USER_PROMPT_TEMPLATE = (
-  cvText: string,
-) => `Analyse this CV/profile and return a JSON career assessment:
+const USER_PROMPT_TEMPLATE = (cvText: string) => `Analyse this CV/profile and return a JSON career assessment:
 
 --- CV START ---
 ${cvText}
@@ -34,34 +32,49 @@ export class CvAnalysisProcessor {
       );
     }
 
-    const config = await this.aiConfigService.getActiveConfig();
-    if (!config) {
-      throw new ServiceUnavailableException(
-        'No AI provider configured. Please add an API key to enable CV analysis.',
-      );
-    }
+    const config = await this.aiConfigService.getAvailableProvider();
+    const userPrompt = this.buildUserPrompt(cvText);
+    const providers = this.getRemainingProviders(config.provider);
 
-    const hasKey = this.hasApiKey(config.provider);
-    if (!hasKey) {
-      throw new ServiceUnavailableException(
-        'CV analysis is not available right now. Please try again later.',
-      );
-    }
+    let raw: string | null = null;
+    let lastError: Error | null = null;
 
-    const provider = this.buildProvider(config.provider, config.model);
-    const userPrompt = USER_PROMPT_TEMPLATE(cvText);
-
-    let raw: string;
     try {
+      const provider = this.buildProvider(config.provider, config.model);
       raw = await provider.analyse(userPrompt, config.systemPrompt);
     } catch (err) {
-      this.logger.error('AI provider error', err);
+      this.logger.error(
+        `Primary provider ${config.provider} failed during analysis`,
+        err,
+      );
+      lastError = err as Error;
+    }
+
+    if (raw === null) {
+      for (const fallback of providers) {
+        try {
+          this.logger.warn(`Falling back to ${fallback.provider}`);
+          const provider = this.buildProvider(fallback.provider, fallback.model);
+          raw = await provider.analyse(userPrompt, config.systemPrompt);
+          break;
+        } catch (err) {
+          this.logger.error(
+            `Fallback provider ${fallback.provider} also failed`,
+            err,
+          );
+          lastError = err as Error;
+        }
+      }
+    }
+
+    if (raw === null) {
+      this.logger.error('All providers failed. Last error:', lastError);
       throw new ServiceUnavailableException(
-        'Analysis failed. Please try again in a moment.',
+        'Analysis failed across all configured providers. Please try again later.',
       );
     }
 
-    return this.parseJsonResponse(raw);
+    return this.parseResponse(raw);
   }
 
   private hasApiKey(provider: string): boolean {
@@ -77,6 +90,21 @@ export class CvAnalysisProcessor {
     }
   }
 
+  private getRemainingProviders(
+    usedProvider: string,
+  ): Array<{ provider: string; model: string }> {
+    const all = [
+      { provider: 'claude', model: 'claude-opus-4-20250514' },
+      { provider: 'openai', model: 'gpt-4o' },
+      { provider: 'gemini', model: 'gemini-1.5-pro' },
+    ];
+
+    return all.filter(
+      (provider) =>
+        provider.provider !== usedProvider && this.hasApiKey(provider.provider),
+    );
+  }
+
   private buildProvider(provider: string, model: string) {
     switch (provider) {
       case 'openai':
@@ -88,7 +116,11 @@ export class CvAnalysisProcessor {
     }
   }
 
-  private parseJsonResponse(raw: string): Record<string, unknown> {
+  private buildUserPrompt(cvText: string): string {
+    return USER_PROMPT_TEMPLATE(cvText);
+  }
+
+  private parseResponse(raw: string): Record<string, unknown> {
     // Strip markdown fences if the model included them despite instructions
     const stripped = raw
       .replace(/^```(?:json)?\s*/i, '')
@@ -98,6 +130,15 @@ export class CvAnalysisProcessor {
     try {
       return JSON.parse(stripped) as Record<string, unknown>;
     } catch {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          return JSON.parse(jsonMatch[0]) as Record<string, unknown>;
+        } catch {
+          // Fall through to the shared parse error.
+        }
+      }
+
       this.logger.error(
         'Failed to parse AI response as JSON',
         raw.slice(0, 200),

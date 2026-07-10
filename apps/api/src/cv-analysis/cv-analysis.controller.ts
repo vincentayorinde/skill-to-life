@@ -14,6 +14,7 @@ import { User } from '@prisma/client';
 import { memoryStorage } from 'multer';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AiConfigService } from '../ai-config/ai-config.service';
 import { AnalyseCvLinkedInDto, AnalyseCvTextDto } from './dto/analyse-cv.dto';
 import { CvAnalysisService, CvUploadFile } from './cv-analysis.service';
 
@@ -22,7 +23,10 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 @Controller('cv-analysis')
 @UseGuards(JwtAuthGuard)
 export class CvAnalysisController {
-  constructor(private readonly cvAnalysisService: CvAnalysisService) {}
+  constructor(
+    private readonly cvAnalysisService: CvAnalysisService,
+    private readonly aiConfigService: AiConfigService,
+  ) {}
 
   @Post('upload')
   @UseInterceptors(
@@ -66,6 +70,11 @@ export class CvAnalysisController {
   @Get()
   getAnalyses(@CurrentUser() user: User) {
     return this.cvAnalysisService.getAnalyses(user.id);
+  }
+
+  @Get('provider-status')
+  async getProviderStatus() {
+    return this.aiConfigService.getProviderStatus();
   }
 
   @Get(':id')

@@ -18,4 +18,18 @@ export function validateConfig(): void {
         'See apps/api/.env.example for the full list.',
     );
   }
+
+  const aiKeys = [
+    'ANTHROPIC_API_KEY',
+    'OPENAI_API_KEY',
+    'GEMINI_API_KEY',
+  ];
+
+  const hasAnyAiKey = aiKeys.some((key) => !!process.env[key]);
+
+  if (!hasAnyAiKey) {
+    console.warn(
+      'No AI provider keys configured. CV analysis will not be available. Add ANTHROPIC_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY to enable it.',
+    );
+  }
 }
