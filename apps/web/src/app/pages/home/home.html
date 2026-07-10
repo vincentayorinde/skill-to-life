@@ -16,14 +16,14 @@
     <div class="mx-auto max-w-7xl">
       <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
         <!-- Left: copy + CTA -->
-        <div>
+        <div class="text-center lg:text-left">
           <div
-            class="mb-6 inline-flex items-center gap-2 rounded-ns-sm border border-ns-border bg-ns-card px-3 py-1.5"
+            class="mx-auto mb-6 inline-flex items-center gap-2 rounded-ns-sm border border-ns-border bg-ns-card px-3 py-1.5 lg:mx-0"
           >
             <span class="ns-pulse-dot" aria-hidden="true"></span>
             <span
               class="font-mono text-xs font-medium uppercase tracking-widest text-ns-muted"
-              >// AI CV ANALYSIS + CAREER TOOL</span
+              >// AI CV ANALYSIS and CAREER TOOL</span
             >
           </div>
 
@@ -33,18 +33,22 @@
             Find the tech path<br class="hidden sm:block" />
             that fits <span class="hero-headline-accent">you</span>.
           </h1>
-          <p class="mt-6 max-w-xl text-lg leading-8 text-ns-muted">
+          <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-ns-muted lg:mx-0">
             Take a short assessment, then use AI CV analysis to spot your
             strongest path, skill gaps, and next steps.
           </p>
 
-          <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ns-button routerLink="/assessment" size="lg"
-              >Start assessment</ns-button
+          <div
+            class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap lg:justify-start"
+          >
+            <a
+              routerLink="/assessment"
+              class="inline-flex min-h-12 w-full max-w-[22rem] items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-5 text-base font-semibold leading-none text-ns-primaryFg no-underline shadow-ns transition duration-base ease-ns hover:-translate-y-0.5 hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus active:translate-y-0 sm:w-64"
+              >Start assessment</a
             >
             <button
               type="button"
-              class="inline-flex w-auto self-start cursor-pointer items-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-6 py-3 text-base font-semibold tracking-tight text-ns-text transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary"
+              class="inline-flex min-h-12 w-full max-w-[22rem] cursor-pointer items-center justify-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-5 text-base font-semibold tracking-tight text-ns-text shadow-ns transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus sm:w-64"
               (click)="auth.loginWithGoogle()"
             >
               <svg
@@ -607,11 +611,17 @@
         want to save it. Nothing is shared publicly unless you choose to share
         it.
       </p>
-      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-        <ns-button routerLink="/assessment">Start anonymously</ns-button>
+      <div
+        class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+      >
+        <a
+          routerLink="/assessment"
+          class="inline-flex min-h-12 w-full max-w-[22rem] items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-5 text-base font-semibold leading-none text-ns-primaryFg no-underline shadow-ns transition duration-base ease-ns hover:-translate-y-0.5 hover:border-ns-primaryHover hover:bg-ns-primaryHover hover:shadow-glow focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus active:translate-y-0 sm:w-64"
+          >Start anonymously</a
+        >
         <button
           type="button"
-          class="inline-flex w-auto self-center cursor-pointer items-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-6 py-3 text-base font-semibold tracking-tight text-ns-text transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary sm:self-auto"
+          class="inline-flex min-h-12 w-full max-w-[22rem] cursor-pointer items-center justify-center gap-2.5 rounded-ns border border-ns-border bg-ns-card px-5 text-base font-semibold tracking-tight text-ns-text shadow-ns transition hover:border-ns-primary hover:bg-ns-primarySoft hover:text-ns-primary focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus sm:w-64"
           (click)="auth.loginWithGoogle()"
         >
           <svg

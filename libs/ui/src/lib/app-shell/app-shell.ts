@@ -186,7 +186,7 @@ export interface NsAuthUser {
               </button>
               <a
                 class="ns-start-assessment nav-cta-primary"
-                href="#assessment"
+                routerLink="/assessment"
                 >Start assessment</a
               >
             }
@@ -351,7 +351,7 @@ export interface NsAuthUser {
                 }
                 <a
                   class="ns-start-assessment nav-cta-primary"
-                  href="#assessment"
+                  routerLink="/assessment"
                   (click)="closeMenus()"
                   >Start assessment</a
                 >
@@ -657,7 +657,7 @@ export interface NsAuthUser {
         border: 0;
         border-radius: 50%;
         background: var(--color-accent, var(--ns-color-primary));
-        color: #ffffff;
+        color: var(--ns-color-primary-fg);
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;

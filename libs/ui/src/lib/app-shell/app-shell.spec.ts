@@ -51,6 +51,24 @@ describe('NsAppShellComponent', () => {
     expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
+  it('routes the header start assessment CTA to the assessment page', () => {
+    fixture.detectChanges();
+
+    const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
+    expect(cta.getAttribute('href')).toBe('/assessment');
+  });
+
+  it('uses primary foreground text for fallback avatar initials', () => {
+    fixture.componentRef.setInput('authUser', {
+      email: 'demo@example.com',
+      name: 'Demo User',
+    });
+    fixture.detectChanges();
+
+    const avatar = fixture.nativeElement.querySelector('.ns-avatar-button');
+    expect(getComputedStyle(avatar).color).toBe('var(--ns-color-primary-fg)');
+  });
+
   it('toggles and persists theme', () => {
     fixture.detectChanges();
 

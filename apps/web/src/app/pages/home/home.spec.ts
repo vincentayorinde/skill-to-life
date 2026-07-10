@@ -31,7 +31,7 @@ describe('HomeComponent', () => {
 
   it('renders the eyebrow tag with AI CV analysis label', () => {
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('AI CV ANALYSIS + CAREER TOOL');
+    expect(text).toContain('AI CV ANALYSIS and CAREER TOOL');
   });
 
   it('renders terminal card with assessment.ts label', () => {
@@ -71,6 +71,60 @@ describe('HomeComponent', () => {
     expect(text).toContain('01 /');
     expect(text).toContain('02 /');
     expect(text).toContain('03 /');
+  });
+
+  it('renders equal-width hero action buttons', () => {
+    const startLink = Array.from<HTMLAnchorElement>(
+      fixture.nativeElement.querySelectorAll('a'),
+    ).find(
+      (link) =>
+        link.textContent?.includes('Start assessment') &&
+        link.className.includes('sm:w-64'),
+    );
+    const googleButton = Array.from<HTMLButtonElement>(
+      fixture.nativeElement.querySelectorAll('button'),
+    ).find((button) => button.textContent?.includes('Sign in with Google'));
+
+    expect(startLink?.className).toContain('w-full');
+    expect(startLink?.className).toContain('sm:w-64');
+    expect(googleButton?.className).toContain('w-full');
+    expect(googleButton?.className).toContain('sm:w-64');
+  });
+
+  it('centers hero content on mobile and left-aligns on desktop', () => {
+    const headline = fixture.nativeElement.querySelector('h1');
+    const heroCopy = headline.closest('div');
+    const eyebrow = heroCopy.querySelector('.ns-pulse-dot')?.parentElement;
+    const paragraph = heroCopy.querySelector('p');
+    const actions = Array.from<HTMLElement>(
+      heroCopy.querySelectorAll('div'),
+    ).find((element) => element.className.includes('lg:justify-start'));
+
+    expect(heroCopy.className).toContain('text-center');
+    expect(heroCopy.className).toContain('lg:text-left');
+    expect(eyebrow?.className).toContain('mx-auto');
+    expect(eyebrow?.className).toContain('lg:mx-0');
+    expect(paragraph?.className).toContain('mx-auto');
+    expect(paragraph?.className).toContain('lg:mx-0');
+    expect(actions?.className).toContain('items-center');
+    expect(actions?.className).toContain('justify-center');
+    expect(actions?.className).toContain('lg:justify-start');
+  });
+
+  it('renders centered equal-width footer action buttons', () => {
+    const startLink = Array.from<HTMLAnchorElement>(
+      fixture.nativeElement.querySelectorAll('a'),
+    ).find((link) => link.textContent?.includes('Start anonymously'));
+    const googleButton = Array.from<HTMLButtonElement>(
+      fixture.nativeElement.querySelectorAll('button'),
+    ).find((button) => button.textContent?.includes('Continue with Google'));
+    const actions = startLink?.parentElement;
+
+    expect(actions?.className).toContain('items-center');
+    expect(startLink?.className).toContain('w-full');
+    expect(startLink?.className).toContain('sm:w-64');
+    expect(googleButton?.className).toContain('w-full');
+    expect(googleButton?.className).toContain('sm:w-64');
   });
 
   it('renders deployment footer note', () => {
