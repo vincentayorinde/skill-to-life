@@ -76,5 +76,10 @@ describe('HomeComponent', () => {
   it('renders deployment footer note', () => {
     const text = fixture.nativeElement.textContent as string;
     expect(text).toContain('Deployed using nexloy.dev');
+
+    const link = fixture.nativeElement.querySelector(
+      'a[href="https://nexloy.dev"]',
+    );
+    expect(link).not.toBeNull();
   });
 });

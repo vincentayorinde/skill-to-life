@@ -111,7 +111,7 @@ const OPEN_PREFERENCES_EVENT = 'skilltolife-open-cookie-preferences';
               </button>
               <button
                 type="button"
-                class="rounded-ns border border-ns-primary bg-ns-primary px-4 py-2 text-xs font-semibold text-white transition hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="rounded-ns border border-ns-primary bg-ns-primary px-4 py-2 text-xs font-semibold text-ns-primaryFg transition hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 (click)="acceptAnalytics()"
               >
                 Accept cookies
@@ -148,7 +148,7 @@ const OPEN_PREFERENCES_EVENT = 'skilltolife-open-cookie-preferences';
               </button>
               <button
                 type="button"
-                class="rounded-ns border border-ns-primary bg-ns-primary px-4 py-2 text-xs font-semibold text-white transition hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+                class="rounded-ns border border-ns-primary bg-ns-primary px-4 py-2 text-xs font-semibold text-ns-primaryFg transition hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
                 (click)="acceptAnalytics()"
               >
                 Accept cookies

@@ -58,6 +58,28 @@ describe('NsCookieNoticeComponent', () => {
     expect(el.textContent).toContain('Save preferences');
   });
 
+  it('uses primary foreground text on accept buttons', () => {
+    const fixture = TestBed.createComponent(NsCookieNoticeComponent);
+    fixture.detectChanges();
+
+    const acceptButton = Array.from<HTMLButtonElement>(
+      fixture.nativeElement.querySelectorAll('button'),
+    ).find((button): button is HTMLButtonElement =>
+      button.textContent?.includes('Accept cookies'),
+    );
+    expect(acceptButton?.className).toContain('text-ns-primaryFg');
+
+    fixture.componentInstance.managePreferences();
+    fixture.detectChanges();
+
+    const preferencesAcceptButton = Array.from<HTMLButtonElement>(
+      fixture.nativeElement.querySelectorAll('button'),
+    ).find((button): button is HTMLButtonElement =>
+      button.textContent?.includes('Accept cookies'),
+    );
+    expect(preferencesAcceptButton?.className).toContain('text-ns-primaryFg');
+  });
+
   it('stores accepted analytics consent', () => {
     const fixture = TestBed.createComponent(NsCookieNoticeComponent);
     fixture.detectChanges();

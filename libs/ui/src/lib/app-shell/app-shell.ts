@@ -613,6 +613,17 @@ export interface NsAuthUser {
         color: rgba(163, 230, 53, 0.92);
       }
 
+      :host-context([data-theme='light']) .ns-dev-login {
+        border-color: var(--color-text, var(--ns-color-text));
+        color: var(--color-text, var(--ns-color-text));
+      }
+
+      :host-context([data-theme='light']) .ns-dev-login:hover {
+        background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
+        border-color: var(--color-text, var(--ns-color-text));
+        color: var(--color-text, var(--ns-color-text));
+      }
+
       .ns-sign-in:hover {
         border-color: var(--color-accent, var(--ns-color-primary));
         color: var(--color-accent, var(--ns-color-primary));

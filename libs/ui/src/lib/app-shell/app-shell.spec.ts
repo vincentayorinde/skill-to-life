@@ -86,6 +86,24 @@ describe('NsAppShellComponent', () => {
     expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
+  it('defines dark dev login text and outline in light mode', () => {
+    fixture.componentRef.setInput('devMode', true);
+    localStorage.setItem('skill-to-life-theme', 'light');
+    fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+
+    const devLogin = fixture.nativeElement.querySelector('.ns-dev-login');
+    expect(devLogin).not.toBeNull();
+
+    const styles = (
+      NsAppShellComponent as unknown as { ɵcmp: { styles: string[] } }
+    ).ɵcmp.styles.join('\n');
+    expect(styles).toContain("[data-theme='light']");
+    expect(styles).toContain('.ns-dev-login');
+    expect(styles).toContain('border-color: var(--color-text');
+    expect(styles).toContain('color: var(--color-text');
+  });
+
   it('toggles back from light to dark', () => {
     localStorage.setItem('skill-to-life-theme', 'light');
     fixture.componentInstance.ngOnInit();
