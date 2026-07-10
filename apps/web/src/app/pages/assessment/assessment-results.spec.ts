@@ -9,10 +9,18 @@ import { Meta, Title } from '@angular/platform-browser';
 import { AssessmentResultsComponent } from './assessment-results';
 import { AssessmentStateService } from '../../services/assessment-state.service';
 import { generateResultCard } from '../../assessment/results/card-generator';
+import { scoreAssessment } from 'scoring';
 
 function withAnswers(answers: Record<number, string>) {
   const svc = TestBed.inject(AssessmentStateService);
   svc.save(answers);
+  const [topMatch] = scoreAssessment(answers);
+  if (topMatch) {
+    localStorage.setItem(
+      'skilltolife_result_gate_done',
+      `${topMatch.careerId}_${Math.round(topMatch.percentage)}`,
+    );
+  }
 }
 
 function createCanvasDownloadMock() {
@@ -111,6 +119,7 @@ describe('AssessmentResultsComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     sessionStorage.clear();
+    localStorage.clear();
     // Restore any spies (e.g. document.createElement) so they don't bleed between tests.
     vi.restoreAllMocks();
     await TestBed.configureTestingModule({
@@ -125,6 +134,7 @@ describe('AssessmentResultsComponent', () => {
     // Flush the POST /api/results fired by saveResult() so tests don't hang.
     httpMock.match(() => true).forEach((r) => r.flush({ id: 'r1' }));
     httpMock.verify();
+    localStorage.clear();
   });
 
   it('should create', () => {
