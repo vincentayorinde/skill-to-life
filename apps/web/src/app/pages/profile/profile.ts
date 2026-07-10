@@ -660,6 +660,20 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         improve your profile.
                       </p>
                     </div>
+                    <div
+                      style="background: var(--color-accent-light); border: 1px solid var(--color-border-accent); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;"
+                    >
+                      <span>
+                        ✨ AI powered — Your CV content is sent to our AI
+                        provider for analysis. See
+                        <a
+                          routerLink="/terms"
+                          class="font-semibold text-ns-primary no-underline hover:underline"
+                          >our terms</a
+                        >
+                        for details.
+                      </span>
+                    </div>
                     <div class="grid gap-4 sm:grid-cols-3">
                       <!-- PDF upload -->
                       <div

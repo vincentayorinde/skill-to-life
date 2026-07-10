@@ -150,10 +150,6 @@ import { AuthService } from '../../core/auth/auth.service';
                 </li>
                 <li class="flex items-start gap-2">
                   <span class="text-red-400" aria-hidden="true">✗</span>
-                  We do not use your data for advertising
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
                   We do not send marketing emails
                 </li>
               </ul>

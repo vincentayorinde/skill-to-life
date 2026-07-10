@@ -28,4 +28,12 @@ describe('PrivacyComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.textContent).toContain('not sell');
   });
+
+  it('does not duplicate the advertising statement', () => {
+    const fixture = TestBed.createComponent(PrivacyComponent);
+    fixture.detectChanges();
+    const text = fixture.nativeElement.textContent as string;
+    const matches = text.match(/We do not use your data for advertising/g);
+    expect(matches).toHaveLength(1);
+  });
 });

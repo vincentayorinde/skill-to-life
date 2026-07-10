@@ -48,7 +48,7 @@ describe('NsAppShellComponent', () => {
     fixture.detectChanges();
 
     const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
-    expect(getComputedStyle(cta).color).toBe('rgb(10, 10, 15)');
+    expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
   it('toggles and persists theme', () => {
@@ -83,7 +83,7 @@ describe('NsAppShellComponent', () => {
     fixture.detectChanges();
 
     const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
-    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
   it('toggles back from light to dark', () => {

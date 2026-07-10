@@ -28,4 +28,43 @@ describe('TermsComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.textContent).toContain('free');
   });
+
+  it('shows July 2026 date', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Last updated: July 2026');
+  });
+
+  it('renders AI disclosure section', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Artificial intelligence');
+    expect(el.textContent).toContain('AI-generated results');
+  });
+
+  it('renders data and privacy section', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Data and privacy');
+    expect(el.textContent).toContain('Privacy Policy');
+  });
+
+  it('renders governing law section', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Governing law');
+    expect(el.textContent).toContain('England and Wales');
+  });
+
+  it('renders arbitration section', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Dispute resolution');
+    expect(el.textContent).toContain('arbitration process');
+  });
 });

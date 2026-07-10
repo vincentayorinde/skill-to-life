@@ -72,4 +72,9 @@ describe('HomeComponent', () => {
     expect(text).toContain('02 /');
     expect(text).toContain('03 /');
   });
+
+  it('renders deployment footer note', () => {
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Deployed using nexloy.dev');
+  });
 });
