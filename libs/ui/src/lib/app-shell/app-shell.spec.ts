@@ -44,11 +44,11 @@ describe('NsAppShellComponent', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
   });
 
-  it('keeps the primary nav CTA text white in dark mode', () => {
+  it('keeps the primary nav CTA text dark in dark mode', () => {
     fixture.detectChanges();
 
     const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
-    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(cta).color).toBe('rgb(10, 10, 15)');
   });
 
   it('toggles and persists theme', () => {

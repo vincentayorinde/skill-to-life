@@ -624,7 +624,7 @@ export interface NsAuthUser {
         justify-content: center;
         border: 1px solid var(--color-accent, var(--ns-color-primary));
         background: var(--color-accent, var(--ns-color-primary));
-        color: #ffffff !important;
+        color: var(--ns-color-primary-fg);
         padding: 7px 16px;
         text-decoration: none;
       }

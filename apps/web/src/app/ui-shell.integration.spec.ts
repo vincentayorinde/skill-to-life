@@ -38,11 +38,11 @@ describe('UI shell integration', () => {
     expect(styles.pointerEvents).toBe('none');
   });
 
-  it('keeps nav primary button text white in dark mode', async () => {
+  it('keeps nav primary button text dark in dark mode', async () => {
     const fixture = await createShellFixture();
 
     const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
-    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
   it('keeps nav primary button text white in light mode', async () => {
@@ -50,7 +50,7 @@ describe('UI shell integration', () => {
     const fixture = await createShellFixture();
 
     const cta = fixture.nativeElement.querySelector('.nav-cta-primary');
-    expect(getComputedStyle(cta).color).toBe('rgb(255, 255, 255)');
+    expect(getComputedStyle(cta).color).toBe('var(--ns-color-primary-fg)');
   });
 
   it('shows the friendly cookie banner copy', async () => {

@@ -38,11 +38,11 @@ describe('NsButtonComponent', () => {
     expect(button.className).toContain('bg-ns-success');
   });
 
-  it('sets primary button text to white explicitly', () => {
+  it('sets primary button text to the theme primary foreground', () => {
     fixture.componentRef.setInput('variant', 'primary');
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.className).toContain('text-white');
+    expect(button.className).toContain('text-ns-primaryFg');
   });
 });
