@@ -1947,7 +1947,7 @@ export class AssessmentResultsComponent implements OnInit {
     if (!this.matches.length) return;
     const top = this.matches[0];
     const insight = this.topInsight;
-    const ogImage = '/assets/social-preview.png';
+    const ogImage = 'https://skilltolife.com/assets/social-preview.png';
 
     this.title.setTitle(
       `Your Skill to Life result — ${top.title} | Skill to Life`,
@@ -1961,9 +1961,19 @@ export class AssessmentResultsComponent implements OnInit {
     this.meta.updateTag({ property: 'og:description', content: ogDesc });
     this.meta.updateTag({ property: 'og:url', content: ogUrl });
     this.meta.updateTag({ property: 'og:site_name', content: 'Skill to Life' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:image', content: ogImage });
+    this.meta.updateTag({
+      property: 'og:image:secure_url',
+      content: ogImage,
+    });
+    this.meta.updateTag({ property: 'og:image:type', content: 'image/png' });
     this.meta.updateTag({ property: 'og:image:width', content: '1280' });
     this.meta.updateTag({ property: 'og:image:height', content: '640' });
+    this.meta.updateTag({
+      property: 'og:image:alt',
+      content: 'Skill to Life career path preview',
+    });
     this.meta.updateTag({
       name: 'twitter:card',
       content: 'summary_large_image',
@@ -1971,5 +1981,9 @@ export class AssessmentResultsComponent implements OnInit {
     this.meta.updateTag({ name: 'twitter:title', content: ogTitle });
     this.meta.updateTag({ name: 'twitter:description', content: ogDesc });
     this.meta.updateTag({ name: 'twitter:image', content: ogImage });
+    this.meta.updateTag({
+      name: 'twitter:image:alt',
+      content: 'Skill to Life career path preview',
+    });
   }
 }

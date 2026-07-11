@@ -443,7 +443,15 @@ describe('AssessmentResultsComponent', () => {
     fixture.detectChanges();
     const metaService = TestBed.inject(Meta);
     const tag = metaService.getTag('property="og:image"');
-    expect(tag?.content).toBe('/assets/social-preview.png');
+    const secureTag = metaService.getTag('property="og:image:secure_url"');
+    const altTag = metaService.getTag('property="og:image:alt"');
+    expect(tag?.content).toBe(
+      'https://skilltolife.com/assets/social-preview.png',
+    );
+    expect(secureTag?.content).toBe(
+      'https://skilltolife.com/assets/social-preview.png',
+    );
+    expect(altTag?.content).toBe('Skill to Life career path preview');
   });
 
   it('should set twitter:card to summary_large_image', () => {
