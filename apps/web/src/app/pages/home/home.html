@@ -79,8 +79,8 @@
             </button>
           </div>
           <a
-            routerLink="/profile"
-            [queryParams]="{ tab: 'cv' }"
+            href="/profile?tab=cv"
+            (click)="openCvAnalysis($event)"
             class="mt-5 inline-flex items-center justify-center text-sm font-semibold text-ns-primary no-underline hover:underline"
           >
             ✨ Or analyse your CV with AI →
@@ -277,8 +277,8 @@
           stronger.
         </p>
         <a
-          routerLink="/profile"
-          [queryParams]="{ tab: 'cv' }"
+          href="/profile?tab=cv"
+          (click)="openCvAnalysis($event)"
           class="mt-7 inline-flex min-h-11 items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg no-underline shadow-ns transition hover:-translate-y-0.5 hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
         >
           Analyse my CV →

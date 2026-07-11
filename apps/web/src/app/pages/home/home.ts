@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import {
   NsAppShellComponent,
@@ -11,7 +11,7 @@ import {
   NsOptionCardComponent,
   NsProgressComponent,
 } from 'ui';
-import { CAREER_PATHS } from 'types';
+import { CAREER_PATHS, User } from 'types';
 import { AuthService } from '../../core/auth/auth.service';
 import { SavedService } from '../../core/saved/saved.service';
 
@@ -70,8 +70,10 @@ export class HomeComponent implements OnInit {
   private readonly savedService = inject(SavedService);
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
+  private readonly router = inject(Router);
 
   readonly savedIds = signal<Set<string>>(new Set());
+  readonly currentUser = signal<User | null>(null);
 
   ngOnInit(): void {
     this.titleService.setTitle(
@@ -86,6 +88,7 @@ export class HomeComponent implements OnInit {
       this.savedIds.set(new Set(ids)),
     );
     this.auth.currentUser$.subscribe((user) => {
+      this.currentUser.set(user);
       if (user) this.savedService.getSavedCareers().subscribe();
     });
   }
@@ -107,6 +110,17 @@ export class HomeComponent implements OnInit {
         .subscribe();
     }
   }
+
+  openCvAnalysis(event: Event): void {
+    event.preventDefault();
+    if (this.currentUser()) {
+      this.router.navigate(['/profile'], { queryParams: { tab: 'cv' } });
+      return;
+    }
+
+    this.auth.loginWithGoogle('/profile?tab=cv');
+  }
+
   protected readonly shellLinks: NsAppShellLink[] = [
     { label: 'How it works', href: '/#how-it-works' },
     { label: 'Career paths', routerLink: '/careers' },

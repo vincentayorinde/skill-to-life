@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HomeComponent } from './home';
 import { AuthService } from '../../core/auth/auth.service';
@@ -8,13 +8,14 @@ import { of } from 'rxjs';
 const mockAuth = {
   currentUser$: of(null),
   isDev: false,
-  loginWithGoogle: () => undefined,
+  loginWithGoogle: vi.fn(),
   devLogin: () => undefined,
   logout: () => undefined,
 };
 
 describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,7 +27,10 @@ describe('HomeComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
     fixture.detectChanges();
+    mockAuth.loginWithGoogle.mockClear();
   });
 
   it('renders the eyebrow tag with AI CV analysis label', () => {
@@ -152,5 +156,34 @@ describe('HomeComponent', () => {
     expect(text).toContain('// AI CV ANALYSIS');
     expect(text).toContain('Already have experience? Let AI analyse your CV.');
     expect(text).toContain('Profile strength');
+  });
+
+  it('starts sign in with CV analysis return URL when signed out', () => {
+    const link = Array.from<HTMLAnchorElement>(
+      fixture.nativeElement.querySelectorAll('a'),
+    ).find((anchor) =>
+      anchor.textContent?.includes('Or analyse your CV with AI'),
+    );
+
+    link?.click();
+
+    expect(mockAuth.loginWithGoogle).toHaveBeenCalledWith('/profile?tab=cv');
+  });
+
+  it('does not start sign in for CV analysis when already signed in', () => {
+    const preventDefault = vi.fn();
+    const event = { preventDefault } as unknown as Event;
+
+    fixture.componentInstance.currentUser.set({
+      id: 'user-1',
+      email: 'test@example.com',
+    });
+    fixture.componentInstance.openCvAnalysis(event);
+
+    expect(preventDefault).toHaveBeenCalled();
+    expect(mockAuth.loginWithGoogle).not.toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile'], {
+      queryParams: { tab: 'cv' },
+    });
   });
 });

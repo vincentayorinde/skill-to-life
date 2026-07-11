@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { AnalyticsService } from '../analytics/analytics.service';
 
 const TOKEN_KEY = 'skill_to_life_token';
+const RETURN_URL_KEY = 'skilltolife_result_return';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -18,7 +19,10 @@ export class AuthService {
   readonly isAuthenticated$ = this.currentUser$.pipe(map((u) => u !== null));
   readonly isDev = environment.devMode;
 
-  loginWithGoogle(): void {
+  loginWithGoogle(returnUrl?: string): void {
+    if (returnUrl) {
+      this.storeReturnUrl(returnUrl);
+    }
     this.analytics.trackEvent('sign_in_clicked');
     this.analytics.trackEvent('google_signin_clicked');
     window.location.href = `${environment.apiUrl}/api/auth/google`;
@@ -61,6 +65,14 @@ export class AuthService {
 
   private storeToken(token: string): void {
     localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  private storeReturnUrl(returnUrl: string): void {
+    try {
+      localStorage.setItem(RETURN_URL_KEY, returnUrl);
+    } catch {
+      // Return URL persistence is a convenience; sign-in can continue without it.
+    }
   }
 
   private clearToken(): void {

@@ -34,10 +34,15 @@ describe('AuthCallbackComponent', () => {
 
     router = TestBed.inject(Router);
     vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     sessionStorage.clear();
+    localStorage.clear();
   });
 
-  afterEach(() => sessionStorage.clear());
+  afterEach(() => {
+    sessionStorage.clear();
+    localStorage.clear();
+  });
 
   it('calls handleCallback with token from URL', async () => {
     const fixture = TestBed.createComponent(AuthCallbackComponent);
@@ -52,6 +57,17 @@ describe('AuthCallbackComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+  });
+
+  it('redirects to stored CV analysis return URL after callback', async () => {
+    localStorage.setItem('skilltolife_result_return', '/profile?tab=cv');
+
+    const fixture = TestBed.createComponent(AuthCallbackComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/profile?tab=cv');
+    expect(localStorage.getItem('skilltolife_result_return')).toBeNull();
   });
 });
