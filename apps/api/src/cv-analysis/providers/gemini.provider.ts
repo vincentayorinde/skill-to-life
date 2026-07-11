@@ -4,7 +4,10 @@ import { AiProvider } from './ai-provider.interface';
 export class GeminiProvider implements AiProvider {
   private readonly client: GoogleGenerativeAI;
 
-  constructor(private readonly model: string) {
+  constructor(
+    private readonly model: string = process.env['GEMINI_MODEL'] ??
+      'gemini-flash-latest',
+  ) {
     this.client = new GoogleGenerativeAI(process.env['GEMINI_API_KEY'] ?? '');
   }
 

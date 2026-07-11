@@ -9,6 +9,8 @@ export interface NsAppShellLink {
   href?: string;
   routerLink?: string;
   fragment?: string;
+  queryParams?: Record<string, string>;
+  requiresAuth?: boolean;
   external?: boolean;
 }
 
@@ -57,15 +59,25 @@ export interface NsAuthUser {
 
           <nav class="ns-nav-links" aria-label="Primary navigation">
             @for (link of links; track link.label) {
-              @if (link.routerLink) {
+              @if (link.routerLink && (!link.requiresAuth || authUser)) {
                 <a
                   class="ns-nav-link"
                   routerLinkActive="is-active"
                   [routerLink]="link.routerLink"
                   [fragment]="link.fragment"
+                  [queryParams]="link.queryParams"
+                  (click)="handleNavLinkClick($event, link)"
                 >
                   {{ link.label }}
                 </a>
+              } @else if (link.routerLink) {
+                <button
+                  type="button"
+                  class="ns-nav-link"
+                  (click)="handleNavLinkClick($event, link)"
+                >
+                  {{ link.label }}
+                </button>
               } @else {
                 <a
                   class="ns-nav-link"
@@ -314,16 +326,25 @@ export interface NsAuthUser {
           <div id="mobile-nav" class="ns-mobile-menu">
             <nav class="ns-mobile-links" aria-label="Mobile navigation">
               @for (link of links; track link.label) {
-                @if (link.routerLink) {
+                @if (link.routerLink && (!link.requiresAuth || authUser)) {
                   <a
                     class="ns-mobile-link"
                     routerLinkActive="is-active"
                     [routerLink]="link.routerLink"
                     [fragment]="link.fragment"
-                    (click)="closeMenus()"
+                    [queryParams]="link.queryParams"
+                    (click)="handleNavLinkClick($event, link)"
                   >
                     {{ link.label }}
                   </a>
+                } @else if (link.routerLink) {
+                  <button
+                    type="button"
+                    class="ns-mobile-link"
+                    (click)="handleNavLinkClick($event, link)"
+                  >
+                    {{ link.label }}
+                  </button>
                 } @else {
                   <a
                     class="ns-mobile-link"
@@ -494,8 +515,10 @@ export interface NsAuthUser {
 
       .ns-nav-link,
       .ns-mobile-link {
+        font: inherit;
         color: var(--color-text-secondary, var(--ns-color-muted));
         text-decoration: none;
+        cursor: pointer;
         transition:
           color var(--ns-motion-base) ease,
           background-color var(--ns-motion-base) ease;
@@ -883,6 +906,17 @@ export class NsAppShellComponent implements OnInit {
   emitSignOut(): void {
     this.closeMenus();
     this.signOut.emit();
+  }
+
+  handleNavLinkClick(event: MouseEvent, link: NsAppShellLink): void {
+    if (link.requiresAuth && !this.authUser) {
+      event.preventDefault();
+      this.closeMenus();
+      this.signIn.emit();
+      return;
+    }
+
+    this.closeMenus();
   }
 
   userInitials(user: NsAuthUser): string {

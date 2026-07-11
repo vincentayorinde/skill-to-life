@@ -244,7 +244,7 @@ import { NsExternalLinkService } from './external-link.service';
       .btn-primary {
         border: none;
         background: var(--color-accent, var(--ns-color-accent));
-        color: #ffffff;
+        color: var(--color-accent-fg, var(--ns-color-primary-fg));
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;

@@ -77,32 +77,34 @@ export class CvAnalysisProcessor {
     return this.parseResponse(raw);
   }
 
-  private hasApiKey(provider: string): boolean {
-    switch (provider) {
-      case 'claude':
-        return !!process.env['ANTHROPIC_API_KEY'];
-      case 'openai':
-        return !!process.env['OPENAI_API_KEY'];
-      case 'gemini':
-        return !!process.env['GEMINI_API_KEY'];
-      default:
-        return false;
-    }
-  }
-
   private getRemainingProviders(
     usedProvider: string,
   ): Array<{ provider: string; model: string }> {
     const all = [
-      { provider: 'claude', model: 'claude-opus-4-20250514' },
-      { provider: 'openai', model: 'gpt-4o' },
-      { provider: 'gemini', model: 'gemini-1.5-pro' },
+      {
+        provider: 'claude',
+        model: process.env['CLAUDE_MODEL'] ?? 'claude-opus-4-20250514',
+        envKey: 'ANTHROPIC_API_KEY',
+      },
+      {
+        provider: 'openai',
+        model: process.env['OPENAI_MODEL'] ?? 'gpt-4o',
+        envKey: 'OPENAI_API_KEY',
+      },
+      {
+        provider: 'gemini',
+        model: process.env['GEMINI_MODEL'] ?? 'gemini-flash-latest',
+        envKey: 'GEMINI_API_KEY',
+      },
     ];
 
-    return all.filter(
-      (provider) =>
-        provider.provider !== usedProvider && this.hasApiKey(provider.provider),
-    );
+    return all
+      .filter(
+        (provider) =>
+          provider.provider !== usedProvider &&
+          this.aiConfigService.isValidKey(process.env[provider.envKey]),
+      )
+      .map(({ provider, model }) => ({ provider, model }));
   }
 
   private buildProvider(provider: string, model: string) {
@@ -110,7 +112,7 @@ export class CvAnalysisProcessor {
       case 'openai':
         return new OpenAIProvider(model || 'gpt-4o');
       case 'gemini':
-        return new GeminiProvider(model || 'gemini-1.5-pro');
+        return new GeminiProvider(model || 'gemini-flash-latest');
       default:
         return new ClaudeProvider(model || 'claude-opus-4-20250514');
     }

@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  signal,
+  computed,
+} from '@angular/core';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -35,9 +42,75 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
             ></div>
           </div>
         } @else if (profile()) {
-          <div class="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8">
+          <!-- Mobile compact header -->
+          <div class="profile-header-mobile lg:hidden">
+            @if (currentUser()?.avatar) {
+              <img
+                [src]="currentUser()!.avatar"
+                [alt]="currentUser()!.name ?? 'User'"
+                class="profile-header-mobile-avatar"
+              />
+            } @else {
+              <div
+                class="profile-header-mobile-avatar profile-header-mobile-avatar-fallback"
+              >
+                {{
+                  (currentUser()?.name ?? currentUser()?.email ?? '?')
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+              </div>
+            }
+            <div class="profile-header-mobile-info">
+              <p class="profile-header-mobile-name">
+                {{ currentUser()?.name }}
+              </p>
+              <p class="profile-header-mobile-email">
+                {{ currentUser()?.email }}
+              </p>
+            </div>
+            <div class="profile-header-mobile-meta">
+              <span
+                class="profile-status-pill"
+                [class.is-public]="profile()!.isPublic"
+              >
+                <span class="profile-status-dot"></span>
+                {{ profile()!.isPublic ? 'Public' : 'Private' }}
+              </span>
+              <button
+                type="button"
+                class="profile-header-mobile-edit"
+                (click)="activeTab.set('profile')"
+              >
+                Edit →
+              </button>
+            </div>
+          </div>
+
+          <!-- Sticky mobile tab bar -->
+          <div
+            class="profile-tabs-mobile lg:hidden"
+            role="tablist"
+            aria-label="Profile sections"
+          >
+            @for (tab of tabs; track tab.id) {
+              <button
+                type="button"
+                role="tab"
+                class="profile-tab-mobile"
+                [class.is-active]="activeTab() === tab.id"
+                [attr.aria-selected]="activeTab() === tab.id"
+                (click)="activeTab.set(tab.id)"
+              >
+                {{ tab.label }}
+              </button>
+            }
+            <span class="profile-tabs-mobile-hint" aria-hidden="true">›</span>
+          </div>
+
+          <div class="profile-layout">
             <!-- Sidebar -->
-            <aside class="space-y-4 lg:sticky lg:top-24 lg:self-start">
+            <aside class="hidden space-y-4 lg:block lg:sticky lg:top-24 lg:self-start">
               <!-- Avatar + identity -->
               <div class="rounded-ns-lg border border-ns-border bg-ns-card p-5">
                 <div class="mb-4 flex flex-col items-center text-center">
@@ -87,14 +160,14 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
               <!-- Section menu -->
               <nav
-                class="overflow-x-auto rounded-ns-lg border border-ns-border bg-ns-card p-2 shadow-ns lg:overflow-visible"
+                class="rounded-ns-lg border border-ns-border bg-ns-card p-2 shadow-ns"
                 aria-label="Profile sections"
               >
-                <div class="flex min-w-max gap-1 lg:min-w-0 lg:flex-col">
+                <div class="profile-tabs lg:flex-col lg:overflow-visible lg:pb-0">
                   @for (tab of tabs; track tab.id) {
                     <button
                       type="button"
-                      class="whitespace-nowrap rounded-ns px-3 py-2 text-left text-sm font-medium transition-colors lg:w-full"
+                      class="profile-tab rounded-ns px-3 py-2 text-left text-sm font-medium transition-colors lg:w-full"
                       [class.bg-ns-canvasSubtle]="activeTab() === tab.id"
                       [class.text-ns-text]="activeTab() === tab.id"
                       [class.text-ns-muted]="activeTab() !== tab.id"
@@ -129,7 +202,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     </div>
                     <button
                       type="button"
-                      class="rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
+                      class="hidden lg:block rounded-ns bg-ns-primary px-4 py-2 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
                       [disabled]="saving()"
                       (click)="saveProfile()"
                     >
@@ -307,6 +380,15 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                       </div>
                     }
                   </div>
+
+                  <button
+                    type="button"
+                    class="lg:hidden mt-6 w-full rounded-ns bg-ns-primary py-3 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
+                    [disabled]="saving()"
+                    (click)="saveProfile()"
+                  >
+                    {{ saving() ? 'Saving...' : 'Save profile' }}
+                  </button>
                 </div>
               }
 
@@ -314,7 +396,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
               @if (activeTab() === 'overview') {
                 <div class="space-y-6">
                   <!-- Stats -->
-                  <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  <div class="overview-stats">
                     <div
                       class="rounded-ns-card border border-ns-border bg-ns-card p-4 text-center"
                     >
@@ -648,7 +730,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
               <!-- Tab: CV Analysis -->
               @if (activeTab() === 'cv') {
                 <div>
-                  @if (analyses().length === 0) {
+                  @if (analyses().length === 0 || startingNewAnalysis()) {
                     <!-- Upload prompt -->
                     <div class="mb-6">
                       <h2 class="mb-1 text-xl font-bold text-ns-text">
@@ -660,10 +742,25 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         improve your profile.
                       </p>
                     </div>
-                    <div
-                      style="background: var(--color-accent-light); border: 1px solid var(--color-border-accent); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;"
-                    >
-                      <span>
+
+                    @if (analysing()) {
+                      <div class="cv-progress-panel">
+                        <div class="cv-progress-bar-track">
+                          <div
+                            class="cv-progress-bar-fill"
+                            [style.width.%]="analysisProgress()"
+                          ></div>
+                        </div>
+                        <p class="cv-progress-label">
+                          Analysing your profile… {{ analysisProgress() }}%
+                        </p>
+                        <p class="cv-progress-hint">
+                          This usually takes 15–30 seconds.
+                        </p>
+                      </div>
+                    } @else {
+                    <div class="ai-notice">
+                      <span class="ai-notice-text">
                         ✨ AI powered — Your CV content is sent to our AI
                         provider for analysis. See
                         <a
@@ -674,11 +771,9 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         for details.
                       </span>
                     </div>
-                    <div class="grid gap-4 sm:grid-cols-3">
+                    <div class="cv-input-cards">
                       <!-- PDF upload -->
-                      <div
-                        class="rounded-ns-lg border border-ns-border bg-ns-card p-5"
-                      >
+                      <div class="cv-input-card cv-input-card-upload rounded-ns-lg border border-ns-border bg-ns-card p-5">
                         <svg
                           class="mb-3 h-8 w-8 text-ns-primary"
                           viewBox="0 0 24 24"
@@ -718,9 +813,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                       </div>
 
                       <!-- Text paste -->
-                      <div
-                        class="rounded-ns-lg border border-ns-border bg-ns-card p-5"
-                      >
+                      <div class="cv-input-card cv-input-card-paste rounded-ns-lg border border-ns-border bg-ns-card p-5">
                         <svg
                           class="mb-3 h-8 w-8 text-ns-primary"
                           viewBox="0 0 24 24"
@@ -744,7 +837,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                         </p>
                         <textarea
                           class="w-full rounded-ns border border-ns-border bg-ns-bg px-3 py-2 text-sm text-ns-text focus:border-ns-primary focus:outline-none"
-                          rows="4"
+                          rows="6"
                           maxlength="10000"
                           placeholder="Paste your CV text here..."
                           [(ngModel)]="cvText"
@@ -755,9 +848,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                       </div>
 
                       <!-- LinkedIn URL -->
-                      <div
-                        class="rounded-ns-lg border border-ns-border bg-ns-card p-5"
-                      >
+                      <div class="cv-input-card cv-input-card-linkedin rounded-ns-lg border border-ns-border bg-ns-card p-5">
                         <svg
                           class="mb-3 h-8 w-8 text-ns-primary"
                           viewBox="0 0 24 24"
@@ -787,32 +878,19 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                     <div class="mt-5">
                       <button
                         type="button"
-                        class="rounded-ns bg-ns-primary px-6 py-2.5 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
-                        [disabled]="analysing() || !hasInput()"
+                        class="analyse-btn rounded-ns bg-ns-primary px-6 py-2.5 text-sm font-medium text-ns-primaryFg hover:bg-ns-primaryHover disabled:opacity-50"
+                        [disabled]="!hasInput()"
                         (click)="runAnalysis()"
                       >
-                        @if (analysing()) {
-                          <span class="flex items-center gap-2">
-                            <span
-                              class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-                            ></span>
-                            Analysing your profile...
-                          </span>
-                        } @else {
-                          Analyse my profile
-                        }
+                        Analyse my profile
                       </button>
-                      @if (analysing()) {
-                        <p class="mt-2 text-xs text-ns-muted">
-                          This takes about 15–30 seconds
-                        </p>
-                      }
                       @if (analysisError()) {
                         <p class="mt-2 text-xs text-ns-danger">
                           {{ analysisError() }}
                         </p>
                       }
                     </div>
+                    }
                   } @else {
                     <!-- Analysis results -->
                     <div class="space-y-8">
@@ -1153,8 +1231,354 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
       </div>
     </ns-app-shell>
   `,
+  styles: [
+    `
+      .profile-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      @media (min-width: 1024px) {
+        .profile-layout {
+          grid-template-columns: 280px minmax(0, 1fr);
+        }
+      }
+
+      .profile-tabs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+
+      .profile-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .profile-tab {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .ai-notice {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        border: 1px solid
+          var(--color-border-accent, var(--ns-color-primary-soft));
+        border-radius: var(--radius-sm, var(--ns-radius-sm));
+        background: var(--color-accent-light, var(--ns-color-primary-soft));
+        padding: 12px 14px;
+        color: var(--color-text-secondary, var(--ns-color-muted));
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: normal;
+        overflow: visible;
+      }
+
+      .ai-notice-text {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .cv-progress-panel {
+        border: 1px solid var(--color-border, var(--ns-color-border));
+        border-radius: var(--radius-md, var(--ns-radius-md));
+        background: var(--color-bg-card, var(--ns-color-card));
+        padding: 32px 24px;
+        text-align: center;
+      }
+
+      .cv-progress-bar-track {
+        height: 8px;
+        width: 100%;
+        border-radius: 9999px;
+        background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
+        overflow: hidden;
+      }
+
+      .cv-progress-bar-fill {
+        height: 100%;
+        border-radius: 9999px;
+        background: var(--color-accent, var(--ns-color-accent));
+        transition: width 0.4s ease;
+      }
+
+      .cv-progress-label {
+        margin: 16px 0 4px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--color-text, var(--ns-color-text));
+      }
+
+      .cv-progress-hint {
+        margin: 0;
+        font-size: 12px;
+        color: var(--color-text-secondary, var(--ns-color-muted));
+      }
+
+      .cv-input-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      @media (min-width: 900px) {
+        .cv-input-cards {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-areas:
+            'upload linkedin'
+            'paste paste';
+          gap: 16px;
+        }
+
+        .cv-input-card-upload {
+          grid-area: upload;
+        }
+
+        .cv-input-card-paste {
+          grid-area: paste;
+        }
+
+        .cv-input-card-linkedin {
+          grid-area: linkedin;
+        }
+      }
+
+      .cv-input-card {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
+      }
+
+      @media (max-width: 1023px) {
+        .analyse-btn {
+          width: 100%;
+          padding: 14px;
+          font-size: 15px;
+          margin-top: 16px;
+        }
+      }
+
+      .overview-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      @media (max-width: 640px) {
+        .overview-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .profile-header-mobile {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        background: var(--color-bg-card, var(--ns-color-card));
+        border: 1px solid var(--color-border, var(--ns-color-border));
+        border-radius: var(--radius-md, var(--ns-radius-md));
+        margin-bottom: 16px;
+      }
+
+      @media (min-width: 1024px) {
+        .profile-header-mobile {
+          display: none;
+        }
+      }
+
+      .profile-header-mobile-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        object-fit: cover;
+        border: 1px solid var(--color-border, var(--ns-color-border));
+      }
+
+      .profile-header-mobile-avatar-fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-accent-light, var(--ns-color-primary-soft));
+        color: var(--color-accent, var(--ns-color-primary));
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .profile-header-mobile-info {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .profile-header-mobile-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--color-text, var(--ns-color-text));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .profile-header-mobile-email {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: var(--color-text-secondary, var(--ns-color-muted));
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .profile-header-mobile-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .profile-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
+        color: var(--color-text-secondary, var(--ns-color-muted));
+      }
+
+      .profile-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-text-secondary, var(--ns-color-muted));
+      }
+
+      .profile-status-pill.is-public {
+        color: var(--color-accent, var(--ns-color-primary));
+      }
+
+      .profile-status-pill.is-public .profile-status-dot {
+        background: var(--color-accent, var(--ns-color-primary));
+      }
+
+      .profile-header-mobile-edit {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--color-accent, var(--ns-color-primary));
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: opacity 0.15s ease;
+      }
+
+      .profile-header-mobile-edit:hover {
+        opacity: 0.75;
+      }
+
+      .profile-tabs-mobile {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding: 8px 16px;
+        background: var(--color-bg, var(--ns-color-bg));
+        border-bottom: 1px solid var(--color-border, var(--ns-color-border));
+        position: sticky;
+        top: 65px;
+        z-index: 40;
+        margin: 0 -16px 16px;
+      }
+
+      @media (min-width: 640px) {
+        .profile-tabs-mobile {
+          margin: 0 -24px 16px;
+          padding: 8px 24px;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .profile-tabs-mobile {
+          display: none;
+        }
+      }
+
+      .profile-tabs-mobile::-webkit-scrollbar {
+        display: none;
+      }
+
+      .profile-tabs-mobile::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 40px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--color-bg, var(--ns-color-bg)) 70%
+        );
+        pointer-events: none;
+      }
+
+      .profile-tabs-mobile-hint {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--color-accent, var(--ns-color-primary));
+        pointer-events: none;
+      }
+
+      .profile-tab-mobile {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-text-secondary, var(--ns-color-muted));
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-radius: var(--radius-sm, var(--ns-radius-sm));
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .profile-tab-mobile:hover:not(.is-active) {
+        background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
+      }
+
+      .profile-tab-mobile.is-active {
+        background: var(--color-accent-light, var(--ns-color-primary-soft));
+        color: var(--color-accent, var(--ns-color-primary));
+        font-weight: 600;
+      }
+    `,
+  ],
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   readonly auth = inject(AuthService);
   private readonly http = inject(HttpClient);
   private readonly profileService = inject(ProfileService);
@@ -1164,6 +1588,7 @@ export class ProfilePageComponent implements OnInit {
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
+    { label: 'CV Analysis ✨', routerLink: '/profile', queryParams: { tab: 'cv' }, requiresAuth: true },
   ];
   private readonly savedService = inject(SavedService);
   private readonly cvService = inject(CvAnalysisService);
@@ -1173,7 +1598,10 @@ export class ProfilePageComponent implements OnInit {
   readonly loading = signal(true);
   readonly saving = signal(false);
   readonly analysing = signal(false);
+  readonly analysisProgress = signal(0);
+  readonly startingNewAnalysis = signal(false);
   readonly copied = signal(false);
+  private progressInterval: ReturnType<typeof setInterval> | null = null;
 
   readonly profile = signal<UserProfile | null>(null);
   readonly results = signal<
@@ -1277,6 +1705,10 @@ export class ProfilePageComponent implements OnInit {
     });
 
     this.loadAll();
+  }
+
+  ngOnDestroy(): void {
+    this.clearProgressSimulation();
   }
 
   private loadAll(): void {
@@ -1405,12 +1837,20 @@ export class ProfilePageComponent implements OnInit {
       return;
     }
 
+    this.startProgressSimulation();
+
     obs.subscribe({
       next: (result) => {
-        this.analyses.set([result, ...this.analyses()]);
-        this.analysing.set(false);
+        this.clearProgressSimulation();
+        this.analysisProgress.set(100);
+        setTimeout(() => {
+          this.analyses.set([result, ...this.analyses()]);
+          this.analysing.set(false);
+          this.startingNewAnalysis.set(false);
+        }, 300);
       },
       error: (err) => {
+        this.clearProgressSimulation();
         this.analysisError.set(
           err?.error?.message ?? 'Analysis failed. Please try again.',
         );
@@ -1419,11 +1859,30 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
+  private startProgressSimulation(): void {
+    this.clearProgressSimulation();
+    this.analysisProgress.set(0);
+    this.progressInterval = setInterval(() => {
+      const current = this.analysisProgress();
+      if (current < 90) {
+        this.analysisProgress.set(Math.min(90, current + 2));
+      }
+    }, 400);
+  }
+
+  private clearProgressSimulation(): void {
+    if (this.progressInterval !== null) {
+      clearInterval(this.progressInterval);
+      this.progressInterval = null;
+    }
+  }
+
   resetAndRunNew(): void {
     this.cvText = '';
     this.linkedinUrl = '';
     this.selectedFile.set(null);
-    // Keep analyses visible but let user input new CV
+    this.analysisError.set(null);
+    this.startingNewAnalysis.set(true);
   }
 
   scoreColour(score: number): string {

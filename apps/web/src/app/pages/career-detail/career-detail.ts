@@ -916,6 +916,18 @@ function formatRegionSalary(
               </div>
             </div>
 
+            <div class="mt-8 rounded-ns border border-ns-border bg-ns-card p-5">
+              <p class="m-0 text-sm leading-6 text-ns-muted">
+                Wondering if you are ready for this path?
+                <a
+                  routerLink="/profile"
+                  [queryParams]="{ tab: 'cv' }"
+                  class="font-semibold text-ns-primary no-underline hover:underline"
+                  >Analyse your CV →</a
+                >
+              </p>
+            </div>
+
             <div class="mt-10">
               <a
                 class="text-sm font-semibold text-ns-primary no-underline hover:underline"
@@ -952,6 +964,7 @@ export class CareerDetailComponent implements OnInit {
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
+    { label: 'CV Analysis ✨', routerLink: '/profile', queryParams: { tab: 'cv' }, requiresAuth: true },
   ];
 
   private readonly route = inject(ActivatedRoute);

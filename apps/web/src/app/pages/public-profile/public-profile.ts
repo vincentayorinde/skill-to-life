@@ -176,6 +176,7 @@ export class PublicProfileComponent implements OnInit {
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
+    { label: 'CV Analysis ✨', routerLink: '/profile', queryParams: { tab: 'cv' }, requiresAuth: true },
   ];
 
   readonly loading = signal(true);

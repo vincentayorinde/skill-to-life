@@ -1028,6 +1028,31 @@ import { environment } from '../../../environments/environment';
             </section>
           }
 
+          <section class="section-enter mt-14" style="animation-delay: 390ms">
+            <div
+              class="rounded-2xl border border-ns-border bg-ns-card p-6 text-center"
+            >
+              <p
+                class="m-0 font-mono text-xs font-bold uppercase tracking-[0.15em] text-ns-primary"
+              >
+                // AI CV ANALYSIS
+              </p>
+              <h2 class="m-0 mt-3 text-xl font-bold text-ns-text">
+                Want a deeper analysis?
+              </h2>
+              <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-ns-muted">
+                Upload your CV and let AI find your skill gaps and next steps.
+              </p>
+              <a
+                routerLink="/profile"
+                [queryParams]="{ tab: 'cv' }"
+                class="mt-5 inline-flex min-h-11 items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg no-underline shadow-ns transition hover:bg-ns-primaryHover"
+              >
+                Analyse my CV →
+              </a>
+            </div>
+          </section>
+
           <!-- ─── Section 8: Retake or Explore ──────────────────── -->
           <section class="section-enter mt-14" style="animation-delay: 400ms">
             <div

@@ -58,6 +58,25 @@ describe('NsAppShellComponent', () => {
     expect(cta.getAttribute('href')).toBe('/assessment');
   });
 
+  it('prompts sign in for auth-required nav links when logged out', () => {
+    const signIn = vi.fn();
+    fixture.componentRef.setInput('links', [
+      {
+        label: 'CV Analysis ✨',
+        routerLink: '/profile',
+        queryParams: { tab: 'cv' },
+        requiresAuth: true,
+      },
+    ]);
+    fixture.componentInstance.signIn.subscribe(signIn);
+    fixture.detectChanges();
+
+    const link = fixture.nativeElement.querySelector('.ns-nav-link');
+    link.click();
+
+    expect(signIn).toHaveBeenCalledOnce();
+  });
+
   it('uses primary foreground text for fallback avatar initials', () => {
     fixture.componentRef.setInput('authUser', {
       email: 'demo@example.com',

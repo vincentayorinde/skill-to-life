@@ -78,6 +78,13 @@
               Sign in with Google
             </button>
           </div>
+          <a
+            routerLink="/profile"
+            [queryParams]="{ tab: 'cv' }"
+            class="mt-5 inline-flex items-center justify-center text-sm font-semibold text-ns-primary no-underline hover:underline"
+          >
+            ✨ Or analyse your CV with AI →
+          </a>
         </div>
 
         <!-- Right: terminal cards -->
@@ -246,6 +253,78 @@
           </p>
         </div>
         }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI CV Analysis ────────────────────────────────────────────────────── -->
+  <section class="bg-ns-canvasSubtle px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center"
+    >
+      <div>
+        <p
+          class="mb-2 font-mono text-xs font-medium uppercase tracking-widest text-ns-muted"
+        >
+          // AI CV ANALYSIS
+        </p>
+        <h2 class="m-0 max-w-3xl text-3xl font-bold text-ns-text sm:text-5xl">
+          Already have experience? Let AI analyse your CV.
+        </h2>
+        <p class="mt-4 max-w-2xl text-lg leading-8 text-ns-muted">
+          Upload your CV or paste your LinkedIn. Our AI scores your profile,
+          finds your best career matches, and tells you exactly how to get
+          stronger.
+        </p>
+        <a
+          routerLink="/profile"
+          [queryParams]="{ tab: 'cv' }"
+          class="mt-7 inline-flex min-h-11 items-center justify-center rounded-ns border border-ns-primary bg-ns-primary px-5 text-sm font-semibold text-ns-primaryFg no-underline shadow-ns transition hover:-translate-y-0.5 hover:bg-ns-primaryHover focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ns-focus"
+        >
+          Analyse my CV →
+        </a>
+      </div>
+
+      <div class="rounded-ns border border-ns-border bg-ns-card shadow-ns-lg">
+        <div
+          class="flex items-center gap-1.5 border-b border-ns-border px-4 py-3"
+        >
+          <span
+            class="h-2.5 w-2.5 rounded-full"
+            style="background: rgba(255, 69, 96, 0.6)"
+          ></span>
+          <span
+            class="h-2.5 w-2.5 rounded-full"
+            style="background: rgba(163, 230, 53, 0.65)"
+          ></span>
+          <span
+            class="h-2.5 w-2.5 rounded-full"
+            style="background: rgba(0, 200, 150, 0.6)"
+          ></span>
+          <span class="ml-2 font-mono text-xs text-ns-muted"
+            >// cv-analysis.json</span
+          >
+        </div>
+        <div class="p-5 font-mono text-sm">
+          <div class="space-y-3 text-ns-muted">
+            <div class="flex items-center justify-between gap-4">
+              <span>Profile strength</span>
+              <span class="font-bold text-ns-primary">82%</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <span>Best-fit path</span>
+              <span class="font-bold text-ns-text">AI Engineer</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <span>Top skill gap</span>
+              <span class="font-bold text-ns-text">Portfolio proof</span>
+            </div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <ns-badge variant="warning">AI analysis</ns-badge>
+            <ns-badge variant="success">Next steps</ns-badge>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -86,39 +86,46 @@ export class AiConfigService implements OnModuleInit {
     model: string;
     systemPrompt: string;
   }> {
-    const hasClaudeKey = !!process.env['ANTHROPIC_API_KEY'];
-    const hasOpenAIKey = !!process.env['OPENAI_API_KEY'];
-    const hasGeminiKey = !!process.env['GEMINI_API_KEY'];
+    const claudeKey = process.env['ANTHROPIC_API_KEY'];
+    const openaiKey = process.env['OPENAI_API_KEY'];
+    const geminiKey = process.env['GEMINI_API_KEY'];
 
     const config = await this.getActiveConfig();
     const systemPrompt = config?.systemPrompt ?? this.defaultSystemPrompt;
 
     const candidates: Array<{ provider: string; model: string }> = [];
 
-    if (hasClaudeKey) {
+    if (this.isValidKey(claudeKey)) {
       candidates.push({
         provider: 'claude',
-        model: 'claude-opus-4-20250514',
+        model: process.env['CLAUDE_MODEL'] ?? 'claude-opus-4-20250514',
       });
     }
-    if (hasOpenAIKey) {
+    if (this.isValidKey(openaiKey)) {
       candidates.push({
         provider: 'openai',
-        model: 'gpt-4o',
+        model: process.env['OPENAI_MODEL'] ?? 'gpt-4o',
       });
     }
-    if (hasGeminiKey) {
+    if (this.isValidKey(geminiKey)) {
       candidates.push({
         provider: 'gemini',
-        model: 'gemini-1.5-pro',
+        model: process.env['GEMINI_MODEL'] ?? 'gemini-flash-latest',
       });
     }
 
     if (candidates.length === 0) {
+      this.logger.error(
+        'No valid AI provider keys found. Check ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY are real keys, not placeholders.',
+      );
       throw new ServiceUnavailableException(
-        'No AI provider configured. Add at least one of ANTHROPIC_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY to enable CV analysis.',
+        'CV analysis is not available right now. No AI provider is configured.',
       );
     }
+
+    this.logger.log(
+      `Valid providers available: ${candidates.map((c) => c.provider).join(', ')}`,
+    );
 
     for (const candidate of candidates) {
       const hasCredit = await this.checkProviderCredit(candidate.provider);
@@ -142,11 +149,40 @@ export class AiConfigService implements OnModuleInit {
     );
   }
 
+  isValidKey(key: string | undefined): boolean {
+    if (!key) return false;
+
+    const trimmed = key.trim();
+
+    if (trimmed.length < 20) return false;
+
+    const placeholders = [
+      'your-key',
+      'your-api-key',
+      'sk-your-key',
+      'sk-...',
+      'placeholder',
+      'changeme',
+      'xxx',
+      'todo',
+      'example',
+    ];
+
+    const lower = trimmed.toLowerCase();
+    for (const placeholder of placeholders) {
+      if (lower.includes(placeholder)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   async getProviderStatus(): Promise<{
     providers: Array<{
       name: string;
-      hasKey: boolean;
-      status: 'available' | 'no_key' | 'unknown';
+      configured: boolean;
+      status: 'no_key' | 'invalid_or_placeholder' | 'ready';
     }>;
     activeProvider: string | null;
   }> {
@@ -156,16 +192,22 @@ export class AiConfigService implements OnModuleInit {
       { name: 'gemini', envKey: 'GEMINI_API_KEY' },
     ];
 
-    const results = providers.map((provider) => ({
-      name: provider.name,
-      hasKey: !!process.env[provider.envKey],
-      status: process.env[provider.envKey]
-        ? ('unknown' as const)
-        : ('no_key' as const),
-    }));
+    const results = providers.map((provider) => {
+      const key = process.env[provider.envKey];
+      const valid = this.isValidKey(key);
+      return {
+        name: provider.name,
+        configured: valid,
+        status: !key
+          ? ('no_key' as const)
+          : !valid
+            ? ('invalid_or_placeholder' as const)
+            : ('ready' as const),
+      };
+    });
 
     const activeProvider =
-      results.find((provider) => provider.hasKey)?.name ?? null;
+      results.find((provider) => provider.configured)?.name ?? null;
 
     return {
       providers: results,
@@ -173,74 +215,124 @@ export class AiConfigService implements OnModuleInit {
     };
   }
 
+  async debugAllProviders(): Promise<Record<string, unknown>> {
+    const results: Record<string, unknown> = {};
+    const providers = ['claude', 'openai', 'gemini'];
+
+    for (const provider of providers) {
+      const envKey =
+        provider === 'claude'
+          ? 'ANTHROPIC_API_KEY'
+          : provider === 'openai'
+            ? 'OPENAI_API_KEY'
+            : 'GEMINI_API_KEY';
+
+      if (!process.env[envKey]) {
+        results[provider] = {
+          hasKey: false,
+          status: 'no key',
+        };
+        continue;
+      }
+
+      try {
+        await this.pingProvider(provider);
+        results[provider] = {
+          hasKey: true,
+          status: 'working',
+        };
+      } catch (error) {
+        results[provider] = {
+          hasKey: true,
+          status: 'failed',
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
+    }
+
+    return results;
+  }
+
   private async checkProviderCredit(provider: string): Promise<boolean> {
     try {
-      switch (provider) {
-        case 'claude': {
-          const Anthropic = await import('@anthropic-ai/sdk');
-          const client = new Anthropic.default({
-            apiKey: process.env['ANTHROPIC_API_KEY'],
-          });
-          await client.messages.create({
-            model: 'claude-haiku-4-5',
-            max_tokens: 1,
-            messages: [{ role: 'user', content: 'hi' }],
-          });
-          return true;
-        }
-
-        case 'openai': {
-          const OpenAI = await import('openai');
-          const client = new OpenAI.default({
-            apiKey: process.env['OPENAI_API_KEY'],
-          });
-          await client.chat.completions.create({
-            model: 'gpt-4o-mini',
-            max_tokens: 1,
-            messages: [{ role: 'user', content: 'hi' }],
-          });
-          return true;
-        }
-
-        case 'gemini': {
-          const { GoogleGenerativeAI } = await import('@google/generative-ai');
-          const client = new GoogleGenerativeAI(
-            process.env['GEMINI_API_KEY'] ?? '',
-          );
-          const model = client.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-          });
-          await model.generateContent('hi');
-          return true;
-        }
-
-        default:
-          return false;
-      }
+      await this.pingProvider(provider);
+      return true;
     } catch (error: unknown) {
+      const fullMessage =
+        error instanceof Error ? error.message : String(error);
+
+      this.logger.error(`Provider ${provider} credit check failed with full error:`, {
+        message: fullMessage,
+        stack: error instanceof Error ? error.stack : undefined,
+        provider,
+      });
+
       const message =
         error instanceof Error
           ? error.message.toLowerCase()
           : String(error).toLowerCase();
 
       const isCreditError =
-        message.includes('credit') ||
-        message.includes('quota') ||
-        message.includes('billing') ||
         message.includes('insufficient') ||
-        message.includes('rate_limit') ||
-        message.includes('429') ||
-        message.includes('402');
+        message.includes('quota exceeded') ||
+        message.includes('billing') ||
+        message.includes('exceeded your current quota') ||
+        message.includes('429');
 
       if (isCreditError) {
-        this.logger.warn(
-          `Provider ${provider} has insufficient credit: ${message}`,
-        );
+        this.logger.warn(`Provider ${provider} genuinely out of credit`);
         return false;
       }
 
-      this.logger.warn(`Provider ${provider} check failed: ${message}`);
-      return false;
+      this.logger.warn(
+        `Provider ${provider} check inconclusive — will attempt analysis anyway`,
+      );
+      return true;
+    }
+  }
+
+  private async pingProvider(provider: string): Promise<void> {
+    switch (provider) {
+      case 'claude': {
+        const Anthropic = await import('@anthropic-ai/sdk');
+        const client = new Anthropic.default({
+          apiKey: process.env['ANTHROPIC_API_KEY'],
+        });
+        await client.messages.create({
+          model: 'claude-haiku-4-5',
+          max_tokens: 1,
+          messages: [{ role: 'user', content: 'hi' }],
+        });
+        return;
+      }
+
+      case 'openai': {
+        const OpenAI = await import('openai');
+        const client = new OpenAI.default({
+          apiKey: process.env['OPENAI_API_KEY'],
+        });
+        await client.chat.completions.create({
+          model: 'gpt-4o-mini',
+          max_tokens: 1,
+          messages: [{ role: 'user', content: 'hi' }],
+        });
+        return;
+      }
+
+      case 'gemini': {
+        const { GoogleGenerativeAI } = await import('@google/generative-ai');
+        const client = new GoogleGenerativeAI(
+          process.env['GEMINI_API_KEY'] ?? '',
+        );
+        const model = client.getGenerativeModel({
+          model: 'gemini-flash-latest',
+        });
+        await model.generateContent('hi');
+        return;
+      }
+
+      default:
+        throw new Error(`Unknown AI provider: ${provider}`);
     }
   }
 
@@ -258,7 +350,7 @@ export class AiConfigService implements OnModuleInit {
           // getAvailableProvider() based on which API keys are present and
           // which have credit.
           provider: 'claude',
-          model: 'claude-opus-4-20250514',
+          model: process.env['CLAUDE_MODEL'] ?? 'claude-opus-4-20250514',
           systemPrompt: DEFAULT_SYSTEM_PROMPT,
           isActive: true,
         },

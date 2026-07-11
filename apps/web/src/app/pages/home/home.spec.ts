@@ -136,4 +136,21 @@ describe('HomeComponent', () => {
     );
     expect(link).not.toBeNull();
   });
+
+  it('renders CV Analysis nav item', () => {
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('CV Analysis ✨');
+  });
+
+  it('renders hero CV analysis link', () => {
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Or analyse your CV with AI');
+  });
+
+  it('renders landing AI CV analysis section', () => {
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('// AI CV ANALYSIS');
+    expect(text).toContain('Already have experience? Let AI analyse your CV.');
+    expect(text).toContain('Profile strength');
+  });
 });

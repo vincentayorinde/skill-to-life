@@ -225,6 +225,21 @@ describe('AssessmentResultsComponent', () => {
     vi.useRealTimers();
   });
 
+  it('renders CV analysis prompt after results load', async () => {
+    vi.useFakeTimers();
+    withAnswers(FULL_ANSWERS);
+    const fixture = TestBed.createComponent(AssessmentResultsComponent);
+    fixture.detectChanges();
+    vi.advanceTimersByTime(1000);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('Want a deeper analysis?');
+    expect(text).toContain('Analyse my CV');
+    vi.useRealTimers();
+  });
+
   // ─── Match cards ────────────────────────────────────────────────
 
   it('should render 5 match cards in section 3', async () => {

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   PayloadTooLargeException,
   Post,
@@ -75,6 +76,15 @@ export class CvAnalysisController {
   @Get('provider-status')
   async getProviderStatus() {
     return this.aiConfigService.getProviderStatus();
+  }
+
+  @Get('debug-providers')
+  async debugProviders() {
+    if (process.env['NODE_ENV'] !== 'development') {
+      throw new NotFoundException();
+    }
+
+    return this.aiConfigService.debugAllProviders();
   }
 
   @Get(':id')

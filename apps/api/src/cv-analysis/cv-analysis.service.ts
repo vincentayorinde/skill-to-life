@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common';
@@ -11,7 +12,7 @@ import { CvAnalysisProcessor } from './cv-analysis.processor';
 
 const pdfParse = require('pdf-parse') as (
   buf: Buffer,
-) => Promise<{ text: string }>;
+) => Promise<{ text?: string }>;
 
 export interface CvUploadFile {
   mimetype: string;
@@ -21,6 +22,8 @@ export interface CvUploadFile {
 
 @Injectable()
 export class CvAnalysisService {
+  private readonly logger = new Logger(CvAnalysisService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
@@ -33,23 +36,55 @@ export class CvAnalysisService {
       throw new BadRequestException('Please upload a PDF file.');
     }
 
-    let text: string;
-    try {
-      const parsed = await pdfParse(file.buffer);
-      text = parsed.text?.trim() ?? '';
-    } catch {
-      throw new BadRequestException(
-        'We could not read your PDF. Try pasting your CV as text instead.',
-      );
-    }
-
-    if (!text || text.length < 100) {
-      throw new BadRequestException(
-        'We could not read your PDF. Try pasting your CV as text instead.',
-      );
-    }
+    const text = await this.extractPdfText(file.buffer);
 
     return this.runAnalysis(userId, text, 'file', file.originalname);
+  }
+
+  async extractPdfText(buffer: Buffer): Promise<string> {
+    try {
+      const parsed = await pdfParse(buffer);
+      const text = parsed.text?.trim() ?? '';
+      if (text.length >= 50) return text;
+    } catch (error) {
+      this.logger.warn('pdf-parse failed, trying pdfjs fallback', error);
+    }
+
+    try {
+      const text = await this.extractWithPdfjs(buffer);
+      if (text.length >= 50) return text;
+    } catch (error) {
+      this.logger.error('Both PDF parsers failed', error);
+    }
+
+    throw new BadRequestException(
+      'We could not extract text from this PDF. It may be image-based or scanned. Please paste your CV as text instead.',
+    );
+  }
+
+  private async extractWithPdfjs(buffer: Buffer): Promise<string> {
+    const pdfjs = (await import('pdfjs-dist/legacy/build/pdf.mjs')) as {
+      getDocument: (params: { data: Uint8Array }) => {
+        promise: Promise<{
+          numPages: number;
+          getPage: (pageNumber: number) => Promise<{
+            getTextContent: () => Promise<{
+              items: Array<{ str?: string }>;
+            }>;
+          }>;
+        }>;
+      };
+    };
+    const doc = await pdfjs.getDocument({ data: new Uint8Array(buffer) })
+      .promise;
+
+    let text = '';
+    for (let i = 1; i <= doc.numPages; i += 1) {
+      const page = await doc.getPage(i);
+      const content = await page.getTextContent();
+      text += `${content.items.map((item) => item.str ?? '').join(' ')}\n`;
+    }
+    return text.trim();
   }
 
   async analyseFromText(userId: string, text: string) {
