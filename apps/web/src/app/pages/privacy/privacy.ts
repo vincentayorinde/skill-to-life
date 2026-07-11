@@ -55,6 +55,14 @@ import { AuthService } from '../../core/auth/auth.service';
                   >.
                 </p>
                 <p class="m-0">
+                  <span class="font-semibold text-ns-text"
+                    >Data Controller:</span
+                  >
+                  The data controller for Skill to Life is Encrisoft
+                  Technologies Ltd, registered in the United Kingdom. We comply
+                  with UK GDPR and the Data Protection Act 2018.
+                </p>
+                <p class="m-0">
                   This Privacy Policy is intended to explain how we process
                   personal data in accordance with applicable data protection
                   laws, including the UK GDPR, the EU GDPR where applicable, and
@@ -371,9 +379,10 @@ import { AuthService } from '../../core/auth/auth.service';
               <h2 class="m-0 text-xl font-bold text-ns-text">Complaints</h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  If you are in the UK, you may complain to the Information
-                  Commissioner’s Office if you are unhappy with how your privacy
-                  request is handled.
+                  You have the right to lodge a complaint with the Information
+                  Commissioner's Office (ICO) at ico.org.uk if you believe your
+                  data has been handled improperly by Encrisoft Technologies
+                  Ltd.
                 </p>
                 <p class="m-0">
                   If you are located in an African country, you may also have

@@ -41,6 +41,25 @@ import { AuthService } from '../../core/auth/auth.service';
 
           <div class="mt-10 space-y-6">
             <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">Who we are</h2>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+                <p class="m-0">
+                  Skill to Life is owned and operated by Encrisoft Technologies
+                  Ltd, a company registered in the United Kingdom.
+                </p>
+                <p class="m-0">
+                  In these terms, "we", "us", and "our" refer to Encrisoft
+                  Technologies Ltd operating the Skill to Life platform.
+                </p>
+                <p class="m-0">
+                  The Skill to Life platform, brand, and all associated
+                  intellectual property are exclusively licensed to Encrisoft
+                  Technologies Ltd.
+                </p>
+              </div>
+            </ns-card>
+
+            <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Free to use</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
                 Skill to Life is free to use. There are no paywalls, premium
@@ -62,6 +81,19 @@ import { AuthService } from '../../core/auth/auth.service';
                   >MIT licence</a
                 >. You are free to use, copy, modify, and distribute the source
                 code subject to the terms of that licence.
+              </p>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Intellectual property
+              </h2>
+              <p class="mt-3 text-sm leading-7 text-ns-muted">
+                The Skill to Life name, logo, brand, and platform are the
+                property of and exclusively licensed to Encrisoft Technologies
+                Ltd. The underlying source code is available under its
+                open-source licence, but the brand and trademark are not
+                covered by that licence.
               </p>
             </ns-card>
 
@@ -280,10 +312,9 @@ import { AuthService } from '../../core/auth/auth.service';
               </h2>
               <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  These terms are governed by the laws of England and Wales
+                  These terms are governed by the laws of England and Wales,
                   unless local consumer protection laws in your country provide
-                  protections that cannot be waived — in which case those
-                  protections apply.
+                  protections that cannot be waived.
                 </p>
                 <p class="m-0">
                   Users in Nigeria, South Africa, Kenya, Ghana, and other

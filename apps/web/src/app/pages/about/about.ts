@@ -139,7 +139,11 @@ import { AuthService } from '../../core/auth/auth.service';
             <ns-card>
               <h2 class="m-0 text-xl font-bold text-ns-text">Built by</h2>
               <p class="mt-3 text-sm leading-7 text-ns-muted">
-                Skill to Life was built by
+                Skill to Life is built and operated by Encrisoft Technologies
+                Ltd.
+              </p>
+              <p class="mt-3 text-sm leading-7 text-ns-muted">
+                Skill to Life was founded and built by
                 <a
                   href="https://vincenttechblog.com"
                   target="_blank"

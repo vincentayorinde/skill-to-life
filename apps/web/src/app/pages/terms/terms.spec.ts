@@ -29,6 +29,25 @@ describe('TermsComponent', () => {
     expect(el.textContent).toContain('free');
   });
 
+  it('renders Who we are section', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Who we are');
+  });
+
+  it('references Encrisoft Technologies Ltd', () => {
+    const fixture = TestBed.createComponent(TermsComponent);
+    fixture.detectChanges();
+    const text = (fixture.nativeElement.textContent as string).replace(
+      /\s+/g,
+      ' ',
+    );
+    expect(text).toContain('Encrisoft Technologies Ltd');
+    expect(text).toContain('registered in the United Kingdom');
+    expect(text).toContain('exclusively licensed');
+  });
+
   it('shows July 2026 date', () => {
     const fixture = TestBed.createComponent(TermsComponent);
     fixture.detectChanges();

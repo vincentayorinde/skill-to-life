@@ -33,9 +33,17 @@ describe('HomeComponent', () => {
     mockAuth.loginWithGoogle.mockClear();
   });
 
-  it('renders the eyebrow tag with AI CV analysis label', () => {
+  it('renders the eyebrow tag with career companion label', () => {
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('AI CV ANALYSIS and CAREER TOOL');
+    expect(text).toContain('YOUR CAREER COMPANION');
+  });
+
+  it('does not use tool wording in the hero eyebrow', () => {
+    const eyebrow = fixture.nativeElement.querySelector('.ns-pulse-dot')
+      ?.parentElement as HTMLElement | undefined;
+
+    expect(eyebrow?.textContent).toContain('YOUR CAREER COMPANION');
+    expect(eyebrow?.textContent?.toLowerCase()).not.toContain('tool');
   });
 
   it('renders terminal card with assessment.ts label', () => {
@@ -139,6 +147,21 @@ describe('HomeComponent', () => {
       'a[href="https://nexloy.dev"]',
     );
     expect(link).not.toBeNull();
+  });
+
+  it('renders Encrisoft licensing details in the footer', () => {
+    const text = (fixture.nativeElement.textContent as string).replace(
+      /\s+/g,
+      ' ',
+    );
+
+    expect(text).toContain(
+      '© 2026 Skill to Life. Exclusively licensed to Encrisoft Technologies Ltd.',
+    );
+    expect(text).toContain(
+      'A open source community product of Encrisoft Technologies Ltd, registered in the United Kingdom.',
+    );
+    expect(text).toContain('Built for anyone figuring out their path in tech.');
   });
 
   it('renders CV Analysis nav item', () => {

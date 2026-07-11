@@ -28,4 +28,18 @@ describe('AboutComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.textContent).toContain('open source');
   });
+
+  it('mentions Encrisoft and keeps the founder attribution', () => {
+    const fixture = TestBed.createComponent(AboutComponent);
+    fixture.detectChanges();
+    const text = (fixture.nativeElement.textContent as string).replace(
+      /\s+/g,
+      ' ',
+    );
+
+    expect(text).toContain(
+      'Skill to Life is built and operated by Encrisoft Technologies Ltd.',
+    );
+    expect(text).toContain('Vincent Olagbemide');
+  });
 });
