@@ -31,377 +31,564 @@ import { AuthService } from '../../core/auth/auth.service';
       (signOut)="auth.logout()"
     >
       <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-        <div class="mx-auto max-w-3xl">
+        <div class="mx-auto" style="max-width: 720px;">
           <ns-page-header
             eyebrow="Legal"
-            title="Privacy policy."
-            description="Last updated: 2026. This policy explains what data Skill to Life collects, how it is used, and your rights."
+            title="Privacy Policy"
+            description="Updated: July 2026"
           >
           </ns-page-header>
 
           <div class="mt-10 space-y-6">
             <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Who we are</h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
+              <div class="space-y-4 text-sm leading-7 text-ns-muted">
                 <p class="m-0">
-                  Skill to Life is an open-source career discovery website that
-                  helps people explore tech career paths, assessment results,
-                  salaries, resources, and CV analysis. For privacy questions,
-                  contact
+                  We take your privacy seriously. This Privacy Policy explains
+                  how Encrisoft Technologies Ltd ('we', 'us', or 'our')
+                  collects, uses, shares, and protects your personal data when
+                  you use Skill to Life, including our website and services. We
+                  are the data controller for your personal data.
+                </p>
+                <p class="m-0">
+                  For information that may significantly affect your rights, we
+                  have highlighted it in bold to draw your attention.
+                </p>
+                <p class="m-0">
+                  If you have any questions about this Privacy Policy, please
+                  contact us using the details at the end of this page.
+                </p>
+              </div>
+            </ns-card>
+
+            <ns-card>
+              <h2 class="m-0 text-xl font-bold text-ns-text">
+                Table of contents
+              </h2>
+              <ol
+                class="mt-5 grid gap-3 p-0 text-sm leading-6 text-ns-muted sm:grid-cols-2"
+              >
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">01</span>
                   <a
-                    href="mailto:skilltolife.contact@gmail.com"
-                    class="font-semibold text-ns-primary no-underline hover:underline"
-                    >skilltolife.contact&#64;gmail.com</a
-                  >.
-                </p>
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text"
-                    >Data Controller:</span
+                    href="/privacy#personal-data"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >What is Personal Data</a
                   >
-                  The data controller for Skill to Life is Encrisoft
-                  Technologies Ltd, registered in the United Kingdom. We comply
-                  with UK GDPR and the Data Protection Act 2018.
-                </p>
-                <p class="m-0">
-                  This Privacy Policy is intended to explain how we process
-                  personal data in accordance with applicable data protection
-                  laws, including the UK GDPR, the EU GDPR where applicable, and
-                  applicable African data protection laws such as the Nigeria
-                  Data Protection Act 2023, South Africa’s Protection of
-                  Personal Information Act, Kenya’s Data Protection Act 2019,
-                  Ghana’s Data Protection Act 2012, and similar laws in
-                  countries where our users are located.
-                </p>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                What data we collect
-              </h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text"
-                    >Anonymous assessment use.</span
-                  >
-                  If you take the assessment without signing in, your answers
-                  and results are kept in your browser session unless you choose
-                  to save them.
-                </p>
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text"
-                    >Google sign-in.</span
-                  >
-                  If you choose to sign in with Google to save your results, we
-                  store your Google account email address and display name. We
-                  do not store your Google password.
-                </p>
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text"
-                    >Saved assessment results.</span
-                  >
-                  When you save a result, we store your assessment answers and
-                  career match scores alongside your account. This is so you can
-                  view your results again later.
-                </p>
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text">CV analysis.</span>
-                  If you use CV analysis, your submitted CV, pasted text, or
-                  LinkedIn profile text may be processed by the API and AI
-                  provider configured for that feature so the service can return
-                  career guidance.
-                </p>
-                <p class="m-0">
-                  <span class="font-semibold text-ns-text"
-                    >Essential local storage.</span
-                  >
-                  We use a local session token (
-                  <code
-                    class="rounded bg-white/10 px-1 py-0.5 font-mono text-xs"
-                    >skill_to_life_token</code
-                  >) to keep you signed in. We also store your theme preference
-                  and cookie preference locally.
-                </p>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                How data is used
-              </h2>
-              <ul class="mt-4 space-y-3 text-sm leading-6 text-ns-muted">
-                <li class="flex items-start gap-2">
-                  <span class="text-ns-primary" aria-hidden="true">✓</span>
-                  To show you your saved assessment results when you sign in
                 </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-ns-primary" aria-hidden="true">✓</span>
-                  To identify your account across sessions
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-ns-primary" aria-hidden="true">✓</span>
-                  To analyse your CV or profile text when you choose to submit
-                  it
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-ns-primary" aria-hidden="true">✓</span>
-                  To understand website usage where analytics consent has been
-                  given
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
-                  We do not sell your data to any third party
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
-                  We do not use your data for advertising
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-red-400" aria-hidden="true">✗</span>
-                  We do not send marketing emails
-                </li>
-              </ul>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Legal basis</h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  We process account, authentication, saved result, and security
-                  data because it is necessary to provide the service you ask us
-                  to provide. We process support and privacy requests because it
-                  is necessary to respond to you and comply with applicable law.
-                </p>
-                <p class="m-0">
-                  Our legal basis for optional analytics cookies is your
-                  consent. Where we use aggregated analytics insights to improve
-                  the service, our interest is improving and operating Skill to
-                  Life. If you reject optional cookies, analytics cookies will
-                  not be used.
-                </p>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                Analytics and website usage data
-              </h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  We use Google Analytics 4 to understand how people use Skill
-                  to Life, including page views, feature usage, approximate
-                  location, device/browser information, and assessment flow
-                  events. This helps us improve the website and understand
-                  product traction.
-                </p>
-                <p class="m-0">
-                  We do not use analytics to identify you, and we do not
-                  intentionally send names, email addresses, phone numbers, CV
-                  content, uploaded files, assessment free-text answers, or
-                  other directly identifying content to Google Analytics.
-                </p>
-                <p class="m-0">
-                  Google Analytics is provided by Google. Google Analytics 4
-                  does not log or store IP addresses from users in the UK, EU,
-                  or Switzerland. Google may process analytics data according to
-                  its own privacy terms and settings.
-                </p>
-                <p class="m-0">
-                  Where possible, we use Google Analytics in a privacy-conscious
-                  mode. If you reject optional cookies, Google Analytics should
-                  not read or write analytics cookies, but may receive
-                  cookieless measurement signals. If you accept optional
-                  cookies, Google Analytics may use analytics cookies to improve
-                  measurement.
-                </p>
-                <p class="m-0">
-                  You can accept or reject optional cookies. Rejecting optional
-                  cookies does not stop you from using Skill to Life. You can
-                  withdraw your consent at any time by opening Cookie
-                  Preferences and choosing Reject cookies.
-                </p>
-                <p class="m-0">
-                  Analytics events use safe metadata such as page paths, feature
-                  names, question indexes, category slugs, platforms, and
-                  completion percentages. We do not send names, emails, phone
-                  numbers, CV content, uploaded files, or assessment free-text
-                  answers to Google Analytics.
-                </p>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                Cookies and similar technologies
-              </h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  We use essential cookies or local storage where needed for the
-                  website to function securely. These are necessary for the
-                  service.
-                </p>
-                <p class="m-0">
-                  We use optional analytics cookies only if you accept cookies.
-                  These help Google Analytics improve measurement of visits,
-                  page views, assessment flow usage, and feature engagement.
-                </p>
-                <p class="m-0">
-                  If you reject optional cookies, analytics should remain
-                  cookieless where supported and analytics cookies should not be
-                  read or written. Essential storage may still be used for
-                  security, authentication, saved assessment state, and
-                  remembering your cookie preference.
-                </p>
-              </div>
-              <div class="mt-5 overflow-x-auto">
-                <table class="w-full min-w-[560px] text-left text-sm">
-                  <thead class="text-ns-text">
-                    <tr>
-                      <th class="border-b border-ns-border py-2 pr-4">
-                        Cookie/category
-                      </th>
-                      <th class="border-b border-ns-border py-2 pr-4">
-                        Provider
-                      </th>
-                      <th class="border-b border-ns-border py-2 pr-4">
-                        Purpose
-                      </th>
-                      <th class="border-b border-ns-border py-2 pr-4">
-                        Required
-                      </th>
-                      <th class="border-b border-ns-border py-2">Consent</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-ns-muted">
-                    <tr>
-                      <td class="border-b border-ns-border py-3 pr-4">
-                        Essential
-                      </td>
-                      <td class="border-b border-ns-border py-3 pr-4">
-                        Skill to Life
-                      </td>
-                      <td class="border-b border-ns-border py-3 pr-4">
-                        Security, authentication, service functionality
-                      </td>
-                      <td class="border-b border-ns-border py-3 pr-4">Yes</td>
-                      <td class="border-b border-ns-border py-3">
-                        Not required where strictly necessary
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="py-3 pr-4">Analytics</td>
-                      <td class="py-3 pr-4">Google Analytics 4</td>
-                      <td class="py-3 pr-4">
-                        Website usage analytics, page views, feature engagement,
-                        product traction
-                      </td>
-                      <td class="py-3 pr-4">No</td>
-                      <td class="py-3">Required</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">
-                Storage, sharing, and international transfers
-              </h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  Account and result data is stored in a PostgreSQL database.
-                  Skill to Life may share data with service providers only where
-                  needed to operate the website, authentication, hosting,
-                  analytics, CV analysis, and support workflows.
-                </p>
-                <p class="m-0">
-                  Because Skill to Life and its service providers may operate
-                  across different countries, your personal data may be
-                  processed or stored outside your country of residence. Where
-                  this happens, we take steps designed to protect your data in
-                  line with applicable law, such as using appropriate
-                  contractual protections, limiting the data we share, and
-                  working with reputable service providers.
-                </p>
-                <p class="m-0">
-                  Skill to Life is open source. The full data schema and server
-                  code is publicly auditable at
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">02</span>
                   <a
-                    href="https://github.com/vincentayorinde/skill-to-life"
-                    target="_blank"
-                    rel="noreferrer"
-                    class="font-semibold text-ns-primary no-underline hover:underline"
-                    >github.com/vincentayorinde/skill-to-life</a
-                  >.
-                </p>
-              </div>
-            </ns-card>
-
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Your rights</h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  Depending on where you live, you may have rights to access,
-                  correct, delete, restrict, or object to certain uses of your
-                  personal data. You may also have the right to data portability
-                  and the right to withdraw consent where processing is based on
-                  consent.
-                </p>
-                <p class="m-0">
-                  Users in African countries may also have privacy rights under
-                  their local data protection laws. Depending on your country,
-                  these rights may include the right to be informed about how
-                  your data is used, the right to access your personal data, the
-                  right to correct inaccurate data, the right to request
-                  deletion, the right to object to certain processing, the right
-                  to withdraw consent, and the right to complain to your local
-                  data protection authority.
-                </p>
-                <p class="m-0">
-                  You can use the assessment without creating an account at any
-                  time. If you have created an account and wish to have your
-                  data deleted, email us and we will delete your account and all
-                  associated results within 30 days where required by applicable
-                  law.
-                </p>
-                <p class="m-0">
-                  To request data deletion or ask any privacy question, contact:
-                  <a
-                    href="mailto:skilltolife.contact@gmail.com"
-                    class="font-semibold text-ns-primary no-underline hover:underline"
-                    >skilltolife.contact&#64;gmail.com</a
+                    href="/privacy#when-we-collect"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >When We Collect Your Data</a
                   >
-                </p>
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">03</span>
+                  <a
+                    href="/privacy#what-we-collect"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >What Data We Collect</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">04</span>
+                  <a
+                    href="/privacy#how-we-use"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >How We Use Your Data</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">05</span>
+                  <a
+                    href="/privacy#ai-processing"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >AI Processing of Your Data</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">06</span>
+                  <a
+                    href="/privacy#children"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Children's Data</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">07</span>
+                  <a
+                    href="/privacy#legal-basis"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Legal Basis for Processing</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">08</span>
+                  <a
+                    href="/privacy#sharing"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >How We Share Your Data</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">09</span>
+                  <a
+                    href="/privacy#protect"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >How We Protect Your Data</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">10</span>
+                  <a
+                    href="/privacy#retention"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Data Storage and Retention</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">11</span>
+                  <a
+                    href="/privacy#rights"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Your Rights</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">12</span>
+                  <a
+                    href="/privacy#changes"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Changes to This Policy</a
+                  >
+                </li>
+                <li class="flex gap-3">
+                  <span class="font-mono text-ns-primary">13</span>
+                  <a
+                    href="/privacy#contact"
+                    class="text-ns-muted no-underline hover:text-ns-primary"
+                    >Contact Us</a
+                  >
+                </li>
+              </ol>
+            </ns-card>
+
+            <ns-card id="personal-data" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >01</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    What is Personal Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    Personal data is information that can identify you directly
+                    or indirectly. It does not include data that has been fully
+                    anonymised so it can no longer be linked to you.
+                  </p>
+                </div>
               </div>
             </ns-card>
 
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Complaints</h2>
-              <div class="mt-4 space-y-3 text-sm leading-7 text-ns-muted">
-                <p class="m-0">
-                  You have the right to lodge a complaint with the Information
-                  Commissioner's Office (ICO) at ico.org.uk if you believe your
-                  data has been handled improperly by Encrisoft Technologies
-                  Ltd.
-                </p>
-                <p class="m-0">
-                  If you are located in an African country, you may also have
-                  the right to complain to your local data protection authority.
-                  Examples include the Nigeria Data Protection Commission, the
-                  Information Regulator in South Africa, the Office of the Data
-                  Protection Commissioner in Kenya, and the Data Protection
-                  Commission in Ghana.
-                </p>
+            <ns-card id="when-we-collect" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >02</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    When We Collect Your Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We collect and process personal data when you:
+                  </p>
+                  <ul class="mt-3 space-y-2 pl-5 text-sm leading-7 text-ns-muted">
+                    <li>Visit our website and take the career assessment</li>
+                    <li>Sign in with Google to save your results</li>
+                    <li>Upload a CV or paste profile text for AI analysis</li>
+                    <li>Save careers or resources to your profile</li>
+                    <li>Contact us for support</li>
+                    <li>Choose to make your profile public</li>
+                  </ul>
+                </div>
               </div>
             </ns-card>
 
-            <ns-card>
-              <h2 class="m-0 text-xl font-bold text-ns-text">Changes</h2>
-              <p class="mt-3 text-sm leading-7 text-ns-muted">
-                If this policy changes, we will update the date at the top of
-                this page. We will not use your data in ways not described here
-                without obtaining consent first.
-              </p>
+            <ns-card id="what-we-collect" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >03</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    What Data We Collect
+                  </h2>
+                  <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
+                    <div>
+                      <p class="m-0 font-semibold text-ns-text">
+                        Data you provide directly:
+                      </p>
+                      <ul class="mt-3 space-y-2 pl-5">
+                        <li>
+                          Account information (name, email, and profile picture
+                          from Google when you sign in)
+                        </li>
+                        <li>
+                          Profile details you choose to add (bio, location,
+                          website, LinkedIn, GitHub, current role, experience
+                          level)
+                        </li>
+                        <li>Assessment answers</li>
+                        <li>
+                          CV content, pasted text, or LinkedIn URL when you use
+                          AI analysis
+                        </li>
+                        <li>Careers and resources you save</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p class="m-0 font-semibold text-ns-text">
+                        Data collected automatically:
+                      </p>
+                      <ul class="mt-3 space-y-2 pl-5">
+                        <li>Essential cookies for security and login sessions</li>
+                        <li>
+                          Basic technical information needed to run the service
+                        </li>
+                      </ul>
+                    </div>
+                    <p class="m-0">
+                      <strong class="text-ns-text"
+                        >We do not use advertising cookies. We do not track you
+                        across other websites. We do not sell your data.</strong
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="how-we-use" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >04</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    How We Use Your Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We use your personal data to:
+                  </p>
+                  <ul class="mt-3 space-y-2 pl-5 text-sm leading-7 text-ns-muted">
+                    <li>Provide your career assessment results and matches</li>
+                    <li>Save your results to your account</li>
+                    <li>Run AI analysis of your CV when you request it</li>
+                    <li>Let you save careers and resources</li>
+                    <li>
+                      Display your public profile if you choose to make it
+                      public
+                    </li>
+                    <li>Keep the service secure and working</li>
+                    <li>Respond to your support requests</li>
+                    <li>Comply with legal obligations</li>
+                  </ul>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    <strong class="text-ns-text"
+                      >We never use your assessment answers or CV content for
+                      advertising, and we never sell them.</strong
+                    >
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="ai-processing" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >05</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    AI Processing of Your Data
+                  </h2>
+                  <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
+                    <p class="m-0">
+                      When you use our AI-powered CV analysis, your CV content
+                      is sent to a third-party AI provider for processing.
+                      Depending on our current configuration, this may be:
+                    </p>
+                    <ul class="space-y-2 pl-5">
+                      <li>Anthropic (Claude)</li>
+                      <li>OpenAI (GPT-4)</li>
+                      <li>Google (Gemini)</li>
+                    </ul>
+                    <p class="m-0">
+                      <strong class="text-ns-text"
+                        >Your CV content is sent only to generate your
+                        requested analysis. Under our current agreements, it is
+                        not used to train these providers' AI models.</strong
+                      >
+                    </p>
+                    <p class="m-0">
+                      The core assessment and career library do not require AI
+                      processing. AI analysis only runs when you explicitly
+                      choose to use it.
+                    </p>
+                    <p class="m-0">
+                      These providers process data under their own privacy
+                      policies:
+                    </p>
+                    <ul class="space-y-2 pl-5">
+                      <li>Anthropic: anthropic.com/privacy</li>
+                      <li>OpenAI: openai.com/privacy</li>
+                      <li>Google: policies.google.com</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="children" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >06</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Children's Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    Skill to Life is intended for users aged 16 and over. We do
+                    not knowingly collect data from children under 16. If you
+                    believe a child has provided us with personal data, please
+                    contact us and we will delete it.
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="legal-basis" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >07</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Legal Basis for Processing
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We process your personal data under the following legal
+                    bases:
+                  </p>
+                  <ul class="mt-3 space-y-2 pl-5 text-sm leading-7 text-ns-muted">
+                    <li>
+                      Consent: when you choose to sign in, upload a CV, or make
+                      your profile public
+                    </li>
+                    <li>
+                      Legitimate interests: to run, secure, and improve the
+                      service
+                    </li>
+                    <li>
+                      Performance of service: to deliver the assessment and
+                      results you requested
+                    </li>
+                    <li>
+                      Legal compliance: where we must meet a legal obligation
+                    </li>
+                  </ul>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    You can withdraw consent at any time by deleting your
+                    account or contacting us.
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="sharing" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >08</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    How We Share Your Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    <strong class="text-ns-text"
+                      >We do not sell your personal data.</strong
+                    >
+                  </p>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We share data only in these limited cases:
+                  </p>
+                  <ul class="mt-3 space-y-2 pl-5 text-sm leading-7 text-ns-muted">
+                    <li>
+                      With AI providers, solely to process your requested CV
+                      analysis (Section 5)
+                    </li>
+                    <li>
+                      With Google, for authentication when you choose to sign in
+                    </li>
+                    <li>
+                      If required by law or to protect rights, safety, or
+                      prevent fraud
+                    </li>
+                    <li>
+                      If our business is acquired, in which case data may
+                      transfer to the new owner under the same protections
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="protect" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >09</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    How We Protect Your Data
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We use appropriate technical and organisational measures to
+                    protect your data, including secure authentication and
+                    encrypted connections. No system is completely secure, so if
+                    you believe your data has been compromised, please contact
+                    us immediately.
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="retention" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >10</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Data Storage and Retention
+                  </h2>
+                  <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
+                    <p class="m-0">
+                      Your data is stored securely. If data is transferred
+                      outside the UK or EEA, we rely on approved safeguards such
+                      as standard contractual clauses.
+                    </p>
+                    <p class="m-0">
+                      We keep your data only as long as needed to provide the
+                      service and meet legal requirements.
+                      <strong class="text-ns-text"
+                        >You can delete your account and all associated data at
+                        any time by contacting us. Anonymous assessments taken
+                        without an account are not linked to you and are not
+                        personally retained.</strong
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="rights" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >11</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Your Rights
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    Under UK GDPR you have the right to:
+                  </p>
+                  <ul class="mt-3 space-y-2 pl-5 text-sm leading-7 text-ns-muted">
+                    <li>Access your personal data</li>
+                    <li>Correct inaccurate data</li>
+                    <li>Delete your data</li>
+                    <li>Object to or restrict processing</li>
+                    <li>Withdraw consent</li>
+                    <li>
+                      Receive a copy of your data in a portable format
+                    </li>
+                    <li>Lodge a complaint</li>
+                  </ul>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    To exercise any of these rights, contact us using the
+                    details below.
+                  </p>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    <strong class="text-ns-text"
+                      >You may also lodge a complaint with the UK Information
+                      Commissioner's Office (ICO) at ico.org.uk if you believe
+                      we have handled your data unlawfully. We ask that you
+                      contact us first so we can try to resolve your
+                      concern.</strong
+                    >
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="changes" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >12</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Changes to This Policy
+                  </h2>
+                  <p class="mt-4 text-sm leading-7 text-ns-muted">
+                    We may update this Privacy Policy to reflect new features,
+                    practices, or legal requirements. The updated policy will be
+                    posted on this page with a new date. For significant
+                    changes, we will make reasonable efforts to notify signed-in
+                    users.
+                  </p>
+                </div>
+              </div>
+            </ns-card>
+
+            <ns-card id="contact" data-privacy-section>
+              <div class="flex items-start gap-4">
+                <span class="font-mono text-sm font-semibold text-ns-primary"
+                  >13</span
+                >
+                <div>
+                  <h2 class="m-0 text-xl font-bold text-ns-text">
+                    Contact Us
+                  </h2>
+                  <div class="mt-4 space-y-4 text-sm leading-7 text-ns-muted">
+                    <p class="m-0">
+                      If you have any questions about this Privacy Policy or how
+                      we handle your data, contact us:
+                    </p>
+                    <p class="m-0">
+                      <span class="font-semibold text-ns-text"
+                        >Data Controller:</span
+                      >
+                      Encrisoft Technologies Ltd (registered in the United
+                      Kingdom)
+                    </p>
+                    <p class="m-0">
+                      <span class="font-semibold text-ns-text">Email:</span>
+                      <a
+                        href="mailto:skilltolife.contact@gmail.com"
+                        class="font-semibold text-ns-primary no-underline hover:underline"
+                        >skilltolife.contact&#64;gmail.com</a
+                      >
+                    </p>
+                    <p class="m-0">We aim to respond within 30 days.</p>
+                  </div>
+                </div>
+              </div>
             </ns-card>
           </div>
 
@@ -424,18 +611,23 @@ export class PrivacyComponent implements OnInit {
     { label: 'Career paths', routerLink: '/careers' },
     { label: 'Salaries', routerLink: '/salaries' },
     { label: 'Resources', routerLink: '/resources' },
-    { label: 'CV Analysis ✨', routerLink: '/profile', queryParams: { tab: 'cv' }, requiresAuth: true },
+    {
+      label: 'CV Analysis ✨',
+      routerLink: '/profile',
+      queryParams: { tab: 'cv' },
+      requiresAuth: true,
+    },
   ];
 
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
 
   ngOnInit(): void {
-    this.titleService.setTitle('Privacy policy — Skill to Life');
+    this.titleService.setTitle('Privacy Policy — Skill to Life');
     this.metaService.updateTag({
       name: 'description',
       content:
-        'Skill to Life privacy policy covering data use, analytics consent, cookies, and privacy rights under applicable UK, EU, and African data protection laws.',
+        'Skill to Life privacy policy covering career assessments, Google sign-in, AI CV analysis, data rights, and Encrisoft Technologies Ltd as data controller.',
     });
   }
 }
