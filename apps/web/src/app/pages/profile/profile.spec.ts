@@ -54,7 +54,7 @@ const mockAnalysis: CvAnalysisResult = {
   summary: 'Great profile',
   aiModel: 'test-model',
   inputType: 'text',
-  createdAt: new Date().toISOString(),
+  createdAt: '2001-01-02T15:04:05.000Z',
 };
 
 describe('ProfilePageComponent', () => {
@@ -240,6 +240,53 @@ describe('ProfilePageComponent', () => {
 
     expect(fixture.componentInstance.activeTab()).toBe('saved');
     expect(savedTab?.classList).toContain('is-active');
+    expect(savedTab?.classList).toContain('active');
+  });
+
+  it('styles mobile active tabs without clipping their text', () => {
+    const fixture = TestBed.createComponent(ProfilePageComponent);
+    fixture.detectChanges();
+
+    const styles = (fixture.componentRef.componentType as any).ɵcmp.styles.join(
+      '\n',
+    ) as string;
+    expect(styles).toContain('.profile-tab-mobile.active');
+    expect(styles).toContain('--color-accent-light');
+    expect(styles).toContain('border-color');
+    expect(styles).toContain('padding: 8px 16px');
+    expect(styles).toContain('white-space: nowrap');
+    expect(styles).toContain('flex-shrink: 0');
+  });
+
+  it('keeps mobile tabs horizontally scrollable with edge scroll padding', () => {
+    const fixture = TestBed.createComponent(ProfilePageComponent);
+    fixture.detectChanges();
+
+    const styles = (fixture.componentRef.componentType as any).ɵcmp.styles.join(
+      '\n',
+    ) as string;
+    expect(styles).toContain('overflow-x: auto');
+    expect(styles).toContain('scroll-padding-left: 16px');
+    expect(styles).toContain('scroll-padding-right: 16px');
+    expect(styles).toContain('scroll-snap-type: x proximity');
+  });
+
+  it('shows the analysis date without exposing the AI model', () => {
+    TestBed.overrideProvider(CvAnalysisService, {
+      useValue: {
+        getAnalyses: () => of([mockAnalysis]),
+        uploadCV: () => of(null),
+        analyseText: () => of(null),
+        analyseLinkedIn: () => of(null),
+      },
+    });
+
+    const fixture = TestBed.createComponent(ProfilePageComponent);
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).not.toContain(mockAnalysis.aiModel);
+    expect(text).toContain(new Date(mockAnalysis.createdAt).getFullYear());
   });
 
   it('lays out overview stats as a 2x2 grid on mobile and 4-up on larger screens', () => {

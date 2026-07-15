@@ -185,9 +185,12 @@ describe('CvAnalysisService', () => {
 
   describe('getAnalyses', () => {
     it('returns analyses for current user profile', async () => {
-      mockPrisma.cvAnalysis.findMany.mockResolvedValue([{ id: 'a1' }]);
+      mockPrisma.cvAnalysis.findMany.mockResolvedValue([
+        { id: 'a1', aiModel: 'claude-opus-4-20250514' },
+      ]);
       const results = await service.getAnalyses('user1');
       expect(results).toHaveLength(1);
+      expect(results[0].aiModel).toBe('claude-opus-4-20250514');
     });
   });
 });

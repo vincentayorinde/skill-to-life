@@ -89,7 +89,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
 
           <!-- Sticky mobile tab bar -->
           <div
-            class="profile-tabs-mobile lg:hidden"
+            class="profile-tabs profile-tabs-mobile lg:hidden"
             role="tablist"
             aria-label="Profile sections"
           >
@@ -97,15 +97,15 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
               <button
                 type="button"
                 role="tab"
-                class="profile-tab-mobile"
+                class="profile-tab profile-tab-mobile"
+                [class.active]="activeTab() === tab.id"
                 [class.is-active]="activeTab() === tab.id"
                 [attr.aria-selected]="activeTab() === tab.id"
-                (click)="activeTab.set(tab.id)"
+                (click)="selectTab(tab.id)"
               >
                 {{ tab.label }}
               </button>
             }
-            <span class="profile-tabs-mobile-hint" aria-hidden="true">›</span>
           </div>
 
           <div class="profile-layout">
@@ -908,8 +908,7 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
                           >
                             <div>
                               <p class="text-xs text-ns-muted">
-                                {{ analysis.createdAt | date: 'medium' }} ·
-                                {{ analysis.aiModel }}
+                                {{ analysis.createdAt | date: 'medium' }}
                               </p>
                             </div>
                             @if (first) {
@@ -1490,12 +1489,10 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
       }
 
       .profile-tabs-mobile {
-        display: flex;
-        gap: 4px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
         padding: 8px 16px;
+        scroll-padding-left: 16px;
+        scroll-padding-right: 16px;
+        scroll-snap-type: x proximity;
         background: var(--color-bg, var(--ns-color-bg));
         border-bottom: 1px solid var(--color-border, var(--ns-color-border));
         position: sticky;
@@ -1507,7 +1504,6 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
       @media (min-width: 640px) {
         .profile-tabs-mobile {
           margin: 0 -24px 16px;
-          padding: 8px 24px;
         }
       }
 
@@ -1521,58 +1517,33 @@ type TabId = 'profile' | 'overview' | 'saved' | 'resources' | 'results' | 'cv';
         display: none;
       }
 
-      .profile-tabs-mobile::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 40px;
-        background: linear-gradient(
-          to right,
-          transparent,
-          var(--color-bg, var(--ns-color-bg)) 70%
-        );
-        pointer-events: none;
-      }
-
-      .profile-tabs-mobile-hint {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 1;
-        color: var(--color-accent, var(--ns-color-primary));
-        pointer-events: none;
-      }
-
       .profile-tab-mobile {
+        box-sizing: border-box;
+        flex-shrink: 0;
+        white-space: nowrap;
         padding: 8px 16px;
         font-size: 14px;
         font-weight: 500;
         color: var(--color-text-secondary, var(--ns-color-muted));
-        white-space: nowrap;
-        flex-shrink: 0;
         border-radius: var(--radius-sm, var(--ns-radius-sm));
-        border: none;
-        background: none;
+        border: 1px solid transparent;
+        background: transparent;
         cursor: pointer;
         transition: all 0.15s ease;
+        scroll-snap-align: start;
       }
 
       .profile-tab-mobile:hover:not(.is-active) {
         background: var(--color-bg-secondary, var(--ns-color-canvas-subtle));
       }
 
-      .profile-tab-mobile.is-active {
+      .profile-tab-mobile.active {
         background: var(--color-accent-light, var(--ns-color-primary-soft));
         color: var(--color-accent, var(--ns-color-primary));
+        border-color: var(
+          --color-border-accent,
+          var(--ns-color-primary)
+        );
         font-weight: 600;
       }
     `,
@@ -1642,6 +1613,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     { id: 'results' as TabId, label: 'My results' },
     { id: 'cv' as TabId, label: 'CV analysis' },
   ];
+
+  selectTab(tab: TabId): void {
+    this.activeTab.set(tab);
+    setTimeout(() => {
+      const activeTab = document.querySelector<HTMLElement>(
+        '.profile-tabs-mobile .profile-tab.active',
+      );
+      activeTab?.scrollIntoView?.({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }, 50);
+  }
 
   readonly savedResourcesCount = computed(() =>
     Object.values(this.savedResources()).reduce((acc, g) => acc + g.length, 0),
